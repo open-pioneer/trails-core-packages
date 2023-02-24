@@ -1,0 +1,12 @@
+messages:
+  content:
+    header: "I18N Sample"
+    description: |
+      This example demonstrates an app that supports multiple languages.
+      The app's actual language can be inferred from the user's environment (browser language) or by
+      explicitly forcing the locale during application start.
+    open: "Open dialog"
+
+  picker:
+    choose: "Select a language:"
+    default: "automatic (default)"
