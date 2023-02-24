@@ -1,0 +1,11 @@
+{
+    "name": "api-app",
+    "main": "index",
+    "private": true,
+    "dependencies": {
+        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/integration": "workspace:^",
+        "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^"
+    }
+}
