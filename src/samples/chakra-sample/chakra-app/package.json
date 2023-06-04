@@ -4,5 +4,6 @@
     "dependencies": {
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/runtime": "workspace:^"
-    }
+    },
+    "version": null
 }
