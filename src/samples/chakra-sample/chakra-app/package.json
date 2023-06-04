@@ -1,9 +1,9 @@
 {
     "name": "chakra-app",
+    "version": "0.0.0",
     "private": true,
     "dependencies": {
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/runtime": "workspace:^"
-    },
-    "version": null
+    }
 }

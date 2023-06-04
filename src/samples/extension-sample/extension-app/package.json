@@ -1,10 +1,10 @@
 {
     "name": "extension-app",
+    "version": "0.0.0",
     "private": true,
     "main": "index",
     "dependencies": {
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^"
-    },
-    "version": null
+    }
 }
