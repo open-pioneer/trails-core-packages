@@ -1,4 +1,4 @@
 {
-    "extends": ["../../../../typedoc.base.json"],
+    "extends": ["core-packages/typedoc.base.json"],
     "entryPoints": ["./web-components.ts", "./react.tsx", "./services.ts"]
 }

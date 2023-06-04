@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 const documentedPackages = [
-    "framework/chakra-integration",
-    "framework/core",
-    "framework/integration",
-    "framework/runtime",
-    "framework/test-utils",
+    "chakra-integration",
+    "core",
+    "integration",
+    "runtime",
+    "test-utils",
 ];
 
 // See https://typedoc.org/options/
 module.exports = {
-    "name": "Open Pioneer Packages",
+    "name": "Open Pioneer Core Packages",
     "readme": "none",
     "out": "dist/docs",
     "entryPointStrategy": "packages",
