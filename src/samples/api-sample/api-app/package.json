@@ -6,5 +6,6 @@
         "@open-pioneer/integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^"
-    }
+    },
+    "version": null
 }

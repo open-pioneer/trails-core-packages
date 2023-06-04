@@ -4,5 +4,6 @@
     "dependencies": {
         "@open-pioneer/runtime": "workspace:^",
         "styling-sample-components": "workspace:^"
-    }
+    },
+    "version": null
 }
