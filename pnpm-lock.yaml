@@ -50,10 +50,10 @@ importers:
         version: 0.5.2
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:src/packages/framework/runtime
+        version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: ^0.8.1
-        version: 0.8.1(@open-pioneer/runtime@src+packages+framework+runtime)(sass@1.62.1)(vite@4.3.9)
+        version: 0.8.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
       '@testing-library/dom':
         specifier: ^9.3.0
         version: 9.3.0
@@ -160,7 +160,7 @@ importers:
         specifier: ^0.31.2
         version: 0.31.2(jsdom@22.1.0)(sass@1.62.1)
 
-  src/packages/framework/chakra-integration:
+  src/packages/chakra-integration:
     dependencies:
       '@chakra-ui/react':
         specifier: ^2.6.1
@@ -183,10 +183,18 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+    devDependencies:
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
 
-  src/packages/framework/core: {}
+  src/packages/core:
+    devDependencies:
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
 
-  src/packages/framework/integration:
+  src/packages/integration:
     devDependencies:
       '@open-pioneer/runtime':
         specifier: workspace:^
@@ -194,8 +202,11 @@ importers:
       '@open-pioneer/test-utils':
         specifier: workspace:^
         version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
 
-  src/packages/framework/runtime:
+  src/packages/runtime:
     dependencies:
       '@formatjs/intl':
         specifier: ^2.7.2
@@ -216,22 +227,21 @@ importers:
       '@open-pioneer/test-utils':
         specifier: workspace:^
         version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
 
-  src/packages/framework/test-utils:
+  src/packages/test-utils:
     dependencies:
       '@formatjs/intl':
         specifier: ^2.7.2
         version: 2.7.2(typescript@5.0.4)
-      '@testing-library/dom':
-        specifier: ^9.3.0
-        version: 9.3.0
-    devDependencies:
-      '@open-pioneer/chakra-integration':
-        specifier: workspace:^
-        version: link:../chakra-integration
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../runtime
+      '@testing-library/dom':
+        specifier: ^9.3.0
+        version: 9.3.0
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -241,60 +251,67 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@open-pioneer/chakra-integration':
+        specifier: workspace:^
+        version: link:../chakra-integration
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
 
   src/samples/api-sample/api-app:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/chakra-integration
+        version: link:../../../packages/chakra-integration
       '@open-pioneer/core':
         specifier: workspace:^
-        version: link:../../../packages/framework/core
+        version: link:../../../packages/core
       '@open-pioneer/integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/integration
+        version: link:../../../packages/integration
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
 
   src/samples/chakra-sample/chakra-app:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/chakra-integration
+        version: link:../../../packages/chakra-integration
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
 
   src/samples/extension-sample/extension-app:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/chakra-integration
+        version: link:../../../packages/chakra-integration
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
 
   src/samples/i18n-howto/app:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/chakra-integration
+        version: link:../../../packages/chakra-integration
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
 
   src/samples/i18n-sample/i18n-app:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/chakra-integration
+        version: link:../../../packages/chakra-integration
       '@open-pioneer/integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/integration
+        version: link:../../../packages/integration
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
       i18n-sample-package:
         specifier: workspace:*
         version: link:../i18n-sample-package
@@ -305,13 +322,13 @@ importers:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
-        version: link:../../../packages/framework/chakra-integration
+        version: link:../../../packages/chakra-integration
       '@open-pioneer/core':
         specifier: workspace:^
-        version: link:../../../packages/framework/core
+        version: link:../../../packages/core
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -320,7 +337,7 @@ importers:
     dependencies:
       '@open-pioneer/runtime':
         specifier: workspace:^
-        version: link:../../../packages/framework/runtime
+        version: link:../../../packages/runtime
       styling-sample-components:
         specifier: workspace:^
         version: link:../styling-sample-components
@@ -2096,7 +2113,7 @@ packages:
     engines: {node: '>= 16'}
     dev: true
 
-  /@open-pioneer/vite-plugin-pioneer@0.8.1(@open-pioneer/runtime@src+packages+framework+runtime)(sass@1.62.1)(vite@4.3.9):
+  /@open-pioneer/vite-plugin-pioneer@0.8.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
     resolution: {integrity: sha512-WDJ952rztTaCL2xOwmXQC20mhXtmI9xvXE+hInEBOl+s17UtC6faSmoJUe7w18xuT6vLLcZPwAmrtmDrGvew1w==}
     engines: {node: '>= 16'}
     peerDependencies:
@@ -2108,7 +2125,7 @@ packages:
       '@babel/template': 7.21.9
       '@babel/types': 7.22.4
       '@open-pioneer/build-common': 0.5.0
-      '@open-pioneer/runtime': link:src/packages/framework/runtime
+      '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.3.4
       js-yaml: 4.1.0
       sass: 1.62.1
@@ -2321,7 +2338,6 @@ packages:
       '@types/react-dom': 18.2.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
 
   /@testing-library/user-event@14.4.3(@testing-library/dom@9.3.0):
     resolution: {integrity: sha512-kCUc5MEwaEMakkO5x7aoD+DLi02ehmEM2QCGWvNqAS1dV/fAvORWEjnjsEIvml59M7Y5kCkWN6fCCyPOe8OL6Q==}
@@ -2441,7 +2457,6 @@ packages:
     resolution: {integrity: sha512-G2mHoTMTL4yoydITgOGwWdWMVd8sNgyEP85xVmMKAPUBwQWm9wBPQUmvbeF4V3WBY1P7mmL4BkjQ0SqUpf1snw==}
     dependencies:
       '@types/react': 18.2.7
-    dev: true
 
   /@types/react@18.2.7:
     resolution: {integrity: sha512-ojrXpSH2XFCmHm7Jy3q44nXDyN54+EYKP2lBhJ2bqfyPj6cIUW/FZW/Csdia34NQgq7KYcAlHi5184m4X88+yw==}
