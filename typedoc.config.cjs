@@ -5,9 +5,6 @@ const documentedPackages = [
     "framework/chakra-integration",
     "framework/core",
     "framework/integration",
-    "framework/layout/sidebar",
-    "framework/open-layers/layer-control",
-    "framework/open-layers/map",
     "framework/runtime",
     "framework/test-utils",
 ];

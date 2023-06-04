@@ -23,7 +23,6 @@ const sampleSites = [
     "samples/api-sample",
     "samples/chakra-sample",
     "samples/extension-sample",
-    "samples/map-sample",
     "samples/properties-sample",
     "samples/styling-sample",
     "samples/i18n-sample",
@@ -57,8 +56,6 @@ export default defineConfig(({ mode }) => {
 
                 // Additional directories to include as html (must contain index.html files)
                 sites: [
-                    "sites/empty",
-
                     // Include sample sites in the build
                     ...sampleSites
                 ],

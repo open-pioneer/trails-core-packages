@@ -1,5 +1,5 @@
 {
-    "name": "starter",
+    "name": "core-packages",
     "private": true,
     "type": "module",
     "license": "Apache-2.0",
@@ -10,21 +10,15 @@
         "watch-types": "pnpm check-types -w",
         "build": "tsc && vite build",
         "build-docs": "typedoc",
-        "build-license-report": "ts-node --esm ./support/create-license-report.ts",
         "preview": "vite preview",
         "lint": "eslint ./src ./support --cache --ext .js,.ts,.jsx,.tsx,.mjs,.mts,.cjs,.cts",
         "prettier-check": "pnpm prettier:common -c",
         "prettier": "pnpm prettier:common -w",
-        "prettier:common": "prettier ./src ./docs ./support --ignore-path .eslintignore --cache",
+        "prettier:common": "prettier ./src ./support --ignore-path .eslintignore --cache",
         "test": "vitest",
         "lint-shared-versions": "syncpack list-mismatches",
         "update-shared-versions": "syncpack fix-mismatches",
         "prepare": "husky install"
-    },
-    "pnpm": {
-        "overrides": {
-            "ol-mapbox-style": "workspace:disabled-package@*"
-        }
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.0.19",
@@ -35,7 +29,6 @@
         "@emotion/styled": "^11.11.0",
         "@formatjs/intl": "^2.7.2",
         "framer-motion": "^10.12.16",
-        "ol": "^7.3.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-use": "^17.4.0"
@@ -83,6 +76,6 @@
     },
     "engines": {
         "node": ">= 16",
-        "pnpm": "^7 || ^8"
+        "pnpm": ">= 8"
     }
 }

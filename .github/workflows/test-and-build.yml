@@ -36,15 +36,11 @@ jobs:
       - name: Run tests
         run: pnpm vitest run
 
-      - name: Build app
+      - name: Build samples
         run: pnpm build
 
       - name: Build API documentation
         run: pnpm build-docs
-
-      # TODO: errors are ignored right now
-      - name: Create license report
-        run: pnpm build-license-report || true;
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -89,3 +85,4 @@ jobs:
           git-config-name: github-actions
           git-config-email: github-actions@github.com
           folder: site
+          target-folder: core-packages
