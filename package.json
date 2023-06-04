@@ -9,7 +9,9 @@
         "dev": "vite",
         "check-types": "tsc --noEmit",
         "watch-types": "pnpm check-types -w",
-        "build": "tsc && vite build",
+        "build": "vite build",
+        "build-packages": "ts-node --esm support/build.ts",
+        "build-packages__TODO": "pnpm recursive --sort --parallel --if-present --aggregate run build",
         "build-docs": "typedoc",
         "preview": "vite preview",
         "lint": "eslint ./src ./support --cache --ext .js,.ts,.jsx,.tsx,.mjs,.mts,.cjs,.cts",
@@ -19,7 +21,10 @@
         "test": "vitest",
         "lint-shared-versions": "syncpack list-mismatches",
         "update-shared-versions": "syncpack fix-mismatches",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "ci:test": "pnpm run clean && pnpm run lint && pnpm run check-types && vitest run",
+        "ci:version": "pnpm changeset version && pnpm install",
+        "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && pnpm changeset tag"
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.0.19",
