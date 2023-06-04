@@ -3,6 +3,7 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
+    entryPoints: ["index"],
     services: {
         ExternalEventServiceImpl: {
             provides: "integration.ExternalEventService",

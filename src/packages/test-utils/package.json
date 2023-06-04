@@ -7,11 +7,14 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "@testing-library/dom": "^9.3.0",
-        "@formatjs/intl": "^2.7.2"
+        "@formatjs/intl": "^2.7.2",
+        "@open-pioneer/chakra-integration": "workspace:^"
     },
     "devDependencies": {
-        "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/chakra-integration": "workspace:^",
         "core-packages": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
     }
 }

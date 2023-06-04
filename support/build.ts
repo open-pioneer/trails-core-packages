@@ -1,11 +1,18 @@
 // SPDX-FileCopyrightText: con terra GmbH and contributors
 // SPDX-License-Identifier: Apache-2.0
 import { build } from "@open-pioneer/build-package";
+import { resolve } from "path";
 
-await build({
-    packageDirectory: "src/packages/framework/layout/sidebar",
-    validation: {
-        requireChangelog: false,
-        requireLicense: false
-    }
-});
+const packages = ["chakra-integration", "core", "integration", "runtime", "test-utils"];
+
+for (const pkg of packages) {
+    const path = resolve(`src/packages/${pkg}`);
+    console.info("Building package at", pkg);
+    await build({
+        packageDirectory: path,
+        validation: {
+            requireChangelog: false,
+            requireLicense: false
+        }
+    });
+}

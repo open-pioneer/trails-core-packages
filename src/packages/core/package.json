@@ -5,5 +5,9 @@
     "version": "0.0.1",
     "devDependencies": {
         "core-packages": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
     }
 }
