@@ -6,5 +6,6 @@
         "@open-pioneer/integration": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
         "i18n-sample-package": "workspace:*"
-    }
+    },
+    "version": null
 }
