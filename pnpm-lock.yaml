@@ -46,8 +46,8 @@ importers:
         specifier: ^2.26.1
         version: 2.26.1
       '@open-pioneer/build-package':
-        specifier: ^0.5.0
-        version: 0.5.0(sass@1.62.1)(typescript@5.0.4)
+        specifier: ^0.5.2
+        version: 0.5.2(sass@1.62.1)(typescript@5.0.4)
       '@open-pioneer/build-support':
         specifier: ^0.5.2
         version: 0.5.2
@@ -2291,8 +2291,8 @@ packages:
       zod-validation-error: 1.3.0(zod@3.21.4)
     dev: true
 
-  /@open-pioneer/build-package@0.5.0(sass@1.62.1)(typescript@5.0.4):
-    resolution: {integrity: sha512-9EtYTUECQuDGBYyvbR0+UiP9KpzEEKkYbA8zI8tZmnOGM1ZSfefrDwkVjGoMY7cMD6mqg9725/ZftjJubbsUwQ==}
+  /@open-pioneer/build-package@0.5.2(sass@1.62.1)(typescript@5.0.4):
+    resolution: {integrity: sha512-Ekk5yqfG71pyE44dQs+m0c5pmlwLsZyIoysjYY/rib5YoGRQ0akxy+AtlLCY+fvIYpYev9YIXNcBMHt54w1uCQ==}
     engines: {node: '>= 16'}
     peerDependencies:
       sass: '*'
