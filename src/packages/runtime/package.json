@@ -13,5 +13,9 @@
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",
         "core-packages": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
     }
 }
