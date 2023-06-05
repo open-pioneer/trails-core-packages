@@ -1,5 +1,14 @@
 # @open-pioneer/test-utils
 
+## 0.1.2
+
+### Patch Changes
+
+-   a40f12d: Update build-package tool. TypeScript declaration files should now be available.
+-   Updated dependencies [a40f12d]
+    -   @open-pioneer/chakra-integration@0.1.2
+    -   @open-pioneer/runtime@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
