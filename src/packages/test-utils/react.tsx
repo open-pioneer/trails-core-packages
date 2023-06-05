@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createIntl, createIntlCache, IntlShape } from "@formatjs/intl";
 import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
-import { Service } from "@open-pioneer/runtime";
+import type { Service } from "@open-pioneer/runtime";
 import {
     PackageContext as InternalPackageContext,
     PackageContextMethods
-} from "@open-pioneer/runtime/react-integration";
+} from "@open-pioneer/runtime-react-support";
 import { FC, ReactNode, useMemo } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

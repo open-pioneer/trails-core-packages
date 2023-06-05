@@ -3,7 +3,10 @@
 import { useContext, useMemo } from "react";
 import { Error } from "@open-pioneer/core";
 import { InterfaceName, ServiceType } from "../ServiceRegistry";
-import { PackageContext as PackageContext, PackageContextMethods } from "./PackageContext";
+import {
+    PackageContext as PackageContext,
+    PackageContextMethods
+} from "@open-pioneer/runtime-react-support";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 

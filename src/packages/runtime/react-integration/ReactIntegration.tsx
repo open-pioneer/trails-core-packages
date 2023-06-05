@@ -5,7 +5,7 @@ import { createRoot, Root } from "react-dom/client";
 import { Error } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
-import { PackageContext, PackageContextMethods } from "./PackageContext";
+import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";

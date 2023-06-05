@@ -1,0 +1,17 @@
+{
+    "name": "@open-pioneer/runtime-react-support",
+    "version": "0.0.0",
+    "license": "Apache-2.0",
+    "main": "index.ts",
+    "dependencies": {
+        "react": "^18.2.0"
+    },
+    "devDependencies": {
+        "core-packages": "workspace:^",
+        "@open-pioneer/runtime": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    }
+}
