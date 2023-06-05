@@ -223,6 +223,9 @@ importers:
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
+      '@open-pioneer/runtime-react-support':
+        specifier: workspace:^
+        version: link:../runtime-react-support
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -238,6 +241,20 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
+  src/packages/runtime-react-support:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../runtime
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
   src/packages/test-utils:
     dependencies:
       '@formatjs/intl':
@@ -246,9 +263,9 @@ importers:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../chakra-integration
-      '@open-pioneer/runtime':
+      '@open-pioneer/runtime-react-support':
         specifier: workspace:^
-        version: link:../runtime
+        version: link:../runtime-react-support
       '@testing-library/dom':
         specifier: ^9.3.0
         version: 9.3.0

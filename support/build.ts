@@ -3,7 +3,14 @@
 import { build } from "@open-pioneer/build-package";
 import { resolve } from "path";
 
-const packages = ["chakra-integration", "core", "integration", "runtime", "test-utils"];
+const packages = [
+    "chakra-integration",
+    "core",
+    "integration",
+    "runtime",
+    "runtime-react-support",
+    "test-utils"
+];
 
 for (const pkg of packages) {
     const path = resolve(`src/packages/${pkg}`);

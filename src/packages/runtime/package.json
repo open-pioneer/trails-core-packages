@@ -7,6 +7,7 @@
         "@formatjs/intl": "^2.7.2",
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/runtime-react-support": "workspace:^",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
