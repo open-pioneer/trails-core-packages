@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 0.1.2
+
+### Patch Changes
+
+-   a40f12d: Update build-package tool. TypeScript declaration files should now be available.
+
 ## 0.1.1
 
 ### Patch Changes
