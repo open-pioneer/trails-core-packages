@@ -1,5 +1,13 @@
 # @open-pioneer/test-utils
 
+## 0.1.3
+
+### Patch Changes
+
+-   e752d49: Use new runtime-react-support package
+-   Updated dependencies [e752d49]
+    -   @open-pioneer/runtime-react-support@0.1.0
+
 ## 0.1.2
 
 ### Patch Changes
