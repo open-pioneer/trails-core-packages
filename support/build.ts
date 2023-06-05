@@ -7,7 +7,6 @@ const packages = ["chakra-integration", "core", "integration", "runtime", "test-
 
 for (const pkg of packages) {
     const path = resolve(`src/packages/${pkg}`);
-    console.info("Building package at", pkg);
     await build({
         packageDirectory: path,
         validation: {
