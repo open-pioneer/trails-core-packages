@@ -1,5 +1,15 @@
 # @open-pioneer/integration
 
+## 0.1.3
+
+### Patch Changes
+
+-   234b3be: Fix registrations in ServiceRegistry
+-   49ba4e1: Use build-package CLI to build.
+-   Updated dependencies [234b3be]
+-   Updated dependencies [49ba4e1]
+    -   @open-pioneer/runtime@0.1.4
+
 ## 0.1.2
 
 ### Patch Changes

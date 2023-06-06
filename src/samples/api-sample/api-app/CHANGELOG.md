@@ -1,5 +1,16 @@
 # api-app
 
+## 0.0.4
+
+### Patch Changes
+
+-   Updated dependencies [234b3be]
+-   Updated dependencies [49ba4e1]
+    -   @open-pioneer/integration@0.1.3
+    -   @open-pioneer/runtime@0.1.4
+    -   @open-pioneer/chakra-integration@0.1.3
+    -   @open-pioneer/core@0.1.3
+
 ## 0.0.3
 
 ### Patch Changes
