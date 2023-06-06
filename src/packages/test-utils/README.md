@@ -111,3 +111,7 @@ it("creates a new service instance with the defined references", async () => {
     // ... other assertions ...
 });
 ```
+
+## License
+
+[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)

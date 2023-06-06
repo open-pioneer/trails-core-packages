@@ -3,6 +3,9 @@
     "version": "0.1.2",
     "license": "Apache-2.0",
     "main": "index.ts",
+    "scripts": {
+        "build": "build-package"
+    },
     "devDependencies": {
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/test-utils": "workspace:^",

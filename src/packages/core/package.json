@@ -3,6 +3,9 @@
     "license": "Apache-2.0",
     "main": "index.ts",
     "version": "0.1.2",
+    "scripts": {
+        "build": "build-package"
+    },
     "devDependencies": {
         "core-packages": "workspace:^"
     },

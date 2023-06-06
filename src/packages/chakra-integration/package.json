@@ -3,6 +3,9 @@
     "version": "0.1.2",
     "main": "index.tsx",
     "license": "Apache-2.0",
+    "scripts": {
+        "build": "build-package"
+    },
     "dependencies": {
         "@chakra-ui/react": "^2.6.1",
         "@emotion/cache": "^11.11.0",

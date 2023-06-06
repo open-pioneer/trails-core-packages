@@ -45,18 +45,18 @@ importers:
       '@changesets/cli':
         specifier: ^2.26.1
         version: 2.26.1
-      '@open-pioneer/build-package':
-        specifier: ^0.6.1
-        version: 0.6.1(sass@1.62.1)(typescript@5.0.4)
+      '@open-pioneer/build-package-cli':
+        specifier: ^0.1.0
+        version: 0.1.0(sass@1.62.1)(typescript@5.0.4)
       '@open-pioneer/build-support':
-        specifier: ^0.5.2
-        version: 0.5.2
+        specifier: ^0.6.0
+        version: 0.6.0
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
-        specifier: ^0.8.1
-        version: 0.8.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
+        specifier: ^0.8.3
+        version: 0.8.3(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
       '@testing-library/dom':
         specifier: ^9.3.0
         version: 9.3.0
@@ -2299,8 +2299,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@open-pioneer/build-common@0.5.0:
-    resolution: {integrity: sha512-fKOlpuvTyXY+geVoXKNZ3eMN+2BQEOffADpyeR/X0WkCzz1w5/Jsm3T2aK6DF/5BHkBSNleQmK+nm7EEqrH9Ng==}
+  /@open-pioneer/build-common@0.6.0:
+    resolution: {integrity: sha512-hE0CRnlQFLAUZ8URaQMilIBao6+BAXlbaG0xRAUPgGNETC+pU6oVwt/nSwhikH7fsOelH/PXOrXrI/P0zxQvyA==}
     engines: {node: '>= 16'}
     dependencies:
       semver: 7.5.1
@@ -2308,8 +2308,22 @@ packages:
       zod-validation-error: 1.3.0(zod@3.21.4)
     dev: true
 
-  /@open-pioneer/build-package@0.6.1(sass@1.62.1)(typescript@5.0.4):
-    resolution: {integrity: sha512-JOyYurxONIMzNX5EHBSiWe17tvXMiWTaWU/r7vF0VBfi/k5NO78Sw7ilCpNLgDpPhO5MLFbqxZBjMprj6xB7Mw==}
+  /@open-pioneer/build-package-cli@0.1.0(sass@1.62.1)(typescript@5.0.4):
+    resolution: {integrity: sha512-duOnF+LegmAUbcAW5cP71RJQ2xhxd0UZeuE5RgMiMhtDGaC0KjAw2y6hwTRDKIDaZ6rydbML7RFy1CdquxlU9g==}
+    engines: {node: '>= 16'}
+    hasBin: true
+    dependencies:
+      '@open-pioneer/build-package': 0.7.0(sass@1.62.1)(typescript@5.0.4)
+      chalk: 5.2.0
+      commander: 10.0.1
+    transitivePeerDependencies:
+      - sass
+      - supports-color
+      - typescript
+    dev: true
+
+  /@open-pioneer/build-package@0.7.0(sass@1.62.1)(typescript@5.0.4):
+    resolution: {integrity: sha512-bCU60ZXdbglzIFFTZMhat/ZLBxyrpYhVtxvI5dogOC/0Z72aJoDMXNNLdOVcovyQrltH1OmdTlvDo/XQKcql2w==}
     engines: {node: '>= 16'}
     peerDependencies:
       sass: '*'
@@ -2320,8 +2334,8 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@open-pioneer/build-common': 0.5.0
-      '@open-pioneer/build-support': 0.5.2
+      '@open-pioneer/build-common': 0.6.0
+      '@open-pioneer/build-support': 0.6.0
       chalk: 5.2.0
       debug: 4.3.4
       esbuild: 0.17.19
@@ -2337,13 +2351,13 @@ packages:
       - supports-color
     dev: true
 
-  /@open-pioneer/build-support@0.5.2:
-    resolution: {integrity: sha512-B2z940fAuDu23G2QKEDRSSRwsyl+P8z9uAiTtw+tCxeZ5Yhju2mbOuW1qRHgQcUU9bFftjxke8Q68o+VMNNoFw==}
+  /@open-pioneer/build-support@0.6.0:
+    resolution: {integrity: sha512-3JV97gjkx4zWZKykFCm9zuQhc931au6HUNKW/knzXsuKnPHXCCkjTPJTAXw3cqvmQ/hJya6zOjW6A4tCxnmbTA==}
     engines: {node: '>= 16'}
     dev: true
 
-  /@open-pioneer/vite-plugin-pioneer@0.8.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
-    resolution: {integrity: sha512-WDJ952rztTaCL2xOwmXQC20mhXtmI9xvXE+hInEBOl+s17UtC6faSmoJUe7w18xuT6vLLcZPwAmrtmDrGvew1w==}
+  /@open-pioneer/vite-plugin-pioneer@0.8.3(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
+    resolution: {integrity: sha512-VgTVXigyi4ul6BguDI8TTS5n0zX4Q62PIpLkOtfe1BSNZFKIFCSr+RbYvAq9f8j4R+yiOn79TxKK/tMJaf9Pbg==}
     engines: {node: '>= 16'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -2353,7 +2367,7 @@ packages:
       '@babel/generator': 7.22.3
       '@babel/template': 7.21.9
       '@babel/types': 7.22.4
-      '@open-pioneer/build-common': 0.5.0
+      '@open-pioneer/build-common': 0.6.0
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.3.4
       js-yaml: 4.1.0

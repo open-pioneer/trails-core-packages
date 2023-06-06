@@ -9,3 +9,7 @@ All UI packages using the pioneer framework should use this package instead of d
 Some changes are made to complex components such as `Modal`, `Drawer` etc. to support integration
 into a web component's shadow dom.
 See comments in `./Provider.tsx` for more details.
+
+## License
+
+[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)

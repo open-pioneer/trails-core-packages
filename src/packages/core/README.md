@@ -71,3 +71,7 @@ Or as a shared logger at module scope:
 import { createLogger } from "@open-pioneer/core";
 const LOG = createLogger("example-package");
 ```
+
+## License
+
+[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)

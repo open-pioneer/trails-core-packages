@@ -134,3 +134,7 @@ app.addEventListener("extent-selected", (event) => {
     console.log("Selected extent:", event.detail.extent);
 });
 ```
+
+## License
+
+[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
