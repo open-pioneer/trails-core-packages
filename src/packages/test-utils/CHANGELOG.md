@@ -1,5 +1,11 @@
 # @open-pioneer/test-utils
 
+## 0.1.5
+
+### Patch Changes
+
+-   5e08907: Don't show MISSING_TRANSLATION errors when testing components or services.
+
 ## 0.1.4
 
 ### Patch Changes
