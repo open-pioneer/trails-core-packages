@@ -8,6 +8,7 @@ import {
     PackageContextMethods
 } from "@open-pioneer/runtime-react-support";
 import { FC, ReactNode, useMemo } from "react";
+import { INTL_ERROR_HANDLER } from "./utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyService = Service<any>;
@@ -130,7 +131,8 @@ function createPackageContextMethods(
                 return createIntl(
                     {
                         locale,
-                        messages: packageMessages
+                        messages: packageMessages,
+                        onError: INTL_ERROR_HANDLER
                     },
                     cache
                 );

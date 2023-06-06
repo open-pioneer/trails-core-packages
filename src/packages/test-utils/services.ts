@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReferenceMeta, Service, ServiceConstructor } from "@open-pioneer/runtime";
 import { createIntl, createIntlCache } from "@formatjs/intl";
+import { INTL_ERROR_HANDLER } from "./utils";
 
 /**
  * Options for the {@link createService} function.
@@ -90,7 +91,8 @@ export async function createService<References extends {}, Interface extends {}>
         {
             locale,
             defaultLocale: defaultMessageLocale,
-            messages
+            messages,
+            onError: INTL_ERROR_HANDLER
         },
         cache
     );
