@@ -9,6 +9,7 @@
  * @example
  *
  * ```ts
+ * import "@open-pioneer/runtime";
  * declare module "@open-pioneer/runtime" {
  *     interface PropertiesRegistry {
  *         // Declares that properties for the "logging" package must

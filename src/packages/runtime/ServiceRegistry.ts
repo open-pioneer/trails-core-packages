@@ -8,6 +8,7 @@
  * @example
  *
  * ```ts
+ * import "@open-pioneer/runtime";
  * declare module "@open-pioneer/runtime" {
  *    interface ServiceRegistry {
  *        // Associates the interface name with the TypeScript interface

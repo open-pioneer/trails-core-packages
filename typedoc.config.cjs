@@ -4,6 +4,7 @@
 const documentedPackages = [
     "chakra-integration",
     "core",
+    "http",
     "integration",
     "runtime",
     "test-utils",
