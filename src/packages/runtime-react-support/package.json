@@ -3,6 +3,9 @@
     "version": "0.1.0",
     "license": "Apache-2.0",
     "main": "index.ts",
+    "scripts": {
+        "build": "build-package"
+    },
     "dependencies": {
         "react": "^18.2.0"
     },
