@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 0.1.3
+
+### Patch Changes
+
+-   49ba4e1: Use build-package CLI to build.
+
 ## 0.1.2
 
 ### Patch Changes
