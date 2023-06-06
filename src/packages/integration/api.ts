@@ -48,6 +48,7 @@ export interface ExternalEventService {
 
 export { ApiExtension, ApiMethod, ApiMethods }; // re-export for consistency
 
+import "@open-pioneer/runtime";
 declare module "@open-pioneer/runtime" {
     interface ServiceRegistry {
         "integration.ApiExtension": ApiExtension;

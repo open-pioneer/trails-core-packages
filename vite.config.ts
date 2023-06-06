@@ -23,10 +23,11 @@ const sampleSites = [
     "samples/api-sample",
     "samples/chakra-sample",
     "samples/extension-sample",
+    "samples/http-sample",
+    "samples/i18n-howto",
+    "samples/i18n-sample",
     "samples/properties-sample",
     "samples/styling-sample",
-    "samples/i18n-sample",
-    "samples/i18n-howto"
 ];
 
 // https://vitejs.dev/config/
