@@ -4,7 +4,7 @@
     "main": "index.ts",
     "version": "0.1.3",
     "scripts": {
-        "build": "build-package"
+        "build": "build-pioneer-package"
     },
     "devDependencies": {
         "core-packages": "workspace:^"
