@@ -4,7 +4,7 @@
     "main": "index.tsx",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "build-package"
+        "build": "build-pioneer-package"
     },
     "dependencies": {
         "@chakra-ui/react": "^2.6.1",
