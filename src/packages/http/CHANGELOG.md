@@ -1,5 +1,13 @@
 # @open-pioneer/http
 
+## 0.1.1
+
+### Patch Changes
+
+-   9eac5c9: Use peer dependencies for (most) dependencies
+-   Updated dependencies [9eac5c9]
+    -   @open-pioneer/runtime@0.1.5
+
 ## 0.1.0
 
 ### Minor Changes
