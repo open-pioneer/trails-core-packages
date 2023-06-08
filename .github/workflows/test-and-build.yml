@@ -47,7 +47,15 @@ jobs:
         with:
           name: build
           path: dist/
-
+  
+  call_version:
+    if: github.ref == 'refs/heads/main'
+    name: "Publish or create version PR"
+    uses: "./.github/workflows/version.yml"
+    needs: test
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              
   deploy:
     runs-on: ubuntu-latest
     needs: test
