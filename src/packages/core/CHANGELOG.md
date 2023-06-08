@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 0.1.4
+
+### Patch Changes
+
+-   9eac5c9: Use peer dependencies for (most) dependencies
+
 ## 0.1.3
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # styling-app
 
+## 0.0.5
+
+### Patch Changes
+
+-   Updated dependencies [9eac5c9]
+    -   @open-pioneer/runtime@0.1.5
+
 ## 0.0.4
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @open-pioneer/test-utils
 
+## 0.1.6
+
+### Patch Changes
+
+-   9eac5c9: Use peer dependencies for (most) dependencies
+-   Updated dependencies [9eac5c9]
+    -   @open-pioneer/runtime-react-support@0.1.2
+    -   @open-pioneer/chakra-integration@0.1.4
+
 ## 0.1.5
 
 ### Patch Changes
