@@ -55,8 +55,8 @@ importers:
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
-        specifier: ^0.8.4
-        version: 0.8.4(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
+        specifier: ^0.8.6
+        version: 0.8.6(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
       '@testing-library/dom':
         specifier: ^9.3.0
         version: 9.3.0
@@ -2386,8 +2386,8 @@ packages:
     engines: {node: '>= 16'}
     dev: true
 
-  /@open-pioneer/vite-plugin-pioneer@0.8.4(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
-    resolution: {integrity: sha512-tcnmX/T4YquYKHj7Dz9gn3+SfqzOIThmdO26V3/fZ6qvoPCB6Jw8mT774pWepJdxvqCUMg6CQzXZQK9g6GzQ4g==}
+  /@open-pioneer/vite-plugin-pioneer@0.8.6(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
+    resolution: {integrity: sha512-bVXCkxaY5jB5OOTypMLaMI0B7gjB7br5eg5X6Eso/vaVPWGPn8QQtc98R3zsFs2dK/l9bZuqgOfi1FRoAfXUvQ==}
     engines: {node: '>= 16'}
     peerDependencies:
       '@open-pioneer/runtime': '*'

@@ -6,7 +6,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "dependencies": {
+    "peerDependencies": {
         "@formatjs/intl": "^2.7.2",
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
