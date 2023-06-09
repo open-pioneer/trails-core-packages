@@ -42,3 +42,7 @@ export class MyService {
 
 The signature of the `fetch()` method is compatible to the Browser's global [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) function.
 However, the `HttpService`'s method should always be preferred to take advantage of future features (logging, request interceptors, etc.).
+
+## License
+
+[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
