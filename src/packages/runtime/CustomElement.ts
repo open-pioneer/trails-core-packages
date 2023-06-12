@@ -48,9 +48,10 @@ export interface CustomElementOptions {
 
     /**
      * Application defined configuration.
-     * All instances of the web component will share this static configuration.
      *
-     * These will override default properties of the application's packages.
+     * This option can be used to override default properties of the application's packages.
+     *
+     * All instances of the web component will share this static configuration.
      */
     config?: ApplicationConfig;
 
@@ -58,7 +59,7 @@ export interface CustomElementOptions {
      * Function to provide additional application defined configuration parameters.
      *
      * Compared to {@link config}, this function receives a context object
-     * that allows the developer to provide dynamic properties on a per-application basis.
+     * that allows the developer to provide dynamic properties on a per-application instance basis.
      *
      * Parameters returned by this function take precedence over the ones defined by {@link config}.
      */
