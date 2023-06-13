@@ -537,7 +537,14 @@ function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig>
 // Applies application styles to the given style node.
 // Can be called multiple times in development mode to implement hot reloading.
 function applyStyles(styleNode: HTMLStyleElement, styles: { value: string } | undefined) {
-    const cssValue = styles?.value ?? "";
+    let cssValue = styles?.value ?? "";
+    // Remove sourcemaps from inline css.
+    // This currently does not work because a) the 'importer' (the index.html file) does not
+    // match the actual path the source map would exist and b) vite refuses to generate it anyway, probably
+    // because of our virtual modules.
+    // TODO: both should be fixed once we can refer to actual `.css` files
+    // and don't have to embed inline css anymore.
+    cssValue = cssValue.replace(/\/\*# sourceMappingURL=.*$/, "");
     const cssNode = document.createTextNode(cssValue);
     styleNode.replaceChildren(cssNode);
 }
