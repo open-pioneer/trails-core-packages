@@ -2,18 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 const GlobalError = globalThis.Error;
 
-// 'cause' property is missing in typescript typings
-declare global {
-    interface ErrorConstructor {
-        new (
-            message?: string,
-            options?: {
-                cause?: unknown;
-            }
-        ): globalThis.Error;
-    }
-}
-
 /**
  * A custom error class that enforces the use of error ids.
  *
