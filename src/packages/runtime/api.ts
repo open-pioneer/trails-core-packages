@@ -69,6 +69,9 @@ export interface ApplicationContext {
 /**
  * Implementing this interface allows a service to be notified on certain
  * application-wide lifecycle events.
+ *
+ * **Experimental**. This interface is not affected by semver guarantees.
+ * It may change (or be removed) in a future minor release.
  */
 export interface ApplicationLifecycleListener {
     /**
