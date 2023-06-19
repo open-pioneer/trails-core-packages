@@ -1,5 +1,13 @@
 # extension-app
 
+## 0.0.6
+
+### Patch Changes
+
+-   Updated dependencies [22ff68a]
+    -   @open-pioneer/chakra-integration@1.0.0
+    -   @open-pioneer/runtime@1.0.0
+
 ## 0.0.5
 
 ### Patch Changes

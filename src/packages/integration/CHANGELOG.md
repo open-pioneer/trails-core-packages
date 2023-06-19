@@ -1,5 +1,16 @@
 # @open-pioneer/integration
 
+## 1.0.0
+
+### Major Changes
+
+-   22ff68a: Initial release
+
+### Patch Changes
+
+-   Updated dependencies [22ff68a]
+    -   @open-pioneer/runtime@1.0.0
+
 ## 0.1.4
 
 ### Patch Changes

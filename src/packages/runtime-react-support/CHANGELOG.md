@@ -1,5 +1,11 @@
 # @open-pioneer/runtime-react-support
 
+## 1.0.0
+
+### Major Changes
+
+-   22ff68a: Initial release
+
 ## 0.1.2
 
 ### Patch Changes
