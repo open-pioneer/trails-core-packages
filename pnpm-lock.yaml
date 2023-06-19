@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -46,17 +46,20 @@ importers:
         specifier: ^2.26.1
         version: 2.26.1
       '@open-pioneer/build-package-cli':
-        specifier: ^0.2.0
-        version: 0.2.0(sass@1.62.1)(typescript@5.1.3)
+        specifier: ^1.0.1
+        version: 1.0.1(sass@1.62.1)(typescript@5.1.3)
       '@open-pioneer/build-support':
-        specifier: ^0.6.0
-        version: 0.6.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:src/packages/runtime
+      '@open-pioneer/tag-current-versions':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@open-pioneer/vite-plugin-pioneer':
-        specifier: ^0.8.6
-        version: 0.8.6(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
+        specifier: ^1.0.2
+        version: 1.0.2(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9)
       '@testing-library/dom':
         specifier: ^9.3.0
         version: 9.3.0
@@ -2297,6 +2300,16 @@ packages:
       fs-extra: 8.1.0
     dev: true
 
+  /@manypkg/find-root@2.2.0:
+    resolution: {integrity: sha512-NET+BNIMmBWUUUfFtuDgaTIav6pVlkkSdI2mt+2rFWPd6TQ0DXyhQH47Ql+d7x2oIkJ69dkVKwsTErRt2ROPbw==}
+    engines: {node: '>=14.18.0'}
+    dependencies:
+      '@manypkg/tools': 1.1.0
+      '@types/node': 12.20.55
+      find-up: 4.1.0
+      fs-extra: 8.1.0
+    dev: true
+
   /@manypkg/get-packages@1.1.3:
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
     dependencies:
@@ -2305,6 +2318,24 @@ packages:
       '@manypkg/find-root': 1.1.0
       fs-extra: 8.1.0
       globby: 11.1.0
+      read-yaml-file: 1.1.0
+    dev: true
+
+  /@manypkg/get-packages@2.2.0:
+    resolution: {integrity: sha512-B5p5BXMwhGZKi/syEEAP1eVg5DZ/9LP+MZr0HqfrHLgu9fq0w4ZwH8yVen4JmjrxI2dWS31dcoswYzuphLaRxg==}
+    engines: {node: '>=14.18.0'}
+    dependencies:
+      '@manypkg/find-root': 2.2.0
+      '@manypkg/tools': 1.1.0
+    dev: true
+
+  /@manypkg/tools@1.1.0:
+    resolution: {integrity: sha512-SkAyKAByB9l93Slyg8AUHGuM2kjvWioUTCckT/03J09jYnfEzMO/wSXmEhnKGYs6qx9De8TH4yJCl0Y9lRgnyQ==}
+    engines: {node: '>=14.18.0'}
+    dependencies:
+      fs-extra: 8.1.0
+      globby: 11.1.0
+      jju: 1.4.0
       read-yaml-file: 1.1.0
     dev: true
 
@@ -2329,8 +2360,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@open-pioneer/build-common@0.6.0:
-    resolution: {integrity: sha512-hE0CRnlQFLAUZ8URaQMilIBao6+BAXlbaG0xRAUPgGNETC+pU6oVwt/nSwhikH7fsOelH/PXOrXrI/P0zxQvyA==}
+  /@open-pioneer/build-common@1.0.1:
+    resolution: {integrity: sha512-34eljROLXEoIQXewU6OINK9/cIVO0sExULEmt0vaqRHED6YTDIdX6Q1iGUay8NUtKEH4vk9+tjKDy0TXaFl1dw==}
     engines: {node: '>= 16'}
     dependencies:
       semver: 7.5.1
@@ -2338,12 +2369,12 @@ packages:
       zod-validation-error: 1.3.0(zod@3.21.4)
     dev: true
 
-  /@open-pioneer/build-package-cli@0.2.0(sass@1.62.1)(typescript@5.1.3):
-    resolution: {integrity: sha512-0xhenz7w3+0ElJnNvG3CbSOZsSjLJf6AchjPpKIQfRC9EMX7Eew3xpnySXfLJV4MXfM+otjFW4F1g+6EKuzBng==}
+  /@open-pioneer/build-package-cli@1.0.1(sass@1.62.1)(typescript@5.1.3):
+    resolution: {integrity: sha512-vZGuW5ow/P6ClfUzHjk6OvZGCVbvcDFy2FVck8HAip5Nzf9J2a0x/V1cQdB2hErp/WwdEfL0r6s0duFbMOSFTQ==}
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
-      '@open-pioneer/build-package': 0.7.0(sass@1.62.1)(typescript@5.1.3)
+      '@open-pioneer/build-package': 1.0.1(sass@1.62.1)(typescript@5.1.3)
       chalk: 5.2.0
       commander: 10.0.1
     transitivePeerDependencies:
@@ -2352,8 +2383,8 @@ packages:
       - typescript
     dev: true
 
-  /@open-pioneer/build-package@0.7.0(sass@1.62.1)(typescript@5.1.3):
-    resolution: {integrity: sha512-bCU60ZXdbglzIFFTZMhat/ZLBxyrpYhVtxvI5dogOC/0Z72aJoDMXNNLdOVcovyQrltH1OmdTlvDo/XQKcql2w==}
+  /@open-pioneer/build-package@1.0.1(sass@1.62.1)(typescript@5.1.3):
+    resolution: {integrity: sha512-al7xZ+jI88203jIIbudjh0BWawVh2rNqru+B6yfiVzy+aQsMZXpFmSIAQGJBrH/1a6f3fYLc6cNUxpFnEIxTeg==}
     engines: {node: '>= 16'}
     peerDependencies:
       sass: '*'
@@ -2364,8 +2395,8 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@open-pioneer/build-common': 0.6.0
-      '@open-pioneer/build-support': 0.6.0
+      '@open-pioneer/build-common': 1.0.1
+      '@open-pioneer/build-support': 1.0.0
       chalk: 5.2.0
       debug: 4.3.4
       esbuild: 0.17.19
@@ -2381,13 +2412,23 @@ packages:
       - supports-color
     dev: true
 
-  /@open-pioneer/build-support@0.6.0:
-    resolution: {integrity: sha512-3JV97gjkx4zWZKykFCm9zuQhc931au6HUNKW/knzXsuKnPHXCCkjTPJTAXw3cqvmQ/hJya6zOjW6A4tCxnmbTA==}
+  /@open-pioneer/build-support@1.0.0:
+    resolution: {integrity: sha512-ECnX4/7HrhMDldmw2So4LxNxFZGWOq/bnmJk/8ptOlAFDq/TXgbDhi4BMsvE8x9Y0nt9K33ehW16jYaRM7yOqw==}
     engines: {node: '>= 16'}
     dev: true
 
-  /@open-pioneer/vite-plugin-pioneer@0.8.6(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
-    resolution: {integrity: sha512-bVXCkxaY5jB5OOTypMLaMI0B7gjB7br5eg5X6Eso/vaVPWGPn8QQtc98R3zsFs2dK/l9bZuqgOfi1FRoAfXUvQ==}
+  /@open-pioneer/tag-current-versions@1.0.0:
+    resolution: {integrity: sha512-SvbDvR9z2kqARhHaY0O8segDPdkIzsvDv66O4bPH1bynSZQ6TMWPGFAjxUG7zHfyi5Tl8kmcWVpQj81F3uYXGA==}
+    engines: {node: '>= 16'}
+    hasBin: true
+    dependencies:
+      '@changesets/git': 2.0.0
+      '@changesets/logger': 0.0.5
+      '@manypkg/get-packages': 2.2.0
+    dev: true
+
+  /@open-pioneer/vite-plugin-pioneer@1.0.2(@open-pioneer/runtime@src+packages+runtime)(sass@1.62.1)(vite@4.3.9):
+    resolution: {integrity: sha512-QGTGaaNVsx8aJG7zOJ6O0RwrpWNTTSeYb5T3Pxlom7oF9kyLdWZeXdMFiwc8hHnsPCzpPvwaAotQZaU3/BFkpw==}
     engines: {node: '>= 16'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -2397,7 +2438,7 @@ packages:
       '@babel/generator': 7.22.3
       '@babel/template': 7.21.9
       '@babel/types': 7.22.4
-      '@open-pioneer/build-common': 0.6.0
+      '@open-pioneer/build-common': 1.0.1
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.3.4
       js-yaml: 4.1.0
@@ -5077,6 +5118,10 @@ packages:
       ci-info: 3.8.0
       graceful-fs: 4.2.11
       picomatch: 2.3.1
+    dev: true
+
+  /jju@1.4.0:
+    resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: true
 
   /joycon@3.1.1:
