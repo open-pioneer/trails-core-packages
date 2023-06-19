@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/runtime-react-support",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "license": "Apache-2.0",
     "main": "index.ts",
     "scripts": {
