@@ -25,6 +25,13 @@
         "ci:version": "pnpm changeset version && pnpm install",
         "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && tag-current-versions"
     },
+    "pnpm": {
+        "//1": "semver: https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
+        "//2": "",
+        "overrides": {
+            "semver@<7.5.2": ">=7.5.2"
+        }
+    },
     "dependencies": {
         "@chakra-ui/icons": "^2.0.19",
         "@chakra-ui/react": "^2.6.1",
