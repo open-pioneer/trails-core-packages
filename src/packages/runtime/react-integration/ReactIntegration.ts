@@ -32,7 +32,6 @@ export interface UiStateReady {
     type: "ready";
     packageContext: PackageContextMethods;
     Component: ComponentType;
-    componentProps: Record<string, unknown>;
 }
 
 export type UiState = UiStateLoading | UiStateError | UiStateReady;

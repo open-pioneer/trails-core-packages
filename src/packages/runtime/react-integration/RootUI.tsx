@@ -34,7 +34,7 @@ export function RootUI(props: RootUIProps): JSX.Element {
         case "ready":
             content = (
                 <PackageContext.Provider value={state.packageContext}>
-                    <state.Component {...state.componentProps} />;
+                    <state.Component />;
                 </PackageContext.Provider>
             );
             break;

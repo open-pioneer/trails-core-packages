@@ -335,7 +335,6 @@ class ElementState {
         reactIntegration.render({
             type: "ready",
             Component: this.options?.component ?? emptyComponent,
-            componentProps: {},
             packageContext: createPackageContext(packages, serviceLayer)
         });
 
