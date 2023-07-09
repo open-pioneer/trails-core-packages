@@ -7,6 +7,7 @@
         "build": "build-pioneer-package"
     },
     "peerDependencies": {
+        "@chakra-ui/icons": "^2.0.19",
         "@formatjs/intl": "^2.7.2",
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
@@ -21,5 +22,8 @@
     "publishConfig": {
         "directory": "dist",
         "linkDirectory": false
+    },
+    "dependencies": {
+        "react-error-boundary": "^4.0.10"
     }
 }

@@ -29,6 +29,7 @@ import { ReferenceSpec } from "./service-layer/InterfaceSpec";
 import { PropertiesRegistry } from "./PropertiesRegistry";
 import { AppI18n, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
+import { createPackageContext } from "./react-integration/createPackageContext";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -218,7 +219,7 @@ class ElementState {
     private apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
     private api: ApiMethods | undefined; // Present once started
 
-    private state = "not-started" as "not-started" | "starting" | "started" | "destroyed";
+    private state = "not-started" as "not-started" | "starting" | "started" | "error" | "destroyed";
     private locale: string | undefined;
     private container: HTMLDivElement | undefined;
     private config: ApplicationConfig | undefined;
@@ -240,10 +241,16 @@ class ElementState {
 
         this.state = "starting";
         this.startImpl().catch((e) => {
-            // TODO: Error splash?
-            this.destroy();
+            this.state = "error";
+            this.apiPromise?.reject(createAbortError());
+            this.apiPromise = undefined;
             if (!isAbortError(e)) {
                 logError(e);
+
+                this.reactIntegration?.render({
+                    type: "error",
+                    error: e
+                });
             }
         });
     }
@@ -263,7 +270,9 @@ class ElementState {
         }
         this.state = "destroyed";
         this.apiPromise?.reject(createAbortError());
+        this.apiPromise = undefined;
         this.reactIntegration = destroyResource(this.reactIntegration);
+        this.reactIntegration = undefined;
         this.shadowRoot.replaceChildren();
         this.container = undefined;
         this.lifecycleEvents = undefined;
@@ -283,6 +292,19 @@ class ElementState {
     private async startImpl() {
         const { options, shadowRoot, hostElement } = this;
 
+        // Setup application root node in the shadow dom
+        const container = (this.container = createContainer());
+        const styles = this.initStyles();
+        shadowRoot.replaceChildren(container, ...styles);
+
+        // Launch react
+        const reactIntegration = (this.reactIntegration = new ReactIntegration({
+            containerNode: container,
+            rootNode: shadowRoot,
+            enableErrorHandler: true
+        }));
+        reactIntegration.render({ type: "loading" });
+
         // Resolve custom application config
         const config = (this.config = await gatherConfig(hostElement, options));
         this.checkAbort();
@@ -291,11 +313,9 @@ class ElementState {
         // Decide on locale and load i18n messages (if any).
         const i18n = await initI18n(options.appMetadata, config.locale);
         this.checkAbort();
-
-        // Setup application root node in the shadow dom
-        const container = (this.container = createContainer(i18n.locale));
-        const styles = this.initStyles();
-        shadowRoot.replaceChildren(container, ...styles);
+        if (i18n.locale) {
+            container.lang = i18n.locale;
+        }
 
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
@@ -311,22 +331,16 @@ class ElementState {
         await this.initAPI(serviceLayer);
         this.checkAbort();
 
-        // Launch react
-        this.reactIntegration = new ReactIntegration({
-            rootNode: container,
-            container: shadowRoot,
-            serviceLayer,
-            packages
-        });
-        this.render();
         this.state = "started";
+        reactIntegration.render({
+            type: "ready",
+            Component: this.options?.component ?? emptyComponent,
+            componentProps: {},
+            packageContext: createPackageContext(packages, serviceLayer)
+        });
 
         this.triggerApplicationLifecycleEvent("after-start");
         LOG.debug("Application started");
-    }
-
-    private render() {
-        this.reactIntegration?.render(this.options.component ?? emptyComponent, {});
     }
 
     private initStyles() {
@@ -402,15 +416,12 @@ class ElementState {
     }
 }
 
-function createContainer(locale: string) {
+function createContainer() {
     // Setup application root node in the shadow dom
     const container = document.createElement("div");
     container.classList.add("pioneer-root");
     container.style.minHeight = "100%";
     container.style.height = "100%";
-    if (locale) {
-        container.lang = locale;
-    }
     return container;
 }
 

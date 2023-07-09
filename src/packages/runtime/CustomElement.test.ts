@@ -26,6 +26,15 @@ interface InternalElementType extends ApplicationElement {
     $inspectElementState?(): any;
 }
 
+beforeAll(() => {
+    // Silence "uncaught error" logs from (intentional) errors during web component construction.
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+});
+
+afterAll(() => {
+    vi.resetAllMocks();
+});
+
 describe("simple rendering", function () {
     const SIMPLE_STYLE = ".test { color: red }";
     const SIMPLE_ELEM = createCustomElement({
@@ -310,6 +319,7 @@ describe("application lifecycle events", function () {
         }
 
         const elem = createCustomElement({
+            component: () => createElement("span", undefined, "application content"),
             appMetadata: {
                 packages: {
                     test: {
@@ -330,7 +340,9 @@ describe("application lifecycle events", function () {
             }
         });
 
-        const { node, innerContainer } = await renderComponentShadowDOM(elem);
+        const { node, innerContainer, queries } = await renderComponentShadowDOM(elem);
+        await queries.findByText("application content");
+
         expect(events).toEqual(["start"]);
 
         // Wait until divs are gone
@@ -383,13 +395,22 @@ describe("application lifecycle events", function () {
 
         // App starts up and immediately stops because of the error in `resolveConfig` above.
         const { node } = await renderComponent(elem);
+        const hidden = (node as InternalElementType).$inspectElementState?.();
         await waitFor(() => {
-            const state = (node as InternalElementType).$inspectElementState?.().state;
+            const state = hidden.state;
+            if (state !== "error") {
+                throw new Error(`App did not reach error state.`);
+            }
+        });
+        expect(events).toEqual([]);
+
+        node.remove();
+        await waitFor(() => {
+            const state = hidden.state;
             if (state !== "destroyed") {
                 throw new Error(`App did not reach destroyed state.`);
             }
         });
-
         expect(events).toEqual([]);
     });
 });

@@ -4,19 +4,20 @@
  * @vitest-environment jsdom
  */
 import { createElement } from "react";
-import { beforeEach, expect, it } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
-import { findByText } from "@testing-library/dom";
+import { findByText, waitFor } from "@testing-library/dom";
+import { act } from "@testing-library/react";
 import { Service, ServiceConstructor } from "../Service";
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ReactIntegration } from "./ReactIntegration";
-import { act } from "react-dom/test-utils";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { createConstructorFactory, ServiceRepr } from "../service-layer/ServiceRepr";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { createEmptyI18n, PackageIntl } from "../i18n";
+import { createPackageContext } from "./createPackageContext";
 
 interface TestProvider {
     value: string;
@@ -26,13 +27,23 @@ beforeEach(() => {
     document.body.innerHTML = "";
 });
 
+beforeAll(() => {
+    // Silence "uncaught error" logs from (intentional) errors in react components.
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+});
+
+afterAll(() => {
+    vi.resetAllMocks();
+});
+
 it("should allow access to service via react hook", async () => {
     function TestComponent() {
         const service = useServiceInternal("test", "test.Provider") as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         packageUiReferences: [{ interfaceName: "test.Provider" }],
         services: [
             {
@@ -45,8 +56,13 @@ it("should allow access to service via react hook", async () => {
         ]
     });
 
-    act(() => {
-        integration.render(TestComponent, {});
+    await act(() => {
+        integration.render({
+            type: "ready",
+            Component: TestComponent,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, "Hello TEST");
@@ -59,13 +75,19 @@ it("should get error when using undefined service", async () => {
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
-    const { integration } = createIntegration({
+    const { integration } = createIntegration();
+    const packageContext = createContext({
         disablePackage: true
     });
 
     expect(() => {
         act(() => {
-            integration.render(TestComponent, {});
+            integration.render({
+                type: "ready",
+                Component: TestComponent,
+                componentProps: {},
+                packageContext
+            });
         });
     }).toThrowErrorMatchingSnapshot();
 });
@@ -78,7 +100,8 @@ it("should allow access to service with qualifier via react hook", async () => {
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         services: [
             {
                 name: "Provider",
@@ -92,7 +115,12 @@ it("should allow access to service with qualifier via react hook", async () => {
     });
 
     act(() => {
-        integration.render(TestComponent, {});
+        integration.render({
+            type: "ready",
+            Component: TestComponent,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, "Hello TEST");
@@ -107,7 +135,8 @@ it("should deny access to service when the qualifier does not match", async () =
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
-    const { integration } = createIntegration({
+    const { integration } = createIntegration();
+    const packageContext = createContext({
         services: [
             {
                 name: "Provider",
@@ -122,7 +151,12 @@ it("should deny access to service when the qualifier does not match", async () =
 
     expect(() => {
         act(() => {
-            integration.render(TestComponent, {});
+            integration.render({
+                type: "ready",
+                Component: TestComponent,
+                componentProps: {},
+                packageContext
+            });
         });
     }).toThrowErrorMatchingSnapshot();
 });
@@ -137,7 +171,8 @@ it("should allow access to all services via react hook", async () => {
         );
     }
 
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         services: [
             {
                 name: "Provider1",
@@ -165,7 +200,12 @@ it("should allow access to all services via react hook", async () => {
     });
 
     act(() => {
-        integration.render(TestComponent, {});
+        integration.render({
+            type: "ready",
+            Component: TestComponent,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, /^Joined Values:/);
@@ -182,13 +222,19 @@ it("should deny access to all services if declaration is missing", async () => {
         );
     }
 
-    const { integration } = createIntegration({
+    const { integration } = createIntegration();
+    const packageContext = createContext({
         services: []
     });
 
     expect(() => {
         act(() => {
-            integration.render(TestComponent, {});
+            integration.render({
+                type: "ready",
+                Component: TestComponent,
+                componentProps: {},
+                packageContext
+            });
         });
     }).toThrowErrorMatchingSnapshot();
 });
@@ -199,14 +245,20 @@ it("should be able to read properties from react component", async () => {
         return createElement("span", undefined, `Hello ${properties.name}`);
     }
 
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         packageProperties: {
             name: "USER"
         }
     });
 
     act(() => {
-        integration.render(TestComponent, {});
+        integration.render({
+            type: "ready",
+            Component: TestComponent,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, "Hello USER");
@@ -215,7 +267,8 @@ it("should be able to read properties from react component", async () => {
 
 it("should provide the autogenerated useService hook", async () => {
     const testPackageName = "@open-pioneer/runtime__react_test_package";
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         packageName: testPackageName,
         packageUiReferences: [{ interfaceName: "test.Provider" }],
         services: [
@@ -230,7 +283,12 @@ it("should provide the autogenerated useService hook", async () => {
     });
 
     act(() => {
-        integration.render(UIWithService, {});
+        integration.render({
+            type: "ready",
+            Component: UIWithService,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, /^Test-UI:/);
@@ -239,7 +297,8 @@ it("should provide the autogenerated useService hook", async () => {
 
 it("should provide the autogenerated useServices hook", async () => {
     const testPackageName = "@open-pioneer/runtime__react_test_package";
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         packageName: testPackageName,
         packageUiReferences: [{ interfaceName: "test.Provider", all: true }],
         services: [
@@ -261,7 +320,12 @@ it("should provide the autogenerated useServices hook", async () => {
     });
 
     act(() => {
-        integration.render(UIWithServices, {});
+        integration.render({
+            type: "ready",
+            Component: UIWithServices,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, /^Test-UI:/);
@@ -270,7 +334,8 @@ it("should provide the autogenerated useServices hook", async () => {
 
 it("should provide the autogenerated useProperties hook", async () => {
     const testPackageName = "@open-pioneer/runtime__react_test_package";
-    const { wrapper, integration } = createIntegration({
+    const { wrapper, integration } = createIntegration();
+    const packageContext = createContext({
         packageName: testPackageName,
         packageProperties: {
             greeting: "Hello World!"
@@ -278,7 +343,12 @@ it("should provide the autogenerated useProperties hook", async () => {
     });
 
     act(() => {
-        integration.render(UIWithProperties, {});
+        integration.render({
+            type: "ready",
+            Component: UIWithProperties,
+            componentProps: {},
+            packageContext
+        });
     });
 
     const node = await findByText(wrapper, /^Test-UI:/);
@@ -286,7 +356,8 @@ it("should provide the autogenerated useProperties hook", async () => {
 });
 
 it("should throw error when requesting properties from an unknown package", async () => {
-    const { integration } = createIntegration({
+    const { integration } = createIntegration();
+    const packageContext = createContext({
         disablePackage: true
     });
 
@@ -297,9 +368,68 @@ it("should throw error when requesting properties from an unknown package", asyn
 
     expect(() => {
         act(() => {
-            integration.render(TestComponent, {});
+            integration.render({
+                type: "ready",
+                Component: TestComponent,
+                componentProps: {},
+                packageContext
+            });
         });
     }).toThrowErrorMatchingSnapshot();
+});
+
+it("should render application errors", async () => {
+    const { wrapper, integration } = createIntegration();
+
+    const error = new Error("help!");
+    error.stack = "stable\nstack\nwithout\npaths\n";
+
+    act(() => {
+        integration.render({
+            type: "error",
+            error
+        });
+    });
+
+    const node = await waitFor(() => {
+        const node = wrapper.querySelector(".error-ui");
+        if (!node) {
+            throw new Error("Failed to find error ui");
+        }
+        return node;
+    });
+    expect(node).toMatchSnapshot();
+});
+
+it("should render react errors if the error handler is enabled", async () => {
+    const { wrapper, integration } = createIntegration({
+        enableErrorHandler: true
+    });
+    const packageContext = createContext({
+        disablePackage: true
+    });
+
+    act(() => {
+        integration.render({
+            type: "ready",
+            Component() {
+                throw new Error("error from react");
+            },
+            componentProps: {},
+            packageContext
+        });
+    });
+
+    const node = await waitFor(() => {
+        const node = wrapper.querySelector(".error-details");
+        if (!node) {
+            throw new Error("Failed to find error details");
+        }
+        return node;
+    });
+
+    // Not testing full text because it also contains local paths in the error stack
+    expect(node.textContent).include("error from react");
 });
 
 interface ServiceSpec {
@@ -313,15 +443,24 @@ export interface TestIntegration {
     integration: ReactIntegration;
 }
 
-function createIntegration(options?: {
+function createIntegration(options?: { enableErrorHandler?: boolean }): TestIntegration {
+    const wrapper = document.createElement("div");
+    const integration = new ReactIntegration({
+        rootNode: wrapper,
+        containerNode: wrapper,
+        enableErrorHandler: options?.enableErrorHandler ?? false
+    });
+    return { integration, wrapper };
+}
+
+function createContext(options?: {
     disablePackage?: boolean;
     packageName?: string;
     packageProperties?: Record<string, unknown>;
     packageUiReferences?: ReferenceSpec[];
     i18n?: PackageIntl;
     services?: ServiceSpec[];
-}): TestIntegration {
-    const wrapper = document.createElement("div");
+}) {
     const packages = new Map<string, PackageRepr>();
     const i18n = options?.i18n ?? createEmptyI18n();
     if (!options?.disablePackage) {
@@ -351,11 +490,5 @@ function createIntegration(options?: {
     const serviceLayer = new ServiceLayer(Array.from(packages.values()));
     serviceLayer.start();
 
-    const integration = new ReactIntegration({
-        container: wrapper,
-        rootNode: wrapper,
-        packages,
-        serviceLayer
-    });
-    return { integration, wrapper };
+    return createPackageContext(packages, serviceLayer);
 }
