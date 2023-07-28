@@ -2,7 +2,7 @@
 
 Core packages of the open pioneer client framework.
 
-[Samples](https://open-pioneer.github.io/demo/core-packages/) | [API Documentation](https://open-pioneer.github.io/demo/core-packages/docs/) | [User manual](https://github.com/open-pioneer/starter/tree/main/docs)
+[Samples](https://open-pioneer.github.io/demo/core-packages/) | [API Documentation](https://open-pioneer.github.io/demo/core-packages/docs/) | [User manual](https://github.com/open-pioneer/trails-starter/tree/main/docs)
 
 ## Getting started
 
@@ -29,7 +29,7 @@ $ pnpm test
 $ pnpm test ./src/packages/core
 ```
 
-For more details, consult the starter project's [Repository Guide](https://github.com/open-pioneer/starter/blob/main/docs/RepositoryGuide.md).
+For more details, consult the starter project's [Repository Guide](https://github.com/open-pioneer/trails-starter/blob/main/docs/RepositoryGuide.md).
 
 ## License
 
