@@ -1,5 +1,11 @@
 # extension-app
 
+## 0.0.7
+
+### Patch Changes
+
+-   @open-pioneer/runtime@1.0.1
+
 ## 0.0.6
 
 ### Patch Changes
