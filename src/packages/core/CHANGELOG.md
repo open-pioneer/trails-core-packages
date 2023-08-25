@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 1.0.1
+
+### Patch Changes
+
+-   88fd710: fix typings EventNames type
+
 ## 1.0.0
 
 ### Major Changes
