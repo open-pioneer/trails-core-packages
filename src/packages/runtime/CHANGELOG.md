@@ -1,5 +1,13 @@
 # @open-pioneer/runtime
 
+## 1.0.1
+
+### Patch Changes
+
+-   Updated dependencies [88fd710]
+    -   @open-pioneer/core@1.0.1
+    -   @open-pioneer/runtime-react-support@1.0.0
+
 ## 1.0.0
 
 ### Major Changes
