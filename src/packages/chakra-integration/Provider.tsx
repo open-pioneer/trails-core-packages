@@ -31,6 +31,11 @@ export type CustomChakraProviderProps = PropsWithChildren<{
      * Configures the color mode of the application.
      */
     colorMode?: "light" | "dark";
+
+    /**
+     * chakra theming object
+     */
+    theme?: Record<string, any>;
 }>;
 
 // todo min-height vs height
@@ -49,7 +54,7 @@ const defaultStyles = `
     font-feature-settings: 'kern';
 }`;
 
-const theme = extendTheme({
+const rootStyles = {
     styles: {
         global: {
             // Apply the same styles to the application root node that chakra would usually apply to the html and body.
@@ -58,7 +63,7 @@ const theme = extendTheme({
                 (baseTheme.styles.global as Record<string, any>).body
         }
     }
-});
+};
 
 // https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L3-L6
 const colorModeClassnames = {
@@ -70,7 +75,8 @@ const colorModeClassnames = {
 export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     container,
     colorMode,
-    children
+    children,
+    theme
 }) => {
     /* 
         Chakra integration internals:
@@ -141,10 +147,14 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     }, [mode]);
     const ColorMode = mode === "light" ? LightMode : DarkMode;
 
+    //apply custom theme or Chakra UI default theme
+    let customTheme = theme ? extendTheme(theme) : baseTheme;
+    customTheme = extendTheme(rootStyles, customTheme);
+
     return (
         <div className="chakra-host" ref={chakraHost}>
             <CacheProvider value={cacheRef.current}>
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={customTheme}>
                     <EnvironmentProvider>
                         <ColorMode>
                             <CSSReset />

@@ -70,6 +70,11 @@ export interface CustomElementOptions {
      * Defaults to `false` in production mode and `true` during development to make testing easier.
      */
     openShadowRoot?: boolean;
+
+    /**
+     * Chakra theming object
+     */
+    theme?: Record<string, any>;
 }
 
 /**
@@ -326,7 +331,11 @@ class ElementState {
     }
 
     private render() {
-        this.reactIntegration?.render(this.options.component ?? emptyComponent, {});
+        console.log("options");
+        console.log(this.options);
+        this.reactIntegration?.render(this.options.component ?? emptyComponent, {
+            theme: this.options.theme
+        });
     }
 
     private initStyles() {

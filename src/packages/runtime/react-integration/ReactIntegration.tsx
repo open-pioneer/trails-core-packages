@@ -86,9 +86,14 @@ export class ReactIntegration {
     }
 
     render(Component: ComponentType, props: Record<string, unknown>) {
+        const customTheme = props.theme as Record<string, any>;
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider container={this.containerNode} colorMode="light">
+                <CustomChakraProvider
+                    container={this.containerNode}
+                    colorMode="light"
+                    theme={customTheme}
+                >
                     <PackageContext.Provider value={this.packageContext}>
                         <Component {...props} />
                     </PackageContext.Provider>

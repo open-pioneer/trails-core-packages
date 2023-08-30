@@ -131,7 +131,7 @@ function PortalExample() {
 function TooltipExample() {
     return (
         <Tooltip hasArrow label="Button Tooltip" aria-label="A tooltip" placement="top">
-            <Button colorScheme="teal">Button with a tooltip</Button>
+            <Button variant="asdad">Button with a tooltip</Button>
         </Tooltip>
     );
 }
@@ -140,7 +140,6 @@ function ToastExample() {
     const toast = useToast();
     return (
         <Button
-            colorScheme="teal"
             onClick={() =>
                 toast({
                     title: "Account created.",
@@ -236,7 +235,7 @@ function DrawerExample() {
     const btnRef = useRef<HTMLButtonElement>(null);
     return (
         <>
-            <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+            <Button ref={btnRef} onClick={onOpen}>
                 Open Drawer
             </Button>
             <Drawer
