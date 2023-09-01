@@ -60,11 +60,7 @@ export const theme = {
     },
     semanticTokens: {
         colors: {
-            error: {
-                default: "red.500",
-                _dark: "red.400"
-            },
-            success: "green.500"
+            error: "orange.500"
         }
     }
 };

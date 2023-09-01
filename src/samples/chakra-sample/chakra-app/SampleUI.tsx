@@ -68,7 +68,7 @@ export function SampleUI() {
 
 function LinkComponent() {
     return (
-        <Text>
+        <Text variant="error">
             This is a{" "}
             <Link href="https://chakra-ui.com" isExternal color="yellow.500">
                 link to Chakra&apos;s Design system
@@ -86,7 +86,7 @@ function ComponentStack() {
             spacing="24px"
             align="stretch"
         >
-            <Box>
+            <Box bg="error">
                 <PortalExample />
             </Box>
             <Box>

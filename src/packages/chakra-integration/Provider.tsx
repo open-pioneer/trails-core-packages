@@ -17,6 +17,7 @@ import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider, Global } from "@emotion/react";
 import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { PortalRootProvider } from "./PortalFix";
+import { theme as trailsDefaultTheme } from "./theme/theme";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
@@ -148,8 +149,10 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     const ColorMode = mode === "light" ? LightMode : DarkMode;
 
     //apply custom theme or Chakra UI default theme
-    let customTheme = theme ? extendTheme(theme) : baseTheme;
-    customTheme = extendTheme(rootStyles, customTheme);
+    let customTheme = extendTheme(trailsDefaultTheme, rootStyles, baseTheme); //always add trails defaults and root styles to chakra base theme
+    if (theme) {
+        customTheme = extendTheme(theme, customTheme); //merge with custom theme if provided
+    }
 
     return (
         <div className="chakra-host" ref={chakraHost}>
