@@ -74,6 +74,7 @@ export interface CustomElementOptions {
     /**
      * Chakra theming object
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     theme?: Record<string, any>;
 }
 
@@ -331,8 +332,6 @@ class ElementState {
     }
 
     private render() {
-        console.log("options");
-        console.log(this.options);
         this.reactIntegration?.render(this.options.component ?? emptyComponent, {
             theme: this.options.theme
         });

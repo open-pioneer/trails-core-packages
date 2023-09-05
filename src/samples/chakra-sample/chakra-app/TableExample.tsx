@@ -14,7 +14,7 @@ import {
 export function TableExampleComponent() {
     return (
         <TableContainer sx={{ border: "solid" }}>
-            <Table variant="striped" colorScheme="teal">
+            <Table variant="striped">
                 <TableCaption>This is the table cation</TableCaption>
                 <Thead>
                     <Tr>

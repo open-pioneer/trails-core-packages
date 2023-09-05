@@ -36,6 +36,7 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     /**
      * chakra theming object
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     theme?: Record<string, any>;
 }>;
 
@@ -149,7 +150,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     const ColorMode = mode === "light" ? LightMode : DarkMode;
 
     //apply custom theme or Chakra UI default theme
-    let customTheme = extendTheme(trailsDefaultTheme, rootStyles, baseTheme); //always add trails defaults and root styles to chakra base theme
+    let customTheme = extendTheme(rootStyles, trailsDefaultTheme, baseTheme); //always add trails defaults and root styles to chakra base theme
     if (theme) {
         customTheme = extendTheme(theme, customTheme); //merge with custom theme if provided
     }

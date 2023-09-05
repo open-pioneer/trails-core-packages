@@ -86,6 +86,7 @@ export class ReactIntegration {
     }
 
     render(Component: ComponentType, props: Record<string, unknown>) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const customTheme = props.theme as Record<string, any>;
         this.root.render(
             <StrictMode>
