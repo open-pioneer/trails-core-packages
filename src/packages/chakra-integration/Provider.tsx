@@ -4,10 +4,8 @@ import {
     CSSReset,
     DarkMode,
     EnvironmentProvider,
-    extendTheme,
     GlobalStyle,
     LightMode,
-    theme as baseTheme,
     ThemeProvider,
     ToastOptionProvider,
     ToastProvider,
@@ -34,10 +32,9 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     colorMode?: "light" | "dark";
 
     /**
-     * chakra theming object
+     * Chakra theming object.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    theme?: Record<string, any>;
+    theme?: Record<string, unknown>;
 }>;
 
 // todo min-height vs height
@@ -56,17 +53,6 @@ const defaultStyles = `
     font-feature-settings: 'kern';
 }`;
 
-const rootStyles = {
-    styles: {
-        global: {
-            // Apply the same styles to the application root node that chakra would usually apply to the html and body.
-            ".chakra-host":
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (baseTheme.styles.global as Record<string, any>).body
-        }
-    }
-};
-
 // https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L3-L6
 const colorModeClassnames = {
     light: "chakra-ui-light",
@@ -78,7 +64,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     container,
     colorMode,
     children,
-    theme
+    theme = trailsDefaultTheme
 }) => {
     /* 
         Chakra integration internals:
@@ -149,16 +135,10 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     }, [mode]);
     const ColorMode = mode === "light" ? LightMode : DarkMode;
 
-    //apply custom theme or Chakra UI default theme
-    let customTheme = extendTheme(rootStyles, trailsDefaultTheme, baseTheme); //always add trails defaults and root styles to chakra base theme
-    if (theme) {
-        customTheme = extendTheme(theme, customTheme); //merge with custom theme if provided
-    }
-
     return (
         <div className="chakra-host" ref={chakraHost}>
             <CacheProvider value={cacheRef.current}>
-                <ThemeProvider theme={customTheme}>
+                <ThemeProvider theme={theme}>
                     <EnvironmentProvider>
                         <ColorMode>
                             <CSSReset />

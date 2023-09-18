@@ -9,3 +9,4 @@ export {
     FixedPortal as Portal,
     FixedTooltip as Tooltip
 } from "./PortalFix";
+export { theme } from "./theme/theme";
