@@ -16,10 +16,12 @@ export interface ReactIntegrationOptions {
     serviceLayer: ServiceLayer;
     rootNode: HTMLDivElement;
     container: Node;
+    theme: Record<string, unknown> | undefined;
 }
 
 export class ReactIntegration {
     private containerNode: Node;
+    private theme: Record<string, unknown> | undefined;
     private packages: Map<string, PackageRepr>;
     private serviceLayer: ServiceLayer;
     private root: Root;
@@ -27,6 +29,7 @@ export class ReactIntegration {
 
     constructor(options: ReactIntegrationOptions) {
         this.containerNode = options.container;
+        this.theme = options.theme;
         this.packages = options.packages;
         this.serviceLayer = options.serviceLayer;
         this.root = createRoot(options.rootNode);
@@ -85,18 +88,16 @@ export class ReactIntegration {
         };
     }
 
-    render(Component: ComponentType, props: Record<string, unknown>) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const customTheme = props.theme as Record<string, any>;
+    render(Component: ComponentType) {
         this.root.render(
             <StrictMode>
                 <CustomChakraProvider
                     container={this.containerNode}
                     colorMode="light"
-                    theme={customTheme}
+                    theme={this.theme}
                 >
                     <PackageContext.Provider value={this.packageContext}>
-                        <Component {...props} />
+                        <Component />
                     </PackageContext.Provider>
                 </CustomChakraProvider>
             </StrictMode>

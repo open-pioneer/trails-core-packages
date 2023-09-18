@@ -72,10 +72,9 @@ export interface CustomElementOptions {
     openShadowRoot?: boolean;
 
     /**
-     * Chakra theming object
+     * Chakra theming object.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    theme?: Record<string, any>;
+    theme?: Record<string, unknown>;
 }
 
 /**
@@ -321,6 +320,7 @@ class ElementState {
         this.reactIntegration = new ReactIntegration({
             rootNode: container,
             container: shadowRoot,
+            theme: options.theme,
             serviceLayer,
             packages
         });
@@ -332,9 +332,7 @@ class ElementState {
     }
 
     private render() {
-        this.reactIntegration?.render(this.options.component ?? emptyComponent, {
-            theme: this.options.theme
-        });
+        this.reactIntegration?.render(this.options.component ?? emptyComponent);
     }
 
     private initStyles() {
