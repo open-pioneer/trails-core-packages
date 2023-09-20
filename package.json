@@ -27,12 +27,18 @@
     },
     "pnpm": {
         "//": [
-            "overrides:",
+            "overrides",
+            "=========",
             "semver: https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
             "tough-cookie: https://github.com/advisories/GHSA-72xf-g2v4-qvf3",
             "",
-            "ignored cves:",
-            "CVE-2023-26115 (word-wrap): ReDoS does not affect us (running client side or at build time)"
+            "ignored cves",
+            "============",
+            "CVE-2023-26115 (word-wrap): ReDoS does not affect us (running client side or at build time)",
+            "",
+            "patches",
+            "=======",
+            "@changesets/assemble-release-plan: don't bump major if peerDep has a minor release. see https://github.com/changesets/changesets/pull/1132"
         ],
         "overrides": {
             "ol-mapbox-style": "workspace:disabled-package@*",
@@ -43,6 +49,9 @@
             "ignoreCves": [
                 "CVE-2023-26115"
             ]
+        },
+        "patchedDependencies": {
+            "@changesets/assemble-release-plan@5.2.4": "patches/@changesets__assemble-release-plan@5.2.4.patch"
         }
     },
     "dependencies": {
@@ -63,8 +72,8 @@
         "@open-pioneer/build-package-cli": "^1.0.1",
         "@open-pioneer/build-support": "^1.0.0",
         "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/vite-plugin-pioneer": "^1.0.2",
         "@open-pioneer/tag-current-versions": "^1.0.0",
+        "@open-pioneer/vite-plugin-pioneer": "^1.0.2",
         "@testing-library/dom": "^9.3.0",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^14.0.0",
