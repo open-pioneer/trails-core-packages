@@ -1,5 +1,11 @@
 # @open-pioneer/http
 
+## 1.0.2
+
+### Patch Changes
+
+-   @open-pioneer/runtime@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

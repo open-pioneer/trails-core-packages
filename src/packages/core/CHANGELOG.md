@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 1.1.0
+
+### Minor Changes
+
+-   69c0fcd: The Logger interface now supports `unknown` as message argument. Value types other than `string` or `Error` are converted to strings before logging them.
+
 ## 1.0.1
 
 ### Patch Changes
