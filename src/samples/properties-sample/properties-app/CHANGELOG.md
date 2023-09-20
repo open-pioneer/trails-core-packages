@@ -1,5 +1,13 @@
 # properties-app
 
+## 0.0.8
+
+### Patch Changes
+
+-   Updated dependencies [69c0fcd]
+    -   @open-pioneer/core@1.1.0
+    -   @open-pioneer/runtime@1.0.2
+
 ## 0.0.7
 
 ### Patch Changes

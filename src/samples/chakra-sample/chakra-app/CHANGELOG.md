@@ -1,5 +1,11 @@
 # chakra-app
 
+## 0.0.8
+
+### Patch Changes
+
+-   @open-pioneer/runtime@1.0.2
+
 ## 0.0.7
 
 ### Patch Changes
