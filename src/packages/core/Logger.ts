@@ -31,10 +31,12 @@ export interface LogMethod {
     /**
      * Logger's log method signature
      *
-     * @param message Log message to be logged (attached to the prefix). Can be a string or an Error.
+     * @param message
+     *  Log message to be logged (attached to the prefix). This can be an arbitrary value.
+     *  Errors will be logged as-is, and other values are formatted as strings.
      * @param values Arbitrary amount of additional values to be logged (attached to message).
      */
-    (message: string | Error, ...values: unknown[]): void;
+    (message: string | Error | unknown, ...values: unknown[]): void;
 }
 
 /**
@@ -101,7 +103,7 @@ export class LoggerImpl implements Logger {
      * @param message
      * @param values
      */
-    debug(message: string | Error, ...values: unknown[]) {
+    debug(message: string | Error | unknown, ...values: unknown[]) {
         this._doLog("DEBUG", message, values);
     }
 
@@ -110,7 +112,7 @@ export class LoggerImpl implements Logger {
      * @param message
      * @param values
      */
-    info(message: string | Error, ...values: unknown[]) {
+    info(message: string | Error | unknown, ...values: unknown[]) {
         this._doLog("INFO", message, values);
     }
 
@@ -119,7 +121,7 @@ export class LoggerImpl implements Logger {
      * @param message
      * @param values
      */
-    warn(message: string | Error, ...values: unknown[]) {
+    warn(message: string | Error | unknown, ...values: unknown[]) {
         this._doLog("WARN", message, values);
     }
 
@@ -128,7 +130,7 @@ export class LoggerImpl implements Logger {
      * @param message
      * @param values
      */
-    error(message: string | Error, ...values: unknown[]) {
+    error(message: string | Error | unknown, ...values: unknown[]) {
         this._doLog("ERROR", message, values);
     }
 
@@ -139,11 +141,11 @@ export class LoggerImpl implements Logger {
      * @param values
      * @private
      */
-    private _doLog(level: LogLevel, messageOrError: string | Error, values: unknown[]) {
+    private _doLog(level: LogLevel, messageOrError: string | Error | unknown, values: unknown[]) {
         if (this._isLogLevelEnabled(level)) {
             let message = `[${level}] ${this.prefix}:`;
-            if (typeof messageOrError === "string") {
-                message += " " + messageOrError;
+            if (!isError(messageOrError)) {
+                message += " " + String(messageOrError);
             } else {
                 values.unshift(messageOrError);
             }
@@ -195,4 +197,16 @@ function validateLogLevel(logLevelString: string): LogLevel {
                 `invalid log level '${logLevelString}'; allowed levels are: DEBUG, INFO, WARN, ERROR`
             );
     }
+}
+
+function isError(value: unknown): value is Error {
+    if (value instanceof Error) {
+        return true;
+    }
+    return !!(
+        value &&
+        typeof value === "object" &&
+        typeof (value as Partial<Error>).name === "string" &&
+        typeof (value as Partial<Error>).message === "string"
+    );
 }
