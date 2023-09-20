@@ -16,6 +16,13 @@ it("logs complete DEBUG message with additional value", function () {
     ]);
 });
 
+it("logs arbitrary message values formatted as strings", function () {
+    const logger = new LoggerImpl("test-prefix:LoggerTest", "DEBUG");
+    const logSpy = vi.spyOn(console, "debug").mockImplementation(doNothing);
+    logger.debug(12345);
+    expect(logSpy).toHaveBeenCalledWith("[DEBUG] test-prefix:LoggerTest: 12345");
+});
+
 it("logs INFO message", function () {
     const logger = new LoggerImpl("test-prefix:LoggerTest", "INFO");
     const logSpy = vi.spyOn(console, "info").mockImplementation(doNothing);
