@@ -70,7 +70,7 @@ function LinkComponent() {
     return (
         <Text>
             This is a{" "}
-            <Link href="https://chakra-ui.com" isExternal color="yellow.500">
+            <Link href="https://chakra-ui.com" isExternal>
                 link to Chakra&apos;s Design system
             </Link>
         </Text>
@@ -79,13 +79,7 @@ function LinkComponent() {
 
 function ComponentStack() {
     return (
-        <Stack
-            mb={5}
-            mt={5}
-            divider={<StackDivider borderColor="gray.200" />}
-            spacing="24px"
-            align="stretch"
-        >
+        <Stack mb={5} mt={5} divider={<StackDivider />} spacing="24px" align="stretch">
             <Box>
                 <PortalExample />
             </Box>
@@ -110,7 +104,7 @@ function ComponentStack() {
             <Box>
                 <PopoverExample />
             </Box>
-            <Box bg="yellow.100">
+            <Box>
                 <RadioGroupExample />
             </Box>
         </Stack>
@@ -119,7 +113,7 @@ function ComponentStack() {
 
 function PortalExample() {
     return (
-        <Box bg="yellow.100">
+        <Box bg="background_secondary">
             <Heading size="sm">Portal Example: </Heading>
             This is box and displayed here. Scroll/Look down to see the portal that is added at the
             end of document.body. The Portal is part of this Box.
@@ -131,7 +125,7 @@ function PortalExample() {
 function TooltipExample() {
     return (
         <Tooltip hasArrow label="Button Tooltip" aria-label="A tooltip" placement="top">
-            <Button colorScheme="teal">Button with a tooltip</Button>
+            <Button>Button with a tooltip</Button>
         </Tooltip>
     );
 }
@@ -140,7 +134,6 @@ function ToastExample() {
     const toast = useToast();
     return (
         <Button
-            colorScheme="teal"
             onClick={() =>
                 toast({
                     title: "Account created.",
@@ -173,9 +166,7 @@ function AlertDialogExample() {
 
     return (
         <>
-            <Button onClick={onOpen} colorScheme="teal">
-                Open Alert
-            </Button>
+            <Button onClick={onOpen}>Open Alert</Button>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
                 <AlertDialogOverlay>
@@ -189,10 +180,10 @@ function AlertDialogExample() {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
+                            <Button ref={cancelRef} onClick={onClose} variant="cancel">
                                 Cancel
                             </Button>
-                            <Button colorScheme="green" onClick={onClose} ml={3}>
+                            <Button onClick={onClose} ml={3}>
                                 Okay
                             </Button>
                         </AlertDialogFooter>
@@ -208,9 +199,7 @@ function ModalExample() {
 
     return (
         <>
-            <Button onClick={onOpen} colorScheme="teal">
-                Show Modal
-            </Button>
+            <Button onClick={onOpen}>Show Modal</Button>
 
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -220,9 +209,7 @@ function ModalExample() {
                     <ModalBody pb={6}>This is a modal text!</ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="green" mr={2}>
-                            Got it
-                        </Button>
+                        <Button mr={2}>Got it</Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
@@ -236,7 +223,7 @@ function DrawerExample() {
     const btnRef = useRef<HTMLButtonElement>(null);
     return (
         <>
-            <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+            <Button ref={btnRef} onClick={onOpen}>
                 Open Drawer
             </Button>
             <Drawer
@@ -257,7 +244,7 @@ function DrawerExample() {
                         <Button variant="outline" mr={3} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button colorScheme="green">Got it</Button>
+                        <Button>Got it</Button>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
@@ -270,7 +257,7 @@ function PopoverExample() {
         <>
             <Popover>
                 <PopoverTrigger>
-                    <Button colorScheme="teal">Show Popover</Button>
+                    <Button>Show Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
                     <PopoverArrow />
@@ -282,9 +269,7 @@ function PopoverExample() {
 
             <Popover>
                 <PopoverTrigger>
-                    <Button ml={5} colorScheme="teal">
-                        Show Popover rendered in an portal
-                    </Button>
+                    <Button ml={5}>Show Popover rendered in an portal</Button>
                 </PopoverTrigger>
                 <Portal>
                     <PopoverContent>

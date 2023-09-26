@@ -10,16 +10,19 @@ import { PackageRepr } from "../service-layer/PackageRepr";
 import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
+import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
     rootNode: HTMLDivElement;
     container: Node;
+    theme: Record<string, unknown> | undefined;
 }
 
 export class ReactIntegration {
     private containerNode: Node;
+    private theme: Record<string, unknown> | undefined;
     private packages: Map<string, PackageRepr>;
     private serviceLayer: ServiceLayer;
     private root: Root;
@@ -27,6 +30,7 @@ export class ReactIntegration {
 
     constructor(options: ReactIntegrationOptions) {
         this.containerNode = options.container;
+        this.theme = options.theme;
         this.packages = options.packages;
         this.serviceLayer = options.serviceLayer;
         this.root = createRoot(options.rootNode);
@@ -85,12 +89,16 @@ export class ReactIntegration {
         };
     }
 
-    render(Component: ComponentType, props: Record<string, unknown>) {
+    render(Component: ComponentType) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider container={this.containerNode} colorMode="light">
+                <CustomChakraProvider
+                    container={this.containerNode}
+                    colorMode="light"
+                    theme={this.theme ?? defaultTrailsTheme}
+                >
                     <PackageContext.Provider value={this.packageContext}>
-                        <Component {...props} />
+                        <Component />
                     </PackageContext.Provider>
                 </CustomChakraProvider>
             </StrictMode>

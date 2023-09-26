@@ -70,6 +70,11 @@ export interface CustomElementOptions {
      * Defaults to `false` in production mode and `true` during development to make testing easier.
      */
     openShadowRoot?: boolean;
+
+    /**
+     * Chakra theming object.
+     */
+    theme?: Record<string, unknown>;
 }
 
 /**
@@ -315,6 +320,7 @@ class ElementState {
         this.reactIntegration = new ReactIntegration({
             rootNode: container,
             container: shadowRoot,
+            theme: options.theme,
             serviceLayer,
             packages
         });
@@ -326,7 +332,7 @@ class ElementState {
     }
 
     private render() {
-        this.reactIntegration?.render(this.options.component ?? emptyComponent, {});
+        this.reactIntegration?.render(this.options.component ?? emptyComponent);
     }
 
     private initStyles() {
