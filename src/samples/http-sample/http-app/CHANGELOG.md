@@ -1,5 +1,15 @@
 # http-app
 
+## 0.0.9
+
+### Patch Changes
+
+-   Updated dependencies [6632892]
+-   Updated dependencies [6632892]
+    -   @open-pioneer/runtime@1.1.0
+    -   @open-pioneer/chakra-integration@1.1.0
+    -   @open-pioneer/http@1.0.3
+
 ## 0.0.8
 
 ### Patch Changes

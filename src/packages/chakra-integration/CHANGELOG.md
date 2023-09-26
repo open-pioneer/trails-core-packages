@@ -1,5 +1,11 @@
 # @open-pioneer/chakra-integration
 
+## 1.1.0
+
+### Minor Changes
+
+-   6632892: Add theme parameter and experimental base theme.
+
 ## 1.0.0
 
 ### Major Changes
