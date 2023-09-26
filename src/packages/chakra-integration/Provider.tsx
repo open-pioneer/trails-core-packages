@@ -9,13 +9,14 @@ import {
     ThemeProvider,
     ToastOptionProvider,
     ToastProvider,
-    ToastProviderProps
+    ToastProviderProps,
+    extendTheme,
+    theme as chakraBaseTheme
 } from "@chakra-ui/react";
 import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider, Global } from "@emotion/react";
-import { FC, PropsWithChildren, RefObject, useEffect, useRef } from "react";
+import { FC, PropsWithChildren, RefObject, useEffect, useMemo, useRef } from "react";
 import { PortalRootProvider } from "./PortalFix";
-import { theme as trailsDefaultTheme } from "./theme/theme";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
@@ -64,7 +65,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     container,
     colorMode,
     children,
-    theme = trailsDefaultTheme
+    theme: themeProp
 }) => {
     /* 
         Chakra integration internals:
@@ -103,6 +104,8 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     */
 
     const cache = useEmotionCache(container);
+
+    const theme = useMemo(() => wrapTheme(themeProp), [themeProp]);
 
     const chakraHost = useRef<HTMLDivElement>(null);
     const toastOptions: ToastProviderProps = {
@@ -163,6 +166,23 @@ function useSyncedColorMode(
     }, [chakraHost, mode]);
     const ColorMode = mode === "light" ? LightMode : DarkMode;
     return ColorMode;
+}
+
+function wrapTheme(theme: Record<string, unknown> = chakraBaseTheme): Record<string, unknown> {
+    return extendTheme(
+        {
+            styles: {
+                //add global css styles here
+                global: {
+                    // Apply the same styles to the application root node that chakra would usually apply to the html and body.
+                    ".chakra-host":
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (chakraBaseTheme.styles.global as Record<string, any>).body
+                }
+            }
+        },
+        theme
+    );
 }
 
 function useEmotionCache(container: Node): EmotionCache {

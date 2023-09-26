@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 const documentedPackages = [
+    "base-theme",
     "chakra-integration",
     "core",
     "http",

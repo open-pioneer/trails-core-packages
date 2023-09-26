@@ -10,6 +10,7 @@ import { PackageRepr } from "../service-layer/PackageRepr";
 import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
+import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
@@ -94,7 +95,7 @@ export class ReactIntegration {
                 <CustomChakraProvider
                     container={this.containerNode}
                     colorMode="light"
-                    theme={this.theme}
+                    theme={this.theme ?? defaultTrailsTheme}
                 >
                     <PackageContext.Provider value={this.packageContext}>
                         <Component />

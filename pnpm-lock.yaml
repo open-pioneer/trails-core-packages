@@ -171,6 +171,17 @@ importers:
         specifier: ^0.31.4
         version: 0.31.4(jsdom@22.1.0)(sass@1.63.6)
 
+  src/packages/base-theme:
+    dependencies:
+      '@open-pioneer/chakra-integration':
+        specifier: workspace:^
+        version: link:../chakra-integration
+    devDependencies:
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
   src/packages/chakra-integration:
     dependencies:
       '@chakra-ui/react':
@@ -240,6 +251,9 @@ importers:
       '@formatjs/intl':
         specifier: ^2.7.2
         version: 2.9.0(typescript@5.1.6)
+      '@open-pioneer/base-theme':
+        specifier: workspace:^
+        version: link:../base-theme
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../chakra-integration
@@ -324,6 +338,9 @@ importers:
 
   src/samples/chakra-sample/chakra-app:
     dependencies:
+      '@open-pioneer/base-theme':
+        specifier: workspace:^
+        version: link:../../../packages/base-theme
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../../../packages/chakra-integration
@@ -1823,6 +1840,7 @@ packages:
 
   /@emotion/memoize@0.7.4:
     resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    requiresBuild: true
     dev: false
     optional: true
 

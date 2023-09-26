@@ -8,6 +8,7 @@
     },
     "peerDependencies": {
         "@formatjs/intl": "^2.7.2",
+        "@open-pioneer/base-theme": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",

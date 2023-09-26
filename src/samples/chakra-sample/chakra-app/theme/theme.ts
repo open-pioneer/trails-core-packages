@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: con terra GmbH and contributors
 // SPDX-License-Identifier: Apache-2.0
-import { extendTheme, theme as baseTheme } from "@open-pioneer/chakra-integration";
+import { extendTheme } from "@open-pioneer/chakra-integration";
+import { theme as baseTheme } from "@open-pioneer/base-theme";
 
 export const theme = extendTheme(
     {
