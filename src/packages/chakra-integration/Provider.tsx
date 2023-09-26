@@ -4,18 +4,18 @@ import {
     CSSReset,
     DarkMode,
     EnvironmentProvider,
-    extendTheme,
     GlobalStyle,
     LightMode,
-    theme as baseTheme,
     ThemeProvider,
     ToastOptionProvider,
     ToastProvider,
-    ToastProviderProps
+    ToastProviderProps,
+    extendTheme,
+    theme as chakraBaseTheme
 } from "@chakra-ui/react";
 import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider, Global } from "@emotion/react";
-import { FC, PropsWithChildren, useEffect, useRef } from "react";
+import { FC, PropsWithChildren, RefObject, useEffect, useMemo, useRef } from "react";
 import { PortalRootProvider } from "./PortalFix";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
@@ -31,6 +31,11 @@ export type CustomChakraProviderProps = PropsWithChildren<{
      * Configures the color mode of the application.
      */
     colorMode?: "light" | "dark";
+
+    /**
+     * Chakra theming object.
+     */
+    theme?: Record<string, unknown>;
 }>;
 
 // todo min-height vs height
@@ -49,17 +54,6 @@ const defaultStyles = `
     font-feature-settings: 'kern';
 }`;
 
-const theme = extendTheme({
-    styles: {
-        global: {
-            // Apply the same styles to the application root node that chakra would usually apply to the html and body.
-            ".chakra-host":
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (baseTheme.styles.global as Record<string, any>).body
-        }
-    }
-});
-
 // https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L3-L6
 const colorModeClassnames = {
     light: "chakra-ui-light",
@@ -70,7 +64,8 @@ const colorModeClassnames = {
 export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     container,
     colorMode,
-    children
+    children,
+    theme: themeProp
 }) => {
     /* 
         Chakra integration internals:
@@ -108,13 +103,9 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         
     */
 
-    const cacheRef = useRef<EmotionCache>();
-    if (!cacheRef.current) {
-        cacheRef.current = createCache({
-            key: "css",
-            container: container
-        });
-    }
+    const cache = useEmotionCache(container);
+
+    const theme = useMemo(() => wrapTheme(themeProp), [themeProp]);
 
     const chakraHost = useRef<HTMLDivElement>(null);
     const toastOptions: ToastProviderProps = {
@@ -123,27 +114,11 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         }
     };
 
-    const mode = colorMode ?? "light";
-    useEffect(() => {
-        const host = chakraHost.current;
-        if (!host) {
-            return;
-        }
-
-        // https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L16-L25
-        const className = colorModeClassnames[mode];
-        host.classList.add(className);
-        host.dataset.theme = mode;
-        return () => {
-            host.classList.remove(className);
-            host.dataset.theme = undefined;
-        };
-    }, [mode]);
-    const ColorMode = mode === "light" ? LightMode : DarkMode;
+    const ColorMode = useSyncedColorMode(chakraHost, colorMode);
 
     return (
         <div className="chakra-host" ref={chakraHost}>
-            <CacheProvider value={cacheRef.current}>
+            <CacheProvider value={cache}>
                 <ThemeProvider theme={theme}>
                     <EnvironmentProvider>
                         <ColorMode>
@@ -163,3 +138,60 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         </div>
     );
 };
+
+/**
+ * Computes the correct color mode and returns a component that will apply that mode.
+ *
+ * The current color mode is automatically propagates as a css class on the chakra host element.
+ */
+function useSyncedColorMode(
+    chakraHost: RefObject<HTMLDivElement>,
+    colorMode: "light" | "dark" | undefined
+) {
+    const mode = colorMode ?? "light";
+    useEffect(() => {
+        const host = chakraHost.current;
+        if (!host) {
+            return;
+        }
+
+        // https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L16-L25
+        const className = colorModeClassnames[mode];
+        host.classList.add(className);
+        host.dataset.theme = mode;
+        return () => {
+            host.classList.remove(className);
+            host.dataset.theme = undefined;
+        };
+    }, [chakraHost, mode]);
+    const ColorMode = mode === "light" ? LightMode : DarkMode;
+    return ColorMode;
+}
+
+function wrapTheme(theme: Record<string, unknown> = chakraBaseTheme): Record<string, unknown> {
+    return extendTheme(
+        {
+            styles: {
+                //add global css styles here
+                global: {
+                    // Apply the same styles to the application root node that chakra would usually apply to the html and body.
+                    ".chakra-host":
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (chakraBaseTheme.styles.global as Record<string, any>).body
+                }
+            }
+        },
+        theme
+    );
+}
+
+function useEmotionCache(container: Node): EmotionCache {
+    const cacheRef = useRef<EmotionCache>();
+    if (!cacheRef.current) {
+        cacheRef.current = createCache({
+            key: "css",
+            container: container
+        });
+    }
+    return cacheRef.current;
+}

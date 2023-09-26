@@ -1,0 +1,19 @@
+{
+    "name": "@open-pioneer/base-theme",
+    "version": "0.0.1",
+    "main": "index.ts",
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "build-pioneer-package"
+    },
+    "peerDependencies": {
+        "@open-pioneer/chakra-integration": "workspace:^"
+    },
+    "devDependencies": {
+        "core-packages": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    }
+}
