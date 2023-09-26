@@ -1,5 +1,13 @@
 # @open-pioneer/test-utils
 
+## 1.0.1
+
+### Patch Changes
+
+-   Updated dependencies [6632892]
+    -   @open-pioneer/chakra-integration@1.1.0
+    -   @open-pioneer/runtime-react-support@1.0.0
+
 ## 1.0.0
 
 ### Major Changes

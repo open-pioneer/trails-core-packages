@@ -1,5 +1,20 @@
 # @open-pioneer/runtime
 
+## 1.1.0
+
+### Minor Changes
+
+-   6632892: Implement support for custom chakra themes via the `theme` parameter in `createCustomElement()`.
+    `theme` from `@open-pioneer/base-theme` is used as default when no other theme is configured.
+
+### Patch Changes
+
+-   Updated dependencies [6632892]
+-   Updated dependencies [6632892]
+    -   @open-pioneer/base-theme@0.1.0
+    -   @open-pioneer/chakra-integration@1.1.0
+    -   @open-pioneer/runtime-react-support@1.0.0
+
 ## 1.0.2
 
 ### Patch Changes
