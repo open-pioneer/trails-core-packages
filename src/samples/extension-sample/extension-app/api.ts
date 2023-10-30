@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: con terra GmbH and contributors
 // SPDX-License-Identifier: Apache-2.0
+import { DeclaredService } from "@open-pioneer/runtime";
 
 /**
  * Represents an action that can be triggered by the user.
@@ -18,7 +19,7 @@ export interface Action {
 /**
  * Provides actions to the {@link ActionService}.
  */
-export interface ActionProvider {
+export interface ActionProvider extends DeclaredService<"extension-app.ActionProvider"> {
     /**
      * Called by the {@link ActionService} to gather registered actions.
      *
@@ -32,7 +33,7 @@ export interface ActionProvider {
  *
  * Implement the interface `"extension-app.ActionProvider"` to provide additional actions.
  */
-export interface ActionService {
+export interface ActionService extends DeclaredService<"extension-app.ActionService"> {
     /**
      * Returns the rendering information for all registered actions.
      */
@@ -42,12 +43,4 @@ export interface ActionService {
      * Called by the UI to trigger an action.
      */
     triggerAction(id: string): void;
-}
-
-import "@open-pioneer/runtime";
-declare module "@open-pioneer/runtime" {
-    interface ServiceRegistry {
-        "extension-app.ActionProvider": ActionProvider;
-        "extension-app.ActionService": ActionService;
-    }
 }

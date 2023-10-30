@@ -13,7 +13,7 @@ import {
 } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { NotificationLevel } from "./api";
+import { NotificationLevel, Notifier } from "./api";
 import { NotifierUI } from "./NotifierUI";
 
 export function AppUI() {
@@ -26,7 +26,7 @@ export function AppUI() {
 }
 
 function Form() {
-    const notifier = useService("properties-app.Notifier");
+    const notifier = useService<Notifier>("properties-app.Notifier");
     const [message, setMessage] = useState("");
     const onClick = (level: NotificationLevel) => {
         if (!message) {
