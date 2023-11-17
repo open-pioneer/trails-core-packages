@@ -5,10 +5,10 @@ import { theme } from "@open-pioneer/theme";
 import * as appMetadata from "open-pioneer:app";
 import { AppUI } from "./AppUI";
 
-const element = createCustomElement({
+const Element = createCustomElement({
     component: AppUI,
     theme,
     appMetadata
 });
 
-customElements.define("auth-app", element);
+customElements.define("theming-app", Element);
