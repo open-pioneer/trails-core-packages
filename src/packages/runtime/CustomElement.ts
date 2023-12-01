@@ -65,12 +65,6 @@ export interface CustomElementOptions {
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
 
     /**
-     * Whether the shadow root element is accessible from the outside.
-     * Defaults to `false` in production mode and `true` during development to make testing easier.
-     */
-    openShadowRoot?: boolean;
-
-    /**
      * Chakra theming object.
      */
     theme?: Record<string, unknown>;
@@ -161,9 +155,8 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         constructor() {
             super();
 
-            const mode = options.openShadowRoot ?? import.meta.env.DEV ? "open" : "closed";
             this.#shadowRoot = this.attachShadow({
-                mode: mode
+                mode: "open"
             });
 
             if (import.meta.env.DEV) {
