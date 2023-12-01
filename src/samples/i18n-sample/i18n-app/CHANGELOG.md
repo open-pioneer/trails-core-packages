@@ -1,5 +1,18 @@
 # i18n-app
 
+## 0.0.10
+
+### Patch Changes
+
+-   Updated dependencies [f5c0e31]
+-   Updated dependencies [ce9e060]
+-   Updated dependencies [f5c0e31]
+-   Updated dependencies [6f954e3]
+-   Updated dependencies [6f954e3]
+    -   @open-pioneer/runtime@2.0.0
+    -   @open-pioneer/chakra-integration@1.1.1
+    -   @open-pioneer/integration@2.0.0
+
 ## 0.0.9
 
 ### Patch Changes
