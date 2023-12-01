@@ -23,7 +23,7 @@ NOTE: The changes below have no impact on runtime behavior, but they may trigger
     Simply add `extends DeclaredService<"SERVICE_ID">` to your service interface, where `SERVICE_ID` should match the service's interface name (`"provides"` in `build.config.mjs`).
 
     ```diff
-    +  import { DeclaredService } from "@open-pioneer/runtime";
+    + import { DeclaredService } from "@open-pioneer/runtime";
 
     - export interface HttpService {
     + export interface HttpService extends DeclaredService<"http.HttpService"> {
