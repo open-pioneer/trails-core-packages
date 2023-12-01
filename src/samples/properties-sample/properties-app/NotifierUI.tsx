@@ -3,7 +3,7 @@
 import { AlertStatus, useToast } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect } from "react";
-import { NotificationLevel } from "./api";
+import { NotificationLevel, Notifier } from "./api";
 
 const STATUS_MAP: Record<NotificationLevel, AlertStatus | undefined> = {
     DEBUG: undefined,
@@ -15,7 +15,7 @@ const STATUS_MAP: Record<NotificationLevel, AlertStatus | undefined> = {
  * Shows a toast when the notifier service emits a notification.
  */
 export function NotifierUI() {
-    const notifier = useService("properties-app.Notifier");
+    const notifier = useService<Notifier>("properties-app.Notifier");
     const toast = useToast();
     useEffect(() => {
         const handle = notifier.on("show-notification", (n) => {

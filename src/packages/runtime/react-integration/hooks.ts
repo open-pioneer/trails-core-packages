@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useContext, useMemo } from "react";
 import { Error } from "@open-pioneer/core";
-import { InterfaceName, ServiceType } from "../ServiceRegistry";
 import {
     PackageContext as PackageContext,
     PackageContextMethods
 } from "@open-pioneer/runtime-react-support";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
+import { InterfaceNameForServiceType } from "../DeclaredService";
 
 /*
 
@@ -41,16 +41,11 @@ export interface UseServiceOptions {
  *
  * @private
  */
-export function useServiceInternal<Interface extends InterfaceName>(
+export function useServiceInternal<ServiceType = unknown>(
     packageName: string,
-    interfaceName: Interface,
+    interfaceName: InterfaceNameForServiceType<ServiceType>,
     options?: UseServiceOptions
-): ServiceType<Interface>;
-export function useServiceInternal(
-    packageName: string,
-    interfaceName: string,
-    options?: UseServiceOptions
-): unknown;
+): ServiceType;
 export function useServiceInternal(
     packageName: string,
     interfaceName: string,
@@ -78,11 +73,11 @@ export function useServiceInternal(
  *
  * @private
  */
-export function useServicesInternal<Interface extends InterfaceName>(
+export function useServicesInternal<ServiceType = unknown>(
     packageName: string,
-    interfaceName: Interface
-): ServiceType<Interface>[];
-export function useServicesInternal(packageName: string, interfaceName: string): unknown[];
+    interfaceName: InterfaceNameForServiceType<ServiceType>,
+    options?: UseServiceOptions
+): ServiceType[];
 export function useServicesInternal(packageName: string, interfaceName: string): unknown[] {
     const context = useContext(PackageContext);
     const services = useMemo(

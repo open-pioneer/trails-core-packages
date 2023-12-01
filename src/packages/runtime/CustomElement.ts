@@ -26,7 +26,6 @@ import {
     RUNTIME_AUTO_START
 } from "./builtin-services";
 import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { PropertiesRegistry } from "./PropertiesRegistry";
 import { AppI18n, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
 const LOG = createLogger("runtime:CustomElement");
@@ -108,8 +107,10 @@ export interface ApplicationConfig {
 
 /**
  * Allows the application to override default properties in all packages.
+ *
+ * Properties are typed when the package contains type definitions for them.
  */
-export interface RawApplicationProperties {
+export interface ApplicationProperties {
     /**
      * Key: the name of the package.
      * Value: A record of configuration properties (key/value pairs).
@@ -118,13 +119,6 @@ export interface RawApplicationProperties {
      */
     [packageName: string]: Record<string, unknown>;
 }
-
-/**
- * Allows the application to override default properties in all packages.
- *
- * Properties are typed when the package contains type definitions for them.
- */
-export type ApplicationProperties = RawApplicationProperties & Partial<PropertiesRegistry>;
 
 /**
  * The interface implemented by web components produced via {@link createCustomElement}.

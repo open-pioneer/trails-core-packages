@@ -1,15 +1,16 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ServiceOptions, ServiceType } from "@open-pioneer/runtime";
+import { ServiceOptions } from "@open-pioneer/runtime";
+import { HttpService } from "@open-pioneer/http";
 
 interface References {
-    http: ServiceType<"http.HttpService">;
+    http: HttpService;
 }
 
 const URL = `https://registry.npmjs.org/@open-pioneer/runtime`;
 
 export class HttpClient {
-    #http: ServiceType<"http.HttpService">;
+    #http: HttpService;
 
     constructor(options: ServiceOptions<References>) {
         this.#http = options.references.http;
