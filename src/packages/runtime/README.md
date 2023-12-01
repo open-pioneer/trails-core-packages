@@ -26,7 +26,7 @@ HTML sites or JavaScript code can now instantiate the application by creating a 
 
 ```html
 <!-- some-site/index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <body>
         <!-- Contains the app once the script has been loaded -->

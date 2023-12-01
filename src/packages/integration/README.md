@@ -62,7 +62,7 @@ Thereupon it is possible to call the provided methods on the returned API instan
 For example:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     ...
     <body>
