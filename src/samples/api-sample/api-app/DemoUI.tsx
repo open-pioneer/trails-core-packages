@@ -14,7 +14,7 @@ export function DemoUI() {
         });
     };
 
-    const textService = useService("api-app.TextService") as TextService;
+    const textService = useService<unknown>("api-app.TextService") as TextService;
     const [text, setText] = useState("");
     useEffect(() => {
         setText(textService.getText());
