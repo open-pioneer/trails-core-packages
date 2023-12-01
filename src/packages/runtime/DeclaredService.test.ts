@@ -1,7 +1,8 @@
-// SPDX-FileCopyrightText: con terra GmbH and contributors
+// SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable unused-imports/no-unused-vars */
 import { DeclaredService, InterfaceNameForServiceType } from "./DeclaredService";
+import { it } from "vitest";
 
 // Tests are on type level only
 it("dummy test to allow a file without any real tests", () => undefined);

@@ -86,12 +86,3 @@ export interface ApplicationLifecycleListener
      */
     beforeApplicationStop?(): void;
 }
-
-// TODO: Remove block with next major
-declare module "./ServiceRegistry" {
-    interface ServiceRegistry {
-        "runtime.ApiService": ApiService;
-        "runtime.ApplicationContext": ApplicationContext;
-        "runtime.ApplicationLifecycleListener": ApplicationLifecycleListener;
-    }
-}

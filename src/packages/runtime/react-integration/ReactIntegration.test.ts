@@ -29,7 +29,7 @@ beforeEach(() => {
 
 it("should allow access to service via react hook", async () => {
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider") as TestProvider;
+        const service = useServiceInternal<unknown>("test", "test.Provider") as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
@@ -56,7 +56,7 @@ it("should allow access to service via react hook", async () => {
 
 it("should get error when using undefined service", async () => {
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider") as TestProvider;
+        const service = useServiceInternal<unknown>("test", "test.Provider") as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
@@ -73,7 +73,7 @@ it("should get error when using undefined service", async () => {
 
 it("should allow access to service with qualifier via react hook", async () => {
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider", {
+        const service = useServiceInternal<unknown>("test", "test.Provider", {
             qualifier: "foo"
         }) as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
@@ -102,7 +102,7 @@ it("should allow access to service with qualifier via react hook", async () => {
 
 it("should deny access to service when the qualifier does not match", async () => {
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider", {
+        const service = useServiceInternal<unknown>("test", "test.Provider", {
             qualifier: "bar"
         }) as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
@@ -130,7 +130,7 @@ it("should deny access to service when the qualifier does not match", async () =
 
 it("should allow access to all services via react hook", async () => {
     function TestComponent() {
-        const services = useServicesInternal("test", "test.Provider") as TestProvider[];
+        const services = useServicesInternal<unknown>("test", "test.Provider") as TestProvider[];
         return createElement(
             "span",
             undefined,
@@ -175,7 +175,7 @@ it("should allow access to all services via react hook", async () => {
 
 it("should deny access to all services if declaration is missing", async () => {
     function TestComponent() {
-        const services = useServicesInternal("test", "test.Provider") as TestProvider[];
+        const services = useServicesInternal<unknown>("test", "test.Provider") as TestProvider[];
         return createElement(
             "span",
             undefined,

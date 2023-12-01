@@ -21,11 +21,3 @@ export interface HttpService extends DeclaredService<"http.HttpService"> {
      */
     fetch(resource: RequestInfo | URL, init?: RequestInit): Promise<Response>;
 }
-
-// TODO: Remove block with next major
-import "@open-pioneer/runtime";
-declare module "@open-pioneer/runtime" {
-    interface ServiceRegistry {
-        "http.HttpService": HttpService;
-    }
-}

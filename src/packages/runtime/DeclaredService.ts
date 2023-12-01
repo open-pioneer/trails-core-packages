@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: con terra GmbH and contributors
+// SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 declare const INTERNAL_ASSOCIATED_SERVICE_METADATA: unique symbol;
 declare const ERROR: unique symbol;
@@ -52,10 +52,10 @@ export type AssociatedInterfaceName<T extends DeclaredService<string>> = T exten
 export type InterfaceNameForServiceType<ServiceType> = unknown extends ServiceType
     ? string
     : ServiceType extends DeclaredService<string>
-    ? AssociatedInterfaceName<ServiceType>
-    : {
-          [ERROR]: "TypeScript integration was not set up properly for this service. Make sure the service's TypeScript interface extends 'DeclaredService'.";
-      };
+      ? AssociatedInterfaceName<ServiceType>
+      : {
+            [ERROR]: "TypeScript integration was not set up properly for this service. Make sure the service's TypeScript interface extends 'DeclaredService'.";
+        };
 
 /**
  * @internal

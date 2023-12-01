@@ -7,40 +7,9 @@
 // The declarations here should move into the client.d.ts in that plugin.
 // This section can then be removed.
 declare module "open-pioneer:react-hooks" {
-    import type {
-        InterfaceName,
-        ServiceType,
-        InterfaceNameForServiceType
-    } from "@open-pioneer/runtime";
+    import type { InterfaceNameForServiceType } from "@open-pioneer/runtime";
     import type { UseServiceOptions } from "@open-pioneer/runtime/react-integration";
     export { type UseServiceOptions };
-
-    /**
-     * Returns an implementation of the given interface.
-     *
-     * A complete interface name is required (e.g. "logging.LogService").
-     *
-     * In order to use a service, it must be declared as an UI-dependency in the package's configuration file.
-     *
-     * @deprecated
-     *
-     * This overload is deprecated and will be removed in the next major version.
-     * Use explicit type names instead, for example:
-     *
-     * ```ts
-     * import { ExternalEventService } from "@open-pioneer/integration";
-     *
-     * // Before:
-     * const eventService = useService("integration.ExternalEventService");
-     *
-     * // After:
-     * const eventService = useService<ExternalEventService>("integration.ExternalEventService");
-     * ```
-     */
-    export function useService<IFace extends InterfaceName>(
-        interfaceName: IFace,
-        options?: UseServiceOptions
-    ): ServiceType<IFace>;
 
     /**
      * Returns an implementation of the given interface.
@@ -59,33 +28,6 @@ declare module "open-pioneer:react-hooks" {
         interfaceName: InterfaceNameForServiceType<ServiceType>,
         options?: UseServiceOptions
     ): ServiceType;
-
-    /**
-     * Returns all implementations of the given interface.
-     *
-     * A complete interface name is required (e.g. "logging.LogService").
-     *
-     * In order to use all services, it must be declared as an UI-dependency (`all: true`) in the package's configuration file.
-     *
-     * @deprecated
-     *
-     * This overload is deprecated and will be removed in the next major version.
-     * Use explicit type names instead, for example:
-     *
-     * ```ts
-     * import { ExternalEventService } from "@open-pioneer/integration";
-     *
-     * // Before:
-     * const services = useServices("integration.ExternalEventService");
-     *
-     * // After:
-     * const services = useServices<ExternalEventService>("integration.ExternalEventService");
-     * ```
-     */
-    export function useServices<IFace extends InterfaceName>(
-        interfaceName: IFace,
-        options?: UseServiceOptions
-    ): ServiceType<IFace>[];
 
     /**
      * Returns all implementations of the given interface.

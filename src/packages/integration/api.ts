@@ -52,12 +52,3 @@ export interface ExternalEventService extends DeclaredService<"integration.Exter
      */
     emitEvent(event: Event): void;
 }
-
-// TODO: Remove block with next major
-import "@open-pioneer/runtime";
-declare module "@open-pioneer/runtime" {
-    interface ServiceRegistry {
-        "integration.ApiExtension": ApiExtension;
-        "integration.ExternalEventService": ExternalEventService;
-    }
-}
