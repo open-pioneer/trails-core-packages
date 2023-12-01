@@ -1,5 +1,18 @@
 # @open-pioneer/http
 
+## 2.0.0
+
+### Major Changes
+
+-   6f954e3: Compatibility with @open-pioneer/runtime@^2
+
+### Patch Changes
+
+-   Updated dependencies [f5c0e31]
+-   Updated dependencies [ce9e060]
+-   Updated dependencies [6f954e3]
+    -   @open-pioneer/runtime@2.0.0
+
 ## 1.0.3
 
 ### Patch Changes
