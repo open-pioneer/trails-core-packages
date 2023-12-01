@@ -9,9 +9,11 @@ export {
     type ApplicationConfig,
     type CustomElementOptions,
     type ConfigContext,
-    type RawApplicationProperties,
     createCustomElement
 } from "./CustomElement";
 export * from "./Service";
-export * from "./ServiceRegistry";
-export * from "./PropertiesRegistry";
+export {
+    type DeclaredService,
+    type AssociatedInterfaceName,
+    type InterfaceNameForServiceType
+} from "./DeclaredService";

@@ -4,9 +4,10 @@ import { useService } from "open-pioneer:react-hooks";
 import { TextService } from "./TextService";
 import { Button, Container, VStack, Text, Heading } from "@open-pioneer/chakra-integration";
 import { useEffect, useState } from "react";
+import { ExternalEventService } from "@open-pioneer/integration";
 
 export function DemoUI() {
-    const eventService = useService("integration.ExternalEventService");
+    const eventService = useService<ExternalEventService>("integration.ExternalEventService");
     const emitEvent = () => {
         eventService.emitEvent("my-custom-event", {
             data: "my-event-data"

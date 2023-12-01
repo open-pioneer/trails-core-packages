@@ -26,6 +26,10 @@ interface InternalElementType extends ApplicationElement {
     $inspectElementState?(): any;
 }
 
+afterEach(() => {
+    vi.restoreAllMocks();
+});
+
 describe("simple rendering", function () {
     const SIMPLE_STYLE = ".test { color: red }";
     const SIMPLE_ELEM = createCustomElement({
@@ -346,6 +350,8 @@ describe("application lifecycle events", function () {
     });
 
     it("does not signal 'before-stop' when start fails", async function () {
+        const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
         const events: string[] = [];
         class Listener implements ApplicationLifecycleListener {
             afterApplicationStart() {
@@ -391,6 +397,30 @@ describe("application lifecycle events", function () {
         });
 
         expect(events).toEqual([]);
+        expect(errorSpy).toMatchInlineSnapshot(`
+          [MockFunction error] {
+            "calls": [
+              [
+                "#1",
+                [Error: help!],
+              ],
+              [
+                "#2",
+                [Error: runtime:config-resolution-failed: Failed to resolve application properties.],
+              ],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        `);
     });
 });
 

@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Button, Container, Heading, Text, VStack } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
+import { ActionService } from "./api";
 
 export function ActionsUI() {
-    const service = useService("extension-app.ActionService");
+    const service = useService<ActionService>("extension-app.ActionService");
     const buttons = service.getActionInfo().map(({ id, text }) => (
         <Button key={id} onClick={() => service.triggerAction(id)}>
             {text}

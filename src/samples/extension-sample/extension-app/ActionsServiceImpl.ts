@@ -1,10 +1,10 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Service, ServiceOptions, ServiceType } from "@open-pioneer/runtime";
-import { Action, ActionService } from "./api";
+import { Service, ServiceOptions } from "@open-pioneer/runtime";
+import { Action, ActionProvider, ActionService } from "./api";
 
 interface References {
-    providers: ServiceType<"extension-app.ActionProvider">[];
+    providers: ActionProvider[];
 }
 
 export class ActionServiceImpl implements Service<ActionService> {

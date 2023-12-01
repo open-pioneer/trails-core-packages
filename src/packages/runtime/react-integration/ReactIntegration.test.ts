@@ -3,21 +3,22 @@
 /**
  * @vitest-environment happy-dom
  */
-import { createElement } from "react";
-import { beforeEach, expect, it } from "vitest";
-import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
+import { createElement } from "react";
+import { beforeEach, expect, it, SpyInstance, afterEach, vi } from "vitest";
 import { Service, ServiceConstructor } from "../Service";
+import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
+import { useTheme } from "@open-pioneer/chakra-integration";
+import { PackageIntl, createEmptyI18n } from "../i18n";
+import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
+import { PackageRepr } from "../service-layer/PackageRepr";
+import { ServiceLayer } from "../service-layer/ServiceLayer";
+import { ServiceRepr, createConstructorFactory } from "../service-layer/ServiceRepr";
+import { ReactIntegration } from "./ReactIntegration";
+
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
-import { ServiceLayer } from "../service-layer/ServiceLayer";
-import { ReactIntegration } from "./ReactIntegration";
-import { PackageRepr } from "../service-layer/PackageRepr";
-import { createConstructorFactory, ServiceRepr } from "../service-layer/ServiceRepr";
-import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
-import { createEmptyI18n, PackageIntl } from "../i18n";
-import { useTheme } from "@open-pioneer/chakra-integration";
 
 interface TestProvider {
     value: string;
@@ -27,9 +28,18 @@ beforeEach(() => {
     document.body.innerHTML = "";
 });
 
+let errorSpy!: SpyInstance;
+beforeEach(() => {
+    errorSpy = vi.spyOn(console, "error");
+});
+
+afterEach(() => {
+    vi.restoreAllMocks();
+});
+
 it("should allow access to service via react hook", async () => {
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider") as TestProvider;
+        const service = useServiceInternal<unknown>("test", "test.Provider") as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
@@ -55,8 +65,10 @@ it("should allow access to service via react hook", async () => {
 });
 
 it("should get error when using undefined service", async () => {
+    errorSpy.mockImplementation(doNothing);
+
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider") as TestProvider;
+        const service = useServiceInternal<unknown>("test", "test.Provider") as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
@@ -69,11 +81,12 @@ it("should get error when using undefined service", async () => {
             integration.render(TestComponent);
         });
     }).toThrowErrorMatchingSnapshot();
+    expect(errorSpy).toHaveBeenCalledOnce();
 });
 
 it("should allow access to service with qualifier via react hook", async () => {
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider", {
+        const service = useServiceInternal<unknown>("test", "test.Provider", {
             qualifier: "foo"
         }) as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
@@ -101,8 +114,10 @@ it("should allow access to service with qualifier via react hook", async () => {
 });
 
 it("should deny access to service when the qualifier does not match", async () => {
+    errorSpy.mockImplementation(doNothing);
+
     function TestComponent() {
-        const service = useServiceInternal("test", "test.Provider", {
+        const service = useServiceInternal<unknown>("test", "test.Provider", {
             qualifier: "bar"
         }) as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
@@ -126,11 +141,12 @@ it("should deny access to service when the qualifier does not match", async () =
             integration.render(TestComponent);
         });
     }).toThrowErrorMatchingSnapshot();
+    expect(errorSpy).toHaveBeenCalledOnce();
 });
 
 it("should allow access to all services via react hook", async () => {
     function TestComponent() {
-        const services = useServicesInternal("test", "test.Provider") as TestProvider[];
+        const services = useServicesInternal<unknown>("test", "test.Provider") as TestProvider[];
         return createElement(
             "span",
             undefined,
@@ -174,8 +190,10 @@ it("should allow access to all services via react hook", async () => {
 });
 
 it("should deny access to all services if declaration is missing", async () => {
+    errorSpy.mockImplementation(doNothing);
+
     function TestComponent() {
-        const services = useServicesInternal("test", "test.Provider") as TestProvider[];
+        const services = useServicesInternal<unknown>("test", "test.Provider") as TestProvider[];
         return createElement(
             "span",
             undefined,
@@ -192,6 +210,7 @@ it("should deny access to all services if declaration is missing", async () => {
             integration.render(TestComponent);
         });
     }).toThrowErrorMatchingSnapshot();
+    expect(errorSpy).toHaveBeenCalledOnce();
 });
 
 it("should be able to read properties from react component", async () => {
@@ -287,6 +306,8 @@ it("should provide the autogenerated useProperties hook", async () => {
 });
 
 it("should throw error when requesting properties from an unknown package", async () => {
+    errorSpy.mockImplementation(doNothing);
+
     const { integration } = createIntegration({
         disablePackage: true
     });
@@ -301,6 +322,7 @@ it("should throw error when requesting properties from an unknown package", asyn
             integration.render(TestComponent);
         });
     }).toThrowErrorMatchingSnapshot();
+    expect(errorSpy).toHaveBeenCalledOnce();
 });
 
 it("should apply the configured chakra theme", async () => {
@@ -393,3 +415,5 @@ function createIntegration(options?: {
     });
     return { integration, wrapper };
 }
+
+function doNothing() {}

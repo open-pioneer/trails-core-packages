@@ -12,13 +12,15 @@ import {
     VStack,
     Divider
 } from "@open-pioneer/chakra-integration";
+import { ExternalEventService } from "@open-pioneer/integration";
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { ReactNode } from "react";
 import { SamplePackageComponent } from "i18n-sample-package/SamplePackageComponent";
+import { ApplicationContext } from "@open-pioneer/runtime";
 
 export function I18nUI() {
     const intl = useIntl();
-    const appCtx = useService("runtime.ApplicationContext");
+    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
     const locale = appCtx.getLocale();
     const supportedLocales = appCtx.getSupportedLocales();
     const name = "Müller";
@@ -109,7 +111,7 @@ export function I18nUI() {
 
 function LocalePicker(props: { current: string; locales: readonly string[] }) {
     const intl = useIntl();
-    const eventService = useService("integration.ExternalEventService");
+    const eventService = useService<ExternalEventService>("integration.ExternalEventService");
     const changeLocale = (locale: string | undefined) => {
         eventService.emitEvent("locale-changed", {
             locale: locale

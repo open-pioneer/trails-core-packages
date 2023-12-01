@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { DeclaredService } from "./DeclaredService";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
@@ -23,7 +24,7 @@ export interface ApiExtension {
  * A service provided by the system.
  * Used by the runtime to assemble the public facing API.
  */
-export interface ApiService {
+export interface ApiService extends DeclaredService<"runtime.ApiService"> {
     /**
      * Called by the runtime to gather methods that should be available from the web component's API.
      */
@@ -33,7 +34,7 @@ export interface ApiService {
 /**
  * A service provided by the system, useful for accessing values that are global to the application.
  */
-export interface ApplicationContext {
+export interface ApplicationContext extends DeclaredService<"runtime.ApplicationContext"> {
     /**
      * The web component's host element.
      * This dom node can be accessed by the host site.
@@ -73,7 +74,8 @@ export interface ApplicationContext {
  * **Experimental**. This interface is not affected by semver guarantees.
  * It may change (or be removed) in a future minor release.
  */
-export interface ApplicationLifecycleListener {
+export interface ApplicationLifecycleListener
+    extends DeclaredService<"runtime.ApplicationLifecycleListener"> {
     /**
      * Called after all services required by the application have been started.
      */
@@ -83,12 +85,4 @@ export interface ApplicationLifecycleListener {
      * Called during the application shutdown just before services will be destroyed.
      */
     beforeApplicationStop?(): void;
-}
-
-declare module "./ServiceRegistry" {
-    interface ServiceRegistry {
-        "runtime.ApiService": ApiService;
-        "runtime.ApplicationContext": ApplicationContext;
-        "runtime.ApplicationLifecycleListener": ApplicationLifecycleListener;
-    }
 }

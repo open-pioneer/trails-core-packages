@@ -1,12 +1,13 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { DeclaredService } from "@open-pioneer/runtime";
 
 /**
  * Central service for sending HTTP requests.
  *
  * Use the interface `"http.HttpService"` to obtain an instance of this service.
  */
-export interface HttpService {
+export interface HttpService extends DeclaredService<"http.HttpService"> {
     /**
      * Requests the given `resource` via HTTP and returns the response.
      *
@@ -20,13 +21,3 @@ export interface HttpService {
      */
     fetch(resource: RequestInfo | URL, init?: RequestInit): Promise<Response>;
 }
-
-import "@open-pioneer/runtime";
-declare module "@open-pioneer/runtime" {
-    interface ServiceRegistry {
-        "http.HttpService": HttpService;
-    }
-}
-
-// Get rid of empty chunk warning
-export default undefined;
