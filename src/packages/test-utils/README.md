@@ -12,7 +12,7 @@ Example:
 
 ```js
 /**
- * @vitest-environment jsdom
+ * @vitest-environment happy-dom
  */
 import { it, expect } from "vitest";
 import { createElement } from "react";

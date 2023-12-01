@@ -33,6 +33,7 @@ const sampleSites = [
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     const devMode = mode === "development";
+    const isVitest = mode === "test";
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
     const logLevel = devMode ? "INFO": "WARN";
@@ -65,7 +66,7 @@ export default defineConfig(({ mode }) => {
                 apps: []
             }),
             react(),
-            eslint(),
+            !isVitest && eslint(),
             visualize &&
                 (visualizer({ gzipSize: true, brotliSize: true, emitFile: true }) as PluginOption)
         ],
