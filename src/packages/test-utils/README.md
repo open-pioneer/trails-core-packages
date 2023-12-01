@@ -12,7 +12,7 @@ Example:
 
 ```js
 /**
- * @vitest-environment jsdom
+ * @vitest-environment happy-dom
  */
 import { it, expect } from "vitest";
 import { createElement } from "react";
@@ -114,4 +114,4 @@ it("creates a new service instance with the defined references", async () => {
 
 ## License
 
-[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+Apache-2.0 (see `LICENSE` file)

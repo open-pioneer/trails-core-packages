@@ -6,7 +6,7 @@ Core packages of the open pioneer client framework.
 
 ## Getting started
 
-Requirements: Node >= 16, pnpm >= 8.
+Requirements: Node >= 18, pnpm >= 8.
 
 To start the development server, run:
 
@@ -33,4 +33,4 @@ For more details, consult the starter project's [Repository Guide](https://githu
 
 ## License
 
-[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+Apache-2.0 (see `LICENSE` file)
