@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * @vitest-environment jsdom
+ * @vitest-environment happy-dom
  */
 import { isAbortError, throwAbortError } from "./error";
 import { it, expect, describe } from "vitest";

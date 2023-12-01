@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * @vitest-environment jsdom
+ * @vitest-environment happy-dom
  */
 import { isAbortError } from "@open-pioneer/core";
 import {

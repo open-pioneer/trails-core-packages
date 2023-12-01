@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 /**
- * @vitest-environment jsdom
+ * @vitest-environment happy-dom
  */
 import { createElement } from "react";
 import { beforeEach, expect, it } from "vitest";
