@@ -1,5 +1,11 @@
 # @open-pioneer/chakra-integration
 
+## 1.1.1
+
+### Patch Changes
+
+-   f5c0e31: Bump chakra-related dependency versions
+
 ## 1.1.0
 
 ### Minor Changes
