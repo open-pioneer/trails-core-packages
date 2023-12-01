@@ -7,7 +7,7 @@ import { Box, VStack, Text } from "@open-pioneer/chakra-integration";
 import ReactJson from "react-json-view";
 
 export function AppUI() {
-    const client = useService("http-app.HttpClient") as HttpClient;
+    const client = useService<unknown>("http-app.HttpClient") as HttpClient;
     const [json, setJson] = useState<unknown>(undefined);
     const [error, setError] = useState<string | undefined>(undefined);
     useEffect(() => {
