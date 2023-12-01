@@ -75,17 +75,16 @@ describe("simple rendering", function () {
     });
 });
 
-it("explicitly setting the shadow dom mode hides the shadow root", async () => {
+it("uses mode 'open' for the internal shadow root", async () => {
     function TestComponent() {
         return createElement("span", undefined, "Hello World");
     }
 
     const elem = createCustomElement({
-        component: TestComponent,
-        openShadowRoot: false
+        component: TestComponent
     });
     const { node } = await renderComponent(elem);
-    expect(node.shadowRoot).toBeNull();
+    expect(node.shadowRoot).toBeTruthy();
 });
 
 it("allows customization of package properties", async () => {
