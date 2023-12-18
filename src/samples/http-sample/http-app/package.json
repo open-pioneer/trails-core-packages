@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@open-pioneer/chakra-integration": "workspace:^",
+        "@open-pioneer/core": "workspace:^",
         "@open-pioneer/http": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
         "react-json-view": "^1.21.3"

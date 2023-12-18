@@ -10,6 +10,9 @@ export default defineBuildConfig({
                 http: "http.HttpService"
             },
             provides: "http-app.HttpClient"
+        },
+        ExampleInterceptor: {
+            provides: "http.Interceptor"
         }
     },
     ui: {
