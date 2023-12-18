@@ -78,6 +78,8 @@ export type ContextData = Record<string | symbol, unknown>;
  * or to manipulate a backend response.
  *
  * Use the interface name `http.Interceptor` to provide an implementation of this interface.
+ *
+ * > Note that the request interceptor API is experimental: it may change with a new minor release as a response to feedback.
  */
 export interface Interceptor extends DeclaredService<"http.Interceptor"> {
     beforeRequest?(params: BeforeRequestParams): void | Promise<void>;

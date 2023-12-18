@@ -45,6 +45,8 @@ However, the `HttpService`'s method should always be preferred to take advantage
 
 ## Request interceptors
 
+> Note that the request interceptor API is experimental: it may change with a new minor release as a response to feedback.
+
 The `HttpService` supports extension via _request interceptors_.
 Request interceptors can modify requests (query parameters, headers, etc.) before they are sent to the server.
 
