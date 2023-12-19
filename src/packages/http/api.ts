@@ -12,13 +12,14 @@ export interface HttpService extends DeclaredService<"http.HttpService"> {
     /**
      * Requests the given `resource` via HTTP and returns the response.
      *
-     * See [fetch documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) for reference.
+     * This method works almost exactly the same as the browser's native `fetch` function.
+     * However, certain trails extensions (such as interceptors) are implemented on top of `fetch`
+     * to enable new features.
      *
-     * > NOTE: In its current implementation this is a simple wrapper around the browser's fetch.
-     * > Future versions may implement additional features on top of `fetch()` (such as support for a proxy backend).
-     * >
-     * > This service should still be used (instead of plain fetch) to automatically benefit from
-     * > future developments.
+     * For example, access tokens or other header / query parameters can be added automatically using an
+     * interceptor if a package uses the `HttpService`.
+     *
+     * See also [fetch documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) for reference.
      */
     fetch(resource: string | URL, init?: HttpServiceRequestInit): Promise<Response>;
 }
@@ -42,6 +43,7 @@ export type ResolvedRequestOptions = Omit<
     headers: Headers;
 };
 
+/** Options passed to {@link Interceptor.beforeRequest}. */
 export interface BeforeRequestParams {
     /**
      * The request's target URL, including query parameters.
@@ -82,5 +84,17 @@ export type ContextData = Record<string | symbol, unknown>;
  * > Note that the request interceptor API is experimental: it may change with a new minor release as a response to feedback.
  */
 export interface Interceptor extends DeclaredService<"http.Interceptor"> {
+    /**
+     * This method will be invoked for every request made by the {@link HttpService}.
+     *
+     * The `params` passed to the interceptor method can be inspected and can updated to change how to request is going to be made.
+     * For example, `target` and `options.headers` can be modified.
+     *
+     * The method implementation can be asynchronous.
+     *
+     * > NOTE: There may be more than one interceptor in an application.
+     * > All interceptors are invoked for every request.
+     * > The order in which the interceptors are invoked is currently not defined.
+     */
     beforeRequest?(params: BeforeRequestParams): void | Promise<void>;
 }
