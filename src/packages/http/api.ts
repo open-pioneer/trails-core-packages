@@ -87,7 +87,7 @@ export interface Interceptor extends DeclaredService<"http.Interceptor"> {
     /**
      * This method will be invoked for every request made by the {@link HttpService}.
      *
-     * The `params` passed to the interceptor method can be inspected and can updated to change how to request is going to be made.
+     * The `params` passed to the interceptor method can be inspected and can also be updated to change how the request is going to be made.
      * For example, `target` and `options.headers` can be modified.
      *
      * The method implementation can be asynchronous.
