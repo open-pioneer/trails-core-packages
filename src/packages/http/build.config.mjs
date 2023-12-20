@@ -6,7 +6,13 @@ export default defineBuildConfig({
     entryPoints: "index",
     services: {
         HttpServiceImpl: {
-            provides: "http.HttpService"
+            provides: "http.HttpService",
+            references: {
+                interceptors: {
+                    name: "http.Interceptor",
+                    all: true
+                }
+            }
         }
     }
 });
