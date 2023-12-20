@@ -1,5 +1,23 @@
 # @open-pioneer/http
 
+## 2.1.0
+
+### Minor Changes
+
+-   a18d227: New **experimental** feature: request interceptors.
+    Request interceptors can be registered with the `HttpService` to modify requests before they are sent to a server.
+    Request interceptors are called automatically by the `HttpService` when they are present as part of the normal request processing.
+
+    Example use case: adding an access token (query parameter or header) to requests for a certain resource.
+
+    Note that the request interceptor API is experimental: it may change with a new minor release as a response to feedback.
+
+### Patch Changes
+
+-   Updated dependencies [a18d227]
+    -   @open-pioneer/core@1.2.0
+    -   @open-pioneer/runtime@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
