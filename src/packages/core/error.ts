@@ -52,8 +52,8 @@ export function getErrorChain(err: globalThis.Error): globalThis.Error[] {
 /**
  * Returns true if the error represents an abort error.
  */
-export function isAbortError(err: unknown) {
-    return err && typeof err === "object" && "name" in err && err.name === "AbortError";
+export function isAbortError(err: unknown): boolean {
+    return !!(err && typeof err === "object" && "name" in err && err.name === "AbortError");
 }
 
 /**
@@ -61,6 +61,15 @@ export function isAbortError(err: unknown) {
  */
 export function throwAbortError(): never {
     throw createAbortError();
+}
+
+/**
+ * Throws `err` if it is an abort error. Does nothing otherwise.
+ */
+export function rethrowAbortError(err: unknown): void {
+    if (isAbortError(err)) {
+        throw err;
+    }
 }
 
 /**

@@ -41,7 +41,41 @@ export class MyService {
 ```
 
 The signature of the `fetch()` method is compatible to the Browser's global [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) function.
-However, the `HttpService`'s method should always be preferred to take advantage of future features (logging, request interceptors, etc.).
+However, the `HttpService`'s method should always be preferred to take advantage of future features (logging, proxy support, etc.).
+
+## Request interceptors
+
+> Note that the request interceptor API is experimental: it may change with a new minor release as a response to feedback.
+
+The `HttpService` supports extension via _request interceptors_.
+Request interceptors can modify requests (query parameters, headers, etc.) before they are sent to the server.
+
+To register a request interceptor, implement a service that provides `"http.Interceptor"`:
+
+```js
+// build.config.mjs
+import { defineBuildConfig } from "@open-pioneer/build-support";
+
+export default defineBuildConfig({
+    services: {
+        ExampleInterceptor: {
+            provides: "http.Interceptor"
+        }
+        // ...
+    }
+    // ...
+});
+```
+
+```ts
+// ExampleInterceptor.ts
+import { Interceptor, BeforeRequestParams } from "@open-pioneer/http";
+export class ExampleInterceptor implements Interceptor {
+    async beforeRequest?(params: BeforeRequestParams) {
+        // Invoked for every request. See API documentation for more details.
+    }
+}
+```
 
 ## License
 

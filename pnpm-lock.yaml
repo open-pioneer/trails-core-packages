@@ -225,6 +225,9 @@ importers:
 
   src/packages/http:
     dependencies:
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../core
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../runtime
@@ -367,6 +370,9 @@ importers:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../../../packages/chakra-integration
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../../../packages/core
       '@open-pioneer/http':
         specifier: workspace:^
         version: link:../../../packages/http
