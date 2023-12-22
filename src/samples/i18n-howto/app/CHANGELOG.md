@@ -1,5 +1,11 @@
 # i18n-howto-app
 
+## 0.0.11
+
+### Patch Changes
+
+-   @open-pioneer/runtime@2.0.1
+
 ## 0.0.10
 
 ### Patch Changes
