@@ -1,5 +1,11 @@
 # @open-pioneer/integration
 
+## 2.0.2
+
+### Patch Changes
+
+-   @open-pioneer/runtime@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 1.2.1
+
+### Patch Changes
+
+-   11b1428: Export `rethrowAbortError` from core package and use it correctly in `HttpService`.
+
 ## 1.2.0
 
 ### Minor Changes
