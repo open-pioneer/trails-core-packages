@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 1.2.0
+
+### Minor Changes
+
+-   a18d227: New helper function `rethrowAbortError`.
+
 ## 1.1.0
 
 ### Minor Changes

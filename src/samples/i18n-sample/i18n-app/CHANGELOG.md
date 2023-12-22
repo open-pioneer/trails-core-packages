@@ -1,5 +1,12 @@
 # i18n-app
 
+## 0.0.11
+
+### Patch Changes
+
+-   @open-pioneer/runtime@2.0.1
+-   @open-pioneer/integration@2.0.1
+
 ## 0.0.10
 
 ### Patch Changes
