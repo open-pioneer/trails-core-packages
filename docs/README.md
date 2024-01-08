@@ -1,9 +1,8 @@
-# Open Pioneer Core Packages 
+# Open Pioneer Core Packages
 
-For general documentation hints see [Projekt README](../README.md).
+For general documentation hints see [Project README](../README.md).
 
 ## Table of contents
 
-- Internal documentation
-  - [Release Process](./internals/Releasing.md)
-
+-   Internal documentation
+    -   [Release Process](./internals/Releasing.md)
