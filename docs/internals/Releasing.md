@@ -32,7 +32,7 @@ However, this is quite complicated and should only be done if absolutely necessa
     changes, even completely new packages.
 -   Check all changeset entries regarding the version that will be release.
     In particular, take care that no major release is done accidentally.
-    > Tip: you can use `pnpm changesets status` locally to get an overview, or skim through the release pull request.
+    > Tip: you can use `pnpm changeset status` locally to get an overview, or skim through the release pull request.
 -   Check that the build of the last commit performed successfully (is green)
     and that the last commit is included in the [RELEASE] pull request created by changesets.
 -   Main step: Merge the [RELEASE] pull request.
