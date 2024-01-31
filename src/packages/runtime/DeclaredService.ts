@@ -8,6 +8,10 @@ declare const ERROR: unique symbol;
  *
  * By using this base interface, you can ensure that users of your interface use the correct interface name.
  *
+ * Note that this interface is a type level marker only.
+ * It has no real associated methods or properties and it is not necessary to implement anything
+ * to use this interface in a class.
+ *
  * @example
  * ```ts
  * // MyLogger should be referenced via "my-package.Logger"
@@ -34,13 +38,37 @@ export interface DeclaredService<InterfaceName extends string> {
 }
 
 /**
- * Given a type implementing {@link DeclaredService}, this type will produce the interface name associated with the service type.
+ * Helper symbol to declare a service's interface name when not using a separate interface.
+ *
+ * > NOTE: This symbol does not exist at runtime. Declaring a service interface is compile time only!
+ *
+ * @example
+ *
+ * ```ts
+ * class MyServiceImpl {
+ *     // Add this line to your class.
+ *     // It declares (at compile time) that the service class must be used via the given interface name.
+ *     // Note that the property is not really present at runtime.
+ *     declare [DECLARE_SERVICE_INTERFACE]: "my-package.MyInterface";
+ *
+ *     method(): void {
+ *         throw new Error("Method not implemented.");
+ *     }
+ * }
+ * ```
  */
-export type AssociatedInterfaceName<T extends DeclaredService<string>> = T extends DeclaredService<
-    infer InterfaceName
->
+declare const DECLARE_SERVICE_INTERFACE: unique symbol;
+export { type DECLARE_SERVICE_INTERFACE };
+
+/**
+ * Given a type implementing {@link DeclaredService} or using {@link DECLARE_SERVICE_INTERFACE},
+ * this type will produce the interface name associated with the service type.
+ */
+export type AssociatedInterfaceName<T> = T extends DeclaredService<infer InterfaceName>
     ? InterfaceName
-    : never;
+    : T extends { [DECLARE_SERVICE_INTERFACE]: string & infer InterfaceName }
+      ? InterfaceName
+      : never;
 
 /**
  * This helper type produces the expected `interfaceName` (a string parameter) for the given service type.
@@ -49,13 +77,13 @@ export type AssociatedInterfaceName<T extends DeclaredService<string>> = T exten
  * 2. If `ServiceType` implements {@link DeclaredService}, it will enforce the associated interface name.
  * 3. Otherwise, a compile time error is generated.
  */
-export type InterfaceNameForServiceType<ServiceType> = unknown extends ServiceType
+export type InterfaceNameForServiceType<ServiceType> = IsUnknown<ServiceType> extends true
     ? string
-    : ServiceType extends DeclaredService<string>
-      ? AssociatedInterfaceName<ServiceType>
-      : {
+    : AssociatedInterfaceName<ServiceType> extends never
+      ? {
             [ERROR]: "TypeScript integration was not set up properly for this service. Make sure the service's TypeScript interface extends 'DeclaredService'.";
-        };
+        }
+      : AssociatedInterfaceName<ServiceType>;
 
 /**
  * @internal
@@ -63,3 +91,5 @@ export type InterfaceNameForServiceType<ServiceType> = unknown extends ServiceTy
 interface ServiceMetadata<InterfaceName> {
     interfaceName: InterfaceName;
 }
+
+type IsUnknown<T> = unknown extends T ? ([T] extends [null] ? false : true) : false;
