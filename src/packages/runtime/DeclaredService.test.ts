@@ -1,7 +1,11 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable unused-imports/no-unused-vars */
-import { DeclaredService, InterfaceNameForServiceType } from "./DeclaredService";
+import {
+    DECLARE_SERVICE_INTERFACE,
+    DeclaredService,
+    InterfaceNameForServiceType
+} from "./DeclaredService";
 import { it } from "vitest";
 
 // Tests are on type level only
@@ -45,4 +49,39 @@ type IsString<T> = T extends string ? true : false;
 
     type IFace = InterfaceNameForServiceType<MyService>;
     const isString: IsString<IFace> = false;
+}
+
+// It must be possible to implement a service with a separate interface
+{
+    interface MyService extends DeclaredService<"foo"> {
+        method(): void;
+    }
+
+    // No error
+    class MyServiceImpl implements MyService {
+        method(): void {
+            throw new Error("Method not implemented.");
+        }
+
+        internalMethod(): void {}
+    }
+
+    type IFace = InterfaceNameForServiceType<MyService>;
+    const isConstant1: Equal<IFace, "foo"> = true;
+}
+
+// It must be possible to define the interface name directly.
+{
+    class MyServiceImpl {
+        declare [DECLARE_SERVICE_INTERFACE]: "foo";
+
+        method(): void {
+            throw new Error("Method not implemented.");
+        }
+
+        internalMethod(): void {}
+    }
+
+    type IFace = InterfaceNameForServiceType<MyServiceImpl>;
+    const isConstant: Equal<IFace, "foo"> = true;
 }

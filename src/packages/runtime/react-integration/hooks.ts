@@ -48,7 +48,8 @@ export function useServiceInternal<ServiceType = unknown>(
 ): ServiceType;
 export function useServiceInternal(
     packageName: string,
-    interfaceName: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    interfaceName: any,
     options?: UseServiceOptions
 ): unknown {
     const context = useContext(PackageContext);
@@ -78,7 +79,8 @@ export function useServicesInternal<ServiceType = unknown>(
     interfaceName: InterfaceNameForServiceType<ServiceType>,
     options?: UseServiceOptions
 ): ServiceType[];
-export function useServicesInternal(packageName: string, interfaceName: string): unknown[] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useServicesInternal(packageName: string, interfaceName: any): unknown[] {
     const context = useContext(PackageContext);
     const services = useMemo(
         () => checkContext("useServices", context).getServices(packageName, interfaceName),

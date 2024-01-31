@@ -15,5 +15,6 @@ export * from "./Service";
 export {
     type DeclaredService,
     type AssociatedInterfaceName,
-    type InterfaceNameForServiceType
+    type InterfaceNameForServiceType,
+    type DECLARE_SERVICE_INTERFACE
 } from "./DeclaredService";
