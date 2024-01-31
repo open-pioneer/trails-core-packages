@@ -41,10 +41,13 @@ export interface DeclaredService<InterfaceName extends string> {
  * Helper symbol to declare a service's interface name when not using a separate interface.
  *
  * > NOTE: This symbol does not exist at runtime. Declaring a service interface is compile time only!
+ * > It should therefore be imported via `import type` (see example below).
  *
  * @example
  *
  * ```ts
+ * import { type DECLARE_SERVICE_INTERFACE} from "@open-pioneer/runtime";
+ *
  * class MyServiceImpl {
  *     // Add this line to your class.
  *     // It declares (at compile time) that the service class must be used via the given interface name.
