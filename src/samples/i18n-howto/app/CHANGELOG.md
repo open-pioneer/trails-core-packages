@@ -1,5 +1,12 @@
 # i18n-howto-app
 
+## 0.0.13
+
+### Patch Changes
+
+-   Updated dependencies [80cd62d]
+    -   @open-pioneer/runtime@2.1.0
+
 ## 0.0.12
 
 ### Patch Changes
