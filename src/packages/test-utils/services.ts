@@ -1,8 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { ReferenceMeta, Service, ServiceConstructor } from "@open-pioneer/runtime";
-import { createIntl, createIntlCache } from "@formatjs/intl";
-import { INTL_ERROR_HANDLER } from "./utils";
+import { createIntl } from "./vanilla";
 
 /**
  * Options for the {@link createService} function.
@@ -83,20 +82,7 @@ export async function createService<References extends {}, Interface extends {}>
         ])
     );
 
-    const locale = options?.locale ?? "en";
-    const defaultMessageLocale = options?.defaultMessageLocale ?? "en";
-    const messages = options?.messages ?? {};
-    const cache = createIntlCache();
-    const intl = createIntl(
-        {
-            locale,
-            defaultLocale: defaultMessageLocale,
-            messages,
-            onError: INTL_ERROR_HANDLER
-        },
-        cache
-    );
-
+    const intl = createIntl(options);
     return new clazz({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         references: references as any,

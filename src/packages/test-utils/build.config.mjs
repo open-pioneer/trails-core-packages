@@ -3,5 +3,5 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
-    entryPoints: ["web-components", "react", "services"]
+    entryPoints: ["vanilla", "web-components", "react", "services"]
 });
