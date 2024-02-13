@@ -1,4 +1,4 @@
-watch# @open-pioneer/test-utils
+# @open-pioneer/test-utils
 
 This package contains test utilities that make it easier to test parts of a pioneer application.
 
