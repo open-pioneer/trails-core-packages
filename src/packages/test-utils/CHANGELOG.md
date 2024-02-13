@@ -1,5 +1,11 @@
 # @open-pioneer/test-utils
 
+## 1.1.1
+
+### Patch Changes
+
+-   b617e3b: Fix typo in readme
+
 ## 1.1.0
 
 ### Minor Changes
