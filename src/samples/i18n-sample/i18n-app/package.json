@@ -1,6 +1,6 @@
 {
     "name": "i18n-app",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "private": true,
     "dependencies": {
         "@open-pioneer/runtime": "workspace:^",
