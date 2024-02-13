@@ -1,14 +1,13 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createIntl, createIntlCache, IntlShape } from "@formatjs/intl";
 import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
-import type { Service } from "@open-pioneer/runtime";
+import type { PackageIntl, Service } from "@open-pioneer/runtime";
 import {
     PackageContext as InternalPackageContext,
     PackageContextMethods
 } from "@open-pioneer/runtime-react-support";
 import { FC, ReactNode, useMemo } from "react";
-import { INTL_ERROR_HANDLER } from "./utils";
+import { createIntl } from "./vanilla";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyService = Service<any>;
@@ -80,7 +79,7 @@ function createPackageContextMethods(
     const properties = options?.properties ?? {};
     const locale = options?.locale ?? "en";
     const messages = options?.messages ?? {};
-    const cachedIntl: Record<string, IntlShape> = {};
+    const cachedIntl: Record<string, PackageIntl> = {};
     return {
         getService(packageName, interfaceName, options) {
             if (!options.qualifier) {
@@ -127,15 +126,10 @@ function createPackageContextMethods(
         getIntl(packageName) {
             const initIntl = () => {
                 const packageMessages = messages[packageName];
-                const cache = createIntlCache();
-                return createIntl(
-                    {
-                        locale,
-                        messages: packageMessages,
-                        onError: INTL_ERROR_HANDLER
-                    },
-                    cache
-                );
+                return createIntl({
+                    locale,
+                    messages: packageMessages
+                });
             };
             return (cachedIntl[packageName] ??= initIntl());
         }
