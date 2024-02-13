@@ -1,5 +1,12 @@
 # @open-pioneer/integration
 
+## 2.0.4
+
+### Patch Changes
+
+-   Updated dependencies [f749d96]
+    -   @open-pioneer/runtime@2.1.1
+
 ## 2.0.3
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @open-pioneer/test-utils
 
+## 1.1.0
+
+### Minor Changes
+
+-   2d5a94a: Provide `createIntl` from `@open-pioneer/test-utils/vanilla` to make creation of a `PackageIntl` instance easier.
+
+### Patch Changes
+
+-   @open-pioneer/runtime-react-support@1.0.0
+
 ## 1.0.2
 
 ### Patch Changes
