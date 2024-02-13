@@ -1,5 +1,13 @@
 # http-app
 
+## 0.0.14
+
+### Patch Changes
+
+-   Updated dependencies [f749d96]
+    -   @open-pioneer/runtime@2.1.1
+    -   @open-pioneer/http@2.1.3
+
 ## 0.0.13
 
 ### Patch Changes

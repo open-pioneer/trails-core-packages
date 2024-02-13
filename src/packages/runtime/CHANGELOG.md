@@ -1,5 +1,12 @@
 # @open-pioneer/runtime
 
+## 2.1.1
+
+### Patch Changes
+
+-   f749d96: Add a hint that `DECLARE_SERVICE_INTERFACE` should be imported via `import type`.
+    -   @open-pioneer/runtime-react-support@1.0.0
+
 ## 2.1.0
 
 ### Minor Changes
