@@ -1,4 +1,4 @@
-# @open-pioneer/test-utils
+watch# @open-pioneer/test-utils
 
 This package contains test utilities that make it easier to test parts of a pioneer application.
 
@@ -109,6 +109,20 @@ it("creates a new service instance with the defined references", async () => {
     });
     expect(service).toBeInstanceOf(MyService);
     // ... other assertions ...
+});
+```
+
+## Utilities for Vanilla JS
+
+The function `createIntl` from `@open-pioneer/test-utils/vanilla` can be used to make the creation of an `intl` object easier from vanilla JavaScript:
+
+```js
+import { createIntl } from "@open-pioneer/test-utils/vanilla";
+
+// In your test:
+const intl = createIntl(/* optional arguments such as messages or locale */);
+intl.formatMessage({
+    /* ... */
 });
 ```
 
