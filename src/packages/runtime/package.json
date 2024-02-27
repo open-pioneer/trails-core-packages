@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/runtime",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "license": "Apache-2.0",
     "main": "index.ts",
     "scripts": {

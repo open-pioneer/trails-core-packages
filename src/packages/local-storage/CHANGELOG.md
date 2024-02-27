@@ -1,5 +1,12 @@
 # @open-pioneer/local-storage
 
+## 0.3.1
+
+### Patch Changes
+
+-   4eac7c7: Move packages into core-packages repository.
+    -   @open-pioneer/runtime@2.1.2
+
 ## 0.3.0
 
 ### Minor Changes

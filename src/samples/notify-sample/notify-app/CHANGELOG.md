@@ -1,5 +1,13 @@
 # notify-app
 
+## 0.0.5
+
+### Patch Changes
+
+-   Updated dependencies [4eac7c7]
+    -   @open-pioneer/notifier@0.3.1
+    -   @open-pioneer/runtime@2.1.2
+
 ## 0.0.4
 
 ### Patch Changes

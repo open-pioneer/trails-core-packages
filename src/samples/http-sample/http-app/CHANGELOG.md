@@ -1,5 +1,12 @@
 # http-app
 
+## 0.0.15
+
+### Patch Changes
+
+-   @open-pioneer/runtime@2.1.2
+-   @open-pioneer/http@2.1.4
+
 ## 0.0.14
 
 ### Patch Changes
