@@ -11,8 +11,7 @@ const documentedPackages = [
     "local-storage",
     "notifier",
     "runtime",
-    "test-utils",
-    "theme"
+    "test-utils"
 ];
 
 // See https://typedoc.org/options/
