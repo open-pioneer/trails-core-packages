@@ -10,6 +10,6 @@ export default defineBuildConfig({
         }
     },
     properties: {
-        "storageId": null
+        storageId: null
     }
 });

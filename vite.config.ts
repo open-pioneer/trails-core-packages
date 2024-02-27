@@ -28,6 +28,9 @@ const sampleSites = [
     "samples/i18n-sample",
     "samples/properties-sample",
     "samples/styling-sample",
+    "samples/notify-sample",
+    "samples/theming-sample",
+    "samples/auth-sample",
 ];
 
 // https://vitejs.dev/config/
@@ -79,7 +82,9 @@ export default defineConfig(({ mode }) => {
 
         // https://vitest.dev/config/
         test: {
-            globals: true
+            globals: true,
+            environment: "happy-dom",
+            setupFiles: ["testing/global-setup.ts"]
         }
 
         // disable hot reloading
