@@ -1,5 +1,13 @@
 # chakra-app
 
+## 0.0.15
+
+### Patch Changes
+
+-   Updated dependencies [6380aa4]
+    -   @open-pioneer/base-theme@0.3.0
+    -   @open-pioneer/runtime@2.1.2
+
 ## 0.0.14
 
 ### Patch Changes
