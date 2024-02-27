@@ -84,7 +84,7 @@ it("Persists data to local storage", async () => {
     storageService.set("null", null);
     storageService.set("isAdmin", true);
     storageService.set("array", [1, 2, 3]);
-    storageService.set("object", { "baz": "qux" });
+    storageService.set("object", { baz: "qux" });
 
     expect(getStorageData()).toMatchInlineSnapshot(`
       {
@@ -108,9 +108,9 @@ it("Restores previous data on next run", async () => {
     MOCKED_STORAGE.set(
         DEFAULT_STORAGE_ID,
         JSON.stringify({
-            "answer": 42,
-            "object": {
-                "baz": "qux"
+            answer: 42,
+            object: {
+                baz: "qux"
             }
         })
     );
@@ -118,7 +118,7 @@ it("Restores previous data on next run", async () => {
     const storageService = await setup();
     expect(storageService.get("answer")).toBe(42);
     expect(storageService.get("object")).toEqual({
-        "baz": "qux"
+        baz: "qux"
     });
 });
 

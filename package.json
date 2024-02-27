@@ -1,6 +1,6 @@
 {
     "name": "core-packages",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": true,
     "type": "module",
     "license": "Apache-2.0",
@@ -65,7 +65,7 @@
         "framer-motion": "^10.16.9",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-use": "^17.4.1"
+        "react-use": "^17.4.2"
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.1",
@@ -84,7 +84,7 @@
         "@types/react-dom": "^18.2.17",
         "@typescript-eslint/eslint-plugin": "^6.13.1",
         "@typescript-eslint/parser": "^6.13.1",
-        "@vitejs/plugin-react-swc": "^3.5.0",
+        "@vitejs/plugin-react-swc": "^3.6.0",
         "eslint": "^8.54.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-import-resolver-typescript": "^3.6.1",
