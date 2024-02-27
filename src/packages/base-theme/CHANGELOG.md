@@ -1,5 +1,12 @@
 # @open-pioneer/base-theme
 
+## 0.3.0
+
+### Minor Changes
+
+-   6380aa4: Merge developments from @open-pioneer/theme.
+    This package now provides the `"trails"` color scheme, among other things.
+
 ## 0.2.0
 
 ### Minor Changes
