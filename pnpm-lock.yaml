@@ -49,7 +49,7 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       react-use:
-        specifier: ^17.4.1
+        specifier: ^17.4.2
         version: 17.5.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@changesets/cli':
@@ -198,7 +198,7 @@ importers:
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
       core-packages:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../..
     publishDirectory: dist
 
@@ -293,7 +293,7 @@ importers:
         specifier: workspace:^
         version: link:../test-utils
       core-packages:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../..
     publishDirectory: dist
 
@@ -319,7 +319,7 @@ importers:
         specifier: workspace:^
         version: link:../test-utils
       core-packages:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../..
     publishDirectory: dist
 
@@ -398,23 +398,6 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
-  src/packages/theme:
-    dependencies:
-      '@open-pioneer/base-theme':
-        specifier: workspace:^
-        version: link:../base-theme
-      '@open-pioneer/chakra-integration':
-        specifier: workspace:^
-        version: link:../chakra-integration
-      '@open-pioneer/runtime':
-        specifier: workspace:^
-        version: link:../runtime
-    devDependencies:
-      core-packages:
-        specifier: workspace:*
-        version: link:../../..
-    publishDirectory: dist
-
   src/samples/api-sample/api-app:
     dependencies:
       '@open-pioneer/chakra-integration':
@@ -444,9 +427,6 @@ importers:
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime
-      '@open-pioneer/theme':
-        specifier: workspace:^
-        version: link:../../../packages/theme
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -527,9 +507,6 @@ importers:
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime
-      '@open-pioneer/theme':
-        specifier: workspace:^
-        version: link:../../../packages/theme
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -568,9 +545,6 @@ importers:
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime
-      '@open-pioneer/theme':
-        specifier: workspace:^
-        version: link:../../../packages/theme
 
 packages:
 
