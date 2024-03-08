@@ -1,7 +1,17 @@
 {
     "name": "@open-pioneer/test-utils",
     "version": "1.1.1",
+    "description": "Contains test utilities that make it easier to test parts of an open pioneer trails application.",
     "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
+        "directory": "src/packages/test-utils"
+    },
+    "homepage": "https://github.com/open-pioneer",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
     "scripts": {
         "build": "build-pioneer-package"
     },

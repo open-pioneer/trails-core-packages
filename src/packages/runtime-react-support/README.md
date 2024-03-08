@@ -1,6 +1,6 @@
 # @open-pioneer/runtime-react-support
 
-An internal module providing support for react integration
+An internal module providing support for react integration.
 
 ## License
 

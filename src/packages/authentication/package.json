@@ -4,6 +4,15 @@
     "license": "Apache-2.0",
     "version": "0.3.1",
     "main": "index.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
+        "directory": "src/packages/authentication"
+    },
+    "homepage": "https://github.com/open-pioneer",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
     "scripts": {
         "build": "build-pioneer-package"
     },
