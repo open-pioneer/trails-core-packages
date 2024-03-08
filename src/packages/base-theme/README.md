@@ -1,6 +1,6 @@
 # @open-pioneer/base-theme
 
-This package provides a theme that uses the "trails" color scheme.
+This package provides the default theme for all open pioneer trails applications.
 
 ## Usage
 
@@ -8,7 +8,9 @@ This theme is automatically used as the default theme for all open pioneer trail
 
 ### How to override the `trails` color scheme
 
-Import the `extendTheme` helper function:
+When using this theme, the `trails` color scheme becomes is the default color scheme for all chakra UI components.
+
+To override the `trails` color scheme, import the `extendTheme` helper function:
 
 ```jsx
 import { extendTheme } from "@open-pioneer/chakra-integration";

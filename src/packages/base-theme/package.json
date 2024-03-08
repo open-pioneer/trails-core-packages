@@ -1,8 +1,18 @@
 {
     "name": "@open-pioneer/base-theme",
+    "description": "This package provides the default theme for all open pioneer trails applications.",
     "version": "0.3.0",
     "main": "index.ts",
     "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
+        "directory": "src/packages/base-theme"
+    },
+    "homepage": "https://github.com/open-pioneer",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
     "scripts": {
         "build": "build-pioneer-package"
     },
