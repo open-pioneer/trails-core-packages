@@ -1,5 +1,14 @@
 # @open-pioneer/test-utils
 
+## 1.1.2
+
+### Patch Changes
+
+-   5ff8f30: Update package.json metadata.
+-   Updated dependencies [5ff8f30]
+    -   @open-pioneer/runtime-react-support@1.0.1
+    -   @open-pioneer/chakra-integration@1.1.2
+
 ## 1.1.1
 
 ### Patch Changes

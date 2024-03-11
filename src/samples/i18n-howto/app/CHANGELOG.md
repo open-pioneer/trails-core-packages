@@ -1,5 +1,13 @@
 # i18n-howto-app
 
+## 0.0.16
+
+### Patch Changes
+
+-   Updated dependencies [5ff8f30]
+    -   @open-pioneer/chakra-integration@1.1.2
+    -   @open-pioneer/runtime@2.1.3
+
 ## 0.0.15
 
 ### Patch Changes
