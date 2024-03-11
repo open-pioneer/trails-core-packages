@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 1.2.2
+
+### Patch Changes
+
+-   5ff8f30: Update package.json metadata.
+
 ## 1.2.1
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @open-pioneer/runtime
 
+## 2.1.3
+
+### Patch Changes
+
+-   5ff8f30: Update package.json metadata.
+-   Updated dependencies [be236af]
+-   Updated dependencies [5ff8f30]
+    -   @open-pioneer/base-theme@0.3.1
+    -   @open-pioneer/runtime-react-support@1.0.1
+    -   @open-pioneer/chakra-integration@1.1.2
+    -   @open-pioneer/core@1.2.2
+
 ## 2.1.2
 
 ### Patch Changes
