@@ -48,19 +48,12 @@ export function AppUI() {
                         </Tooltip>
                     </Stack>
 
-                    <Heading size={"xs"}>existing variants</Heading>
+                    <Heading size={"xs"}>Chakra UI variants</Heading>
                     <Stack direction="row" my={2}>
                         <Button variant="solid">solid</Button>
                         <Button variant="outline">outline</Button>
                         <Button variant="ghost">ghost</Button>
                         <Button variant="link">link</Button>
-                    </Stack>
-
-                    <Heading size={"xs"}>custom variants</Heading>
-                    <Stack direction="row" my={2}>
-                        <Button variant="primary">primary</Button>
-                        <Button variant="secondary">secondary</Button>
-                        <Button variant="cancel">cancel</Button>
                     </Stack>
 
                     <Heading size={"xs"}>Button states</Heading>

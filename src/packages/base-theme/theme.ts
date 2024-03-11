@@ -26,19 +26,6 @@ const colors = {
         700: "#1b4b5f",
         800: "#123240",
         900: "#091920"
-    },
-    //trails_alt = currently only used for: <Button variant="secondary">secondary</Button>
-    trails_alt: {
-        50: "#eaf3e9",
-        100: "#d5e7d2",
-        200: "#abcea5",
-        300: "#80b678",
-        400: "#569d4b",
-        500: "#2c851e",
-        600: "#236a18",
-        700: "#1a5012",
-        800: "#12350c",
-        900: "#091b06"
     }
 };
 
@@ -123,39 +110,6 @@ export const theme = extendTheme(
                     //colorScheme: "gray"
                     //size: "md", //"lg" | "md" | "sm" | "xs"
                     //variant: "solid" //"primary" | "secondary" | "cancel" | "solid" | "outline" | "ghost" | "link"
-                },
-                variants: {
-                    //primary === default
-                    primary: {
-                        color: "font_inverse",
-                        bg: "trails.500",
-                        _hover: {
-                            bg: "trails.600"
-                        },
-                        _active: {
-                            bg: "trails.700"
-                        }
-                    },
-                    secondary: {
-                        color: "font_inverse",
-                        bg: "trails_alt.500",
-                        _hover: {
-                            bg: "trails_alt.600"
-                        },
-                        _active: {
-                            bg: "trails_alt.700"
-                        }
-                    },
-                    cancel: {
-                        color: "font_inverse",
-                        bg: "gray.500",
-                        _hover: {
-                            bg: "gray.600"
-                        },
-                        _active: {
-                            bg: "gray.700"
-                        }
-                    }
                 }
             },
             Checkbox: {
