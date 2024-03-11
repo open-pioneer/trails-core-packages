@@ -1,5 +1,11 @@
 # @open-pioneer/runtime-react-support
 
+## 1.0.1
+
+### Patch Changes
+
+-   5ff8f30: Update package.json metadata.
+
 ## 1.0.0
 
 ### Major Changes

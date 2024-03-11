@@ -1,5 +1,14 @@
 # @open-pioneer/base-theme
 
+## 0.3.1
+
+### Patch Changes
+
+-   be236af: Remove unused button variants and color scheme from base-theme.
+-   5ff8f30: Update package.json metadata.
+-   Updated dependencies [5ff8f30]
+    -   @open-pioneer/chakra-integration@1.1.2
+
 ## 0.3.0
 
 ### Minor Changes

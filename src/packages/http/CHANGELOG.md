@@ -1,5 +1,14 @@
 # @open-pioneer/http
 
+## 2.1.5
+
+### Patch Changes
+
+-   5ff8f30: Update package.json metadata.
+-   Updated dependencies [5ff8f30]
+    -   @open-pioneer/runtime@2.1.3
+    -   @open-pioneer/core@1.2.2
+
 ## 2.1.4
 
 ### Patch Changes
