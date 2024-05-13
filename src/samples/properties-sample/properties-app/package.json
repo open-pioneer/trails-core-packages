@@ -6,6 +6,6 @@
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
-        "react": "^18.2.0"
+        "react": "^18.3.1"
     }
 }
