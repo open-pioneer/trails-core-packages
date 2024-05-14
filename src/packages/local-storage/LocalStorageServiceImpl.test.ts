@@ -47,7 +47,7 @@ it("Detects missing local storage", async () => {
     `);
 
     expect(() => storageService.get("foo")).toThrowErrorMatchingInlineSnapshot(
-        '"local-storage:not-supported: Local storage is not supported by this browser."'
+        `[Error: local-storage:not-supported: Local storage is not supported by this browser.]`
     );
 });
 
@@ -135,7 +135,7 @@ it("Overwrites invalid data on load", async () => {
     expect(args[0]).toMatchInlineSnapshot(
         '"[WARN] local-storage: Invalid persisted data, reverting to default."'
     );
-    expect(args[1]).toMatch(/unexpected token/i);
+    expect(String(args[1])).toMatch(/unexpected token/i);
 });
 
 it("Returns previously set values in get()", async () => {
@@ -184,13 +184,13 @@ it("Supports removing all keys", async () => {
 it("Throws for invalid values", async () => {
     const storageService = await setup();
     expect(() => storageService.set("foo", () => 1)).toThrowErrorMatchingInlineSnapshot(
-        '"local-storage:invalid-value: The value is not supported by local storage."'
+        `[Error: local-storage:invalid-value: The value is not supported by local storage.]`
     );
     expect(() => storageService.set("foo", Symbol("symbol"))).toThrowErrorMatchingInlineSnapshot(
-        '"local-storage:invalid-value: The value is not supported by local storage."'
+        `[Error: local-storage:invalid-value: The value is not supported by local storage.]`
     );
     expect(() => storageService.set("foo", BigInt(1))).toThrowErrorMatchingInlineSnapshot(
-        '"local-storage:invalid-value: The value is not supported by local storage."'
+        `[Error: local-storage:invalid-value: The value is not supported by local storage.]`
     );
 });
 
@@ -296,7 +296,7 @@ describe("nested namespaces", () => {
         const storageService = await setup();
         storageService.set("a", "invalid");
         expect(() => storageService.getNamespace("a")).toThrowErrorMatchingInlineSnapshot(
-            "\"local-storage:invalid-path: Cannot use 'a' as a namespace because it is not associated with an object.\""
+            `[Error: local-storage:invalid-path: Cannot use 'a' as a namespace because it is not associated with an object.]`
         );
     });
 
@@ -305,7 +305,7 @@ describe("nested namespaces", () => {
         const namespace = storageService.getNamespace("a");
         storageService.set("a", 123);
         expect(() => namespace.set("foo", 456)).toThrowErrorMatchingInlineSnapshot(
-            "\"local-storage:invalid-path: Cannot set property on 'a' because it is no object.\""
+            `[Error: local-storage:invalid-path: Cannot set property on 'a' because it is no object.]`
         );
     });
 
@@ -314,7 +314,7 @@ describe("nested namespaces", () => {
         const namespace = storageService.getNamespace("a");
         storageService.set("a", 123);
         expect(() => namespace.get("foo")).toThrowErrorMatchingInlineSnapshot(
-            "\"local-storage:invalid-path: Cannot get nested property 'foo' because the parent is no object.\""
+            `[Error: local-storage:invalid-path: Cannot get nested property 'foo' because the parent is no object.]`
         );
     });
 

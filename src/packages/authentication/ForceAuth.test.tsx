@@ -50,7 +50,7 @@ it("renders no children if the state is pending", async () => {
     );
 
     const result = await screen.findByTestId("1234");
-    expect(result.outerHTML).toMatchInlineSnapshot('"<div data-testid=\\"1234\\"></div>"');
+    expect(result.outerHTML).toMatchInlineSnapshot(`"<div data-testid="1234"></div>"`);
 });
 
 it("renders AuthFallback if the user is not authenticated", async () => {
@@ -91,7 +91,7 @@ it("renders the AuthFallback with custom props", async () => {
     );
 
     const result = await screen.findByTestId("LoginFallBack");
-    expect(result.textContent).toMatchInlineSnapshot('"\\"TestProp\\""');
+    expect(result.textContent).toMatchInlineSnapshot(`""TestProp""`);
 });
 
 it("renders the AuthFallback with a custom render function", async () => {
@@ -154,7 +154,7 @@ it("re-renders when the service's state changes", async () => {
     );
 
     const result = await screen.findByTestId("outer-div");
-    expect(result.outerHTML).toMatchInlineSnapshot('"<div data-testid=\\"outer-div\\"></div>"');
+    expect(result.outerHTML).toMatchInlineSnapshot(`"<div data-testid="outer-div"></div>"`);
 
     act(() => {
         testAuthService.setAuthState({
@@ -167,7 +167,7 @@ it("re-renders when the service's state changes", async () => {
 
     const innerDiv = await screen.findByTestId("inner-div");
     expect(innerDiv.outerHTML).toMatchInlineSnapshot(
-        '"<div data-testid=\\"inner-div\\">testDiv</div>"'
+        `"<div data-testid="inner-div">testDiv</div>"`
     );
 });
 
