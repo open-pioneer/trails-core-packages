@@ -323,6 +323,23 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
+  src/packages/reactivity:
+    dependencies:
+      '@conterra/reactivity-core':
+        specifier: ^0.3.2
+        version: 0.3.2
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
   src/packages/runtime:
     dependencies:
       '@formatjs/intl':
@@ -1127,6 +1144,9 @@ packages:
   '@changesets/write@0.3.0':
     resolution: {integrity: sha512-slGLb21fxZVUYbyea+94uFiD6ntQW0M2hIKNznFizDhZPDgn2c/fv1UzzlW43RVzh1BEDuIqW6hzlJ1OflNmcw==}
 
+  '@conterra/reactivity-core@0.3.2':
+    resolution: {integrity: sha512-AzcD1DLfYGdJjP/9qhKO/Nd8qihBnTNywFXtmNHF0q0P6Xt7+c50DkfywT1VllTg00TPUhT+WPMaFE9Kz+7tnw==}
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -1628,6 +1648,9 @@ packages:
 
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+
+  '@preact/signals-core@1.6.0':
+    resolution: {integrity: sha512-O/XGxwP85h1F7+ouqTMOIZ3+V1whfaV9ToIVcuyGriD4JkSD00cQo54BKdqjvBJxbenvp7ynfqRHEwI6e+NIhw==}
 
   '@rollup/pluginutils@4.2.1':
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -5265,6 +5288,10 @@ snapshots:
       human-id: 1.0.2
       prettier: 2.8.8
 
+  '@conterra/reactivity-core@0.3.2':
+    dependencies:
+      '@preact/signals-core': 1.6.0
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -5720,6 +5747,8 @@ snapshots:
     optional: true
 
   '@popperjs/core@2.11.8': {}
+
+  '@preact/signals-core@1.6.0': {}
 
   '@rollup/pluginutils@4.2.1':
     dependencies:
