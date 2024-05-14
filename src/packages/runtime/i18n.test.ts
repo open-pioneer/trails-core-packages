@@ -49,6 +49,6 @@ it("throws if a locale cannot be forced", () => {
     expect(() =>
         pickLocale("de-simple", appLocales, userLocales)
     ).toThrowErrorMatchingInlineSnapshot(
-        "\"runtime:unsupported-locale: Locale 'de-simple' cannot be forced because it is not supported by the application. Supported locales are en, zh.\""
+        `[Error: runtime:unsupported-locale: Locale 'de-simple' cannot be forced because it is not supported by the application. Supported locales are en, zh.]`
     );
 });
