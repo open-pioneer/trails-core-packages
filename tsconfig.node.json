@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "composite": true,
+
+        "target": "ESNext",
+        "lib": ["ES2022"],
+        "module": "ES2022",
+        "moduleResolution": "Node",
+        "allowJs": false,
+
+        "strict": true,
+        "resolveJsonModule": true,
+        "noUncheckedIndexedAccess": true,
+        "useDefineForClassFields": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+
+        "isolatedModules": true,
+        "esModuleInterop": false,
+        "skipLibCheck": true
+    },
+    "include": ["vite.config.ts", "support"]
+}
