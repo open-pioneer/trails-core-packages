@@ -1,0 +1,11 @@
+{
+    "name": "keycloak-sample",
+    "private": true,
+    "dependencies": {
+        "@open-pioneer/authentication": "workspace:^",
+        "@open-pioneer/http": "workspace:^",
+        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/authentication-keycloak": "workspace:^",
+        "@open-pioneer/notifier": "workspace:^"
+    }
+}

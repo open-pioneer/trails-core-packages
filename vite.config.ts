@@ -31,6 +31,7 @@ const sampleSites = [
     "samples/notify-sample",
     "samples/theming-sample",
     "samples/auth-sample",
+    "samples/keycloak-sample"
 ];
 
 // https://vitejs.dev/config/
@@ -43,6 +44,9 @@ export default defineConfig(({ mode }) => {
 
     return {
         root: resolve(__dirname, "src"),
+
+        // Load .env files from this directory instead of `root`.
+        envDir: __dirname,
 
         // Generates relative urls in html etc.
         base: "./",
