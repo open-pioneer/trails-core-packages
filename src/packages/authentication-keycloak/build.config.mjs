@@ -15,7 +15,7 @@ export default defineBuildConfig({
                 "authentication-keycloak.KeycloakAuthPlugin"
             ],
             references: {
-                "notifier": "notifier.NotificationService"
+                notifier: "notifier.NotificationService"
             }
         }
     },

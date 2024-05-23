@@ -5,12 +5,6 @@ import { defineBuildConfig } from "@open-pioneer/build-support";
 export default defineBuildConfig({
     i18n: ["de", "en"],
     services: {
-        MapConfigProviderImpl: {
-            provides: ["map.MapConfigProvider"],
-            references: {
-                vectorSourceFactory: "ogc-features.VectorSourceFactory"
-            }
-        },
         SampleTokenInterceptor: {
             provides: ["http.Interceptor"],
             references: {
@@ -20,6 +14,6 @@ export default defineBuildConfig({
     },
 
     ui: {
-        references: ["authentication.AuthService"]
+        references: ["authentication.AuthService", "http.HttpService"]
     }
 });

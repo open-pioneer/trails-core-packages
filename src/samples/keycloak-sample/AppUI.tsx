@@ -1,82 +1,106 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ForceAuth, useAuthState } from "@open-pioneer/authentication";
-import { useIntl, useService } from "open-pioneer:react-hooks";
-import { MapAnchor, MapContainer } from "@open-pioneer/map";
-import { SectionHeading, TitledSection } from "@open-pioneer/react-utils";
-import { ZoomIn, ZoomOut, InitialExtent } from "@open-pioneer/map-navigation";
-import { Toc } from "@open-pioneer/toc";
+import { AuthService, ForceAuth, useAuthState } from "@open-pioneer/authentication";
+import {
+    Button,
+    Code,
+    Container,
+    Flex,
+    Heading,
+    ListItem,
+    Text,
+    UnorderedList,
+    VStack
+} from "@open-pioneer/chakra-integration";
 import { Notifier } from "@open-pioneer/notifier";
-import { Flex, Box, Text } from "@open-pioneer/chakra-integration";
+import { useService } from "open-pioneer:react-hooks";
 import { LogoutButton } from "./LogoutButton";
-import { MAP_ID } from "./MapConfigProviderImpl";
-import { AuthService } from "@open-pioneer/authentication";
+import { HttpService } from "@open-pioneer/http";
 
 export function AppUI() {
     const authService = useService<AuthService>("authentication.AuthService");
+    const httpService = useService<HttpService>("http.HttpService");
     const authState = useAuthState(authService);
     const sessionInfo = authState.kind == "authenticated" ? authState.sessionInfo : undefined;
-    const userName = sessionInfo?.attributes?.userName as string;
-    const intl = useIntl();
+    const userName = sessionInfo?.userName;
+    const doRequest = () => {
+        httpService
+            .fetch(
+                "https://ogc-api.nrw.de/inspire-us-kindergarten/v1/collections/governmentalservice/items?f=json"
+            )
+            .catch((err) => console.error("Request failed", err));
+    };
 
     return (
         <>
             <Notifier />
-            <ForceAuth>
+            <Container maxW="800px">
                 <Flex height="100%" direction="column" overflow="hidden">
-                    <TitledSection
-                        title={
-                            <Box textAlign="center" py={1}>
-                                <SectionHeading size={"md"}>
-                                    Open Pioneer - Keycloak Sample
-                                </SectionHeading>
-                                <Text>Logged in as: {userName}</Text>
-                                <LogoutButton />
-                            </Box>
-                        }
-                    >
-                        <Flex flex="3" direction="column" position="relative">
-                            <MapContainer mapId={MAP_ID}>
-                                <MapAnchor position="top-left" horizontalGap={20} verticalGap={20}>
-                                    <Box
-                                        backgroundColor="white"
-                                        borderWidth="1px"
-                                        borderRadius="lg"
-                                        padding={2}
-                                        boxShadow="lg"
-                                    >
-                                        <TitledSection
-                                            title={
-                                                <SectionHeading size="md">
-                                                    {intl.formatMessage({ id: "tocTitle" })}
-                                                </SectionHeading>
-                                            }
-                                        >
-                                            <Toc
-                                                mapId={MAP_ID}
-                                                basemapSwitcherProps={{
-                                                    allowSelectingEmptyBasemap: true
-                                                }}
-                                            />
-                                        </TitledSection>
-                                    </Box>
-                                </MapAnchor>
-                                <MapAnchor
-                                    position="bottom-right"
-                                    horizontalGap={10}
-                                    verticalGap={30}
-                                >
-                                    <Flex direction="column" gap={1} padding={1}>
-                                        <InitialExtent mapId={MAP_ID} />
-                                        <ZoomIn mapId={MAP_ID} />
-                                        <ZoomOut mapId={MAP_ID} />
-                                    </Flex>
-                                </MapAnchor>
-                            </MapContainer>
-                        </Flex>
-                    </TitledSection>
+                    <Heading as="h1" size="2xl">
+                        Keycloak Sample
+                    </Heading>
+
+                    <VStack mt={4} spacing={2} align="stretch">
+                        <Heading as="h2" size="xl">
+                            Additional Setup
+                        </Heading>
+                        <Text>
+                            This application requires additional setup. Most importantly, a Keycloak
+                            installation must be present.
+                        </Text>
+                        <Text>
+                            The following environment properties should be set via vite (e.g. in{" "}
+                            <Code>env.local</Code>):
+                        </Text>
+                        <UnorderedList>
+                            <ListItem>
+                                <Code>VITE_KEYCLOAK_CONFIG_URL</Code> (the URL to the Keycloak
+                                instance)
+                            </ListItem>
+                            <ListItem>
+                                <Code>VITE_KEYCLOAK_CONFIG_REALM</Code> (the Keycloak realm)
+                            </ListItem>
+                            <ListItem>
+                                <Code>VITE_KEYCLOAK_CONFIG_CLIENT_ID</Code> (the client id of this
+                                application)
+                            </ListItem>
+                        </UnorderedList>
+
+                        <Text textAlign="center">
+                            <Text as="b">Status: </Text>
+                            {userName != null ? (
+                                <>
+                                    Logged in as <Code>{userName}</Code>.
+                                </>
+                            ) : (
+                                <>Not logged in.</>
+                            )}
+                        </Text>
+                    </VStack>
                 </Flex>
-            </ForceAuth>
+                <ForceAuth>
+                    <VStack
+                        align="center"
+                        p={10}
+                        mt={2}
+                        spacing={3}
+                        border="2px solid red"
+                        borderRadius={5}
+                    >
+                        <Text textAlign="center">
+                            This part of the application is only visible when logged in.
+                        </Text>
+                        <LogoutButton />
+
+                        <Text>
+                            The following button triggers a request against a backend. The request
+                            will automatically include the Keycloak token (see{" "}
+                            <Code>SampleTokenInterceptor.ts</Code>):
+                        </Text>
+                        <Button onClick={doRequest}>Trigger Request With Token</Button>
+                    </VStack>
+                </ForceAuth>
+            </Container>
         </>
     );
 }
