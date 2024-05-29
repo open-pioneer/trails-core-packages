@@ -55,7 +55,7 @@ export interface PackageContextProviderProps {
 
 /**
  * Injects services and properties into the component tree.
- * React components using pioneer hooks like `useService` and `useProperties`
+ * React components using Open Pioneer Trails hooks like `useService` and `useProperties`
  * will receive the mocked properties here instead.
  * Currently also wrapped with the CustomChakraProvider to support chakra-ui elements
  */

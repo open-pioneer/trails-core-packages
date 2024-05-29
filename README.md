@@ -1,6 +1,6 @@
 # Core packages
 
-Core packages of the open pioneer client framework.
+Core packages of the Open Pioneer Trails client framework.
 
 [Samples](https://open-pioneer.github.io/trails-demo/core-packages/) | [API Documentation](https://open-pioneer.github.io/trails-demo/core-packages/docs/) | [User manual](https://github.com/open-pioneer/trails-starter/tree/main/docs)
 

@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/authentication",
-    "description": "Authentication API for open pioneer trails applications.",
+    "description": "Authentication API for Open Pioneer Trails applications.",
     "license": "Apache-2.0",
     "version": "0.3.2",
     "main": "index.ts",
