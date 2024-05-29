@@ -1,4 +1,4 @@
-# Open Pioneer Core Packages
+# Open Pioneer Trails core packages
 
 For general documentation hints see [Project README](../README.md).
 

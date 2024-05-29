@@ -1,8 +1,8 @@
 # @open-pioneer/chakra-integration
 
-This package integrates [Chakra UI](https://chakra-ui.com/) into open pioneer trails application.
+This package integrates [Chakra UI](https://chakra-ui.com/) into Open Pioneer Trails application.
 All components are re-exported from `@chakra-ui/react` (sometimes with some modifications).
-All UI packages using the pioneer framework should use this package instead of depending on `@chakra-ui/react` directly.
+All UI packages using the Open Pioneer Trails framework should use this package instead of depending on `@chakra-ui/react` directly.
 
 ## Internals
 

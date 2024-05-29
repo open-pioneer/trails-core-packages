@@ -99,7 +99,7 @@
 ### Major Changes
 
 -   ce9e060: Remove support for closed shadow roots.
-    Shadow roots used by trails applications are now always `"open"`.
+    Shadow roots used by Open Pioneer Trails applications are now always `"open"`.
     See #19.
 -   6f954e3: **Breaking Change**: change how services integrate into TypeScript (fixes #22).
     The old TypeScript integration had unexpected edge cases, see the linked issue.

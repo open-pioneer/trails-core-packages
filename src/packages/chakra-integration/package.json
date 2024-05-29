@@ -1,7 +1,7 @@
 {
     "name": "@open-pioneer/chakra-integration",
     "version": "1.1.2",
-    "description": "Integrates Chakra UI into open pioneer trails application.",
+    "description": "Integrates Chakra UI into Open Pioneer Trails application.",
     "main": "index.tsx",
     "license": "Apache-2.0",
     "repository": {

@@ -3,7 +3,7 @@
 import { DeclaredService } from "@open-pioneer/runtime";
 
 /**
- * Provides access to the browser's local storage for trails packages through a convenient API.
+ * Provides access to the browser's local storage for Open Pioneer Trails packages through a convenient API.
  * Use the interface name `"local-storage.LocalStorageService"` to inject an instance of this interface.
  */
 export interface LocalStorageService

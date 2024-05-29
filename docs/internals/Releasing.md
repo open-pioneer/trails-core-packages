@@ -1,15 +1,15 @@
 # Release Process
 
-This document explains which steps need to be performed when creating a release for the open pioneer trails core packages and other repositories using the same workflow.
+This document explains which steps need to be performed when creating a release for the Open Pioneer Trails core packages and other repositories using the same workflow.
 
-For a description of how to publish an open pioneer trails package in general, refer to https://github.com/open-pioneer/trails-starter/blob/main/docs/tutorials/HowToPublishAPackage.md.
+For a description of how to publish an Open Pioneer Trails package in general, refer to https://github.com/open-pioneer/trails-starter/blob/main/docs/tutorials/HowToPublishAPackage.md.
 
 ## Background information
 
 [Changesets](https://github.com/changesets/changesets) are used to manage pending changes.
 When contributing to a repository using this workflow, developers should create the appropriate changeset files for their changes.
 
-For the release of the open pioneer trails core packages, github actions have been implemented so that only a few manual steps (see below) are necessary to perform a release.
+For the release of the Open Pioneer Trails core packages, github actions have been implemented so that only a few manual steps (see below) are necessary to perform a release.
 
 The release will be performed for all packages that contain changes or have a dependency on a package that changed.
 
