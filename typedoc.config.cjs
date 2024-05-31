@@ -1,26 +1,20 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { readFileSync } = require("fs");
+const { sync: fastGlobSync } = require("fast-glob");
+const { dirname } = require("path");
 
-const documentedPackages = [
-    "authentication",
-    "base-theme",
-    "chakra-integration",
-    "core",
-    "http",
-    "integration",
-    "local-storage",
-    "notifier",
-    "runtime",
-    "test-utils"
-];
+const documentedPackages = getPackageDirectories().sort();
+console.info("Creating documentation for packages:", documentedPackages);
 
 // See https://typedoc.org/options/
 module.exports = {
-    name: "Open Pioneer Core Packages",
+    name: "Trails Packages",
     readme: "none",
     out: "dist/docs",
     entryPointStrategy: "packages",
-    entryPoints: documentedPackages.map((p) => `src/packages/${p}`),
+    entryPoints: documentedPackages,
     skipErrorChecking: true,
     validation: {
         notExported: false,
@@ -28,3 +22,18 @@ module.exports = {
         notDocumented: true
     }
 };
+
+function getPackageDirectories() {
+    const packageJsonPaths = fastGlobSync("./src/packages/**/package.json", {
+        ignore: ["**/dist/**", "**/node_modules/**"],
+        followSymbolicLinks: false
+    });
+    const packageDirectories = packageJsonPaths
+        .filter((path) => {
+            const packageJsonContent = JSON.parse(readFileSync(path, "utf-8"));
+            const isPrivate = !!packageJsonContent.private;
+            return !isPrivate;
+        })
+        .map((path) => dirname(path));
+    return packageDirectories;
+}

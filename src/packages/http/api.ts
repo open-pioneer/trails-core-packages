@@ -13,7 +13,7 @@ export interface HttpService extends DeclaredService<"http.HttpService"> {
      * Requests the given `resource` via HTTP and returns the response.
      *
      * This method works almost exactly the same as the browser's native `fetch` function.
-     * However, certain trails extensions (such as interceptors) are implemented on top of `fetch`
+     * However, certain Open Pioneer Trails extensions (such as interceptors) are implemented on top of `fetch`
      * to enable new features.
      *
      * For example, access tokens or other header / query parameters can be added automatically using an

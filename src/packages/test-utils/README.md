@@ -1,6 +1,6 @@
 # @open-pioneer/test-utils
 
-This package contains test utilities that make it easier to test parts of an open pioneer trails application.
+This package contains test utilities that make it easier to test parts of an Open Pioneer Trails application.
 
 ## Web Component utilities
 

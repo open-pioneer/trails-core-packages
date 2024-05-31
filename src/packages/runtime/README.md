@@ -1,6 +1,6 @@
 # @open-pioneer/runtime
 
-Implements the runtime environment for open pioneer trails apps.
+Implements the runtime environment for Open Pioneer Trails apps.
 
 ## Quick start
 

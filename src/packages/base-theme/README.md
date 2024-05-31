@@ -1,10 +1,10 @@
 # @open-pioneer/base-theme
 
-This package provides the default theme for all open pioneer trails applications.
+This package provides the default theme for all Open Pioneer Trails applications.
 
 ## Usage
 
-This theme is automatically used as the default theme for all open pioneer trails applications.
+This theme is automatically used as the default theme for all Open Pioneer Trails applications.
 When using this theme, the `trails` color scheme becomes the default color scheme for all Chakra UI components.
 
 ### How to override the theme

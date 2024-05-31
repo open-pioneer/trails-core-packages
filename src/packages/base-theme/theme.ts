@@ -73,7 +73,7 @@ const getColor = (semanticToken: string, theme: any) => {
 };
 
 /**
- * Base theme for open pioneer trails applications.
+ * Base theme for Open Pioneer Trails applications.
  *
  * All custom themes should extend this theme:
  *

@@ -1,13 +1,13 @@
 {
-    "name": "@open-pioneer/authentication",
-    "description": "Authentication API for Open Pioneer Trails applications.",
+    "name": "@open-pioneer/authentication-keycloak",
+    "version": "0.0.1",
+    "description": "Implements authentication against Keycloak servers.",
     "license": "Apache-2.0",
-    "version": "0.3.2",
     "main": "index.ts",
     "repository": {
         "type": "git",
-        "url": "https://github.com/open-pioneer/trails-core-packages",
-        "directory": "src/packages/authentication"
+        "url": "https://github.com/open-pioneer/core-packages",
+        "directory": "src/packages/authentication-keycloak"
     },
     "homepage": "https://github.com/open-pioneer",
     "keywords": [
@@ -17,15 +17,14 @@
         "build": "build-pioneer-package"
     },
     "peerDependencies": {
+        "@open-pioneer/authentication": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/core": "workspace:^",
-        "react": "^18.3.1",
-        "react-use": "^17.4.2"
+        "@open-pioneer/notifier": "workspace:^",
+        "keycloak-js": "^23.0.7"
     },
     "devDependencies": {
-        "core-packages": "workspace:^",
-        "@open-pioneer/test-utils": "workspace:^",
-        "@testing-library/react": "^14.1.2"
+        "core-packages": "workspace:^"
     },
     "publishConfig": {
         "directory": "dist",
