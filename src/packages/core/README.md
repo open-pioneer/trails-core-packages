@@ -1,6 +1,6 @@
 # @open-pioneer/core
 
-This package contains basic utility functions and classes used by the @open-pioneer project.
+This package contains basic utility functions and classes used in Open Pioneer Trails applications.
 
 ## Events
 
