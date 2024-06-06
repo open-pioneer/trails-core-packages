@@ -1,5 +1,17 @@
 # @open-pioneer/authentication
 
+## 0.3.3
+
+### Patch Changes
+
+-   64645aa: Update to react 18.3
+-   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+-   Updated dependencies [5d3aafd]
+-   Updated dependencies [64645aa]
+-   Updated dependencies [b3c60f2]
+    -   @open-pioneer/core@1.2.3
+    -   @open-pioneer/runtime@2.1.4
+
 ## 0.3.2
 
 ### Patch Changes

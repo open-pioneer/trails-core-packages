@@ -1,5 +1,15 @@
 # @open-pioneer/base-theme
 
+## 0.3.2
+
+### Patch Changes
+
+-   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+-   Updated dependencies [64645aa]
+-   Updated dependencies [64645aa]
+-   Updated dependencies [b3c60f2]
+    -   @open-pioneer/chakra-integration@1.1.3
+
 ## 0.3.1
 
 ### Patch Changes

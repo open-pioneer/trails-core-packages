@@ -1,6 +1,6 @@
 {
     "name": "chakra-app",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "private": true,
     "dependencies": {
         "@open-pioneer/base-theme": "workspace:^",

@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/local-storage",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "Provides access to the browser's local storage.",
     "license": "Apache-2.0",
     "main": "index.ts",

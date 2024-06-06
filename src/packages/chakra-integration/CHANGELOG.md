@@ -1,5 +1,13 @@
 # @open-pioneer/chakra-integration
 
+## 1.1.3
+
+### Patch Changes
+
+-   64645aa: Update to react 18.3
+-   64645aa: Do not require a specific version of framer motion (same as chakra).
+-   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+
 ## 1.1.2
 
 ### Patch Changes

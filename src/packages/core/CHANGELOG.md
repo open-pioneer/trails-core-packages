@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 1.2.3
+
+### Patch Changes
+
+-   5d3aafd: Harmonize references to Open Pioneer Trails in README.
+
 ## 1.2.2
 
 ### Patch Changes
