@@ -1,5 +1,17 @@
 # @open-pioneer/test-utils
 
+## 1.1.3
+
+### Patch Changes
+
+-   64645aa: Update to react 18.3
+-   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+-   Updated dependencies [64645aa]
+-   Updated dependencies [64645aa]
+-   Updated dependencies [b3c60f2]
+    -   @open-pioneer/runtime-react-support@1.0.2
+    -   @open-pioneer/chakra-integration@1.1.3
+
 ## 1.1.2
 
 ### Patch Changes

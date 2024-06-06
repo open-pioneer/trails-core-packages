@@ -1,5 +1,14 @@
 # @open-pioneer/integration
 
+## 2.0.7
+
+### Patch Changes
+
+-   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+-   Updated dependencies [64645aa]
+-   Updated dependencies [b3c60f2]
+    -   @open-pioneer/runtime@2.1.4
+
 ## 2.0.6
 
 ### Patch Changes

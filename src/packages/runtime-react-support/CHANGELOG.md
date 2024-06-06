@@ -1,5 +1,11 @@
 # @open-pioneer/runtime-react-support
 
+## 1.0.2
+
+### Patch Changes
+
+-   64645aa: Update to react 18.3
+
 ## 1.0.1
 
 ### Patch Changes

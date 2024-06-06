@@ -1,5 +1,16 @@
 # @open-pioneer/http
 
+## 2.1.6
+
+### Patch Changes
+
+-   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+-   Updated dependencies [5d3aafd]
+-   Updated dependencies [64645aa]
+-   Updated dependencies [b3c60f2]
+    -   @open-pioneer/core@1.2.3
+    -   @open-pioneer/runtime@2.1.4
+
 ## 2.1.5
 
 ### Patch Changes
