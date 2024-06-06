@@ -4,6 +4,8 @@ import { Reactive, batch, computed, isReactive, reactive } from "@conterra/react
 import { act, render, renderHook, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { useComputed, useReactive, useReactiveSnapshot, useReactiveValue } from "./index";
+import { Model } from "./examples/Model";
+import { YourComponent } from "./examples/YourComponent";
 
 describe("useReactive", () => {
     it("creates a new signal", () => {
@@ -52,7 +54,7 @@ describe("useReactive", () => {
 describe("useComputed", () => {
     it("creates a computed signal", () => {
         const hook = renderHook(() => {
-            const computed = useComputed(() => 1);
+            const computed = useComputed(() => 1, []);
             return computed;
         });
         expect(String(hook.result.current)).toMatchInlineSnapshot(`"Reactive[value=1]"`);
@@ -65,7 +67,7 @@ describe("useComputed", () => {
             const computed = useComputed(() => {
                 calls += 1;
                 return count.value * 2;
-            });
+            }, []);
             return computed;
         });
 
@@ -112,7 +114,7 @@ describe("useReactiveValue", () => {
         const count = reactive(1);
 
         const hook = renderHook(() => {
-            const computed = useComputed(() => count.value * 2);
+            const computed = useComputed(() => count.value * 2, []);
             const value = useReactiveValue(computed);
             return value;
         });
@@ -142,7 +144,7 @@ describe("useReactiveSnapshot", () => {
                     product: product.value,
                     sum: a.value + b.value
                 };
-            })
+            }, [])
         );
 
         expect(calls).toBe(1);
@@ -288,6 +290,18 @@ describe("rendering components", () => {
         rerender(<Component model={model2} />);
         expect(div.textContent).toMatch(/current count is 2/);
     });
+});
+
+it("renders the example correctly", async () => {
+    const model = new Model();
+    render(<YourComponent model={model} />);
+
+    const div = await screen.findByText("Hello John Doe");
+    await act(async () => {
+        model.updateName("Jane", "Doe");
+        await waitForUpdate();
+    });
+    expect(div.textContent).toBe("Hello Jane Doe");
 });
 
 // Watch callbacks are executed with a small delay (in a new microtask).

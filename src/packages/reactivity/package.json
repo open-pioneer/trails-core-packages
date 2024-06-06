@@ -18,7 +18,7 @@
     },
     "peerDependencies": {
         "react": "^18.3.1",
-        "@conterra/reactivity-core": "^0.3.2"
+        "@conterra/reactivity-core": "^0.4.0"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",

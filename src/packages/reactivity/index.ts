@@ -75,7 +75,7 @@ export function useReactive<T>(initialValue?: T): Reactive<T | undefined> {
  * @see {@link useReactiveValue()}
  * @see {@link useReactiveSnapshot()}
  */
-export function useComputed<T>(compute: () => T, deps?: DependencyList): ReadonlyReactive<T> {
+export function useComputed<T>(compute: () => T, deps: DependencyList): ReadonlyReactive<T> {
     const computeRef = useRef(compute);
     computeRef.current = compute;
 
@@ -156,17 +156,18 @@ export function useReactiveValue<T>(reactive: ReadonlyReactive<T>): T {
  * @see
  * This hook is based on {@link useComputed()} and {@link useReactiveValue()}.
  */
-export function useReactiveSnapshot<T>(compute: () => T, deps?: DependencyList): T {
+export function useReactiveSnapshot<T>(compute: () => T, deps: DependencyList): T {
     // We create an internal computed value that executes the compute function;
     // this way the implementation of `compute` is automatically tracked.
     // getSnapshot and subscribe simply watch the current value of that computed value.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const computedSnapshot = useComputed(compute, deps);
     const snapshot = useReactiveValue(computedSnapshot);
     useDebugValue(snapshot);
     return snapshot;
 }
 
-function useComputedDeps(deps?: DependencyList): DependencyList {
+function useComputedDeps(deps: DependencyList): DependencyList {
     const computedDeps = useRef<DependencyList>();
     if (computedDeps.current == null || !shallowEqual(computedDeps.current, deps)) {
         computedDeps.current = deps ?? [];
@@ -174,7 +175,7 @@ function useComputedDeps(deps?: DependencyList): DependencyList {
     return computedDeps.current;
 }
 
-function shallowEqual(a: DependencyList, b: DependencyList | undefined): boolean {
+function shallowEqual(a: DependencyList, b: DependencyList): boolean {
     if (a === b) {
         return true;
     }
