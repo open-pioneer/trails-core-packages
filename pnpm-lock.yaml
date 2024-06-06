@@ -346,6 +346,23 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
+  src/packages/reactivity:
+    dependencies:
+      '@conterra/reactivity-core':
+        specifier: ^0.4.0
+        version: 0.4.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
   src/packages/runtime:
     dependencies:
       '@formatjs/intl':
@@ -1168,6 +1185,9 @@ packages:
   '@changesets/write@0.3.0':
     resolution: {integrity: sha512-slGLb21fxZVUYbyea+94uFiD6ntQW0M2hIKNznFizDhZPDgn2c/fv1UzzlW43RVzh1BEDuIqW6hzlJ1OflNmcw==}
 
+  '@conterra/reactivity-core@0.4.0':
+    resolution: {integrity: sha512-QNwXBtFrL8NDm2k51qWGD/776geyWU9CeS0sJYBF4/itqB2l4+/7MwBxzdlXcxzaFU+YiVGMUcohvr8RZUObCw==}
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -1669,6 +1689,9 @@ packages:
 
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+
+  '@preact/signals-core@1.6.0':
+    resolution: {integrity: sha512-O/XGxwP85h1F7+ouqTMOIZ3+V1whfaV9ToIVcuyGriD4JkSD00cQo54BKdqjvBJxbenvp7ynfqRHEwI6e+NIhw==}
 
   '@rollup/pluginutils@4.2.1':
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -2805,6 +2828,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   globals@13.20.0:
     resolution: {integrity: sha512-Qg5QtVkCy/kv3FUSlu4ukeZDVf9ee0iXLAUYX13gbR17bnejFTzr4iS9bY7kwCf1NztRNm1t91fjOiyx4CSwPQ==}
@@ -3723,6 +3747,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   rimraf@5.0.5:
@@ -5320,6 +5345,10 @@ snapshots:
       human-id: 1.0.2
       prettier: 2.8.8
 
+  '@conterra/reactivity-core@0.4.0':
+    dependencies:
+      '@preact/signals-core': 1.6.0
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -5775,6 +5804,8 @@ snapshots:
     optional: true
 
   '@popperjs/core@2.11.8': {}
+
+  '@preact/signals-core@1.6.0': {}
 
   '@rollup/pluginutils@4.2.1':
     dependencies:
