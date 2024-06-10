@@ -1,5 +1,13 @@
 # @open-pioneer/http
 
+## 2.1.7
+
+### Patch Changes
+
+-   Updated dependencies [90d0cce]
+-   Updated dependencies [90d0cce]
+    -   @open-pioneer/runtime@2.1.5
+
 ## 2.1.6
 
 ### Patch Changes

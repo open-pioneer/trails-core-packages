@@ -1,5 +1,25 @@
 # @open-pioneer/runtime
 
+## 2.1.5
+
+### Patch Changes
+
+-   90d0cce: The `resolveConfig` callback of an app's configuration can now inspect the application's `hostElement`.
+-   90d0cce: Add a builtin method on the `ApplicationContext` to change the application's locale.
+    Note that with the current implementation, the application will simply restart with the new locale.
+    The application's state will be lost.
+
+    Example:
+
+    ```ts
+    import { ApplicationContext } from "@open-pioneer/runtime";
+
+    const appCtx: ApplicationContext = ...; // injected
+    appCtx.setLocale("en-US");
+    ```
+
+    -   @open-pioneer/runtime-react-support@1.0.2
+
 ## 2.1.4
 
 ### Patch Changes

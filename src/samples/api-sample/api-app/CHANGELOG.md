@@ -1,5 +1,14 @@
 # api-app
 
+## 0.0.18
+
+### Patch Changes
+
+-   Updated dependencies [90d0cce]
+-   Updated dependencies [90d0cce]
+    -   @open-pioneer/runtime@2.1.5
+    -   @open-pioneer/integration@2.0.8
+
 ## 0.0.17
 
 ### Patch Changes
