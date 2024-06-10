@@ -532,6 +532,9 @@ describe("i18n support", function () {
     });
 
     it("supports restarting with a different locale", async () => {
+        // Hide i18n warnings
+        vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
         const spy = vi.spyOn(window.navigator, "languages", "get");
         spy.mockReturnValue(["en-US", "en"]);
 
