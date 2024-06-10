@@ -75,6 +75,11 @@ export interface CustomElementOptions {
  */
 export interface ConfigContext {
     /**
+     * The application's host element.
+     */
+    hostElement: HTMLElement;
+
+    /**
      * Returns an attribute from the application's root node.
      */
     getAttribute(name: string): string | undefined;
@@ -146,7 +151,10 @@ export interface ApplicationElementConstructor {
 export function createCustomElement(options: CustomElementOptions): ApplicationElementConstructor {
     class PioneerApplication extends HTMLElement implements ApplicationElement {
         #shadowRoot: ShadowRoot;
-        #state: ElementState | undefined;
+        #instance: ApplicationInstance | undefined;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        #deferredRestart: any; // A Timer
 
         static get observedAttributes(): string[] {
             return [];
@@ -161,32 +169,35 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
 
             if (import.meta.env.DEV) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (this as any).$inspectElementState = () => this.#state;
+                (this as any).$inspectElementState = () => this.#instance;
             }
         }
 
         connectedCallback() {
             LOG.debug("Launching application");
 
-            if (this.#state) {
-                this.#state.destroy();
+            if (this.#instance) {
+                this.#instance.destroy();
             }
 
-            this.#state = new ElementState(this, this.#shadowRoot, options);
-            this.#state.start();
+            this.#instance = this.#createApplicationInstance();
+            this.#instance.start();
         }
 
         disconnectedCallback() {
             LOG.debug("Shutting down application");
 
-            this.#state?.destroy();
-            this.#state = undefined;
+            if (this.#deferredRestart) {
+                clearTimeout(this.#deferredRestart);
+            }
+            this.#instance?.destroy();
+            this.#instance = undefined;
 
             LOG.debug("Application destroyed");
         }
 
         when() {
-            if (!this.#state) {
+            if (!this.#instance) {
                 return Promise.reject(
                     new Error(
                         ErrorId.NOT_MOUNTED,
@@ -195,16 +206,66 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
                 );
             }
 
-            return this.#state.whenAPI();
+            return this.#instance.whenAPI();
+        }
+
+        #triggerReload(overrides?: ApplicationOverrides) {
+            // Defer the restart operation a tiny bit so calling code does not get surprised by the application's destruction.
+            if (this.#deferredRestart) {
+                clearTimeout(this.#deferredRestart);
+            }
+            this.#deferredRestart = setTimeout(() => {
+                if (!this.#instance) {
+                    // disconnectedCallback was called in the meantime
+                    return;
+                }
+
+                LOG.debug("Restarting application with new options", overrides);
+                this.#instance.destroy();
+                this.#instance = this.#createApplicationInstance(overrides);
+                this.#instance.start();
+            }, 1);
+        }
+
+        #createApplicationInstance(overrides?: ApplicationOverrides) {
+            return new ApplicationInstance({
+                hostElement: this,
+                shadowRoot: this.#shadowRoot,
+                elementOptions: options,
+                overrides: overrides,
+                restart: this.#triggerReload.bind(this)
+            });
         }
     }
     return PioneerApplication;
 }
 
-class ElementState {
-    private hostElement: HTMLElement;
-    private shadowRoot: ShadowRoot;
-    private options: CustomElementOptions;
+interface InstanceOptions {
+    /** The HTML element that embeds the application. */
+    hostElement: HTMLElement;
+
+    /** The shadow root inside the host element that contains the rest of the application. */
+    shadowRoot: ShadowRoot;
+
+    /** Trails options for the application. */
+    elementOptions: CustomElementOptions;
+
+    /** These have higher priority than the options in `elementOptions`. */
+    overrides: ApplicationOverrides | undefined;
+
+    /**
+     * A callback to restart the application with new options.
+     * Currently only used for reloading with a certain locale.
+     */
+    restart: (overrides?: ApplicationOverrides) => void;
+}
+
+interface ApplicationOverrides {
+    locale?: string;
+}
+
+class ApplicationInstance {
+    private options: InstanceOptions;
 
     // Public API
     private apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
@@ -219,9 +280,7 @@ class ElementState {
     private reactIntegration: ReactIntegration | undefined;
     private stylesWatch: Resource | undefined;
 
-    constructor(hostElement: HTMLElement, shadowRoot: ShadowRoot, options: CustomElementOptions) {
-        this.hostElement = hostElement;
-        this.shadowRoot = shadowRoot;
+    constructor(options: InstanceOptions) {
         this.options = options;
     }
 
@@ -256,7 +315,7 @@ class ElementState {
         this.state = "destroyed";
         this.apiPromise?.reject(createAbortError());
         this.reactIntegration = destroyResource(this.reactIntegration);
-        this.shadowRoot.replaceChildren();
+        this.options.shadowRoot.replaceChildren();
         this.container = undefined;
         this.lifecycleEvents = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
@@ -273,15 +332,15 @@ class ElementState {
     }
 
     private async startImpl() {
-        const { options, shadowRoot, hostElement } = this;
+        const { shadowRoot, hostElement, elementOptions, overrides } = this.options;
 
         // Resolve custom application config
-        const config = (this.config = await gatherConfig(hostElement, options));
+        const config = (this.config = await gatherConfig(hostElement, elementOptions, overrides));
         this.checkAbort();
         LOG.debug("Application config is", config);
 
         // Decide on locale and load i18n messages (if any).
-        const i18n = await initI18n(options.appMetadata, config.locale);
+        const i18n = await initI18n(elementOptions.appMetadata, config.locale);
         this.checkAbort();
 
         // Setup application root node in the shadow dom
@@ -307,7 +366,7 @@ class ElementState {
         this.reactIntegration = new ReactIntegration({
             rootNode: container,
             container: shadowRoot,
-            theme: options.theme,
+            theme: elementOptions.theme,
             serviceLayer,
             packages
         });
@@ -319,7 +378,8 @@ class ElementState {
     }
 
     private render() {
-        this.reactIntegration?.render(this.options.component ?? emptyComponent);
+        const component = this.options.elementOptions.component ?? emptyComponent;
+        this.reactIntegration?.render(component);
     }
 
     private initStyles() {
@@ -329,7 +389,7 @@ class ElementState {
         const builtinStylesNode = document.createElement("style");
         applyStyles(builtinStylesNode, { value: builtinStyles });
 
-        const appStyles = this.options.appMetadata?.styles;
+        const appStyles = this.options.elementOptions.appMetadata?.styles;
         const appStylesNode = document.createElement("style");
         applyStyles(appStylesNode, appStyles);
         if (import.meta.hot) {
@@ -346,15 +406,27 @@ class ElementState {
         properties: ApplicationProperties;
         i18n: AppI18n;
     }) {
-        const options = this.options;
+        const { hostElement, shadowRoot, elementOptions, restart } = this.options;
         const { container, properties, i18n } = config;
-        const packageMetadata = options.appMetadata?.packages ?? {};
+        const packageMetadata = elementOptions.appMetadata?.packages ?? {};
         const builtinPackage = createBuiltinPackage({
-            host: this.hostElement,
-            shadowRoot: this.shadowRoot,
+            host: hostElement,
+            shadowRoot: shadowRoot,
             container: container,
             locale: i18n.locale,
-            supportedLocales: i18n.supportedLocales
+            supportedLocales: i18n.supportedMessageLocales,
+            changeLocale(locale) {
+                const supported = i18n.supportedMessageLocales;
+                if (locale != null && !i18n.supportsLocale(locale)) {
+                    throw new Error(
+                        ErrorId.UNSUPPORTED_LOCALE,
+                        `Unsupported locale '${locale}' (supported locales: ${supported.join(
+                            ", "
+                        )}).`
+                    );
+                }
+                restart({ locale });
+            }
         });
         const { serviceLayer, packages } = createServiceLayer({
             packageMetadata,
@@ -476,12 +548,17 @@ function getInternalService<T = unknown>(serviceLayer: ServiceLayer, interfaceNa
  * Gathers application properties by reading them from the options object
  * and by (optionally) invoking the `resolveProperties` hook.
  */
-async function gatherConfig(hostElement: HTMLElement, options: CustomElementOptions) {
+async function gatherConfig(
+    hostElement: HTMLElement,
+    options: CustomElementOptions,
+    overrides?: ApplicationOverrides
+) {
     let configs: ApplicationConfig[];
     try {
         const staticConfig = options.config ?? {};
         const dynamicConfig =
             (await options.resolveConfig?.({
+                hostElement,
                 getAttribute(name) {
                     return hostElement.getAttribute(name) ?? undefined;
                 }
@@ -498,7 +575,11 @@ async function gatherConfig(hostElement: HTMLElement, options: CustomElementOpti
         );
     }
 
-    return mergeConfigs(configs);
+    const merged = mergeConfigs(configs);
+    if (overrides?.locale) {
+        merged.locale = overrides.locale;
+    }
+    return merged;
 }
 
 /**

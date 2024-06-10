@@ -15,7 +15,10 @@ export interface AppI18n {
     readonly locale: string;
 
     /** Supported locales from app metadata. */
-    readonly supportedLocales: string[];
+    readonly supportedMessageLocales: string[];
+
+    /** True if the locale can be used in this application (i.e. if there are any messages). */
+    supportsLocale(locale: string): boolean;
 
     /** Given the package name, constructs a package i18n instance. */
     createPackageI18n(packageName: string): PackageIntl;
@@ -46,30 +49,27 @@ export async function initI18n(
     appMetadata: ApplicationMetadata | undefined,
     forcedLocale: string | undefined
 ): Promise<AppI18n> {
-    const supportedLocales = appMetadata?.locales ?? [];
+    const messageLocales = appMetadata?.locales ?? [];
     const userLocales = getBrowserLocales();
     if (LOG.isDebug()) {
         LOG.debug(
             `Attempting to pick locale for user (locales: ${userLocales.join(
                 ", "
-            )}) from app (supported locales: ${supportedLocales.join(
+            )}) from app (supported locales: ${messageLocales.join(
                 ", "
             )}) [forcedLocale=${forcedLocale}].`
         );
     }
 
-    const { locale, messageLocale } = pickLocale(
-        forcedLocale,
-        supportedLocales,
-        getBrowserLocales()
-    );
+    const i18nConfig = new I18nConfig(messageLocales);
+    const { locale, messageLocale } = i18nConfig.pickSupportedLocale(forcedLocale, userLocales);
 
     if (LOG.isDebug()) {
         LOG.debug(`Using locale '${locale}' with messages from locale '${messageLocale}'.`);
     }
 
     let messages: Record<string, Record<string, string>>;
-    if (supportedLocales.includes(messageLocale)) {
+    if (messageLocales.includes(messageLocale)) {
         try {
             messages = (await appMetadata?.loadMessages?.(messageLocale)) ?? {};
         } catch (e) {
@@ -84,7 +84,10 @@ export async function initI18n(
     }
     return {
         locale,
-        supportedLocales,
+        supportedMessageLocales: messageLocales,
+        supportsLocale(locale) {
+            return i18nConfig.supportsLocale(locale);
+        },
         createPackageI18n(packageName) {
             const packageMessage = messages?.[packageName] ?? {};
             return createPackageIntl(locale, packageMessage);
@@ -97,7 +100,7 @@ export function createEmptyI18n(locale = "en"): PackageIntl {
     return createPackageIntl(locale, {});
 }
 
-export interface LocalePickResult {
+interface LocalePickResult {
     /** The actual locale (e.g. en-US) for number and date formatting etc. */
     locale: string;
 
@@ -109,17 +112,61 @@ export interface LocalePickResult {
 
 /**
  * Picks a locale for the app. Exported for tests.
- *
- * @param forcedLocale Optional forced locale (must be satisfied)
- * @param appLocales Locales the app has i18n messages for (e.g. "en", "de")
- * @param userLocales Locales requested by the user's browser
  */
-export function pickLocale(
-    forcedLocale: string | undefined,
-    appLocales: string[],
-    userLocales: string[]
-): LocalePickResult {
-    const pickImpl = (requestedLocales: string[]): LocalePickResult | undefined => {
+export class I18nConfig {
+    private appLocales: string[];
+
+    /**
+     * @param appLocales Locales the app has i18n messages for (e.g. "en", "de")
+     */
+    constructor(appLocales: string[]) {
+        this.appLocales = appLocales;
+    }
+
+    /**
+     * @param forcedLocale Optional forced locale (must be satisfied)
+     * @param userLocales Locales requested by the user's browser
+     */
+    pickSupportedLocale(forcedLocale: string | undefined, userLocales: string[]): LocalePickResult {
+        const { appLocales } = this;
+        // Attempt to satisfy forced locale
+        if (forcedLocale) {
+            const result = this.pickImpl([forcedLocale]);
+            if (!result) {
+                const localesList = appLocales.join(", ");
+                throw new Error(
+                    ErrorId.UNSUPPORTED_LOCALE,
+                    `Locale '${forcedLocale}' cannot be forced because it is not supported by the application.` +
+                        ` Supported locales are ${localesList}.`
+                );
+            }
+            if (result.locale !== result.messageLocale) {
+                LOG.warn(
+                    `Non-exact match for forced locale '${forcedLocale}': using messages from '${result.messageLocale}'.`
+                );
+            }
+            return result;
+        }
+
+        // Match preferred locale
+        const supportedLocale = this.pickImpl(userLocales);
+        if (supportedLocale) {
+            return supportedLocale;
+        }
+
+        // Fallback: Most preferred locale (for dates etc.), but some of our messages
+        return {
+            locale: userLocales[0] ?? "en",
+            messageLocale: appLocales[0] ?? "en"
+        };
+    }
+
+    supportsLocale(locale: string): boolean {
+        return this.pickImpl([locale]) != null;
+    }
+
+    private pickImpl(requestedLocales: string[]) {
+        const appLocales = this.appLocales;
         for (const requestedLocale of requestedLocales) {
             // try exact match
             if (appLocales.includes(requestedLocale)) {
@@ -133,35 +180,7 @@ export function pickLocale(
             }
         }
         return undefined;
-    };
-
-    // Attempt to satisfy forced locale
-    if (forcedLocale) {
-        const result = pickImpl([forcedLocale]);
-        if (!result) {
-            const localesList = appLocales.join(", ");
-            throw new Error(
-                ErrorId.UNSUPPORTED_LOCALE,
-                `Locale '${forcedLocale}' cannot be forced because it is not supported by the application.` +
-                    ` Supported locales are ${localesList}.`
-            );
-        }
-        if (result.locale !== result.messageLocale) {
-            LOG.warn(
-                `Non-exact match for forced locale '${forcedLocale}': using messages from '${result.messageLocale}'.`
-            );
-        }
-        return result;
     }
-
-    // Match preferred locale
-    const supportedLocale = pickImpl(userLocales);
-    if (supportedLocale) {
-        return supportedLocale;
-    }
-
-    // Fallback: Most preferred locale (for dates etc.), but some of our messages
-    return { locale: userLocales[0] ?? "en", messageLocale: appLocales[0] ?? "en" };
 }
 
 /**

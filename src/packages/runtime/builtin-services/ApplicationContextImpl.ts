@@ -9,6 +9,9 @@ export interface ApplicationContextProperties {
     container: HTMLElement;
     locale: string;
     supportedLocales: string[];
+
+    /** A callback to change the application's locale is injected by the runtime. */
+    changeLocale(locale: string): void;
 }
 
 export class ApplicationContextImpl implements ApplicationContext {
@@ -17,6 +20,7 @@ export class ApplicationContextImpl implements ApplicationContext {
     #container: HTMLElement;
     #locale: string;
     #supportedLocales: readonly string[];
+    #changeLocale: (locale: string) => void;
 
     constructor(options: ServiceOptions, properties: ApplicationContextProperties) {
         this.#host = properties.host;
@@ -24,6 +28,7 @@ export class ApplicationContextImpl implements ApplicationContext {
         this.#container = properties.container;
         this.#locale = properties.locale;
         this.#supportedLocales = Object.freeze(Array.from(properties.supportedLocales));
+        this.#changeLocale = properties.changeLocale;
     }
 
     getHostElement(): HTMLElement {
@@ -40,6 +45,10 @@ export class ApplicationContextImpl implements ApplicationContext {
 
     getLocale(): string {
         return this.#locale;
+    }
+
+    setLocale(locale: string): void {
+        this.#changeLocale(locale);
     }
 
     getSupportedLocales(): readonly string[] {
