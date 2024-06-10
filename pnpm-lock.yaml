@@ -524,9 +524,6 @@ importers:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../../../packages/chakra-integration
-      '@open-pioneer/integration':
-        specifier: workspace:^
-        version: link:../../../packages/integration
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime

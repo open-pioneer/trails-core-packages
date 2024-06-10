@@ -55,9 +55,12 @@ it("parses package metadata into internal package representations", function () 
 
     const testi18n: AppI18n = {
         locale: "test-locale",
-        supportedLocales: [],
+        supportedMessageLocales: [],
         createPackageI18n() {
             return createEmptyI18n("zh-CN");
+        },
+        supportsLocale() {
+            return true;
         }
     };
 

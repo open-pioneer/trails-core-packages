@@ -12,7 +12,6 @@ import {
     VStack,
     Divider
 } from "@open-pioneer/chakra-integration";
-import { ExternalEventService } from "@open-pioneer/integration";
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { ReactNode } from "react";
 import { SamplePackageComponent } from "i18n-sample-package/SamplePackageComponent";
@@ -95,7 +94,7 @@ export function I18nUI() {
             </UnorderedList>
 
             <Center mb={4}>
-                <LocalePicker current={locale} locales={supportedLocales} />
+                <LocalePicker />
             </Center>
 
             <Divider my={4} />
@@ -109,23 +108,19 @@ export function I18nUI() {
     );
 }
 
-function LocalePicker(props: { current: string; locales: readonly string[] }) {
+function LocalePicker() {
+    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
     const intl = useIntl();
-    const eventService = useService<ExternalEventService>("integration.ExternalEventService");
-    const changeLocale = (locale: string | undefined) => {
-        eventService.emitEvent("locale-changed", {
-            locale: locale
-        });
-    };
+    const locales = appCtx.getSupportedLocales();
 
     // One entry for every supported locale (to force it) and one empty
     // to pick the default behavior.
     const makeButton = (locale: string | undefined) => (
-        <Button key={locale ?? ""} onClick={() => changeLocale(locale)}>
+        <Button key={locale ?? ""} onClick={() => appCtx.setLocale(locale)}>
             {locale ?? intl.formatMessage({ id: "picker.default" })}
         </Button>
     );
-    const buttons: ReactNode[] = props.locales.map((locale) => makeButton(locale));
+    const buttons: ReactNode[] = locales.map((locale) => makeButton(locale));
     buttons.unshift(makeButton(undefined));
 
     return (

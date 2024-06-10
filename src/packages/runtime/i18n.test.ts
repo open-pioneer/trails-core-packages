@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { expect, it } from "vitest";
-import { pickLocale } from "./i18n";
+import { I18nConfig } from "./i18n";
 
 it("picks a supported locale by default", () => {
     const appLocales = ["en", "de"];
@@ -52,3 +52,26 @@ it("throws if a locale cannot be forced", () => {
         `[Error: runtime:unsupported-locale: Locale 'de-simple' cannot be forced because it is not supported by the application. Supported locales are en, zh.]`
     );
 });
+
+it("computes whether a locale is supported", () => {
+    // Simple cases
+    expect(supportsLocale("en", ["en", "de"])).toBe(true);
+    expect(supportsLocale("de", ["en", "de"])).toBe(true);
+
+    // Fallback to plain language tag
+    expect(supportsLocale("de-DE", ["en", "de"])).toBe(true);
+
+    // Not supported at all
+    expect(supportsLocale("de", ["en"])).toBe(false);
+    expect(supportsLocale("de-DE", ["en"])).toBe(false);
+});
+
+function pickLocale(forcedLocale: string | undefined, appLocales: string[], userLocales: string[]) {
+    const config = new I18nConfig(appLocales);
+    return config.pickSupportedLocale(forcedLocale, userLocales);
+}
+
+function supportsLocale(testLocale: string, appLocales: string[]) {
+    const config = new I18nConfig(appLocales);
+    return config.supportsLocale(testLocale);
+}

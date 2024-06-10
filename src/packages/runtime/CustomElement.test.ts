@@ -482,7 +482,8 @@ describe("i18n support", function () {
         const spy = vi.spyOn(window.navigator, "languages", "get");
         spy.mockReturnValue(["de-DE", "de", "en"]);
 
-        const { locale, message } = await launchApp();
+        const api = await launchApp();
+        const { locale, message } = await api.getLocaleInfo();
         expect(locale).toBe("de-DE");
         expect(message).toBe("Hallo Welt");
     });
@@ -491,7 +492,8 @@ describe("i18n support", function () {
         const spy = vi.spyOn(window.navigator, "languages", "get");
         spy.mockReturnValue(["en-US", "en"]);
 
-        const { locale, message } = await launchApp();
+        const api = await launchApp();
+        const { locale, message } = await api.getLocaleInfo();
         expect(locale).toBe("en-US");
         expect(message).toBe("Hello world");
     });
@@ -500,11 +502,12 @@ describe("i18n support", function () {
         const spy = vi.spyOn(window.navigator, "languages", "get");
         spy.mockReturnValue(["en-US", "en"]);
 
-        const { locale, message } = await launchApp({
+        const api = await launchApp({
             config: {
                 locale: "de-simple"
             }
         });
+        const { locale, message } = await api.getLocaleInfo();
         expect(locale).toBe("de-simple");
         expect(message).toBe("Hallo Welt (einfach)");
     });
@@ -513,7 +516,7 @@ describe("i18n support", function () {
         const spy = vi.spyOn(window.navigator, "languages", "get");
         spy.mockReturnValue(["en-US", "en"]);
 
-        const { locale, message } = await launchApp({
+        const api = await launchApp({
             config: {
                 locale: "en" // overwritten by resolveConfig
             },
@@ -523,33 +526,76 @@ describe("i18n support", function () {
                 });
             }
         });
+        const { locale, message } = await api.getLocaleInfo();
         expect(locale).toBe("de-simple");
         expect(message).toBe("Hallo Welt (einfach)");
     });
 
+    it("supports restarting with a different locale", async () => {
+        const spy = vi.spyOn(window.navigator, "languages", "get");
+        spy.mockReturnValue(["en-US", "en"]);
+
+        const api = await launchApp();
+        const { locale, message, supportedLocales } = await api.getLocaleInfo();
+        expect(locale).toBe("en-US");
+        expect(message).toBe("Hello world");
+        expect(supportedLocales).toMatchInlineSnapshot(`
+          [
+            "de",
+            "en",
+            "de-simple",
+          ]
+        `);
+
+        await api.setLocale("de-DE");
+        await waitFor(async () => {
+            const { locale } = await api.getLocaleInfo();
+            if (locale !== "de-DE") {
+                throw new Error("locale not changed yet");
+            }
+        });
+        const { locale: newLocale, message: newMessage } = await api.getLocaleInfo();
+        expect(newLocale).toBe("de-DE");
+        expect(newMessage).toBe("Hallo Welt");
+
+        // Check that invalid locale throws an error
+        await expect(() => api.setLocale("zh-CN")).rejects.toThrowErrorMatchingInlineSnapshot(
+            `[Error: runtime:unsupported-locale: Unsupported locale 'zh-CN' (supported locales: de, en, de-simple).]`
+        );
+    });
+
+    interface I18nAppApi {
+        getLocaleInfo(): Promise<{ locale: string; message: string; supportedLocales: string[] }>;
+        setLocale(newLocale: string): Promise<void>;
+    }
+
     /**
      * Runs an app with mocked services and i18n and returns the inner locale + translated message.
      */
-    async function launchApp(
-        options?: Partial<CustomElementOptions>
-    ): Promise<{ locale: string; message: string }> {
+    async function launchApp(options?: Partial<CustomElementOptions>): Promise<I18nAppApi> {
         class TestService implements ApiExtension {
+            private ctx: ApplicationContext;
             private locale: string;
             private message: string;
 
             constructor(options: ServiceOptions<{ ctx: ApplicationContext }>) {
                 const ctx = options.references.ctx;
+                this.ctx = ctx;
                 this.locale = ctx.getLocale();
                 this.message = options.intl.formatMessage({ id: "greeting" });
             }
 
             async getApiMethods(): Promise<ApiMethods> {
                 return {
-                    getValues: () => {
+                    getLocaleInfo: () => {
                         return {
                             locale: this.locale,
-                            message: this.message
+                            message: this.message,
+                            supportedLocales: Array.from(this.ctx.getSupportedLocales())
                         };
+                    },
+                    setLocale: (newLocale: string) => {
+                        this.ctx.setLocale(newLocale);
                     }
                 };
             }
@@ -607,7 +653,17 @@ describe("i18n support", function () {
         });
 
         const { node } = await renderComponentShadowDOM(elem);
-        const api = await (node as ApplicationElement).when();
-        return api.getValues!();
+        const result = {
+            async getLocaleInfo() {
+                const api = await (node as ApplicationElement).when();
+                return api.getLocaleInfo!();
+            },
+
+            async setLocale(newLocale: string) {
+                const api = await (node as ApplicationElement).when();
+                api.setLocale!(newLocale);
+            }
+        };
+        return result;
     }
 });

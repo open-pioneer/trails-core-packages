@@ -43,6 +43,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
 
     /**
      * The current web component's shadow root.
+     * This shadow root is located inside the host element.
      */
     getShadowRoot(): ShadowRoot;
 
@@ -57,6 +58,16 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * E.g. `"de-DE"`
      */
     getLocale(): string;
+
+    /**
+     * Changes the application's locale.
+     * `locale` must be one of the supported locales, see {@link getSupportedLocales()} or `undefined` (for automatic locale).
+     * Note that `locale` does not need to be a precise match, e.g. `"de-DE"` is also valid if `"de"` is supported.
+     *
+     * > NOTE: This method will currently trigger a full restart of the application.
+     * > Altering the locale on the fly is possible in theory but has not been implemented yet.
+     */
+    setLocale(locale: string | undefined): void;
 
     /**
      * Returns the locales supported by the application, i.e.
