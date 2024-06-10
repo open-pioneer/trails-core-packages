@@ -535,7 +535,11 @@ describe("i18n support", function () {
         const spy = vi.spyOn(window.navigator, "languages", "get");
         spy.mockReturnValue(["en-US", "en"]);
 
-        const api = await launchApp();
+        const api = await launchApp({
+            config: {
+                locale: "en-US"
+            }
+        });
         const { locale, message, supportedLocales } = await api.getLocaleInfo();
         expect(locale).toBe("en-US");
         expect(message).toBe("Hello world");
@@ -547,6 +551,7 @@ describe("i18n support", function () {
           ]
         `);
 
+        // Changes locale and has priority over the `config` above
         await api.setLocale("de-DE");
         await waitFor(async () => {
             const { locale } = await api.getLocaleInfo();
