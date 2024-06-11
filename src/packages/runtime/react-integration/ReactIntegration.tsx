@@ -63,6 +63,11 @@ export class ReactIntegration {
                                 ` Possible choices are: ${renderedChoices}.`
                         );
                     }
+                    case "unknown-package":
+                        throw new Error(
+                            ErrorId.MISSING_PACKAGE,
+                            missingPackageMessage(packageName, interfaceName)
+                        );
                 }
             },
             getServices: (packageName, interfaceName) => {
@@ -77,6 +82,11 @@ export class ReactIntegration {
                             ErrorId.UNDECLARED_DEPENDENCY,
                             `Package '${packageName}' did not declare an UI dependency on all services implementing interface '${interfaceName}'.` +
                                 ` Add the dependency ("all": true) to the package configuration or remove the usage.`
+                        );
+                    case "unknown-package":
+                        throw new Error(
+                            ErrorId.MISSING_PACKAGE,
+                            missingPackageMessage(packageName, interfaceName)
                         );
                 }
             },
@@ -119,4 +129,11 @@ export class ReactIntegration {
         }
         return pkg;
     }
+}
+
+function missingPackageMessage(packageName: string, interfaceName: string) {
+    return (
+        `Package '${packageName}' was not found in the application's metadata while it attempted to reference the interface '${interfaceName}'. ` +
+        `Check that the dependency is declared correctly in the packages that use '${packageName}'.`
+    );
 }

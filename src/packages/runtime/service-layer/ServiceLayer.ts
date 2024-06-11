@@ -25,9 +25,22 @@ const LOG = createLogger("runtime:ServiceLayer");
 
 export type DynamicLookupResult = ServiceLookupResult | UndeclaredDependency;
 
+/**
+ * Returned when a dependency is not declared in the package's metadata.
+ */
 export interface UndeclaredDependency {
     type: "undeclared";
 }
+
+/**
+ * Returned when a package is not found in the application's metadata.
+ */
+export interface UnknownPackage {
+    type: "unknown-package";
+}
+
+const UNDECLARED_DEPENDENCY = { type: "undeclared" } satisfies UndeclaredDependency;
+const UNKNOWN_PACKAGE = { type: "unknown-package" } satisfies UnknownPackage;
 
 interface DependencyDeclarations {
     all: boolean;
@@ -139,13 +152,16 @@ export class ServiceLayer {
         packageName: string,
         spec: InterfaceSpec,
         options?: { ignoreDeclarationCheck?: boolean }
-    ): ServiceLookupResult | UndeclaredDependency {
+    ): ServiceLookupResult | UndeclaredDependency | UnknownPackage {
         if (this.state !== "started") {
             throw new Error(ErrorId.INTERNAL, "Service layer is not started.");
         }
 
-        if (!options?.ignoreDeclarationCheck && !this.isDeclaredDependency(packageName, spec)) {
-            return { type: "undeclared" };
+        if (!options?.ignoreDeclarationCheck) {
+            const checkError = this.checkDependency(packageName, spec);
+            if (checkError) {
+                return checkError;
+            }
         }
 
         return this.serviceLookup.lookupOne(spec);
@@ -163,15 +179,15 @@ export class ServiceLayer {
     getServices(
         packageName: string,
         interfaceName: string
-    ): ServicesLookupResult | UndeclaredDependency {
+    ): ServicesLookupResult | UndeclaredDependency | UnknownPackage {
         if (this.state !== "started") {
             throw new Error(ErrorId.INTERNAL, "Service layer is not started.");
         }
 
-        if (!this.isDeclaredDependency(packageName, { interfaceName, all: true })) {
-            return { type: "undeclared" };
+        const checkError = this.checkDependency(packageName, { interfaceName, all: true });
+        if (checkError) {
+            return checkError;
         }
-
         return this.serviceLookup.lookupAll(interfaceName);
     }
 
@@ -238,23 +254,30 @@ export class ServiceLayer {
         }
     }
 
-    private isDeclaredDependency(packageName: string, spec: ReferenceSpec) {
+    /** Undefined -> everything is okay */
+    private checkDependency(
+        packageName: string,
+        spec: ReferenceSpec
+    ): UnknownPackage | UndeclaredDependency | undefined {
         const packageEntry = this.declaredDependencies.get(packageName);
         if (!packageEntry) {
-            return false;
+            return UNKNOWN_PACKAGE;
         }
+
         const interfaceEntry = packageEntry.get(spec.interfaceName);
         if (!interfaceEntry) {
-            return false;
+            return UNDECLARED_DEPENDENCY;
         }
 
         if (isSingleImplementationSpec(spec)) {
             if (spec.qualifier == null) {
-                return interfaceEntry.unqualified;
+                return interfaceEntry.unqualified ? undefined : UNDECLARED_DEPENDENCY;
             }
-            return interfaceEntry.qualifiers.has(spec.qualifier);
+            return interfaceEntry.qualifiers.has(spec.qualifier)
+                ? undefined
+                : UNDECLARED_DEPENDENCY;
         } else {
-            return interfaceEntry.all;
+            return interfaceEntry.all ? undefined : UNDECLARED_DEPENDENCY;
         }
     }
 

@@ -68,14 +68,35 @@ it("should get error when using undefined service", async () => {
     errorSpy.mockImplementation(doNothing);
 
     function TestComponent() {
-        const service = useServiceInternal<unknown>("test", "test.Provider") as TestProvider;
+        const service = useServiceInternal<unknown>(
+            "test",
+            "test.InterfaceThatDoesNotExist"
+        ) as TestProvider;
         return createElement("span", undefined, `Hello ${service.value}`);
     }
 
-    const { integration } = createIntegration({
-        disablePackage: true
-    });
+    const { integration } = createIntegration();
 
+    expect(() => {
+        act(() => {
+            integration.render(TestComponent);
+        });
+    }).toThrowErrorMatchingSnapshot();
+    expect(errorSpy).toHaveBeenCalledOnce();
+});
+
+it("reports a helpful error when package metadata is missing", async () => {
+    // This problem can happen when a package is not correctly declared as a dependency in package.json
+    // (so its metadata are not discovered by the vite plugin) but it is still imported from the application
+    // where it attempts to use a service.
+    errorSpy.mockImplementation(doNothing);
+
+    function TestComponent() {
+        const service = useServiceInternal<unknown>("packageMissingFromMetadata", "test.Provider");
+        return String(service);
+    }
+
+    const { integration } = createIntegration();
     expect(() => {
         act(() => {
             integration.render(TestComponent);

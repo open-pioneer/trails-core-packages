@@ -15,6 +15,7 @@ export enum ErrorId {
     INTERFACE_NOT_FOUND = "runtime:interface-not-found",
     AMBIGUOUS_DEPENDENCY = "runtime:ambiguous-dependency",
     UNDECLARED_DEPENDENCY = "runtime:undeclared-dependency",
+    MISSING_PACKAGE = "runtime:missing-package",
     SERVICE_CONSTRUCTION_FAILED = "runtime:service-construction-failed",
     SERVICE_DESTRUCTION_FAILED = "runtime:service-destruction-failed",
     DUPLICATE_INTERFACE = "runtime:duplicate-interface",
