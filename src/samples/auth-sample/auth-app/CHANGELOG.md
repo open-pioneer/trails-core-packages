@@ -1,5 +1,13 @@
 # auth-app
 
+## 0.0.9
+
+### Patch Changes
+
+-   Updated dependencies [e945264]
+    -   @open-pioneer/runtime@2.1.6
+    -   @open-pioneer/authentication@0.3.5
+
 ## 0.0.8
 
 ### Patch Changes

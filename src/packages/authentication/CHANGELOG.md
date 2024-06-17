@@ -1,5 +1,12 @@
 # @open-pioneer/authentication
 
+## 0.3.5
+
+### Patch Changes
+
+-   Updated dependencies [e945264]
+    -   @open-pioneer/runtime@2.1.6
+
 ## 0.3.4
 
 ### Patch Changes
