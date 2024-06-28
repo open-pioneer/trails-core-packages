@@ -1,5 +1,12 @@
 # @open-pioneer/http
 
+## 2.1.8
+
+### Patch Changes
+
+-   Updated dependencies [e945264]
+    -   @open-pioneer/runtime@2.1.6
+
 ## 2.1.7
 
 ### Patch Changes
