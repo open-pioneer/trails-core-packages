@@ -1,5 +1,12 @@
 # @open-pioneer/runtime
 
+## 2.1.6
+
+### Patch Changes
+
+-   e945264: Improve error message when metadata is missing (#55)
+    -   @open-pioneer/runtime-react-support@1.0.2
+
 ## 2.1.5
 
 ### Patch Changes
