@@ -32,11 +32,16 @@ import {
     UnorderedList,
     useDisclosure
 } from "@open-pioneer/chakra-integration";
-import { useService } from "open-pioneer:react-hooks";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { ApplicationContext } from "../api";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ReadonlyPackageRepr } from "../service-layer/PackageRepr";
+import { useServiceInternal } from "../react-integration";
+import { RUNTIME_PACKAGE_NAME } from "../builtin-services";
+import type { useService as useServiceAPI } from "open-pioneer:react-hooks";
+
+// Don't use the normal `useService` hook (generates self import).
+const useService = useServiceInternal.bind(undefined, RUNTIME_PACKAGE_NAME) as typeof useServiceAPI;
 
 export interface DevToolsContentProps {
     serviceLayer: ServiceLayer;
