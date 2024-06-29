@@ -9,7 +9,7 @@ import {
     UIDependency,
     verifyDependencies
 } from "./verifyDependencies";
-import { PackageRepr } from "./PackageRepr";
+import { PackageRepr, ReadonlyPackageRepr } from "./PackageRepr";
 import { ReadonlyServiceLookup, ServiceLookupResult, ServicesLookupResult } from "./ServiceLookup";
 import {
     InterfaceSpec,
@@ -49,6 +49,8 @@ interface DependencyDeclarations {
 }
 
 export class ServiceLayer {
+    private _packages: readonly PackageRepr[];
+
     // All services in the application.
     private allServices: ServiceRepr[];
 
@@ -72,6 +74,8 @@ export class ServiceLayer {
      * In its current form, the service layer will start only forced references and references needed by the UI (and their dependencies).
      */
     constructor(packages: readonly PackageRepr[], forcedReferences: ReferenceSpec[] = []) {
+        this._packages = packages;
+
         const allServices = packages.map((pkg) => pkg.services).flat();
         const uiDependencies = packages
             .map((pkg) =>
@@ -108,6 +112,10 @@ export class ServiceLayer {
             this.destroyService(service);
         }
         this.state = "destroyed";
+    }
+
+    get packages(): readonly ReadonlyPackageRepr[] {
+        return this._packages;
     }
 
     start() {

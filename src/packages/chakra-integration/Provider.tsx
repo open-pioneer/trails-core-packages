@@ -20,12 +20,20 @@ import { PortalRootProvider } from "./PortalFix";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
-     * Container node where styles will be mounted.
-     * Note that updates of this property are not supported.
+     * Node where styles will be mounted.
+     * This is typically the shadow root, but it may be any Node.
      *
-     * This is typically the shadow root.
+     * Note that updates of this property are not supported.
      */
-    container: Node;
+    rootNode: Node;
+
+    /**
+     * Container element where the application will be mounted.
+     * This is used to render portal contents.
+     *
+     * Note that updates of this property are not supported.
+     */
+    container: HTMLElement;
 
     /**
      * Configures the color mode of the application.
@@ -62,6 +70,7 @@ const colorModeClassnames = {
 
 // https://github.com/chakra-ui/chakra-ui/issues/2439
 export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
+    rootNode,
     container,
     colorMode,
     children,
@@ -102,12 +111,15 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
             4. Set color mode on the root container instead of html and body.
         
     */
+    useEffect(() => {
+        container.classList.add("chakra-host");
+        return () => container.classList.remove("chakra-host");
+    }, [container]);
 
-    const cache = useEmotionCache(container);
-
+    const cache = useEmotionCache(rootNode);
     const theme = useMemo(() => wrapTheme(themeProp), [themeProp]);
 
-    const chakraHost = useRef<HTMLDivElement>(null);
+    const chakraHost = useRef<HTMLElement>(container);
     const toastOptions: ToastProviderProps = {
         portalProps: {
             containerRef: chakraHost
@@ -117,25 +129,21 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     const ColorMode = useSyncedColorMode(chakraHost, colorMode);
 
     return (
-        <div className="chakra-host" ref={chakraHost}>
-            <CacheProvider value={cache}>
-                <ThemeProvider theme={theme}>
-                    <EnvironmentProvider>
-                        <ColorMode>
-                            <CSSReset />
-                            <Global styles={defaultStyles} />
-                            <GlobalStyle />
-                            <ToastOptionProvider value={toastOptions?.defaultOptions}>
-                                <PortalRootProvider value={chakraHost}>
-                                    {children}
-                                </PortalRootProvider>
-                            </ToastOptionProvider>
-                            <ToastProvider {...toastOptions} />
-                        </ColorMode>
-                    </EnvironmentProvider>
-                </ThemeProvider>
-            </CacheProvider>
-        </div>
+        <CacheProvider value={cache}>
+            <ThemeProvider theme={theme}>
+                <EnvironmentProvider>
+                    <ColorMode>
+                        <CSSReset />
+                        <Global styles={defaultStyles} />
+                        <GlobalStyle />
+                        <ToastOptionProvider value={toastOptions?.defaultOptions}>
+                            <PortalRootProvider value={chakraHost}>{children}</PortalRootProvider>
+                        </ToastOptionProvider>
+                        <ToastProvider {...toastOptions} />
+                    </ColorMode>
+                </EnvironmentProvider>
+            </ThemeProvider>
+        </CacheProvider>
     );
 };
 
@@ -145,7 +153,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
  * The current color mode is automatically propagates as a css class on the chakra host element.
  */
 function useSyncedColorMode(
-    chakraHost: RefObject<HTMLDivElement>,
+    chakraHost: RefObject<HTMLElement>,
     colorMode: "light" | "dark" | undefined
 ) {
     const mode = colorMode ?? "light";

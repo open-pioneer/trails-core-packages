@@ -22,15 +22,19 @@
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",
+        "@open-pioneer/reactivity": "workspace:^",
+        "@conterra/reactivity-core": "^0.4.0",
         "react": "^18.3.1",
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
+        "ts-essentials": "^10.0.1",
         "@open-pioneer/test-utils": "workspace:^",
         "core-packages": "workspace:^"
     },
     "publishConfig": {
         "directory": "dist",
         "linkDirectory": false
-    }
+    },
+    "dependencies": {}
 }
