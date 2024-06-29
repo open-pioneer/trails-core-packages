@@ -21,7 +21,7 @@ It now looks like this:
     └── <div class="pioneer-root chakra-host">
 ```
 
-Since all UI elements where already children of the `.chakra-host` element, this should not affect most applications.
+Since all UI elements were already children of the `.chakra-host` element, this should not affect most applications.
 
-The presence of two node made it possible to accidentally create a node where Chakra's style rules didn't apply.
+The presence of two nodes made it possible to accidentally create a node where Chakra's style rules didn't apply.
 This change prevents that error.
