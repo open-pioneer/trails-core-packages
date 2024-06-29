@@ -6,7 +6,7 @@ import { ErrorId } from "../errors";
 import { PackageIntl, AppI18n } from "../i18n";
 import { PackageMetadata, PropertyMetadata } from "../metadata";
 import { parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
-import { ServiceRepr } from "./ServiceRepr";
+import { ReadonlyServiceRepr, ServiceRepr } from "./ServiceRepr";
 
 export interface PackageReprOptions {
     name: string;
@@ -16,7 +16,24 @@ export interface PackageReprOptions {
     properties?: Record<string, unknown>;
 }
 
-export class PackageRepr {
+export interface ReadonlyPackageRepr {
+    /** Package name */
+    readonly name: string;
+
+    /** Services defined by the package */
+    readonly services: readonly ReadonlyServiceRepr[];
+
+    /** Interfaces required by UI components. */
+    readonly uiReferences: readonly Readonly<ReferenceSpec>[];
+
+    /** Resolved (perhaps customized) package properties. */
+    readonly properties: Readonly<Record<string, unknown>>;
+
+    /** Locale-dependant i18n messages. */
+    readonly intl: PackageIntl;
+}
+
+export class PackageRepr implements ReadonlyPackageRepr {
     static create(
         data: PackageMetadata,
         i18n: PackageIntl,
@@ -46,19 +63,10 @@ export class PackageRepr {
         });
     }
 
-    /** Package name */
     readonly name: string;
-
-    /** Services defined by the package */
     readonly services: readonly ServiceRepr[];
-
-    /** Interfaces required by UI components. */
     readonly uiReferences: readonly Readonly<ReferenceSpec>[];
-
-    /** Resolved (perhaps customized) package properties. */
     readonly properties: Readonly<Record<string, unknown>>;
-
-    /** Locale-dependant i18n messages. */
     readonly intl: PackageIntl;
 
     constructor(options: PackageReprOptions) {

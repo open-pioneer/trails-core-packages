@@ -428,8 +428,8 @@ function createIntegration(options?: {
     serviceLayer.start();
 
     const integration = new ReactIntegration({
+        shadowRoot: wrapper,
         container: wrapper,
-        rootNode: wrapper,
         theme: options?.theme,
         packages,
         serviceLayer

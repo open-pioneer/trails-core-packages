@@ -364,8 +364,8 @@ class ApplicationInstance {
 
         // Launch react
         this.reactIntegration = new ReactIntegration({
-            rootNode: container,
-            container: shadowRoot,
+            container: container,
+            shadowRoot: shadowRoot,
             theme: elementOptions.theme,
             serviceLayer,
             packages

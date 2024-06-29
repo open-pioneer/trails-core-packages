@@ -1,27 +1,29 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentType, StrictMode } from "react";
-import { createRoot, Root } from "react-dom/client";
-import { Error } from "@open-pioneer/core";
-import { ErrorId } from "../errors";
-import { ServiceLayer } from "../service-layer/ServiceLayer";
-import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
-import { PackageRepr } from "../service-layer/PackageRepr";
-import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
-import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
-import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
+import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
+import { Error } from "@open-pioneer/core";
+import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
+import { ComponentType, StrictMode } from "react";
+import { Root, createRoot } from "react-dom/client";
+import { ErrorId } from "../errors";
+import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
+import { PackageRepr } from "../service-layer/PackageRepr";
+import { ServiceLayer } from "../service-layer/ServiceLayer";
+import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
+import { DevTools } from "../dev-tools";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
-    rootNode: HTMLDivElement;
-    container: Node;
+    container: HTMLDivElement;
+    shadowRoot: Node;
     theme: Record<string, unknown> | undefined;
 }
 
 export class ReactIntegration {
-    private containerNode: Node;
+    private shadowRoot: Node;
+    private container: HTMLDivElement;
     private theme: Record<string, unknown> | undefined;
     private packages: Map<string, PackageRepr>;
     private serviceLayer: ServiceLayer;
@@ -29,11 +31,12 @@ export class ReactIntegration {
     private packageContext: PackageContextMethods;
 
     constructor(options: ReactIntegrationOptions) {
-        this.containerNode = options.container;
+        this.shadowRoot = options.shadowRoot;
+        this.container = options.container;
         this.theme = options.theme;
         this.packages = options.packages;
         this.serviceLayer = options.serviceLayer;
-        this.root = createRoot(options.rootNode);
+        this.root = createRoot(options.container);
         this.packageContext = {
             getService: (packageName, interfaceName, options) => {
                 const spec: InterfaceSpec = { interfaceName, ...options };
@@ -103,11 +106,15 @@ export class ReactIntegration {
         this.root.render(
             <StrictMode>
                 <CustomChakraProvider
-                    container={this.containerNode}
+                    rootNode={this.shadowRoot}
+                    container={this.container}
                     colorMode="light"
                     theme={this.theme ?? defaultTrailsTheme}
                 >
                     <PackageContext.Provider value={this.packageContext}>
+                        {import.meta.env.DEV && !import.meta.env.VITEST && (
+                            <DevTools serviceLayer={this.serviceLayer} />
+                        )}
                         <Component />
                     </PackageContext.Provider>
                 </CustomChakraProvider>

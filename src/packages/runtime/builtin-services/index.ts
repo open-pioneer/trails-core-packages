@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createEmptyI18n } from "../i18n";
+import { ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import {
     createConstructorFactory,
@@ -86,9 +87,18 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         ]
     });
 
+    const uiReferences: ReferenceSpec[] = [];
+    if (import.meta.env.DEV) {
+        // Needed by dev tools
+        uiReferences.push({
+            interfaceName: RUNTIME_APPLICATION_CONTEXT
+        });
+    }
+
     return new PackageRepr({
         name: RUNTIME_PACKAGE_NAME,
         services: [apiService, appContext, lifecycleEventService],
-        intl: i18n
+        intl: i18n,
+        uiReferences: uiReferences
     });
 }

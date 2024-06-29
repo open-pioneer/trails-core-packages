@@ -63,7 +63,7 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
     const { children, ...rest } = props;
     const contextMethods = useMemo(() => createPackageContextMethods(rest), [rest]);
     return (
-        <CustomChakraProvider container={document.body}>
+        <CustomChakraProvider rootNode={document.body} container={document.body}>
             <InternalPackageContext.Provider value={contextMethods}>
                 {children}
             </InternalPackageContext.Provider>
