@@ -6,6 +6,7 @@ import { Service, ServiceConstructor, ServiceOptions } from "../Service";
 import { Error } from "@open-pioneer/core";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { PackageIntl } from "../i18n";
+import { DeepReadonly } from "ts-essentials";
 
 export type ServiceState = "not-constructed" | "constructing" | "constructed" | "destroyed";
 
@@ -34,11 +35,37 @@ export interface ServiceReprOptions {
     properties?: Record<string, unknown>;
 }
 
+export interface ReadonlyServiceRepr {
+    /** Unique id of this service. Contains the package name and the service name. */
+    readonly id: string;
+
+    /** Name of this service in it's package. */
+    readonly name: string;
+
+    /** Name of the parent package. */
+    readonly packageName: string;
+
+    /** Locale-dependant i18n messages. */
+    readonly intl: PackageIntl;
+
+    /** Service properties made available via the service's constructor. */
+    readonly properties: Readonly<Record<string, unknown>>;
+
+    /** Dependencies required by the service constructor. */
+    readonly dependencies: DeepReadonly<ServiceDependency[]>;
+
+    /** Interfaces provided by the service. */
+    readonly interfaces: DeepReadonly<InterfaceSpec[]>;
+
+    /** The factory that creates instances of this service. */
+    readonly factory: DeepReadonly<ServiceFactory>;
+}
+
 /**
  * Represents metadata and state of a service in the runtime.
  * `this.instance` is the actual service instance (when constructed).
  */
-export class ServiceRepr {
+export class ServiceRepr implements ReadonlyServiceRepr {
     static create(
         packageName: string,
         data: ServiceMetadata,
@@ -76,32 +103,17 @@ export class ServiceRepr {
         });
     }
 
-    /** Unique id of this service. Contains the package name and the service name. */
     readonly id: string;
-
-    /** Name of this service in it's package. */
     readonly name: string;
-
-    /** Name of the parent package. */
     readonly packageName: string;
-
-    /** Locale-dependant i18n messages. */
     readonly intl: PackageIntl;
-
-    /** Service properties made available via the service's constructor. */
     readonly properties: Readonly<Record<string, unknown>>;
-
-    /** Dependencies required by the service constructor. */
     readonly dependencies: readonly ServiceDependency[];
-
-    /** Interfaces provided by the service. */
-    readonly interfaces: readonly Readonly<InterfaceSpec>[];
+    readonly interfaces: readonly InterfaceSpec[];
+    readonly factory: ServiceFactory;
 
     /** Number of references to this service. */
     private _useCount = 0;
-
-    /** Service factory to construct an instance. */
-    private factory: ServiceFactory;
 
     /** Current state of this service. "constructed" -> instance is available. */
     private _state: ServiceState = "not-constructed";
