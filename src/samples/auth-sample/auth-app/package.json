@@ -1,0 +1,12 @@
+{
+    "name": "auth-app",
+    "version": "0.0.8",
+    "private": true,
+    "dependencies": {
+        "@open-pioneer/authentication": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^",
+        "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/runtime": "workspace:^",
+        "react": "^18.3.1"
+    }
+}

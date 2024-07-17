@@ -1,0 +1,10 @@
+{
+    "name": "i18n-app",
+    "version": "0.0.18",
+    "private": true,
+    "dependencies": {
+        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^",
+        "i18n-sample-package": "workspace:*"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "name": "@open-pioneer/runtime-react-support",
+    "version": "1.0.2",
+    "description": "An internal module providing support for react integration.",
+    "license": "Apache-2.0",
+    "main": "index.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
+        "directory": "src/packages/runtime-react-support"
+    },
+    "homepage": "https://github.com/open-pioneer",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "scripts": {
+        "build": "build-pioneer-package"
+    },
+    "peerDependencies": {
+        "react": "^18.3.1"
+    },
+    "devDependencies": {
+        "core-packages": "workspace:^",
+        "@open-pioneer/runtime": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    }
+}

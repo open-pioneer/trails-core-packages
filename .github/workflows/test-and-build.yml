@@ -1,0 +1,102 @@
+name: Build and deploy
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+jobs:
+  test:
+    # Don't run for pull requests from this repository to avoid duplicate builds (push also triggers build).
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    name: "Test and Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint dependencies
+        run: pnpm lint-shared-versions
+
+      - name: Run tests
+        run: pnpm ci:test
+
+      - name: Build samples
+        run: pnpm build
+
+      - name: Build packages
+        run: pnpm build-packages
+
+      - name: Build API documentation
+        run: pnpm build-docs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: dist/
+          retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 1 }}
+
+  call_version:
+    if: github.ref == 'refs/heads/main'
+    name: "Publish or create version PR"
+    uses: "./.github/workflows/version.yml"
+    needs: test
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Load artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: dist/
+
+      - name: Assemble site
+        run: |
+          set -eux;
+
+          mkdir -p site;
+          touch site/.nojekyll;
+          mv dist/www/* site/;
+          mv dist/docs site/docs;
+
+      - name: Setup git
+        shell: bash
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          repository-name: open-pioneer/trails-demo
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          git-config-name: "github-actions[bot]"
+          git-config-email: "41898282+github-actions[bot]@users.noreply.github.com"
+          folder: site
+          target-folder: core-packages

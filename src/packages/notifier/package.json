@@ -1,0 +1,34 @@
+{
+    "name": "@open-pioneer/notifier",
+    "description": "Provides support for application-wide notifications.",
+    "version": "0.3.4",
+    "license": "Apache-2.0",
+    "main": "index.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
+        "directory": "src/packages/notifier"
+    },
+    "homepage": "https://github.com/open-pioneer",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "scripts": {
+        "build": "build-pioneer-package"
+    },
+    "peerDependencies": {
+        "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^",
+        "@chakra-ui/icons": "^2.1.1",
+        "@open-pioneer/runtime": "workspace:^",
+        "react": "^18.3.1"
+    },
+    "devDependencies": {
+        "@open-pioneer/test-utils": "workspace:^",
+        "core-packages": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    }
+}

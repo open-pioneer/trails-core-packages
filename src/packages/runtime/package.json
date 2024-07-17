@@ -1,0 +1,36 @@
+{
+    "name": "@open-pioneer/runtime",
+    "version": "2.1.5",
+    "description": "Implements the runtime environment for Open Pioneer Trails apps.",
+    "license": "Apache-2.0",
+    "main": "index.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
+        "directory": "src/packages/runtime"
+    },
+    "homepage": "https://github.com/open-pioneer",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "scripts": {
+        "build": "build-pioneer-package"
+    },
+    "peerDependencies": {
+        "@formatjs/intl": "^2.9.9",
+        "@open-pioneer/base-theme": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^",
+        "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/runtime-react-support": "workspace:^",
+        "react": "^18.3.1",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@open-pioneer/test-utils": "workspace:^",
+        "core-packages": "workspace:^"
+    },
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    }
+}

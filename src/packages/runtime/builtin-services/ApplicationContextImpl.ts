@@ -1,0 +1,57 @@
+// SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
+// SPDX-License-Identifier: Apache-2.0
+import { ApplicationContext } from "../api";
+import { ServiceOptions } from "../Service";
+
+export interface ApplicationContextProperties {
+    host: HTMLElement;
+    shadowRoot: ShadowRoot;
+    container: HTMLElement;
+    locale: string;
+    supportedLocales: string[];
+
+    /** A callback to change the application's locale is injected by the runtime. */
+    changeLocale(locale: string): void;
+}
+
+export class ApplicationContextImpl implements ApplicationContext {
+    #host: HTMLElement;
+    #shadowRoot: ShadowRoot;
+    #container: HTMLElement;
+    #locale: string;
+    #supportedLocales: readonly string[];
+    #changeLocale: (locale: string) => void;
+
+    constructor(options: ServiceOptions, properties: ApplicationContextProperties) {
+        this.#host = properties.host;
+        this.#shadowRoot = properties.shadowRoot;
+        this.#container = properties.container;
+        this.#locale = properties.locale;
+        this.#supportedLocales = Object.freeze(Array.from(properties.supportedLocales));
+        this.#changeLocale = properties.changeLocale;
+    }
+
+    getHostElement(): HTMLElement {
+        return this.#host;
+    }
+
+    getShadowRoot(): ShadowRoot {
+        return this.#shadowRoot;
+    }
+
+    getApplicationContainer(): HTMLElement {
+        return this.#container;
+    }
+
+    getLocale(): string {
+        return this.#locale;
+    }
+
+    setLocale(locale: string): void {
+        this.#changeLocale(locale);
+    }
+
+    getSupportedLocales(): readonly string[] {
+        return this.#supportedLocales;
+    }
+}
