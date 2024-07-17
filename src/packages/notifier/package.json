@@ -21,6 +21,7 @@
         "@open-pioneer/chakra-integration": "workspace:^",
         "@chakra-ui/icons": "^2.1.1",
         "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/react-utils": "workspace:^",
         "react": "^18.3.1"
     },
     "devDependencies": {

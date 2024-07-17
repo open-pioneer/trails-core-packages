@@ -9,7 +9,8 @@ import { useCallback, useLayoutEffect, useRef } from "react";
  * The returned event handler can be used, for example, as an event handler in `useEffect()`.
  * Because the function identity is stable, `useEffect()` will not re-trigger if the implementation changes.
  *
- * NOTE: the event handler must not be called during rendering!
+ * > Warning: the function returned by `useEvent` must **not** be called during rendering.
+ * > It can only be used in an effect or in a event handler callback.
  *
  * See also: https://github.com/reactjs/rfcs/blob/useevent/text/0000-useevent.md
  */
