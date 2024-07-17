@@ -333,6 +333,9 @@ importers:
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
+      '@open-pioneer/react-utils':
+        specifier: workspace:^
+        version: link:../react-utils
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../runtime
@@ -343,6 +346,32 @@ importers:
       '@open-pioneer/test-utils':
         specifier: workspace:^
         version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
+  src/packages/react-utils:
+    dependencies:
+      '@open-pioneer/chakra-integration':
+        specifier: workspace:^
+        version: link:../chakra-integration
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../core
+      classnames:
+        specifier: ^2.3.2
+        version: 2.5.1
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      '@testing-library/react':
+        specifier: ^14.1.2
+        version: 14.1.2(react-dom@18.2.0(react@18.3.1))(react@18.3.1)
       core-packages:
         specifier: workspace:^
         version: link:../../..
@@ -2282,6 +2311,9 @@ packages:
   ci-info@3.8.0:
     resolution: {integrity: sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==}
     engines: {node: '>=8'}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   cliui@6.0.0:
     resolution: {integrity: sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==}
@@ -6437,6 +6469,8 @@ snapshots:
       fsevents: 2.3.3
 
   ci-info@3.8.0: {}
+
+  classnames@2.5.1: {}
 
   cliui@6.0.0:
     dependencies:

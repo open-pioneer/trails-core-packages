@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { useToast } from "@open-pioneer/chakra-integration";
-import { useEvent } from "./useEvent";
+import { useEvent } from "@open-pioneer/react-utils";
 import { useService } from "open-pioneer:react-hooks";
 import { ReactElement, useEffect, useState } from "react";
 import { InternalNotificationAPI, Notification } from "./NotificationServiceImpl";
