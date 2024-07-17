@@ -1,5 +1,24 @@
 # @open-pioneer/react-utils
 
+## 1.0.0
+
+### Major Changes
+
+-   a208b32: **Breaking:** Removed the `ToolButton` component; it has moved to `@open-pioneer/map-ui-components`.
+
+    If you were previously using the `ToolButton` in your app, you need to update your import statements when updating to this version:
+
+    ```diff
+    - import { ToolButton } from "@open-pioneer/react-utils";
+    + import { ToolButton } from "@open-pioneer/map-ui-components";
+    ```
+
+    You need to update your `package.json` as well to refer to the `map-ui-components` package.
+
+### Minor Changes
+
+-   a208b32: Move this package to the core-packages repository.
+
 ## 0.2.3
 
 ### Patch Changes
