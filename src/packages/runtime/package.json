@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/runtime",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "description": "Implements the runtime environment for Open Pioneer Trails apps.",
     "license": "Apache-2.0",
     "main": "index.ts",

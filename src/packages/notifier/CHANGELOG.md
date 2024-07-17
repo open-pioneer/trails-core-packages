@@ -1,5 +1,15 @@
 # @open-pioneer/notifier
 
+## 0.3.5
+
+### Patch Changes
+
+-   Updated dependencies [a208b32]
+-   Updated dependencies [a208b32]
+-   Updated dependencies [e945264]
+    -   @open-pioneer/react-utils@1.0.0
+    -   @open-pioneer/runtime@2.1.6
+
 ## 0.3.4
 
 ### Patch Changes
