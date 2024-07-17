@@ -46,13 +46,13 @@ export interface TitledSectionProps {
  *
  * Titles are rendered as [Chakra Headings](https://chakra-ui.com/docs/components/heading) by default.
  *
- * Example: Simple string headings (1, 2 and 3 will be rendered as h1, h2 and h3):
+ * **Example:** Simple string headings (1, 2 and 3 will be rendered as h1, h2 and h3):
  *
  * ```jsx
  * <TitledSection title="1">
  *     Top level content
  *
- *     <TitledSection title="2">
+ *     <TitledSection title="2" sectionHeadingProps={...}>
  *         Nested content
  *
  *         <TitledSection title="3">
@@ -62,7 +62,14 @@ export interface TitledSectionProps {
  * </TitledSection>
  * ```
  *
- * Example: custom title rendering
+ * When using using a string for the `title` prop, you can specify the `sectionHeadingProps` to
+ * customize the properties of the automatically generated heading component.
+ *
+ * **Example:** custom title rendering
+ *
+ * You can also use completely custom components for the title.
+ * In this case, you should ensure that you use the `SectionHeading` component within the `title` in some place.
+ * The section heading does not need to be the immediate child, you can wrap it any way you want.
  *
  * ```jsx
  * <TitledSection
