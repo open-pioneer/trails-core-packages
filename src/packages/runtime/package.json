@@ -17,13 +17,13 @@
         "build": "build-pioneer-package"
     },
     "peerDependencies": {
-        "@formatjs/intl": "^2.9.9",
+        "@formatjs/intl": "^2.10.4",
         "@open-pioneer/base-theme": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",
         "react": "^18.3.1",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.3.1"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",
