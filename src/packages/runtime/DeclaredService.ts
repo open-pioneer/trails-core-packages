@@ -67,11 +67,12 @@ export { type DECLARE_SERVICE_INTERFACE };
  * Given a type implementing {@link DeclaredService} or using {@link DECLARE_SERVICE_INTERFACE},
  * this type will produce the interface name associated with the service type.
  */
-export type AssociatedInterfaceName<T> = T extends DeclaredService<infer InterfaceName>
-    ? InterfaceName
-    : T extends { [DECLARE_SERVICE_INTERFACE]: string & infer InterfaceName }
-      ? InterfaceName
-      : never;
+export type AssociatedInterfaceName<T> =
+    T extends DeclaredService<infer InterfaceName>
+        ? InterfaceName
+        : T extends { [DECLARE_SERVICE_INTERFACE]: string & infer InterfaceName }
+          ? InterfaceName
+          : never;
 
 /**
  * This helper type produces the expected `interfaceName` (a string parameter) for the given service type.
@@ -80,13 +81,14 @@ export type AssociatedInterfaceName<T> = T extends DeclaredService<infer Interfa
  * 2. If `ServiceType` implements {@link DeclaredService}, it will enforce the associated interface name.
  * 3. Otherwise, a compile time error is generated.
  */
-export type InterfaceNameForServiceType<ServiceType> = IsUnknown<ServiceType> extends true
-    ? string
-    : AssociatedInterfaceName<ServiceType> extends never
-      ? {
-            [ERROR]: "TypeScript integration was not set up properly for this service. Make sure the service's TypeScript interface extends 'DeclaredService'.";
-        }
-      : AssociatedInterfaceName<ServiceType>;
+export type InterfaceNameForServiceType<ServiceType> =
+    IsUnknown<ServiceType> extends true
+        ? string
+        : AssociatedInterfaceName<ServiceType> extends never
+          ? {
+                [ERROR]: "TypeScript integration was not set up properly for this service. Make sure the service's TypeScript interface extends 'DeclaredService'.";
+            }
+          : AssociatedInterfaceName<ServiceType>;
 
 /**
  * @internal

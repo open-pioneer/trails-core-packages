@@ -4,6 +4,7 @@
 const { readFileSync } = require("fs");
 const { sync: fastGlobSync } = require("fast-glob");
 const { dirname } = require("path");
+const DEFAULT_HIGHLIGHT_LANGS = require("typedoc").OptionDefaults.highlightLanguages;
 
 const documentedPackages = getPackageDirectories().sort();
 console.info("Creating documentation for packages:", documentedPackages);
@@ -20,12 +21,15 @@ module.exports = {
         notExported: false,
         invalidLink: true,
         notDocumented: true
-    }
+    },
+
+    // 'tsx' is in default, but 'jsx' is not..
+    highlightLanguages: [...DEFAULT_HIGHLIGHT_LANGS, "jsx"]
 };
 
 function getPackageDirectories() {
     const packageJsonPaths = fastGlobSync("./src/packages/**/package.json", {
-        ignore: ["**/dist/**", "**/node_modules/**"],
+        ignore: ["**/dist/**", "**/node_modules/**", "**/test-data/**"],
         followSymbolicLinks: false
     });
     const packageDirectories = packageJsonPaths

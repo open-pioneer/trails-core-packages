@@ -6,7 +6,7 @@
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import { createElement } from "react";
-import { beforeEach, expect, it, SpyInstance, afterEach, vi } from "vitest";
+import { beforeEach, expect, it, MockInstance, afterEach, vi } from "vitest";
 import { Service, ServiceConstructor } from "../Service";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { useTheme } from "@open-pioneer/chakra-integration";
@@ -28,7 +28,7 @@ beforeEach(() => {
     document.body.innerHTML = "";
 });
 
-let errorSpy!: SpyInstance;
+let errorSpy!: MockInstance;
 beforeEach(() => {
     errorSpy = vi.spyOn(console, "error");
 });

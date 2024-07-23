@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { afterEach, beforeEach, it, vi, expect, SpyInstance } from "vitest";
+import { afterEach, beforeEach, it, vi, expect, MockInstance } from "vitest";
 import { KeycloakAuthPlugin } from "./KeycloakAuthPlugin";
 import { createService } from "@open-pioneer/test-utils/services";
 import { NotificationService, NotificationOptions } from "@open-pioneer/notifier";
@@ -19,7 +19,7 @@ vi.mock("keycloak-js", () => ({
     default: vi.fn().mockReturnValue(hoisted.keycloakMock)
 }));
 
-let restoreMocks: SpyInstance[] = [];
+let restoreMocks: MockInstance[] = [];
 
 beforeEach(() => {
     vi.useFakeTimers();
@@ -121,12 +121,13 @@ it("should reject by updating the token", async () => {
 it("should update the token in interval", async () => {
     hoisted.keycloakMock.init.mockResolvedValue(true);
     hoisted.keycloakMock.updateToken.mockResolvedValue(true);
+    const refreshSpy = vi.spyOn(KeycloakAuthPlugin.prototype as any, "__refresh");
     const { keycloakAuthPlugin } = await setup();
-    const refreshSpy = vi.spyOn(keycloakAuthPlugin as any, "__refresh");
     restoreMocks.push(refreshSpy);
 
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "authenticated");
-    expect(refreshSpy).toHaveBeenCalledTimes(1);
+    await vi.waitFor(() => expect(refreshSpy).toHaveBeenCalledTimes(1));
+
     vi.advanceTimersToNextTimer();
     expect(hoisted.keycloakMock.updateToken).toHaveBeenCalledTimes(1);
 });
