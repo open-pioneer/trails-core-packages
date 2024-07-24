@@ -29,20 +29,22 @@ const ENFORCED_BY_ROOT_PACKAGE = [
     "@testing-library/dom",
     "@testing-library/react",
     "@testing-library/jest-dom",
-    "@testing-library/user-event",
-]
+    "@testing-library/user-event"
+];
 
 module.exports = {
     // Indent used in package.json files
     indent: "    ",
-    
+
+    dependencyTypes: ["prod", "peer", "dev"],
+
     // The first entry here forces all packages in the workspace to use the dependency version
     // from the root package.json when the dependency name is listed in `ENFORCED_BY_ROOT_PACKAGE`.
     // See https://jamiemason.github.io/syncpack/config/version-groups for advanced usage of version groups.
     versionGroups: [
         {
             dependencies: ENFORCED_BY_ROOT_PACKAGE,
-            packages: ["**"],   // packages where the pinned version is enforced
+            packages: ["**"], // packages where the pinned version is enforced
             snapTo: [ROOT_PACKAGE_NAME] // package that defines the version to use
         }
     ]
