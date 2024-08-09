@@ -1,5 +1,11 @@
 # @open-pioneer/chakra-integration
 
+## 1.1.4
+
+### Patch Changes
+
+-   e0b2fae: Update dependencies
+
 ## 1.1.3
 
 ### Patch Changes

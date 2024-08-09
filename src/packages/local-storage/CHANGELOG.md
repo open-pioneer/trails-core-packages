@@ -1,5 +1,13 @@
 # @open-pioneer/local-storage
 
+## 0.3.6
+
+### Patch Changes
+
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/runtime@2.1.7
+
 ## 0.3.5
 
 ### Patch Changes

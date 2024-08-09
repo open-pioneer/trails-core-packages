@@ -1,5 +1,12 @@
 # @open-pioneer/base-theme
 
+## 0.3.3
+
+### Patch Changes
+
+-   Updated dependencies [e0b2fae]
+    -   @open-pioneer/chakra-integration@1.1.4
+
 ## 0.3.2
 
 ### Patch Changes

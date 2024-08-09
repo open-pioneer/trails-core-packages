@@ -1,5 +1,15 @@
 # notify-app
 
+## 0.0.10
+
+### Patch Changes
+
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/runtime@2.1.7
+    -   @open-pioneer/notifier@0.3.6
+
 ## 0.0.9
 
 ### Patch Changes

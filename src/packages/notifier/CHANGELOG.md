@@ -1,5 +1,15 @@
 # @open-pioneer/notifier
 
+## 0.3.6
+
+### Patch Changes
+
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/react-utils@1.0.1
+    -   @open-pioneer/runtime@2.1.7
+
 ## 0.3.5
 
 ### Patch Changes

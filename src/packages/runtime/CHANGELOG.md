@@ -1,5 +1,16 @@
 # @open-pioneer/runtime
 
+## 2.1.7
+
+### Patch Changes
+
+-   e0b2fae: Update dependencies
+-   6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
+-   Updated dependencies [e0b2fae]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/base-theme@0.3.3
+    -   @open-pioneer/runtime-react-support@1.0.2
+
 ## 2.1.6
 
 ### Patch Changes
