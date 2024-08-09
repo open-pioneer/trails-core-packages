@@ -1,5 +1,17 @@
 # keycloak-sample
 
+## 0.0.5
+
+### Patch Changes
+
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/authentication-keycloak@0.1.3
+    -   @open-pioneer/authentication@0.3.6
+    -   @open-pioneer/runtime@2.1.7
+    -   @open-pioneer/notifier@0.3.6
+    -   @open-pioneer/http@2.1.9
+
 ## 0.0.4
 
 ### Patch Changes

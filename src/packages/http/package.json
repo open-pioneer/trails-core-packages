@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/http",
-    "version": "2.1.8",
+    "version": "2.1.9",
     "description": "Provides the HttpService, which can be used to request resources over HTTP.",
     "license": "Apache-2.0",
     "main": "index.ts",
