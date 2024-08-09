@@ -17,7 +17,7 @@ export interface ApiExtension {
     /**
      * Returns a set of methods that will be added to the web component's API.
      */
-    getApiMethods(): Promise<ApiMethods>;
+    getApiMethods(): Promise<ApiMethods> | ApiMethods;
 }
 
 /**
