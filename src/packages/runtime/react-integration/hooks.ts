@@ -15,10 +15,12 @@ import { InterfaceNameForServiceType } from "../DeclaredService";
     IMPORTANT
     =========
 
-    The functions in this file are part of the public API.
-    They are imported by code generated during separate package generation via:
+    The functions in this file are part of the public API, although they should not be called directly.
+    They are imported by code generated during separate package compilation generation via:
 
         import { hookName } from '@open-pioneer/runtime/react-integration'
+
+    They are also imported by the vite plugin during development and when building an application.
 
     The matching exports are in the neighboring `index.ts`.
     The interfaces of these hooks must remain stable so that already published packages can continue to work in the future.
