@@ -60,8 +60,8 @@ export interface DeclaredService<InterfaceName extends string> {
  * }
  * ```
  */
-declare const DECLARE_SERVICE_INTERFACE: unique symbol;
-export { type DECLARE_SERVICE_INTERFACE };
+const DECLARE_SERVICE_INTERFACE = Symbol("runtime.DECLARE_SERVICE_INTERFACE");
+export { DECLARE_SERVICE_INTERFACE };
 
 /**
  * Given a type implementing {@link DeclaredService} or using {@link DECLARE_SERVICE_INTERFACE},
