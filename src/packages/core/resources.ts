@@ -27,3 +27,19 @@ export function destroyResource<R extends Resource>(resource: R | undefined): un
     resource?.destroy();
     return undefined;
 }
+
+/**
+ * A helper function that invokes `destroy()` on each resource in the given array.
+ *
+ * This function destroys the resources in reverse order (starting from the last element).
+ * This is done to reverse the order of construction.
+ *
+ * The array will be cleared by this function.
+ */
+export function destroyResources<R extends Resource>(resources: R[]): void {
+    // `destroy()` might call us in a cycle, so we modify the array in place.
+    let resource: Resource | undefined;
+    while ((resource = resources.pop())) {
+        resource.destroy();
+    }
+}
