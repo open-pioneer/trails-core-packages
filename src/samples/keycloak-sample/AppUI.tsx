@@ -50,7 +50,7 @@ export function AppUI() {
                         </Text>
                         <Text>
                             The following environment properties should be set via vite (e.g. in{" "}
-                            <Code>env.local</Code>):
+                            <Code>.env.local</Code>):
                         </Text>
                         <UnorderedList>
                             <ListItem>

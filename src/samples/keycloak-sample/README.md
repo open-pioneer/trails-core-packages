@@ -43,7 +43,7 @@ VITE_KEYCLOAK_CONFIG_CLIENT_ID=trails
 ```
 
 Afterwards, restart vite and open the keycloak sample app in your browser.
-It should now redirect to you to your local keycloak and back to the sample app once you are authenticated.
+It should now redirect you to your local keycloak and back to the sample app once you are authenticated.
 
 ![Authenticated](./testing/Authenticated.png)
 
