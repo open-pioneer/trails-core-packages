@@ -77,6 +77,20 @@ export class Model {
 }
 ```
 
+#### Rendering a single reactive value
+
+If you have a single signal at hand, there is no need to use the more complex `useReactiveSnapshot` hook.
+You can use the more primitive `useReactiveValue` hook instead:
+
+```jsx
+import { useReactiveValue } from "@open-pioneer/reactivity";
+
+function YourComponent({ signal }) {
+    const value = useReactiveValue(signal); // Subscribes to `signal.value` and re-renders on changes.
+    return <div>{value}</div>;
+}
+```
+
 More details are available in this package's API documentation and the [README of @conterra/reactivity-core](https://www.npmjs.com/package/@conterra/reactivity-core).
 
 ### ESLint configuration
