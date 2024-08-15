@@ -1,18 +1,19 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { reactive, watch } from "@conterra/reactivity-core";
 import {
     AuthPlugin,
     AuthPluginEvents,
     AuthState,
     LoginBehavior
 } from "@open-pioneer/authentication";
-import { EventEmitter, createLogger } from "@open-pioneer/core";
+import { EventEmitter, Resource, createLogger, destroyResource } from "@open-pioneer/core";
 import { NotificationService } from "@open-pioneer/notifier";
 import {
+    PackageIntl,
     Service,
     ServiceOptions,
-    type DECLARE_SERVICE_INTERFACE,
-    PackageIntl
+    type DECLARE_SERVICE_INTERFACE
 } from "@open-pioneer/runtime";
 import Keycloak, {
     type KeycloakConfig,
@@ -34,9 +35,6 @@ export class KeycloakAuthPlugin
 {
     declare [DECLARE_SERVICE_INTERFACE]: "authentication-keycloak.KeycloakAuthPlugin";
 
-    #state: AuthState = {
-        kind: "pending"
-    };
     #notifier: NotificationService;
     #intl: PackageIntl;
     #keycloakOptions: KeycloakOptions;
@@ -45,6 +43,11 @@ export class KeycloakAuthPlugin
     #loginOptions: KeycloakLoginOptions;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     #timerId: any;
+    #watcher: Resource | undefined;
+
+    #state = reactive<AuthState>({
+        kind: "pending"
+    });
 
     constructor(options: ServiceOptions<References>) {
         super();
@@ -52,6 +55,14 @@ export class KeycloakAuthPlugin
         this.#intl = options.intl;
         this.#logoutOptions = { redirectUri: undefined };
         this.#loginOptions = { redirectUri: undefined };
+
+        // Backwards compatibility: emit "changed" event when the state changes
+        this.#watcher = watch(
+            () => [this.#state.value],
+            () => {
+                this.emit("changed");
+            }
+        );
 
         try {
             this.#keycloakOptions = getKeycloakConfig(options.properties);
@@ -65,14 +76,15 @@ export class KeycloakAuthPlugin
             throw new Error("Failed to construct keycloak instance", { cause: e });
         }
         this.#init().catch((e) => {
+            // TODO: Handle error
+            //
             // Stay in pending state when an error happens.
             // There is currently no useful way to signal an error using the plugin API,
             // going into 'not-authenticated' could lead to unexpected behavior (e.g. redirect loops).
             // See https://github.com/open-pioneer/trails-core-packages/issues/47
-            this.#state = {
+            this.#updateState({
                 kind: "pending"
-            };
-            this.emit("changed");
+            });
             this.#notifier.notify({
                 level: "error",
                 title: this.#intl.formatMessage({
@@ -89,11 +101,12 @@ export class KeycloakAuthPlugin
 
     destroy() {
         clearInterval(this.#timerId);
+        this.#watcher = destroyResource(this.#watcher);
         this.#timerId = undefined;
     }
 
     getAuthState(): AuthState {
-        return this.#state;
+        return this.#state.value;
     }
 
     getLoginBehavior(): LoginBehavior {
@@ -128,7 +141,7 @@ export class KeycloakAuthPlugin
         }
 
         if (isAuthenticated) {
-            this.#state = {
+            this.#updateState({
                 kind: "authenticated",
                 sessionInfo: {
                     userId: this.#keycloak.subject ? this.#keycloak.subject : "undefined",
@@ -140,8 +153,7 @@ export class KeycloakAuthPlugin
                         userName: this.#keycloak.idTokenParsed?.preferred_username
                     }
                 }
-            };
-            this.emit("changed");
+            });
 
             LOG.debug(`User ${this.#keycloak.subject} is authenticated`);
 
@@ -150,10 +162,9 @@ export class KeycloakAuthPlugin
                 this.__refresh(refreshOptions.interval, refreshOptions.timeLeft);
             }
         } else {
-            this.#state = {
+            this.#updateState({
                 kind: "not-authenticated"
-            };
-            this.emit("changed");
+            });
             LOG.debug("User is not authenticated");
         }
     }
@@ -164,13 +175,17 @@ export class KeycloakAuthPlugin
         this.#timerId = setInterval(() => {
             this.#keycloak.updateToken(timeLeft).catch((e) => {
                 LOG.error("Failed to refresh token", e);
-                this.#state = {
+                this.#updateState({
                     kind: "not-authenticated"
-                };
+                });
                 this.emit("changed");
                 this.destroy();
             });
         }, interval);
+    }
+
+    #updateState(newState: AuthState) {
+        this.#state.value = newState;
     }
 }
 
