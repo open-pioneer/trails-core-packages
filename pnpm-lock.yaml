@@ -200,6 +200,9 @@ importers:
 
   src/packages/authentication-keycloak:
     dependencies:
+      '@conterra/reactivity-core':
+        specifier: ^0.4.0
+        version: 0.4.0
       '@open-pioneer/authentication':
         specifier: workspace:^
         version: link:../authentication
@@ -213,8 +216,8 @@ importers:
         specifier: workspace:^
         version: link:../runtime
       keycloak-js:
-        specifier: ^23.0.7
-        version: 23.0.7
+        specifier: ^25.0.2
+        version: 25.0.2
     devDependencies:
       core-packages:
         specifier: workspace:^
@@ -3100,8 +3103,8 @@ packages:
   js-cookie@2.2.1:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
 
-  js-sha256@0.10.1:
-    resolution: {integrity: sha512-5obBtsz9301ULlsgggLg542s/jqtddfOpV5KJc4hajc9JV8GeY2gZHSVpYBn4nWqAUTJ9v+xwtbJ1mIBgIH5Vw==}
+  js-sha256@0.11.0:
+    resolution: {integrity: sha512-6xNlKayMZvds9h1Y1VWc0fQHQ82BxTXizWPEtEeGvmOUYpBRy4gbWroHLpzowe6xiQhHpelCQiE7HEdznyBL9Q==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -3146,8 +3149,8 @@ packages:
     resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
     engines: {node: '>=18'}
 
-  keycloak-js@23.0.7:
-    resolution: {integrity: sha512-OmszsKzBhhm5yP4W1q/tMd+nNnKpOAdeVYcoGhphlv8Fj1bNk4wRTYzp7pn5BkvueLz7fhvKHz7uOc33524YrA==}
+  keycloak-js@25.0.2:
+    resolution: {integrity: sha512-ACLf5O5PqzfDJwGqvLpqM0kflYWmyl3+T7M2C23gztJYccDxdfNP54+B9OkXz2GnDpLUId0ceoA+lbHw9t4Wng==}
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -7462,7 +7465,7 @@ snapshots:
 
   js-cookie@2.2.1: {}
 
-  js-sha256@0.10.1: {}
+  js-sha256@0.11.0: {}
 
   js-tokens@4.0.0: {}
 
@@ -7506,10 +7509,9 @@ snapshots:
 
   jwt-decode@4.0.0: {}
 
-  keycloak-js@23.0.7:
+  keycloak-js@25.0.2:
     dependencies:
-      base64-js: 1.5.1
-      js-sha256: 0.10.1
+      js-sha256: 0.11.0
       jwt-decode: 4.0.0
 
   kind-of@6.0.3: {}

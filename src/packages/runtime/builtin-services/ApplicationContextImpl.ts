@@ -48,6 +48,8 @@ export class ApplicationContextImpl implements ApplicationContext {
     }
 
     setLocale(locale: string): void {
+        // This restarts the application at the moment, so this.locale will _not_ be updated.
+        // Instead, we get a new application with a new application context.
         this.#changeLocale(locale);
     }
 
