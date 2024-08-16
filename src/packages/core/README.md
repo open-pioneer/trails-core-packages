@@ -6,7 +6,9 @@ This package contains basic utility functions and classes used in Open Pioneer T
 
 The package exports the `EventEmitter` class that supports emitting and subscribing to user defined events.
 
-## Errors
+## Usage
+
+### Errors
 
 The `Error` class extends JavaScript's global error class with a user defined `id` value that
 can be used to explicitly identify error conditions.
@@ -32,19 +34,19 @@ try {
 const errors = getErrorChain(error);
 ```
 
-## Resources
+### Resources
 
 The `Resource` type exported from this package is used by objects with a destructor.
 All object needing some cleanup action to be called should use the `destroy` method for consistency and easier handling.
 
-## Logger
+### Logger
 
 The 'Logger' class provides a logger for standardized application wide logging.
-The log level is configured globally in the vite.config.js.
+The log level is configured globally in the file `vite.config.js`.
 
 To create a logger instance, call the `createLogger` method.
 It takes a prefix (string) to prepend to each message.
-Use `:` as a separator to encode hierarchical names (e.g. `"some-package:SomeClass"`).
+To encode hierarchical names, use `:` as a separator (for example `"some-package:SomeClass"`).
 
 The logger provides log methods for the following log levels with the following order: DEBUG < INFO < WARN < ERROR.
 

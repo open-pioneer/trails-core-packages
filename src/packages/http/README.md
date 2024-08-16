@@ -2,9 +2,9 @@
 
 This package provides the `HttpService`, which can be used to request resources over HTTP.
 
-## Quick start
+## Usage
 
-Reference the interface `http.HttpService` from your service:
+To use the HTTP service, reference the interface `http.HttpService` from your service as in the following sample:
 
 ```js
 // build.config.mjs
@@ -23,9 +23,7 @@ export default defineBuildConfig({
 });
 ```
 
-The snippet above will inject the `HttpService` as `httpService`.
-
-Then, from the implementation class of `MyService`, simply call `fetch()` on the service:
+From the implementation class of `MyService`, call `fetch()` on the service:
 
 ```js
 // MyService.js
@@ -41,11 +39,11 @@ export class MyService {
 ```
 
 The signature of the `fetch()` method is compatible to the Browser's global [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) function.
-However, the `HttpService`'s method should always be preferred to take advantage of future features (logging, proxy support, etc.).
+However, the `HttpService`'s method should be preferred to take advantage of future features (such as logging or proxy support).
 
-## Request interceptors
+### Request interceptors
 
-> Note that the request interceptor API is experimental: it may change with a new minor release as a response to feedback.
+> The request interceptor API is experimental: it may change with a new minor release as a response to feedback.
 
 The `HttpService` supports extension via _request interceptors_.
 Request interceptors can modify requests (query parameters, headers, etc.) before they are sent to the server.

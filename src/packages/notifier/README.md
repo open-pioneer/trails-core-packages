@@ -6,7 +6,7 @@ This package allows a developer to emit global notifications from any applicatio
 
 ### Displaying notifications in an application
 
-The `<Notifier />` must be used in your app's UI , otherwise notifications from application components will not be shown. It should be present exactly once.
+The `<Notifier />` must be used in your app's UI , otherwise notifications from application components are not shown. It should be present exactly once.
 
 ```jsx
 import { Notifier } from "@open-pioneer/notifier";
@@ -36,7 +36,7 @@ export interface NotifierProps {
 }
 ```
 
-The implementation of `<Notifier />` is currently based on [Chakra's Toast](https://chakra-ui.com/docs/components/toast).
+The implementation of `<Notifier />` is based on [Chakra's Toast](https://chakra-ui.com/docs/components/toast).
 
 ### Emitting notifications
 

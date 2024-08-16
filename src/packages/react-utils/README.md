@@ -2,7 +2,9 @@
 
 This package provides React utilities that help a developer create applications.
 
-## Titled sections
+## Usage
+
+### Titled sections
 
 Use the `<TitledSection>` and `<SectionHeading>` components instead of raw `hX` HTML tags (such as `<h1>` or `<h2>`).
 This way, the appropriate heading level is determined automatically.
@@ -41,9 +43,9 @@ Example:
 In the preceding example the topmost heading(s) in `TheRestOfYourApplication` start at level 2, and nested headings use increasing levels as usual.
 For more details, see the API documentation.
 
-## Hooks
+### Hooks
 
-### useCommonComponentProps()
+#### useCommonComponentProps()
 
 A helper hook that automatically computes `containerProps`: common properties to set on the topmost container element of a public component.
 
@@ -76,7 +78,7 @@ export const InitialExtent: FC<InitialExtentProps> = forwardRef(function Initial
 });
 ```
 
-### useEvent()
+#### useEvent()
 
 The `useEvent` can be used to obtain a stable event handler function with changing implementation.
 This is useful to avoid re-triggering `useEffect`-hooks when only the event handler changed.
