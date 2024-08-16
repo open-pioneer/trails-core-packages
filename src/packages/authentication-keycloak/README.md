@@ -1,20 +1,20 @@
 # @open-pioneer/authentication-keycloak
 
-This package provide a plugin for the [authentication package](https://github.com/open-pioneer/trails-core-packages/blob/main/src/packages/authentication/README.md#implementing-an-authentication-plugin) that supports [Keycloak](https://www.keycloak.org/).
+This package provides a [Keycloak](https://www.keycloak.org/) plugin for the [authentication package](https://github.com/open-pioneer/trails-core-packages/blob/main/src/packages/authentication/README.md#implementing-an-authentication-plugin).
 
-The package implements an actual authentication flow using the [Keycloak JavaScript](#https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter) adapter.
-For further Information, how Keycloak works please visit the official documentation of [Keycloak](https://www.keycloak.org/).
-
-> **_NOTE:_** The package only works with the central [authentication package](https://github.com/open-pioneer/trails-core-packages/blob/main/src/packages/authentication/README.md#implementing-an-authentication-plugin).
+The package implements an authentication flow using the [Keycloak JavaScript](#https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter) adapter.
+For more information about Keycloak, see the [Keycloak documentation](https://www.keycloak.org/).
 
 ## Usage
 
 To use the package in your app, first import the `<ForceAuth />` component from the [authentication package](https://github.com/open-pioneer/trails-core-packages/blob/main/src/packages/authentication/README.md#enforcing-authentication) to make sure that only logged in users can use the application.
 
 `ForceAuth` renders its children (your application) if the user is authenticated.
-Otherwise, it redirect the user to the Keycloak authentication provider.
+Otherwise, it redirects the user to the Keycloak authentication provider.
 
-To access the `SessionInfo` for the current logged in user, you can use the `useAuthState` hook provided by the authentication package.
+To access the `SessionInfo` for the currently logged in user, use the `useAuthState` hook provided by the authentication package.
+
+The following example shows a basic implementation of the functions described before:
 
 ```tsx
 // AppUI.tsx
@@ -44,7 +44,7 @@ export function AppUI() {
 ### Keycloak configuration properties
 
 To configure the `authentication-keycloak` package, adjust these properties.
-For more details on the configuration properties, please visit the official documentation [API Reference](https://www.keycloak.org/docs/latest/securing_apps/index.html#api-reference).
+For more details on the configuration properties, visit the [API Reference](https://www.keycloak.org/docs/latest/securing_apps/index.html#api-reference).
 
 | Property            |        Type         |                                                                                                           Description |                                             Default |
 | ------------------- | :-----------------: | --------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------: |
@@ -112,13 +112,13 @@ const element = createCustomElement({
 
 ### Error reporting
 
-In case of an error during authentication (i.e. if the keycloak client lib throws an error during `init`), a notification will be presented to the user via the `NotificationService` (technical details can be found in the developer console).
+In case of an error during authentication (if the Keycloak client library throws an error during `init`), a notification is presented to the user via the `NotificationService` (technical details can be found in the developer console).
 You should therefore embed the `<Notifier />` into your application as well.
 Note that the Notifier should not be nested in `<ForceAuth />`, because it would not be rendered in case of an authentication problem.
 
 ### Accessing the Keycloak token in your application
 
-After a successful login, the Keycloak token can be accessed from the `SessionInfo` of the `AuthService`.
+After a successful login, the Keycloak token can be accessed from the `SessionInfo` of the `AuthService` as in the following sample:
 
 ```ts
 //SampleTokenInterceptor.ts
