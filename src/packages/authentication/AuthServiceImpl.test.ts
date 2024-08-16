@@ -3,12 +3,12 @@
 /**
  * @vitest-environment node
  */
-import { EventEmitter } from "@open-pioneer/core";
 import { it, expect } from "vitest";
-import { AuthPlugin, AuthPluginEvents, AuthState, LoginFallback } from "./api";
+import { AuthPlugin, AuthState, LoginFallback } from "./api";
 import { createElement } from "react";
 import { createService } from "@open-pioneer/test-utils/services";
 import { AuthServiceImpl } from "./AuthServiceImpl";
+import { reactive, syncWatch } from "@conterra/reactivity-core";
 
 it("forwards the authentication plugin's state changes", async () => {
     const plugin = new TestPlugin();
@@ -18,10 +18,14 @@ it("forwards the authentication plugin's state changes", async () => {
         }
     });
 
-    const observedStates: AuthState[] = [authService.getAuthState()];
-    authService.on("changed", () => {
-        observedStates.push(authService.getAuthState());
-    });
+    const observedStates: AuthState[] = [];
+    syncWatch(
+        () => [authService.getAuthState()],
+        ([state]) => {observedStates.push(state);},
+        {
+            immediate: true
+        }
+    );
 
     plugin.$setAuthState({ kind: "pending" });
     plugin.$setAuthState({
@@ -107,15 +111,15 @@ it("calls the plugin's logout method", async () => {
     expect(plugin.$logoutCalled).toBe(1);
 });
 
-class TestPlugin extends EventEmitter<AuthPluginEvents> implements AuthPlugin {
-    #state: AuthState = {
+class TestPlugin implements AuthPlugin {
+    #state  = reactive<AuthState>( {
         kind: "not-authenticated"
-    };
+    });
 
     $logoutCalled = 0;
 
     getAuthState(): AuthState {
-        return this.#state;
+        return this.#state.value;
     }
 
     getLoginBehavior(): LoginFallback {
@@ -130,8 +134,7 @@ class TestPlugin extends EventEmitter<AuthPluginEvents> implements AuthPlugin {
     }
 
     $setAuthState(newState: AuthState) {
-        this.#state = newState;
-        this.emit("changed");
+        this.#state.value = newState;
     }
 }
 

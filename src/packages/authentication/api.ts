@@ -94,8 +94,7 @@ export interface LoginEffect {
  * The current state (such as session info) can be retrieved and watched for changes.
  */
 export interface AuthService
-    extends EventSource<AuthEvents>,
-        DeclaredService<"authentication.AuthService"> {
+    extends DeclaredService<"authentication.AuthService"> {
     /**
      * Returns the current authentication state.
      *

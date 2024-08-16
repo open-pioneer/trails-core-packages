@@ -177,9 +177,15 @@ importers:
 
   src/packages/authentication:
     dependencies:
+      '@conterra/reactivity-core':
+        specifier: ^0.4.0
+        version: 0.4.0
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
+      '@open-pioneer/reactivity':
+        specifier: ^0.1.0
+        version: 0.1.0(@conterra/reactivity-core@0.4.0)(react@18.3.1)
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../runtime
@@ -1568,6 +1574,12 @@ packages:
   '@open-pioneer/build-support@2.0.2':
     resolution: {integrity: sha512-+9lWYqbsPsYefAH5leuOVYBmCrMMPzbuALZysh1b7u6AJ8BhntGapw8Q4hvaZ0qxPYW1BaVAAZfiGTk0fAPt4A==}
     engines: {node: '>= 18'}
+
+  '@open-pioneer/reactivity@0.1.0':
+    resolution: {integrity: sha512-NdqcV/jC3agYMJ7M1jEF/5YocO469XK2z9zBYT1O6Hh4FyM0AsQWEHcNdoZzz0YDAMYFdF0dlb3pjmOewIfSfg==}
+    peerDependencies:
+      '@conterra/reactivity-core': ^0.4.0
+      react: ^18.3.1
 
   '@open-pioneer/tag-current-versions@2.0.2':
     resolution: {integrity: sha512-1okbGoAO9POHgyi9d7wLJ772dGvzMZpiL434X8RFKQIdg6b8fxobblmJ+j3qFt/+0Ba1UwZB1aDG+KA6nQt/7w==}
@@ -5784,6 +5796,11 @@ snapshots:
       - supports-color
 
   '@open-pioneer/build-support@2.0.2': {}
+
+  '@open-pioneer/reactivity@0.1.0(@conterra/reactivity-core@0.4.0)(react@18.3.1)':
+    dependencies:
+      '@conterra/reactivity-core': 0.4.0
+      react: 18.3.1
 
   '@open-pioneer/tag-current-versions@2.0.2':
     dependencies:

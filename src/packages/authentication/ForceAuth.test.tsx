@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { EventEmitter } from "@open-pioneer/core";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { expect, it } from "vitest";
 import { ForceAuth } from "./ForceAuth";
-import { AuthEvents, AuthService, AuthState, LoginBehavior, SessionInfo } from "./api";
+import { AuthService, AuthState, LoginBehavior, SessionInfo } from "./api";
+import { reactive, Reactive } from "@conterra/reactivity-core";
 
 it("renders children if the user is authenticated", async () => {
     const mocks = {
@@ -203,12 +203,11 @@ it("calls a login effect if present", async () => {
     });
 });
 
-class TestAuthService extends EventEmitter<AuthEvents> implements AuthService {
-    #currentState: AuthState;
+class TestAuthService implements AuthService {
+    #currentState: Reactive<AuthState>;
     #behavior: LoginBehavior;
     constructor(initState: AuthState, loginBehavior?: LoginBehavior) {
-        super();
-        this.#currentState = initState;
+        this.#currentState = reactive<AuthState>(initState);
         this.#behavior = loginBehavior ?? {
             kind: "fallback",
             Fallback(props: Record<string, unknown>) {
@@ -217,7 +216,7 @@ class TestAuthService extends EventEmitter<AuthEvents> implements AuthService {
         };
     }
     getAuthState(): AuthState {
-        return this.#currentState;
+        return this.#currentState.value;
     }
     getSessionInfo(): Promise<SessionInfo | undefined> {
         throw new Error("Method not implemented.");
@@ -229,7 +228,6 @@ class TestAuthService extends EventEmitter<AuthEvents> implements AuthService {
         throw new Error("Method not implemented.");
     }
     setAuthState(newState: AuthState) {
-        this.#currentState = newState;
-        this.emit("changed");
+        this.#currentState.value = newState;
     }
 }

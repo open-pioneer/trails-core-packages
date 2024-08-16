@@ -1,13 +1,12 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { reactive, watch } from "@conterra/reactivity-core";
+import { reactive } from "@conterra/reactivity-core";
 import {
     AuthPlugin,
-    AuthPluginEvents,
     AuthState,
     LoginBehavior
 } from "@open-pioneer/authentication";
-import { EventEmitter, Resource, createLogger, destroyResource } from "@open-pioneer/core";
+import { Resource, createLogger, destroyResource } from "@open-pioneer/core";
 import { NotificationService } from "@open-pioneer/notifier";
 import {
     PackageIntl,
@@ -30,8 +29,7 @@ interface References {
 }
 
 export class KeycloakAuthPlugin
-    extends EventEmitter<AuthPluginEvents>
-    implements Service, AuthPlugin
+implements Service, AuthPlugin
 {
     declare [DECLARE_SERVICE_INTERFACE]: "authentication-keycloak.KeycloakAuthPlugin";
 
@@ -50,19 +48,10 @@ export class KeycloakAuthPlugin
     });
 
     constructor(options: ServiceOptions<References>) {
-        super();
         this.#notifier = options.references.notifier;
         this.#intl = options.intl;
         this.#logoutOptions = { redirectUri: undefined };
         this.#loginOptions = { redirectUri: undefined };
-
-        // Backwards compatibility: emit "changed" event when the state changes
-        this.#watcher = watch(
-            () => [this.#state.value],
-            () => {
-                this.emit("changed");
-            }
-        );
 
         try {
             this.#keycloakOptions = getKeycloakConfig(options.properties);
@@ -178,7 +167,6 @@ export class KeycloakAuthPlugin
                 this.#updateState({
                     kind: "not-authenticated"
                 });
-                this.emit("changed");
                 this.destroy();
             });
         }, interval);
