@@ -1,5 +1,22 @@
 # @open-pioneer/runtime
 
+## 2.1.7
+
+### Patch Changes
+
+-   58ce24f: Export `DECLARE_SERVICE_INTERFACE` as a value instead of a type only.
+    It was previously necessary to import this symbol via `import type` to avoid errors during development.
+    The `type` keyword can now be omitted.
+-   e0b2fae: Update dependencies
+-   6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
+-   Updated dependencies [5c62522]
+-   Updated dependencies [50550d3]
+-   Updated dependencies [e0b2fae]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/core@1.3.0
+    -   @open-pioneer/base-theme@0.3.3
+    -   @open-pioneer/runtime-react-support@1.0.2
+
 ## 2.1.6
 
 ### Patch Changes

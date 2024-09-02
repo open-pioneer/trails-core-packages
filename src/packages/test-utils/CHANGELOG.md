@@ -1,5 +1,15 @@
 # @open-pioneer/test-utils
 
+## 1.1.4
+
+### Patch Changes
+
+-   e0b2fae: Update dependencies
+-   Updated dependencies [5c62522]
+-   Updated dependencies [e0b2fae]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/runtime-react-support@1.0.2
+
 ## 1.1.3
 
 ### Patch Changes

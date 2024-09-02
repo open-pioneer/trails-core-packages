@@ -1,5 +1,19 @@
 # auth-app
 
+## 0.0.10
+
+### Patch Changes
+
+-   Updated dependencies [5c62522]
+-   Updated dependencies [58ce24f]
+-   Updated dependencies [50550d3]
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/authentication@0.3.6
+    -   @open-pioneer/core@1.3.0
+    -   @open-pioneer/runtime@2.1.7
+
 ## 0.0.9
 
 ### Patch Changes

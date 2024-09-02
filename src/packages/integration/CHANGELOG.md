@@ -1,5 +1,16 @@
 # @open-pioneer/integration
 
+## 2.0.10
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+-   6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
+-   Updated dependencies [58ce24f]
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/runtime@2.1.7
+
 ## 2.0.9
 
 ### Patch Changes
