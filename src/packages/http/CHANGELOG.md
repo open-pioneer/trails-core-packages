@@ -1,5 +1,18 @@
 # @open-pioneer/http
 
+## 2.1.9
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+-   Updated dependencies [5c62522]
+-   Updated dependencies [58ce24f]
+-   Updated dependencies [50550d3]
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/core@1.3.0
+    -   @open-pioneer/runtime@2.1.7
+
 ## 2.1.8
 
 ### Patch Changes

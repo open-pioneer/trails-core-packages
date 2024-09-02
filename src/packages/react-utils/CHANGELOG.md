@@ -1,5 +1,17 @@
 # @open-pioneer/react-utils
 
+## 1.0.1
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+-   e0b2fae: Update dependencies
+-   Updated dependencies [5c62522]
+-   Updated dependencies [50550d3]
+-   Updated dependencies [e0b2fae]
+    -   @open-pioneer/chakra-integration@1.1.4
+    -   @open-pioneer/core@1.3.0
+
 ## 1.0.0
 
 ### Major Changes

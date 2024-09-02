@@ -1,5 +1,15 @@
 # @open-pioneer/core
 
+## 1.3.0
+
+### Minor Changes
+
+-   50550d3: Add `destroyResources(resources)` to destroy an array of resources.
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+
 ## 1.2.3
 
 ### Patch Changes

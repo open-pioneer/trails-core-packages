@@ -1,5 +1,26 @@
 # @open-pioneer/authentication-keycloak
 
+## 0.2.0
+
+### Minor Changes
+
+-   f48bb02: Update Keycloak JavaScript adapter to v25.
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+-   e0b2fae: Update dependencies
+-   f48bb02: Refactor: use reactivity API internally to maintain the current state.
+-   Updated dependencies [5c62522]
+-   Updated dependencies [58ce24f]
+-   Updated dependencies [50550d3]
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/authentication@0.3.6
+    -   @open-pioneer/notifier@0.3.6
+    -   @open-pioneer/core@1.3.0
+    -   @open-pioneer/runtime@2.1.7
+
 ## 0.1.2
 
 ### Patch Changes
