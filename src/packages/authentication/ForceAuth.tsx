@@ -6,9 +6,13 @@ import {
     // For typedoc link
     // eslint-disable-next-line unused-imports/no-unused-imports
     AuthPlugin,
-    AuthService
+    AuthService,
+    ErrorFallbackProps
 } from "./api";
 import { useAuthState } from "./useAuthState";
+import { Box } from "@open-pioneer/chakra-integration";
+import { stat } from "fs";
+import { error } from "console";
 
 /**
  * Properties for the ForceAuth component.
@@ -47,6 +51,10 @@ export interface ForceAuthProps {
      * ```
      */
     renderFallback?: (AuthFallback: ComponentType<Record<string, unknown>>) => ReactNode;
+
+    errorFallback?: ComponentType<ErrorFallbackProps>;
+
+    renderErrorFallback?: (error: Error) => ReactNode;
 
     /** The children are rendered if the current user is authenticated. */
     children?: ReactNode;
@@ -106,6 +114,18 @@ export const ForceAuth: FC<ForceAuthProps> = (props) => {
             }
             return <AuthFallback {...props.fallbackProps} />;
         }
+        case "error":
+            if (props.renderErrorFallback) {
+                return props.renderErrorFallback(state.error);
+            } else if (props.errorFallback) {
+                return <props.errorFallback error={state.error} />;
+            } else {
+                return (
+                    <Box className="authentication-error">
+                        An error occurred during authentication.
+                    </Box>
+                );
+            }
         case "authenticated":
             return <>{props.children}</>;
     }

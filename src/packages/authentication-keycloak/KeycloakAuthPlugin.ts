@@ -76,14 +76,9 @@ export class KeycloakAuthPlugin
             throw new Error("Failed to construct keycloak instance", { cause: e });
         }
         this.#init().catch((e) => {
-            // TODO: Handle error
-            //
-            // Stay in pending state when an error happens.
-            // There is currently no useful way to signal an error using the plugin API,
-            // going into 'not-authenticated' could lead to unexpected behavior (e.g. redirect loops).
-            // See https://github.com/open-pioneer/trails-core-packages/issues/47
             this.#updateState({
-                kind: "pending"
+                kind: "error",
+                error: e
             });
             this.#notifier.notify({
                 level: "error",

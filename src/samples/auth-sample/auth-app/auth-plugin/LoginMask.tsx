@@ -10,6 +10,7 @@ import {
     FormControl,
     FormLabel,
     Heading,
+    HStack,
     Input,
     InputGroup,
     InputRightElement,
@@ -21,9 +22,10 @@ import { useState } from "react";
 interface LoginMaskProps {
     wasLoggedIn: boolean;
     doLogin: (userName: string, password: string) => string | undefined;
+    doFail: () => void;
 }
 
-export function LoginMask({ doLogin, wasLoggedIn }: LoginMaskProps) {
+export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -94,7 +96,12 @@ export function LoginMask({ doLogin, wasLoggedIn }: LoginMaskProps) {
                         </InputRightElement>
                     </InputGroup>
                 </FormControl>
-                <Button type="submit">Login</Button>
+                <HStack>
+                    <Button colorScheme={"red"} onClick={doFail}>
+                        Let it fail!
+                    </Button>
+                    <Button type="submit">Login</Button>
+                </HStack>
             </VStack>
         </Container>
     );

@@ -38,7 +38,11 @@ export interface SessionInfo {
  * NOTE: Future versions of this package may define additional states.
  * Your code should contain sensible fallback or error logic.
  */
-export type AuthState = AuthStatePending | AuthStateNotAuthenticated | AuthStateAuthenticated;
+export type AuthState =
+    | AuthStatePending
+    | AuthStateNotAuthenticated
+    | AuthStateAuthenticated
+    | AuthStateAuthenticationError;
 
 /**
  * This state is active when the authentication service
@@ -53,6 +57,14 @@ export interface AuthStatePending {
  */
 export interface AuthStateNotAuthenticated {
     kind: "not-authenticated";
+}
+
+/**
+ * An Error occured
+ */
+export interface AuthStateAuthenticationError {
+    kind: "error";
+    error: Error;
 }
 
 /**
@@ -171,4 +183,8 @@ export interface AuthPlugin
      * was authenticated.
      */
     logout(): Promise<void> | void;
+}
+
+export interface ErrorFallbackProps {
+    error: Error;
 }
