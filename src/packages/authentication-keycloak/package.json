@@ -22,7 +22,6 @@
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/notifier": "workspace:^",
-        "@open-pioneer/chakra-integration": "workspace:^",
         "keycloak-js": "^25.0.2"
     },
     "devDependencies": {
