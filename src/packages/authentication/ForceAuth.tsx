@@ -51,7 +51,7 @@ export interface ForceAuthProps {
 
     /**
      * This component is rendered as fallback if an error occurs during authentication (e.g authentication backend is not available).
-     * The actual error that occured is accesible from within the fallback component
+     * The actual error that occured is accesible from within the fallback component via {@link ErrorFallbackProps}
      *
      * Example:
      *
@@ -60,7 +60,7 @@ export interface ForceAuthProps {
      *   App Content
      * </ForceAuth>
      *
-     * function ErrorFallback(props: { error: Error }) {
+     * function ErrorFallback(props: ErrorFallbackProps) {
      *   return (
      *     <>
      *       <Box margin={2} color={"red"}>{props.error.message}</Box>
@@ -100,7 +100,7 @@ export interface ForceAuthProps {
 }
 
 /**
- * This properties indicate the error that happened in the authentication process.
+ * `ErrorFallbackProps` properties indicate the error that happened in the authentication process.
  */
 export interface ErrorFallbackProps {
     error: Error;

@@ -4,7 +4,7 @@ import { EventEmitter } from "@open-pioneer/core";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { expect, it } from "vitest";
-import { ForceAuth } from "./ForceAuth";
+import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
 import { AuthEvents, AuthService, AuthState, LoginBehavior, SessionInfo } from "./api";
 import { Box } from "@open-pioneer/chakra-integration";
 
@@ -215,7 +215,7 @@ it("renders the error fallback if authentication state is erroneous", async () =
         }
     };
 
-    function ErrorFallback(props: { error: Error }) {
+    function ErrorFallback(props: ErrorFallbackProps) {
         return <Box data-testid="ErrorFallback-box">{props.error.message}</Box>;
     }
 
