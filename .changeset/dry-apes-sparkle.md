@@ -4,10 +4,11 @@
 
 Introduce new authentication state `AuthStateAuthenticationError`
 
-Error state is supposed to be used for errors that occur during the authentication (e.g lost connection to authentication backen) rather than failed login attempts (e.g. invalid credentials)  
-`ForceAuth` component provides mechanisms to render a fallback component if an authentication error occurs.
+Error state is supposed to be used for errors that occur during the authentication process (e.g. lost connection to authentication backend) rather than for failed login attempts (e.g. invalid credentials)
 
-`errorFallback` option is a abitrary react component that is rendered in case of an error. The error object can be accessed via the ErrorFallbackPros.
+`ForceAuth` component provides two mechanisms to render a fallback component if an authentication error occurs.
+
+`errorFallback` option takes an abitrary react component that is rendered in case of an error. The error object can be accessed via the ErrorFallbackPros.
 
 ```jsx
 <ForceAuth errorFallback={ErrorFallback}>
@@ -23,7 +24,7 @@ Error state is supposed to be used for errors that occur during the authenticati
  }
 ```
 
-If additional inputs or state must be accessed from within the error fallback component the `renderErrorFallback` option should be provided.
+If additional inputs or state must be accessed from within the error fallback component the `renderErrorFallback` option should be used.
 
 ```jsx
 const userName = "user1";
