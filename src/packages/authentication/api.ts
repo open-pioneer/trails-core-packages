@@ -184,7 +184,3 @@ export interface AuthPlugin
      */
     logout(): Promise<void> | void;
 }
-
-export interface ErrorFallbackProps {
-    error: Error;
-}

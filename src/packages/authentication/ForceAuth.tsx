@@ -6,13 +6,10 @@ import {
     // For typedoc link
     // eslint-disable-next-line unused-imports/no-unused-imports
     AuthPlugin,
-    AuthService,
-    ErrorFallbackProps
+    AuthService
 } from "./api";
 import { useAuthState } from "./useAuthState";
 import { Box } from "@open-pioneer/chakra-integration";
-import { stat } from "fs";
-import { error } from "console";
 
 /**
  * Properties for the ForceAuth component.
@@ -52,12 +49,61 @@ export interface ForceAuthProps {
      */
     renderFallback?: (AuthFallback: ComponentType<Record<string, unknown>>) => ReactNode;
 
+    /**
+     * This component is rendered as fallback if an error occurs during authentication (e.g authentication backend is not available).
+     * The actual error that occured is accesible from within the fallback component
+     *
+     * Example:
+     *
+     * ```jsx
+     * <ForceAuth errorFallback={ErrorFallback}>
+     *   App Content
+     * </ForceAuth>
+     *
+     * function ErrorFallback(props: { error: Error }) {
+     *   return (
+     *     <>
+     *       <Box margin={2} color={"red"}>{props.error.message}</Box>
+     *     </>
+     *   );
+     * }
+     * ```
+     */
     errorFallback?: ComponentType<ErrorFallbackProps>;
 
+    /**
+     * This property can be used to customize rendering of the error fallback.
+     * The `renderErrorFallback` should be used if inputs other than {@link ErrorFallbackProps} are to be used in the error fallback.
+     *
+     * NOTE: `renderErrorFallback` takes precedence before {@link errorFallback}.
+     *
+     * Example:
+     *
+     * ```jsx
+     * const userName = "user1";
+     * <ForceAuth  renderErrorFallback={(e: Error) => (
+     *      <>
+     *          <Box>Could not login {userName}</Box>
+     *          <Box color={"red"}>{e.message}</Box>
+     *       </>
+     *  )}>
+     *   App Content
+     * </ForceAuth>
+     * ```
+     *
+     * @param error the error that occured during authentication
+     */
     renderErrorFallback?: (error: Error) => ReactNode;
 
     /** The children are rendered if the current user is authenticated. */
     children?: ReactNode;
+}
+
+/**
+ * This properties indicate the error that happened in the authentication process.
+ */
+export interface ErrorFallbackProps {
+    error: Error;
 }
 
 /**

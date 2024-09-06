@@ -86,8 +86,8 @@ namespace.set("my-state", "some-value-to-save");
 
 ### Configuration
 
-| Name        | Type   | Description                                                                                                                                                                                                                   |
-| ----------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name        | Type   | Description                                                                                                                                                                                                              |
+| ----------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `storageId` | String | The key under which the persistent data is saved. This value should be configured to a reasonably unique value to avoid clashes with other applications at the same origin. Defaults to `trails-state` (with a warning). |
 
 ### Implementation notes
