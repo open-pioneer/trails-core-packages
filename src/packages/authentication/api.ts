@@ -60,7 +60,8 @@ export interface AuthStateNotAuthenticated {
 }
 
 /**
- * An Error occured
+ * This state indicates an error during authentication.
+ * This state should used for errors in the authentication workflow (e.g. backend unavailable) rather than failed login attempts (e.g. invalid credentials).
  */
 export interface AuthStateAuthenticationError {
     kind: "error";
