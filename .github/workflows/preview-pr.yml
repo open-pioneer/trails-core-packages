@@ -1,6 +1,6 @@
 name: Preview PR
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - closed
@@ -32,13 +32,23 @@ jobs:
     concurrency: preview-${{ github.ref }}
     timeout-minutes: 5
     needs: wait
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Download latest build artifact
         run: |
-          WORKFLOW_RUN=$(gh run list -c ${{ github.event.pull_request.head.sha }} -w "test-and-build.yml" -e push --json databaseId --limit 1 | jq .[0].databaseId -r)
+          # Use build result of latest push for local branches
+          WORKFLOW_EVENT=
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.event.pull_request.base.repo.full_name }}" ]]; then
+            WORKFLOW_EVENT="pull_request"
+          else
+            WORKFLOW_EVENT="push"
+          fi
+          WORKFLOW_RUN=$(gh run list -c ${{ github.event.pull_request.head.sha }} -w "test-and-build.yml" -e $WORKFLOW_EVENT --json databaseId --limit 1 | jq .[0].databaseId -r)
           echo "Latest workflow run: $WORKFLOW_RUN"
 
           mkdir site && cd site;
@@ -47,10 +57,13 @@ jobs:
           gh run download $WORKFLOW_RUN -n build
           echo "Download successful:"
           ls -alh
-        env: 
+        env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Deploy PR Preview
         uses: rossjrw/pr-preview-action@v1.4.7
         with:
           source-dir: ./site/www/
+          umbrella-dir: "core-packages/pr-previews"
+          deploy-repository: open-pioneer/trails-pr-previews
+          token: ${{ secrets.DEPLOY_TOKEN }}
