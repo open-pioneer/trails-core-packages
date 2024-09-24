@@ -1,3 +1,6 @@
+[![Build and deploy](https://github.com/open-pioneer/trails-core-packages/actions/workflows/test-and-build.yml/badge.svg)](https://github.com/open-pioneer/trails-core-packages/actions/workflows/test-and-build.yml)
+[![Audit dependencies (daily)](https://github.com/open-pioneer/trails-core-packages/actions/workflows/audit-dependencies.yml/badge.svg)](https://github.com/open-pioneer/trails-core-packages/actions/workflows/audit-dependencies.yml)
+
 # Core packages
 
 Core packages of the Open Pioneer Trails client framework.
