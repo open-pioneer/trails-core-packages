@@ -6,6 +6,6 @@
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/notifier": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
-        "react": "^18.3.1"
+        "react": "catalog:"
     }
 }

@@ -19,8 +19,8 @@
     "peerDependencies": {
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
-        "react": "^18.3.1",
-        "react-use": "^17.5.1"
+        "react": "catalog:",
+        "react-use": "catalog:"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",

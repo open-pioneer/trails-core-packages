@@ -1,5 +1,66 @@
 packages:
-    - "src/**"
-    - "!**/test-data/**"
-    - "!**/dist/**"
-    - "." # workaround for https://github.com/changesets/changesets/issues/1133 (packages don't find build-tools repo root)
+  - src/**
+  - "!**/test-data/**"
+  - "!**/dist/**"
+  - .
+
+# Shared version expressions (yaml anchors).
+# This is a yaml feature and is not interpreted by pnpm directly.
+__versions:
+  - &react_version ^18.3.1
+
+# https://pnpm.io/catalogs
+catalog:
+  "@chakra-ui/icons": ^2.1.1
+  "@chakra-ui/react": ^2.8.2
+  "@chakra-ui/system": ^2.6.2
+  "@changesets/cli": ^2.27.1
+  "@conterra/reactivity-core": ^0.4.2
+  "@emotion/cache": ^11.13.0
+  "@emotion/react": ^11.13.0
+  "@emotion/styled": ^11.13.0
+  "@formatjs/intl": ^2.10.4
+  "@open-pioneer/build-package-cli": ^2.1.0
+  "@open-pioneer/build-support": ^2.0.2
+  "@open-pioneer/tag-current-versions": ^2.0.2
+  "@open-pioneer/vite-plugin-pioneer": ^3.0.4
+  "@testing-library/dom": ^10.4.0
+  "@testing-library/jest-dom": ^6.4.8
+  "@testing-library/react": ^16.0.0
+  "@testing-library/user-event": ^14.5.2
+  "@types/js-yaml": ^4.0.9
+  "@types/node": ^18.19.41
+  "@types/react": ^18.3.3
+  "@types/react-dom": ^18.3.0
+  "@typescript-eslint/eslint-plugin": ^7.17.0
+  "@typescript-eslint/parser": ^7.17.0
+  "@vitejs/plugin-react-swc": ^3.7.0
+  classnames: ^2.3.2
+  eslint: ^8.57.0
+  eslint-config-prettier: ^9.1.0
+  eslint-import-resolver-typescript: ^3.6.1
+  eslint-plugin-header: ^3.1.1
+  eslint-plugin-import: ^2.29.1
+  eslint-plugin-react: ^7.35.0
+  eslint-plugin-react-hooks: ^4.6.2
+  eslint-plugin-unused-imports: ^3.2.0
+  fast-glob: ^3.3.2
+  framer-motion: ">=4.0.0"
+  handlebars: ^4.7.8
+  happy-dom: ^14.12.3
+  husky: ^9.1.1
+  keycloak-js: ^25.0.2
+  js-yaml: ^4.1.0
+  lint-staged: ^15.2.7
+  prettier: ^3.3.3
+  react: *react_version
+  react-dom: *react_version
+  react-json-view: ^1.21.3
+  react-use: ^17.5.1
+  rimraf: ^5.0.9
+  sass: ^1.77.8
+  typedoc: ^0.26.5
+  typescript: ~5.5.4
+  vite: ^5.3.4
+  vite-plugin-eslint: ^1.8.1
+  vitest: ^2.0.4
