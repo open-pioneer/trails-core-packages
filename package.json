@@ -32,6 +32,7 @@
             "braces: https://github.com/advisories/GHSA-grv7-fg5c-xmjg",
             "fast-loops: https://github.com/advisories/GHSA-3q56-9cc2-46j4",
             "micromatch: https://github.com/advisories/GHSA-952p-6rrq-rcjv",
+            "vite-plugin-eslint>rollup: https://github.com/advisories/GHSA-gcx4-mw62-g8wm",
             "",
             "ignored cves",
             "============",
@@ -47,7 +48,8 @@
             "tough-cookie@<4.1.3": ">=4.1.3",
             "braces@<3.0.3": ">=3.0.3",
             "fast-loops@<1.1.4": ">=1.1.4",
-            "micromatch@<4.0.8": ">=4.0.8"
+            "micromatch@<4.0.8": ">=4.0.8",
+            "vite-plugin-eslint>rollup": ">=3.29.5"
         },
         "auditConfig": {
             "ignoreCves": []
