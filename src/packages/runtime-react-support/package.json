@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/runtime-react-support",
-    "version": "1.0.2",
+    "version": "2.2.0",
     "description": "An internal module providing support for react integration.",
     "license": "Apache-2.0",
     "main": "index.ts",

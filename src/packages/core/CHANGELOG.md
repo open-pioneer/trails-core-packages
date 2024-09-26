@@ -1,5 +1,12 @@
 # @open-pioneer/core
 
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+
 ## 1.3.0
 
 ### Minor Changes

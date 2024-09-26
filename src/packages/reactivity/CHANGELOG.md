@@ -1,5 +1,12 @@
 # @open-pioneer/reactivity
 
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+
 ## 0.1.0
 
 ### Minor Changes
