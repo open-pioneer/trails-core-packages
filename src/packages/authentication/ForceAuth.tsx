@@ -10,6 +10,7 @@ import {
 } from "./api";
 import { useAuthState } from "./useAuthState";
 import { Box } from "@open-pioneer/chakra-integration";
+import { useIntl } from "open-pioneer:react-hooks";
 
 /**
  * Properties for the ForceAuth component.
@@ -131,6 +132,7 @@ export interface ErrorFallbackProps {
 export const ForceAuth: FC<ForceAuthProps> = (props) => {
     const authService = useService<AuthService>("authentication.AuthService");
     const state = useAuthState(authService);
+    const intl = useIntl();
 
     // Extract login behavior from service (only when needed).
     const behavior = useMemo(() => {
@@ -168,7 +170,7 @@ export const ForceAuth: FC<ForceAuthProps> = (props) => {
             } else {
                 return (
                     <Box className="authentication-error">
-                        An error occurred during authentication.
+                        {intl.formatMessage({ id: "auth-error" })}
                     </Box>
                 );
             }
