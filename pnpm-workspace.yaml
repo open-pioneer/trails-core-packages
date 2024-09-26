@@ -22,7 +22,6 @@ catalog:
   "@formatjs/intl": ^2.10.4
   "@open-pioneer/build-package-cli": ^2.1.0
   "@open-pioneer/build-support": ^2.0.2
-  "@open-pioneer/tag-current-versions": ^2.0.2
   "@open-pioneer/vite-plugin-pioneer": ^3.0.4
   "@testing-library/dom": ^10.4.0
   "@testing-library/jest-dom": ^6.4.8

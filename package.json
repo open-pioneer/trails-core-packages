@@ -68,7 +68,6 @@
         "@open-pioneer/build-package-cli": "catalog:",
         "@open-pioneer/build-support": "catalog:",
         "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/tag-current-versions": "catalog:",
         "@open-pioneer/vite-plugin-pioneer": "catalog:",
         "@testing-library/dom": "catalog:",
         "@testing-library/jest-dom": "catalog:",
