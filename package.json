@@ -21,7 +21,7 @@
         "prepare": "husky",
         "ci:test": "pnpm run clean && pnpm run lint && pnpm run check-types && vitest run",
         "ci:version": "pnpm changeset version && pnpm exec prettier './src/**/CHANGELOG.md' --write --ignore-path .eslintignore && pnpm install",
-        "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && tag-current-versions"
+        "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && pnpm changeset tag"
     },
     "pnpm": {
         "//": [
@@ -53,7 +53,7 @@
             "ignoreCves": []
         },
         "patchedDependencies": {
-            "@changesets/assemble-release-plan@6.0.0": "patches/@changesets__assemble-release-plan@6.0.0.patch"
+            "@changesets/assemble-release-plan": "patches/@changesets__assemble-release-plan.patch"
         },
         "peerDependencyRules": {
             "allowedVersions": {

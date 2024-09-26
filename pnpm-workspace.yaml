@@ -14,7 +14,7 @@ catalog:
   "@chakra-ui/icons": ^2.1.1
   "@chakra-ui/react": ^2.8.2
   "@chakra-ui/system": ^2.6.2
-  "@changesets/cli": ^2.27.1
+  "@changesets/cli": ^2.27.8
   "@conterra/reactivity-core": ^0.4.2
   "@emotion/cache": ^11.13.0
   "@emotion/react": ^11.13.0
