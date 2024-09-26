@@ -17,7 +17,7 @@
         "build": "build-pioneer-package"
     },
     "peerDependencies": {
-        "react": "^18.3.1"
+        "react": "catalog:"
     },
     "devDependencies": {
         "core-packages": "workspace:^",

@@ -17,13 +17,13 @@
         "build": "build-pioneer-package"
     },
     "peerDependencies": {
-        "@chakra-ui/react": "^2.8.2",
-        "@emotion/cache": "^11.13.0",
-        "@emotion/react": "^11.13.0",
-        "@emotion/styled": "^11.13.0",
+        "@chakra-ui/react": "catalog:",
+        "@emotion/cache": "catalog:",
+        "@emotion/react": "catalog:",
+        "@emotion/styled": "catalog:",
         "framer-motion": ">=4.0.0",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react": "catalog:",
+        "react-dom": "catalog:"
     },
     "devDependencies": {
         "core-packages": "workspace:^"
