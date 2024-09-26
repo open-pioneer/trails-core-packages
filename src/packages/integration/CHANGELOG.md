@@ -1,5 +1,14 @@
 # @open-pioneer/integration
 
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+-   Updated dependencies [39dad46]
+    -   @open-pioneer/runtime@2.2.0
+
 ## 2.0.10
 
 ### Patch Changes

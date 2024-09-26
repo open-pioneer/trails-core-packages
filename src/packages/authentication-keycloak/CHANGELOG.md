@@ -1,5 +1,19 @@
 # @open-pioneer/authentication-keycloak
 
+## 2.2.0
+
+### Patch Changes
+
+-   41f0c6f: Use error state to communicate keycloak exceptions
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+-   Updated dependencies [41f0c6f]
+-   Updated dependencies [39dad46]
+    -   @open-pioneer/authentication@2.2.0
+    -   @open-pioneer/core@2.2.0
+    -   @open-pioneer/notifier@2.2.0
+    -   @open-pioneer/runtime@2.2.0
+
 ## 0.2.0
 
 ### Minor Changes
