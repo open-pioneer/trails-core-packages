@@ -38,7 +38,11 @@ export interface SessionInfo {
  * NOTE: Future versions of this package may define additional states.
  * Your code should contain sensible fallback or error logic.
  */
-export type AuthState = AuthStatePending | AuthStateNotAuthenticated | AuthStateAuthenticated;
+export type AuthState =
+    | AuthStatePending
+    | AuthStateNotAuthenticated
+    | AuthStateAuthenticated
+    | AuthStateAuthenticationError;
 
 /**
  * This state is active when the authentication service
@@ -53,6 +57,15 @@ export interface AuthStatePending {
  */
 export interface AuthStateNotAuthenticated {
     kind: "not-authenticated";
+}
+
+/**
+ * This state indicates an error during authentication.
+ * This state should used for errors in the authentication workflow (e.g. backend unavailable) rather than failed login attempts (e.g. invalid credentials).
+ */
+export interface AuthStateAuthenticationError {
+    kind: "error";
+    error: Error;
 }
 
 /**

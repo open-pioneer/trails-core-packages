@@ -303,6 +303,9 @@ importers:
 
   src/packages/authentication:
     dependencies:
+      '@open-pioneer/chakra-integration':
+        specifier: workspace:^
+        version: link:../chakra-integration
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core

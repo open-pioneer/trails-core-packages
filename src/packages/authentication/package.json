@@ -19,6 +19,7 @@
     "peerDependencies": {
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^",
         "react": "catalog:",
         "react-use": "catalog:"
     },

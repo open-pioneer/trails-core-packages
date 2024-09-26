@@ -9,6 +9,8 @@ import {
     AuthService
 } from "./api";
 import { useAuthState } from "./useAuthState";
+import { Box } from "@open-pioneer/chakra-integration";
+import { useIntl } from "open-pioneer:react-hooks";
 
 /**
  * Properties for the ForceAuth component.
@@ -48,8 +50,61 @@ export interface ForceAuthProps {
      */
     renderFallback?: (AuthFallback: ComponentType<Record<string, unknown>>) => ReactNode;
 
+    /**
+     * This component is rendered as fallback if an error occurs during authentication (e.g authentication backend is not available).
+     * The actual error that occured is accesible from within the fallback component via {@link ErrorFallbackProps}
+     *
+     * Example:
+     *
+     * ```jsx
+     * <ForceAuth errorFallback={ErrorFallback}>
+     *   App Content
+     * </ForceAuth>
+     *
+     * function ErrorFallback(props: ErrorFallbackProps) {
+     *   return (
+     *     <>
+     *       <Box margin={2} color={"red"}>{props.error.message}</Box>
+     *     </>
+     *   );
+     * }
+     * ```
+     */
+    errorFallback?: ComponentType<ErrorFallbackProps>;
+
+    /**
+     * This property can be used to customize rendering of the error fallback.
+     * The `renderErrorFallback` should be used if inputs other than {@link ErrorFallbackProps} are to be used in the error fallback.
+     *
+     * NOTE: `renderErrorFallback` takes precedence before {@link errorFallback}.
+     *
+     * Example:
+     *
+     * ```jsx
+     * const userName = "user1";
+     * <ForceAuth  renderErrorFallback={(e: Error) => (
+     *      <>
+     *          <Box>Could not login {userName}</Box>
+     *          <Box color={"red"}>{e.message}</Box>
+     *       </>
+     *  )}>
+     *   App Content
+     * </ForceAuth>
+     * ```
+     *
+     * @param error the error that occured during authentication
+     */
+    renderErrorFallback?: (error: Error) => ReactNode;
+
     /** The children are rendered if the current user is authenticated. */
     children?: ReactNode;
+}
+
+/**
+ * `ErrorFallbackProps` properties indicate the error that happened in the authentication process.
+ */
+export interface ErrorFallbackProps {
+    error: Error;
 }
 
 /**
@@ -77,6 +132,7 @@ export interface ForceAuthProps {
 export const ForceAuth: FC<ForceAuthProps> = (props) => {
     const authService = useService<AuthService>("authentication.AuthService");
     const state = useAuthState(authService);
+    const intl = useIntl();
 
     // Extract login behavior from service (only when needed).
     const behavior = useMemo(() => {
@@ -106,6 +162,18 @@ export const ForceAuth: FC<ForceAuthProps> = (props) => {
             }
             return <AuthFallback {...props.fallbackProps} />;
         }
+        case "error":
+            if (props.renderErrorFallback) {
+                return props.renderErrorFallback(state.error);
+            } else if (props.errorFallback) {
+                return <props.errorFallback error={state.error} />;
+            } else {
+                return (
+                    <Box className="authentication-error">
+                        {intl.formatMessage({ id: "auth-error" })}
+                    </Box>
+                );
+            }
         case "authenticated":
             return <>{props.children}</>;
     }

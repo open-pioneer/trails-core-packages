@@ -31,6 +31,7 @@ it("forwards the authentication plugin's state changes", async () => {
         }
     });
     plugin.$setAuthState({ kind: "not-authenticated" });
+    plugin.$setAuthState({ kind: "error", error: new Error("server error") });
 
     expect(observedStates).toMatchInlineSnapshot(`
       [
@@ -48,6 +49,10 @@ it("forwards the authentication plugin's state changes", async () => {
         },
         {
           "kind": "not-authenticated",
+        },
+        {
+          "error": [Error: server error],
+          "kind": "error",
         },
       ]
     `);
