@@ -188,7 +188,7 @@ export class I18nConfig {
  *
  * See also https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages
  */
-function getBrowserLocales(): string[] {
+export function getBrowserLocales(): string[] {
     if (window.navigator.languages && window.navigator.languages.length) {
         return Array.from(window.navigator.languages);
     }

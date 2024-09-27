@@ -13,8 +13,8 @@ import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
 
 export interface ReactIntegrationOptions {
-    packages: Map<string, PackageRepr>;
-    serviceLayer: ServiceLayer;
+    packages?: Map<string, PackageRepr>;
+    serviceLayer?: ServiceLayer;
     rootNode: HTMLDivElement;
     container: Node;
     theme: Record<string, unknown> | undefined;
@@ -23,8 +23,8 @@ export interface ReactIntegrationOptions {
 export class ReactIntegration {
     private containerNode: Node;
     private theme: Record<string, unknown> | undefined;
-    private packages: Map<string, PackageRepr>;
-    private serviceLayer: ServiceLayer;
+    private packages: Map<string, PackageRepr> | undefined;
+    private serviceLayer: ServiceLayer | undefined;
     private root: Root;
     private packageContext: PackageContextMethods;
 
@@ -34,10 +34,23 @@ export class ReactIntegration {
         this.packages = options.packages;
         this.serviceLayer = options.serviceLayer;
         this.root = createRoot(options.rootNode);
+
+        if (
+            (this.packages === undefined && this.serviceLayer !== undefined) ||
+            (this.packages !== undefined && this.serviceLayer === undefined)
+        ) {
+            console.error(
+                "ReactIntegration: Either both packages and serviceLayer must be provided or neither."
+            );
+        }
+
         this.packageContext = {
             getService: (packageName, interfaceName, options) => {
                 const spec: InterfaceSpec = { interfaceName, ...options };
-                const result = this.serviceLayer.getService(packageName, spec);
+                const result = this.serviceLayer?.getService(packageName, spec);
+                if (!result) {
+                    throw new Error(ErrorId.INTERNAL, `Service layer is not initialized.`);
+                }
                 if (result.type === "found") {
                     return result.value.getInstanceOrThrow();
                 }
@@ -71,7 +84,10 @@ export class ReactIntegration {
                 }
             },
             getServices: (packageName, interfaceName) => {
-                const result = this.serviceLayer.getServices(packageName, interfaceName);
+                const result = this.serviceLayer?.getServices(packageName, interfaceName);
+                if (!result) {
+                    throw new Error(ErrorId.INTERNAL, `Service layer is not initialized.`);
+                }
                 if (result.type === "found") {
                     return result.value.map((serviceRepr) => serviceRepr.getInstanceOrThrow());
                 }
@@ -120,7 +136,7 @@ export class ReactIntegration {
     }
 
     private getPackage(packageName: string): PackageRepr {
-        const pkg = this.packages.get(packageName);
+        const pkg = this.packages?.get(packageName); // todo own error message if this.packages is undefined?
         if (!pkg) {
             throw new Error(
                 ErrorId.INTERNAL,

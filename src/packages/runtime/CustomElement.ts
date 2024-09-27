@@ -26,8 +26,9 @@ import {
     RUNTIME_AUTO_START
 } from "./builtin-services";
 import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { AppI18n, initI18n } from "./i18n";
+import { AppI18n, getBrowserLocales, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
+import { ErrorScreen } from "./ErrorScreen";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -291,9 +292,9 @@ class ApplicationInstance {
 
         this.state = "starting";
         this.startImpl().catch((e) => {
-            // TODO: Error splash?
-            this.destroy();
+            // this.destroy(); TODO introduce error state and do needed cleanup instead of calling destroy
             if (!isAbortError(e)) {
+                this.showErrorScreen();
                 logError(e);
             }
         });
@@ -464,6 +465,34 @@ class ApplicationInstance {
         if (this.state === "destroyed") {
             throwAbortError();
         }
+    }
+
+    private showErrorScreen() {
+        const { shadowRoot, elementOptions, overrides } = this.options;
+        const container = document.createElement("div");
+        container.classList.add("pioneer-root-error-screen");
+        container.style.minHeight = "100%";
+        container.style.height = "100%";
+
+        let locale = "en";
+        if (overrides?.locale && overrides.locale == "de") {
+            locale = "de";
+        } else {
+            const userLocales = getBrowserLocales();
+            if (userLocales[0] == "de") {
+                locale = "de";
+            }
+        }
+        container.lang = locale;
+
+        this.reactIntegration = new ReactIntegration({
+            rootNode: container,
+            container: shadowRoot,
+            theme: elementOptions.theme
+        });
+        this.reactIntegration?.render(ErrorScreen);
+
+        shadowRoot.replaceChildren(container);
     }
 }
 
