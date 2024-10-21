@@ -16,7 +16,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@conterra/reactivity-core": "catalog:",
         "@open-pioneer/authentication": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",

@@ -15,7 +15,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@open-pioneer/runtime-react-support": "workspace:^",
         "@testing-library/react": "catalog:",
         "react": "catalog:",

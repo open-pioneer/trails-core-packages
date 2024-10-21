@@ -16,7 +16,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@chakra-ui/react": "catalog:",
         "@emotion/cache": "catalog:",
         "@emotion/react": "catalog:",

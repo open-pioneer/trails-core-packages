@@ -16,7 +16,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^"
     },

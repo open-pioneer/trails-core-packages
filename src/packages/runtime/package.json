@@ -16,7 +16,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@formatjs/intl": "catalog:",
         "@open-pioneer/base-theme": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
