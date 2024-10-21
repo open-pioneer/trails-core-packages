@@ -1,5 +1,11 @@
 # @open-pioneer/chakra-integration
 
+## 2.3.0
+
+### Minor Changes
+
+-   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+
 ## 2.2.0
 
 ### Patch Changes
