@@ -26,7 +26,8 @@
         "react-dom": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^"
+        "core-packages": "workspace:^",
+        "framer-motion": "catalog:"
     },
     "publishConfig": {
         "directory": "dist",

@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
     const isVitest = mode === "test";
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
-    const logLevel = devMode ? "INFO": "WARN";
+    const logLevel = devMode ? "INFO" : "WARN";
 
     return {
         root: resolve(__dirname, "src"),
@@ -70,6 +70,16 @@ export default defineConfig(({ mode }) => {
             react(),
             !isVitest && eslint()
         ],
+
+        // Ignore irrelevant deprecations
+        // https://github.com/vitejs/vite/issues/18164
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    silenceDeprecations: ["legacy-js-api", "import"]
+                }
+            }
+        },
 
         // define global constants
         // See also: https://vitejs.dev/config/shared-options.html#define
