@@ -1,5 +1,24 @@
 # @open-pioneer/core
 
+## 2.3.0
+
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+
+## 1.3.0
+
+### Minor Changes
+
+-   50550d3: Add `destroyResources(resources)` to destroy an array of resources.
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+
 ## 1.2.3
 
 ### Patch Changes

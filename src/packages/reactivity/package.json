@@ -1,7 +1,7 @@
 {
     "name": "@open-pioneer/reactivity",
     "description": "Provides integration for the reactivity API.",
-    "version": "0.1.0",
+    "version": "2.3.0",
     "license": "Apache-2.0",
     "main": "index.ts",
     "repository": {
@@ -16,9 +16,9 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
-        "react": "^18.3.1",
-        "@conterra/reactivity-core": "^0.4.0"
+    "dependencies": {
+        "react": "catalog:",
+        "@conterra/reactivity-core": "catalog:"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",

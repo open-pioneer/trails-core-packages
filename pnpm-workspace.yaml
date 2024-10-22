@@ -1,5 +1,68 @@
 packages:
-    - "src/**"
-    - "!**/test-data/**"
-    - "!**/dist/**"
-    - "." # workaround for https://github.com/changesets/changesets/issues/1133 (packages don't find build-tools repo root)
+  - src/**
+  - "!**/test-data/**"
+  - "!**/dist/**"
+  - .
+
+# Shared version expressions (yaml anchors).
+# This is a yaml feature and is not interpreted by pnpm directly.
+__versions:
+  - &react_version ^18.3.1
+
+# https://pnpm.io/catalogs
+catalog:
+  "@chakra-ui/icons": ^2.2.4
+  "@chakra-ui/react": ^2.10.3
+  "@chakra-ui/system": ^2.6.2
+  "@conterra/reactivity-core": ^0.4.3
+  "@emotion/cache": ^11.13.1
+  "@emotion/react": ^11.13.3
+  "@emotion/styled": ^11.13.0
+  "@formatjs/intl": ^2.10.8
+  classnames: ^2.3.2
+  framer-motion: ^11.11.9
+  keycloak-js: ^25.0.2
+  react-dom: *react_version
+  react-json-view: ^1.21.3
+  react-use: ^17.5.1
+  react: *react_version
+
+  # Devtools
+  "@changesets/cli": ^2.27.9
+  "@open-pioneer/build-package-cli": ^2.1.1
+  "@open-pioneer/build-support": ^2.0.2
+  "@open-pioneer/check-pnpm-duplicates": "^0.1.0"
+  "@open-pioneer/vite-plugin-pioneer": ^3.0.5
+  "@testing-library/dom": ^10.4.0
+  "@testing-library/jest-dom": ^6.6.2
+  "@testing-library/react": ^16.0.1
+  "@testing-library/user-event": ^14.5.2
+  "@types/js-yaml": ^4.0.9
+  "@types/node": ^18.19.41
+  "@types/react-dom": ^18.3.1
+  "@types/react": ^18.3.11
+  "@typescript-eslint/eslint-plugin": ^7.18.0
+  "@typescript-eslint/parser": ^7.18.0
+  "@vitejs/plugin-react-swc": ^3.7.1
+  eslint-config-prettier: ^9.1.0
+  eslint-import-resolver-typescript: ^3.6.3
+  eslint-plugin-header: ^3.1.1
+  eslint-plugin-import: ^2.31.0
+  eslint-plugin-react-hooks: ^4.6.2
+  eslint-plugin-react: ^7.37.1
+  eslint-plugin-unused-imports: ^3.2.0
+  eslint: ^8.57.1
+  fast-glob: ^3.3.2
+  handlebars: ^4.7.8
+  happy-dom: ^15.7.4
+  husky: ^9.1.6
+  js-yaml: ^4.1.0
+  lint-staged: ^15.2.10
+  prettier: ^3.3.3
+  rimraf: ^5.0.9
+  sass: ^1.80.3
+  typedoc: ^0.26.10
+  typescript: ~5.6.3
+  vite-plugin-eslint: ^1.8.1
+  vite: ^5.4.9
+  vitest: ^2.1.3

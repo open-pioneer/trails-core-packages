@@ -5,9 +5,9 @@ This package provides access to the browser's [local storage](https://developer.
 A single local storage key (configurable, see [Configuration](#configuration)) is used to keep track of the application's persistent data.
 Packages using the `LocalStorageService` can work with arbitrary values (including nested data structures) through a convenient API.
 
-> NOTE: The `LocalStorageService` will read the persistent data from the browser's local storage on application startup.
-> Changes to that data made via the `LocalStorageService` will be reflected in the browser's local storage immediately.
-> Concurrent changes made to the browser's local storage **will not** be reflected by the `LocalStorageService`.
+> NOTE: The `LocalStorageService` reads the persistent data from the browser's local storage on application startup.
+> Changes to that data made via the `LocalStorageService` are reflected in the browser's local storage immediately.
+> Concurrent changes made to the browser's local storage **are not** reflected by the `LocalStorageService`.
 > In other words, there is no two-way synchronization between the two systems while the application is running.
 >
 > You should not attempt to modify the local storage value managed by the `LocalStorageService` (see `storageId` in [Configuration](#configuration)) through the "raw" Browser APIs while the application is running.
@@ -27,14 +27,14 @@ const storageService = ...; // injected
 console.log(storageService.isSupported);
 ```
 
-If local storage is not supported, other methods (such as `get()` and `set()`) will throw an error.
+If local storage is not supported, other methods (such as `get()` and `set()`) throw an error.
 
 ### Reading and writing values
 
 In its most basic form, you can use the `LocalStorageService` similar to a map.
-In the background, changes to the service will always be persisted into local storage.
+In the background, changes to the service are always persisted into local storage.
 
-All keys and values used in the `LocalStorageService` will be serialized to JSON via `JSON.stringify()`.
+All keys and values used in the `LocalStorageService` are serialized to JSON via `JSON.stringify()`.
 Thus, only values supported by JSON can be used.
 
 Example:
@@ -57,11 +57,11 @@ storageService.clear();
 
 You can use the `LocalStorageService` to manage hierarchical data, including objects and arrays (see above).
 _Namespaces_ can help you treat an object as a group of (nested) properties.
-Getting or setting entries in the namespace will update an object behind the scenes.
+Getting or setting entries in the namespace update an object behind the scenes.
 
 To use a namespace, call `getNamespace(key)` on either the `LocalStorageService` or another `LocalStorageNamespace` object.
 The `key` used in `getNamespace(key)` should either already be associated with an object or it should not be set to a value at all.
-If `key` is not yet associated with an existing object, a new empty object will be created.
+If `key` is not yet associated with an existing object, a new empty object is created.
 
 Example:
 
@@ -82,13 +82,13 @@ const namespace = storageService.getNamespace("my-package-name");
 namespace.set("my-state", "some-value-to-save");
 ```
 
-> NOTE: Multiple namespace instances using the same `key` will manipulate the same object and see each other's effects.
+> NOTE: Multiple namespace instances using the same `key` manipulate the same object and see each other's effects.
 
 ### Configuration
 
-| Name        | Type   | Description                                                                                                                                                                                                                   |
-| ----------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageId` | String | The key under which the persistent data will be saved. This value should be configured to a reasonably unique value to avoid clashes with other applications at the same origin. Defaults to `trails-state` (with a warning). |
+| Name        | Type   | Description                                                                                                                                                                                                              |
+| ----------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `storageId` | String | The key under which the persistent data is saved. This value should be configured to a reasonably unique value to avoid clashes with other applications at the same origin. Defaults to `trails-state` (with a warning). |
 
 ### Implementation notes
 

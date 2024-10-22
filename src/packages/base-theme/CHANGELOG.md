@@ -1,5 +1,33 @@
 # @open-pioneer/base-theme
 
+## 2.3.0
+
+### Minor Changes
+
+-   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+
+### Patch Changes
+
+-   Updated dependencies [2fbaaa0]
+    -   @open-pioneer/chakra-integration@2.3.0
+
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+-   Updated dependencies [39dad46]
+    -   @open-pioneer/chakra-integration@2.2.0
+
+## 0.3.3
+
+### Patch Changes
+
+-   Updated dependencies [5c62522]
+-   Updated dependencies [e0b2fae]
+    -   @open-pioneer/chakra-integration@1.1.4
+
 ## 0.3.2
 
 ### Patch Changes

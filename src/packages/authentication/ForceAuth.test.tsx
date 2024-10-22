@@ -3,9 +3,10 @@
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { expect, it } from "vitest";
-import { ForceAuth } from "./ForceAuth";
-import { AuthService, AuthState, LoginBehavior, SessionInfo } from "./api";
 import { reactive, Reactive } from "@conterra/reactivity-core";
+import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
+import { AuthState, LoginBehavior, SessionInfo } from "./api";
+import { Box } from "@open-pioneer/chakra-integration";
 
 it("renders children if the user is authenticated", async () => {
     const mocks = {
@@ -203,7 +204,86 @@ it("calls a login effect if present", async () => {
     });
 });
 
-class TestAuthService implements AuthService {
+it("renders the error fallback if authentication state is erroneous", async () => {
+    const error = new Error("authentication failed");
+    const mocks = {
+        services: {
+            "authentication.AuthService": new TestAuthService({
+                kind: "error",
+                error: error
+            })
+        }
+    };
+
+    function ErrorFallback(props: ErrorFallbackProps) {
+        return <Box data-testid="ErrorFallback-box">{props.error.message}</Box>;
+    }
+
+    render(
+        <PackageContextProvider {...mocks}>
+            <ForceAuth errorFallback={ErrorFallback}></ForceAuth>
+        </PackageContextProvider>
+    );
+
+    const result = await screen.findByTestId("ErrorFallback-box");
+    expect(result.innerHTML).toEqual(error.message);
+});
+
+it("uses the renderErrorFallback property if authentication state is erroneous", async () => {
+    const testInput = "test input";
+    const mocks = {
+        services: {
+            "authentication.AuthService": new TestAuthService({
+                kind: "error",
+                error: new Error("authentication failed")
+            })
+        }
+    };
+
+    render(
+        <PackageContextProvider {...mocks}>
+            <ForceAuth
+                renderErrorFallback={() => <Box data-testid="ErrorFallback-box">{testInput}</Box>}
+            ></ForceAuth>
+        </PackageContextProvider>
+    );
+
+    const result = await screen.findByTestId("ErrorFallback-box");
+    expect(result.innerHTML).toEqual(testInput);
+});
+
+it("should use renderErrorFallback property rather than errorFallback property if both are provided", async () => {
+    const renderErrorFallbackInner = "renderErrorFallback";
+    const errorFallbackInner = "errorFallback";
+    const mocks = {
+        services: {
+            "authentication.AuthService": new TestAuthService({
+                kind: "error",
+                error: new Error("authentication failed")
+            })
+        }
+    };
+
+    function ErrorFallback() {
+        return <Box data-testid="ErrorFallback-box">{errorFallbackInner}</Box>;
+    }
+
+    render(
+        <PackageContextProvider {...mocks}>
+            <ForceAuth
+                errorFallback={ErrorFallback}
+                renderErrorFallback={() => (
+                    <Box data-testid="ErrorFallback-box">{renderErrorFallbackInner}</Box>
+                )}
+            ></ForceAuth>
+        </PackageContextProvider>
+    );
+
+    const result = await screen.findByTestId("ErrorFallback-box");
+    expect(result.innerHTML).toEqual(renderErrorFallbackInner);
+});
+
+class TestAuthService {
     #currentState: Reactive<AuthState>;
     #behavior: LoginBehavior;
     constructor(initState: AuthState, loginBehavior?: LoginBehavior) {

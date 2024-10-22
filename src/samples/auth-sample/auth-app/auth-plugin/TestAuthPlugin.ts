@@ -51,11 +51,20 @@ export class TestAuthPlugin implements Service, AuthPlugin {
             }
         };
 
+        const doFail = () => {
+            this.#state = {
+                kind: "error",
+                error: new Error("Login failed!")
+            };
+            this.emit("changed");
+        };
+
         // This component is rendered when the user is not logged in, for example
         // by the `<ForceAuth />` component.
         const AuthFallback = () =>
             createElement(LoginMask, {
                 doLogin: doLogin,
+                doFail: doFail,
                 wasLoggedIn: this.#wasLoggedIn
             });
         return {

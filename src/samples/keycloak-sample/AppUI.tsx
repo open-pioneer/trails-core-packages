@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AuthService, ForceAuth, useAuthState } from "@open-pioneer/authentication";
 import {
+    Box,
     Button,
     Code,
     Container,
@@ -78,7 +79,14 @@ export function AppUI() {
                         </Text>
                     </VStack>
                 </Flex>
-                <ForceAuth>
+                <ForceAuth
+                    renderErrorFallback={(e: Error) => (
+                        <>
+                            <Box>An Error occured while trying to login!</Box>
+                            <Box color={"red"}>{e.message}</Box>
+                        </>
+                    )}
+                >
                     <VStack
                         align="center"
                         p={10}

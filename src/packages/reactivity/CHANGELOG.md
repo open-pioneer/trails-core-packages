@@ -1,5 +1,18 @@
 # @open-pioneer/reactivity
 
+## 2.3.0
+
+### Minor Changes
+
+-   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+
 ## 0.1.0
 
 ### Minor Changes

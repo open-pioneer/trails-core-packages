@@ -1,5 +1,36 @@
 # @open-pioneer/integration
 
+## 2.3.0
+
+### Minor Changes
+
+-   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+
+### Patch Changes
+
+-   Updated dependencies [2fbaaa0]
+    -   @open-pioneer/runtime@2.3.0
+
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+-   Updated dependencies [39dad46]
+    -   @open-pioneer/runtime@2.2.0
+
+## 2.0.10
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+-   6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
+-   Updated dependencies [58ce24f]
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/runtime@2.1.7
+
 ## 2.0.9
 
 ### Patch Changes

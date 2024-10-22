@@ -1,12 +1,12 @@
 {
     "name": "http-app",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "private": true,
     "dependencies": {
         "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/http": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
-        "react-json-view": "^1.21.3"
+        "react-json-view": "catalog:"
     }
 }

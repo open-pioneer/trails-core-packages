@@ -1,5 +1,40 @@
 # @open-pioneer/http
 
+## 2.3.0
+
+### Minor Changes
+
+-   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+
+### Patch Changes
+
+-   Updated dependencies [2fbaaa0]
+    -   @open-pioneer/runtime@2.3.0
+    -   @open-pioneer/core@2.3.0
+
+## 2.2.0
+
+### Patch Changes
+
+-   39dad46: Switch to a new versioning strategy.
+    From now on, packages released by this repository share a common version number.
+-   Updated dependencies [39dad46]
+    -   @open-pioneer/core@2.2.0
+    -   @open-pioneer/runtime@2.2.0
+
+## 2.1.9
+
+### Patch Changes
+
+-   5c62522: Update wording and harmonize structure
+-   Updated dependencies [5c62522]
+-   Updated dependencies [58ce24f]
+-   Updated dependencies [50550d3]
+-   Updated dependencies [e0b2fae]
+-   Updated dependencies [6cc7fcd]
+    -   @open-pioneer/core@1.3.0
+    -   @open-pioneer/runtime@2.1.7
+
 ## 2.1.8
 
 ### Patch Changes
