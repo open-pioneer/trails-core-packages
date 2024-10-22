@@ -92,7 +92,7 @@ export interface AuthService
      * The state may initially be `pending` to allow for async initialization in the authentication plugin.
      * After initialization, the state is either `not-authenticated` or `authenticated`.
      * 
-     * Use Reactivty API to watch the auth state.
+     * Use Reactivity API to watch the auth state.
      */
     getAuthState(): AuthState;
 

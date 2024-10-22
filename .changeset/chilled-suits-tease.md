@@ -3,7 +3,7 @@
 "@open-pioneer/authentication": minor
 ---
 
-Replace change events for auth state wiht signals from Reactivty API  
+Replace change events for auth state wiht signals from Reactivity API  
   
 watch for updates of the auth state
 ```typescript
@@ -20,7 +20,7 @@ watch(
 ```
 
 The Auth Service forwards the auth state from the underlying AuthPlugin.
-Therefore, the plugin implementation must use reactive signals when its auth state changes in order to singal changes to the service.
+Therefore, the plugin implementation must use reactive signals when its auth state changes in order to signal changes to the service.
 ```typescript
 class DummyPlugin implements AuthPlugin {
     #state  = reactive<AuthState>( {
