@@ -677,6 +677,8 @@ describe("i18n support", function () {
 });
 
 it("renders an error screen when the app fails to start", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+
     const elem = createCustomElement({
         async resolveConfig() {
             throw new Error("help!");

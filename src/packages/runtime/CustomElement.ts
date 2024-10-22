@@ -295,7 +295,7 @@ class ApplicationInstance {
             logError(e);
             this.reset();
             this.state = "error";
-            this.showErrorScreen();
+            this.showErrorScreen(e);
         });
     }
 
@@ -470,7 +470,7 @@ class ApplicationInstance {
         }
     }
 
-    private showErrorScreen() {
+    private showErrorScreen(error: unknown) {
         const userLocales = getBrowserLocales();
         const i18nConfig = new I18nConfig(["en", "de"]);
         const { messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
@@ -486,7 +486,7 @@ class ApplicationInstance {
             container: shadowRoot,
             theme: elementOptions.theme
         });
-        this.reactIntegration?.render(createElement(ErrorScreen, { intl }));
+        this.reactIntegration?.render(createElement(ErrorScreen, { intl, error }));
 
         shadowRoot.replaceChildren(container);
     }
