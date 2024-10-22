@@ -34,7 +34,7 @@ export class AuthServiceImpl implements AuthService, Service {
                 this.#onPluginStateChanged(state);
             },
             {
-                immediate: true
+                immediate: false
             }
         );
         LOG.debug(
