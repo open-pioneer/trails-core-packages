@@ -304,6 +304,9 @@ importers:
 
   src/packages/authentication:
     dependencies:
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.4.3
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../chakra-integration
@@ -311,8 +314,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@open-pioneer/reactivity':
-        specifier: ^0.1.0
-        version: 0.1.0(@conterra/reactivity-core@0.4.0)(react@18.3.1)
+        specifier: workspace:^
+        version: link:../reactivity
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../runtime
