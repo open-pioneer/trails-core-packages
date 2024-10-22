@@ -52,11 +52,10 @@ export class TestAuthPlugin implements Service, AuthPlugin {
         };
 
         const doFail = () => {
-            this.#state = {
+            this.#state.value = {
                 kind: "error",
                 error: new Error("Login failed!")
             };
-            this.emit("changed");
         };
 
         // This component is rendered when the user is not logged in, for example
