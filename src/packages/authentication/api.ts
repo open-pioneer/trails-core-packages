@@ -1,16 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import type { EventSource } from "@open-pioneer/core";
 import type { DeclaredService } from "@open-pioneer/runtime";
 import type { ComponentType } from "react";
-
-/**
- * Events emitted by the {@link AuthService}.
- */
-export interface AuthEvents {
-    /** Emitted when there were any changes to the service's state. */
-    changed: void;
-}
 
 /**
  * Information about the authenticated user's session.
@@ -106,16 +97,14 @@ export interface LoginEffect {
  *
  * The current state (such as session info) can be retrieved and watched for changes.
  */
-export interface AuthService
-    extends EventSource<AuthEvents>,
-        DeclaredService<"authentication.AuthService"> {
+export interface AuthService extends DeclaredService<"authentication.AuthService"> {
     /**
      * Returns the current authentication state.
      *
      * The state may initially be `pending` to allow for async initialization in the authentication plugin.
      * After initialization, the state is either `not-authenticated` or `authenticated`.
-     * 
-      This method must be called again after the {@link AuthService} has emitted the `changed` event.
+     *
+     * Use Reactivity API to watch the auth state.
      */
     getAuthState(): AuthState;
 
@@ -123,8 +112,6 @@ export interface AuthService
      * Returns the current user's {@link SessionInfo} or `undefined`, if the current user is not authenticated.
      *
      * The method is asynchronous to allow for async initialization in the authentication plugin.
-     *
-     * This method must be called again after the {@link AuthService} has emitted the `changed` event.
      */
     getSessionInfo(): Promise<SessionInfo | undefined>;
 
@@ -141,29 +128,15 @@ export interface AuthService
     logout(): void;
 }
 
-/** Events that may be emitted by an authentication plugin. */
-export interface AuthPluginEvents {
-    changed: void;
-}
-
-/** Optional base type for an authentication plugin: the event emitter interface is not required. */
-export type AuthPluginEventBase = EventSource<AuthPluginEvents>;
-
 /**
  * The authentication service requires an AuthPlugin to implement a concrete authentication flow.
  *
  * The plugin provides the current authentication state and the authentication fallback to the service.
  *
  * The current authentication state returned by {@link getAuthState} may change.
- * If that is the case, the plugin must also emit the `changed` event to notify the service.
- *
- * The implementation of `AuthPluginEventBase` is optional: it is only necessary if the state changes
- * during the lifetime of the plugin.
- * To implement the event, you can write `class MyPlugin extends EventEmitter<AuthPluginEvents>`.
+ * If that is the case, the plugin must implement its auth state with Reactivity API.
  */
-export interface AuthPlugin
-    extends Partial<AuthPluginEventBase>,
-        DeclaredService<"authentication.AuthPlugin"> {
+export interface AuthPlugin extends DeclaredService<"authentication.AuthPlugin"> {
     /**
      * Returns the current authentication state.
      *

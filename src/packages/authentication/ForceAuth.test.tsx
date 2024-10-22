@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { EventEmitter } from "@open-pioneer/core";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { expect, it } from "vitest";
+import { reactive, Reactive } from "@conterra/reactivity-core";
 import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
-import { AuthEvents, AuthService, AuthState, LoginBehavior, SessionInfo } from "./api";
+import { AuthState, LoginBehavior, SessionInfo } from "./api";
 import { Box } from "@open-pioneer/chakra-integration";
 
 it("renders children if the user is authenticated", async () => {
@@ -283,12 +283,11 @@ it("should use renderErrorFallback property rather than errorFallback property i
     expect(result.innerHTML).toEqual(renderErrorFallbackInner);
 });
 
-class TestAuthService extends EventEmitter<AuthEvents> implements AuthService {
-    #currentState: AuthState;
+class TestAuthService {
+    #currentState: Reactive<AuthState>;
     #behavior: LoginBehavior;
     constructor(initState: AuthState, loginBehavior?: LoginBehavior) {
-        super();
-        this.#currentState = initState;
+        this.#currentState = reactive<AuthState>(initState);
         this.#behavior = loginBehavior ?? {
             kind: "fallback",
             Fallback(props: Record<string, unknown>) {
@@ -297,7 +296,7 @@ class TestAuthService extends EventEmitter<AuthEvents> implements AuthService {
         };
     }
     getAuthState(): AuthState {
-        return this.#currentState;
+        return this.#currentState.value;
     }
     getSessionInfo(): Promise<SessionInfo | undefined> {
         throw new Error("Method not implemented.");
@@ -309,7 +308,6 @@ class TestAuthService extends EventEmitter<AuthEvents> implements AuthService {
         throw new Error("Method not implemented.");
     }
     setAuthState(newState: AuthState) {
-        this.#currentState = newState;
-        this.emit("changed");
+        this.#currentState.value = newState;
     }
 }
