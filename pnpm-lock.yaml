@@ -170,7 +170,7 @@ overrides:
   vite-plugin-eslint>rollup: '>=3.29.5'
 
 patchedDependencies:
-  '@changesets/assemble-release-plan':
+  '@changesets/assemble-release-plan@6.0.4':
     hash: h7fa74ddz2lm7t3hquqctf7dgq
     path: patches/@changesets__assemble-release-plan.patch
 
