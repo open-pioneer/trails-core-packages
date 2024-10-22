@@ -1,5 +1,17 @@
 # @open-pioneer/http
 
+## 2.3.0
+
+### Minor Changes
+
+-   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+
+### Patch Changes
+
+-   Updated dependencies [2fbaaa0]
+    -   @open-pioneer/runtime@2.3.0
+    -   @open-pioneer/core@2.3.0
+
 ## 2.2.0
 
 ### Patch Changes

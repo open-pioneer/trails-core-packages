@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/runtime",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "Implements the runtime environment for Open Pioneer Trails apps.",
     "license": "Apache-2.0",
     "main": "index.ts",
@@ -16,7 +16,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@formatjs/intl": "catalog:",
         "@open-pioneer/base-theme": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",

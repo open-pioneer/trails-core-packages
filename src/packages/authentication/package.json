@@ -2,7 +2,7 @@
     "name": "@open-pioneer/authentication",
     "description": "Authentication API for Open Pioneer Trails applications.",
     "license": "Apache-2.0",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "main": "index.ts",
     "repository": {
         "type": "git",
@@ -16,7 +16,7 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
-    "peerDependencies": {
+    "dependencies": {
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
