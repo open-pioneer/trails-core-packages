@@ -364,7 +364,7 @@ class ApplicationInstance {
         this.checkAbort();
 
         // Launch react
-        this.reactIntegration = new ReactIntegration({
+        this.reactIntegration = ReactIntegration.createForApp({
             rootNode: container,
             container: shadowRoot,
             theme: elementOptions.theme,
@@ -485,7 +485,7 @@ class ApplicationInstance {
         }
         container.lang = locale;
 
-        this.reactIntegration = new ReactIntegration({
+        this.reactIntegration = ReactIntegration.createForErrorScreen({
             rootNode: container,
             container: shadowRoot,
             theme: elementOptions.theme

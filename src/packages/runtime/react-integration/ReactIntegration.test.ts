@@ -377,6 +377,8 @@ it("should apply the configured chakra theme", async () => {
     expect(node.textContent).toBe("Color: #123456");
 });
 
+// TODO: Test `createForErrorScreen`
+
 interface ServiceSpec {
     name: string;
     interfaces: InterfaceSpec[];
@@ -427,7 +429,7 @@ function createIntegration(options?: {
     const serviceLayer = new ServiceLayer(Array.from(packages.values()));
     serviceLayer.start();
 
-    const integration = new ReactIntegration({
+    const integration = ReactIntegration.createForApp({
         container: wrapper,
         rootNode: wrapper,
         theme: options?.theme,
