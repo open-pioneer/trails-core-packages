@@ -1,16 +1,16 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentType, StrictMode } from "react";
-import { createRoot, Root } from "react-dom/client";
-import { Error } from "@open-pioneer/core";
-import { ErrorId } from "../errors";
-import { ServiceLayer } from "../service-layer/ServiceLayer";
-import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
-import { PackageRepr } from "../service-layer/PackageRepr";
-import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
-import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
-import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
+import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
+import { Error } from "@open-pioneer/core";
+import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
+import { ReactNode, StrictMode } from "react";
+import { createRoot, Root } from "react-dom/client";
+import { ErrorId } from "../errors";
+import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
+import { PackageRepr } from "../service-layer/PackageRepr";
+import { ServiceLayer } from "../service-layer/ServiceLayer";
+import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
@@ -36,8 +36,7 @@ export class ReactIntegration {
         options: Omit<ReactIntegrationOptions, "serviceLayer" | "packages">
     ) {
         const throwError = () => {
-            // TODO: Pick an error id
-            throw new Error(ErrorId.INTERNAL, "Hook cannot be used within the error screen.");
+            throw new Error(ErrorId.INVALID_STATE, "Hook cannot be used within the error screen.");
         };
         const packageContext: PackageContextMethods = {
             getIntl: throwError,
@@ -59,7 +58,7 @@ export class ReactIntegration {
         this.packageContext = options.packageContext;
     }
 
-    render(Component: ComponentType) {
+    render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
                 <CustomChakraProvider
@@ -68,7 +67,7 @@ export class ReactIntegration {
                     theme={this.theme ?? defaultTrailsTheme}
                 >
                     <PackageContext.Provider value={this.packageContext}>
-                        <Component />
+                        {contentNode}
                     </PackageContext.Provider>
                 </CustomChakraProvider>
             </StrictMode>
@@ -85,7 +84,7 @@ function createPackageContext(
     packages: Map<string, PackageRepr>
 ): PackageContextMethods {
     const getPackage = (packageName: string): PackageRepr => {
-        const pkg = packages.get(packageName); // todo own error message if this.packages is undefined?
+        const pkg = packages.get(packageName);
         if (!pkg) {
             throw new Error(
                 ErrorId.INTERNAL,

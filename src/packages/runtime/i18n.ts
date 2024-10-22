@@ -31,7 +31,7 @@ export interface AppI18n {
  */
 export type PackageIntl = Pick<IntlShape, "locale" | "timeZone"> & IntlFormatters<string>;
 
-function createPackageIntl(locale: string, messages: Record<string, string>) {
+export function createPackageIntl(locale: string, messages: Record<string, string>) {
     const cache = createIntlCache();
     return createIntl(
         {
