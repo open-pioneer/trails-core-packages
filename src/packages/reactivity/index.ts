@@ -81,7 +81,7 @@ export function useComputed<T>(compute: () => T, deps: DependencyList): Readonly
 
     const computedDeps = useComputedDeps(deps);
     return useMemo(() => {
-        computedDeps; // not really used, but computed must be recreated when this value changes
+        void computedDeps; // not really used, but computed must be recreated when this value changes
         return computed(() => computeRef.current());
     }, [computedDeps]);
 }
