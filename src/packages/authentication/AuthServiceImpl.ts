@@ -8,13 +8,7 @@ import {
     destroyResource,
     createLogger
 } from "@open-pioneer/core";
-import type {
-    AuthPlugin,
-    AuthService,
-    AuthState,
-    LoginBehavior,
-    SessionInfo
-} from "./api";
+import type { AuthPlugin, AuthService, AuthState, LoginBehavior, SessionInfo } from "./api";
 import type { Service, ServiceOptions } from "@open-pioneer/runtime";
 import { syncWatch } from "@conterra/reactivity-core";
 
@@ -78,7 +72,7 @@ export class AuthServiceImpl implements AuthService, Service {
             this.#whenUserInfo.resolve(getSessionInfo(newState));
             this.#whenUserInfo = undefined;
         }
-        LOG.debug(`Auth state changed to '${newState.kind}'`,newState);
+        LOG.debug(`Auth state changed to '${newState.kind}'`, newState);
     }
 }
 

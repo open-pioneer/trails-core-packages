@@ -84,14 +84,13 @@ export interface LoginEffect {
  *
  * The current state (such as session info) can be retrieved and watched for changes.
  */
-export interface AuthService
-    extends DeclaredService<"authentication.AuthService"> {
+export interface AuthService extends DeclaredService<"authentication.AuthService"> {
     /**
      * Returns the current authentication state.
      *
      * The state may initially be `pending` to allow for async initialization in the authentication plugin.
      * After initialization, the state is either `not-authenticated` or `authenticated`.
-     * 
+     *
      * Use Reactivity API to watch the auth state.
      */
     getAuthState(): AuthState;
@@ -116,7 +115,6 @@ export interface AuthService
     logout(): void;
 }
 
-
 /**
  * The authentication service requires an AuthPlugin to implement a concrete authentication flow.
  *
@@ -125,8 +123,7 @@ export interface AuthService
  * The current authentication state returned by {@link getAuthState} may change.
  * If that is the case, the plugin must implement its auth state with Reactivity API.
  */
-export interface AuthPlugin
-    extends DeclaredService<"authentication.AuthPlugin"> {
+export interface AuthPlugin extends DeclaredService<"authentication.AuthPlugin"> {
     /**
      * Returns the current authentication state.
      *

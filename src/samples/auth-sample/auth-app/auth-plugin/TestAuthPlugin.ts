@@ -1,10 +1,6 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    AuthPlugin,
-    AuthState,
-    LoginBehavior
-} from "@open-pioneer/authentication";
+import { AuthPlugin, AuthState, LoginBehavior } from "@open-pioneer/authentication";
 import { Service } from "@open-pioneer/runtime";
 import { createElement } from "react";
 import { LoginMask } from "./LoginMask";

@@ -1,11 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { reactive } from "@conterra/reactivity-core";
-import {
-    AuthPlugin,
-    AuthState,
-    LoginBehavior
-} from "@open-pioneer/authentication";
+import { AuthPlugin, AuthState, LoginBehavior } from "@open-pioneer/authentication";
 import { Resource, createLogger, destroyResource } from "@open-pioneer/core";
 import { NotificationService } from "@open-pioneer/notifier";
 import {
@@ -28,9 +24,7 @@ interface References {
     notifier: NotificationService;
 }
 
-export class KeycloakAuthPlugin
-implements Service, AuthPlugin
-{
+export class KeycloakAuthPlugin implements Service, AuthPlugin {
     declare [DECLARE_SERVICE_INTERFACE]: "authentication-keycloak.KeycloakAuthPlugin";
 
     #notifier: NotificationService;

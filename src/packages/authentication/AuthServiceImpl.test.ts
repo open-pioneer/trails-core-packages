@@ -21,7 +21,9 @@ it("forwards the authentication plugin's state changes", async () => {
     const observedStates: AuthState[] = [];
     syncWatch(
         () => [authService.getAuthState()],
-        ([state]) => {observedStates.push(state);},
+        ([state]) => {
+            observedStates.push(state);
+        },
         {
             immediate: true
         }
@@ -112,7 +114,7 @@ it("calls the plugin's logout method", async () => {
 });
 
 class TestPlugin implements AuthPlugin {
-    #state  = reactive<AuthState>( {
+    #state = reactive<AuthState>({
         kind: "not-authenticated"
     });
 

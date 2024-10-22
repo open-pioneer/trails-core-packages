@@ -7,9 +7,6 @@ import { useReactiveSnapshot } from "@open-pioneer/reactivity";
  * React hook that always returns the `authService`'s current auth state.
  */
 export function useAuthState(authService: AuthService): AuthState {
-    const state = useReactiveSnapshot(
-        () => authService.getAuthState(),
-        [authService]
-    );
-    return state; 
+    const state = useReactiveSnapshot(() => authService.getAuthState(), [authService]);
+    return state;
 }
