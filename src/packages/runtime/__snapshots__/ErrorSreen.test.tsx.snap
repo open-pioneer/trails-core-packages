@@ -1,0 +1,107 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`should successfully create an error screen component 1`] = `
+<div
+  data-testid="error-screen"
+>
+  <div
+    class="css-0"
+    data-theme="light"
+  >
+    <div
+      class="chakra-stack css-1thqo0p"
+      data-theme="light"
+    >
+      <h2
+        class="chakra-heading css-18j379d"
+        data-theme="light"
+      >
+        Application start failed
+      </h2>
+      <div
+        class="chakra-alert css-1v22m0m"
+        data-status="error"
+        data-theme="light"
+        role="alert"
+      >
+        <span
+          class="chakra-alert__icon css-14ogjxt"
+          data-status="error"
+          data-theme="light"
+        >
+          <svg
+            class="chakra-icon css-qk6lof"
+            data-theme="light"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        <div
+          class="chakra-alert__title css-tidvy5"
+          data-status="error"
+          data-theme="light"
+        >
+          Error
+        </div>
+        <div
+          class="chakra-alert__desc css-zzks76"
+          data-status="error"
+          data-theme="light"
+        >
+          Unfortunately an error occurred during application start.
+        </div>
+      </div>
+      <div
+        class="error-details css-12gngag"
+        data-theme="light"
+      >
+        <p
+          class="chakra-text css-1pf3nin"
+          data-theme="light"
+        >
+          Error details:
+        </p>
+        <div
+          class="error-screen-stack-trace css-1syq16t"
+          data-theme="light"
+        >
+          <p
+            class="chakra-text css-1msjh1x"
+            data-theme="light"
+          >
+            Error: 
+            test
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should successfully create an error screen component with a stack trace 1`] = `
+<div
+  class="error-screen-stack-trace css-1syq16t"
+  data-theme="light"
+>
+  <p
+    class="chakra-text css-1msjh1x"
+    data-theme="light"
+  >
+    Error: 
+    test
+  </p>
+  <div
+    class="css-1xl4qo1"
+    data-theme="light"
+  >
+    test stack trace
+  </div>
+  Inspect the console to see more details.
+</div>
+`;

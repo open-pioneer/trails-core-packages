@@ -8,7 +8,8 @@ import {
     AlertIcon,
     AlertTitle,
     AlertDescription,
-    Alert
+    Alert,
+    Text
 } from "@open-pioneer/chakra-integration";
 import { PackageIntl } from "./i18n";
 
@@ -38,9 +39,9 @@ export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
     const intl = props.intl;
     return (
         <Box>
-            <VStack padding={3} width="100%" height="100%">
+            <VStack padding={4} width="100%" height="100%">
                 <Heading size="md">{intl.formatMessage({ id: "title" })}</Heading>
-                <Alert status="error" maxWidth={550} borderRadius="4px">
+                <Alert status="error" maxWidth={550} borderRadius="4px" mt={2}>
                     <AlertIcon />
                     <AlertTitle>{intl.formatMessage({ id: "alertTitle" })}</AlertTitle>
                     <AlertDescription>
@@ -51,13 +52,16 @@ export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
                 {isDev && (
                     <Box
                         className="error-details"
-                        mt={3}
-                        p={1}
-                        width="100%"
-                        border={"2px solid grey"}
-                        backgroundColor={"red.100"}
+                        mt={4}
+                        p={2}
+                        maxWidth="100%"
+                        border={"dotted 2px"}
+                        borderColor={"red.600"}
+                        borderRadius={"4px"}
                     >
-                        <b>Error details:</b>
+                        <Text color={"red.600"} fontWeight={"bold"}>
+                            Error details:
+                        </Text>
                         <ErrorRenderer error={props.error} />
                     </Box>
                 )}
@@ -75,14 +79,15 @@ function ErrorRenderer(props: { error: Error }) {
     const stackTraceDisplay = stackTrace && (
         <>
             <Box
-                m="1"
                 p="2"
+                mt={1}
+                mb={3}
                 maxHeight="500px"
                 whiteSpace="pre"
                 wordBreak="keep-all"
                 overflow="auto"
                 border="1px solid grey"
-                borderRadius="5px"
+                borderRadius="4px"
                 color="gray.700"
                 fontSize="12px"
                 fontFamily="monospace"
@@ -93,9 +98,9 @@ function ErrorRenderer(props: { error: Error }) {
         </>
     );
     return (
-        <>
-            <p>Error: {error?.message || "Unknown"}</p>
+        <Box p={2} className={"error-screen-stack-trace"}>
+            <Text fontStyle={"italic"}>Error: {error?.message || "Unknown"}</Text>
             {stackTraceDisplay}
-        </>
+        </Box>
     );
 }

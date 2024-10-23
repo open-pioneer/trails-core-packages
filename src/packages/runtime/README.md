@@ -36,6 +36,14 @@ HTML sites or JavaScript code can now instantiate the application by creating a 
 </html>
 ```
 
+## Error screen
+
+If a hard error occurs on application start, the `AppUI` cannot be rendered but an error screen is shown instead.
+The error screen shows a message to the user that an error occurred on application start.
+The error screen is available in english (fallback) and german.
+
+If the application was started in DEV-mode, the error screen shows additional information about the error and the stack trace.
+
 ## License
 
 Apache-2.0 (see `LICENSE` file)
