@@ -9,7 +9,7 @@ import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 
 it("should successfully create an error screen component", async () => {
     const intl = createPackageIntl("en", MESSAGES_BY_LOCALE["en"]);
-    const error = { message: "test" };
+    const error = { name: "TestError", message: "test" };
     render(
         <PackageContextProvider>
             <div data-testid="error-screen">
@@ -24,7 +24,7 @@ it("should successfully create an error screen component", async () => {
 
 it("should successfully create an error screen component with a stack trace", async () => {
     const intl = createPackageIntl("en", MESSAGES_BY_LOCALE["en"]);
-    const error = { message: "test", stack: "test stack trace" };
+    const error = { name: "TestError", message: "test", stack: "test stack trace" };
     render(
         <PackageContextProvider>
             <ErrorScreen intl={intl} error={error} />

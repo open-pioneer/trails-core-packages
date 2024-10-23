@@ -74,8 +74,7 @@ exports[`should successfully create an error screen component 1`] = `
             class="chakra-text css-1msjh1x"
             data-theme="light"
           >
-            Error: 
-            test
+            Error: test
           </p>
         </div>
       </div>
@@ -93,8 +92,7 @@ exports[`should successfully create an error screen component with a stack trace
     class="chakra-text css-1msjh1x"
     data-theme="light"
   >
-    Error: 
-    test
+    Error: test
   </p>
   <div
     class="css-1xl4qo1"

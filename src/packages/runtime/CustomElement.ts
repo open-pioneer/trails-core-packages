@@ -264,6 +264,8 @@ interface ApplicationOverrides {
     locale?: string;
 }
 
+type ApplicationState = "not-started" | "starting" | "started" | "destroyed" | "error";
+
 class ApplicationInstance {
     private options: InstanceOptions;
 
@@ -271,7 +273,7 @@ class ApplicationInstance {
     private apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
     private api: ApiMethods | undefined; // Present once started
 
-    private state = "not-started" as "not-started" | "starting" | "started" | "destroyed" | "error";
+    private state: ApplicationState = "not-started";
     private container: HTMLDivElement | undefined;
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
@@ -374,16 +376,12 @@ class ApplicationInstance {
             serviceLayer,
             packages
         });
-        this.render();
+        const component = this.options.elementOptions.component ?? emptyComponent;
+        this.reactIntegration.render(createElement(component));
         this.state = "started";
 
         this.triggerApplicationLifecycleEvent("after-start");
         LOG.debug("Application started");
-    }
-
-    private render() {
-        const component = this.options.elementOptions.component ?? emptyComponent;
-        this.reactIntegration?.render(createElement(component));
     }
 
     private initStyles() {
@@ -470,23 +468,26 @@ class ApplicationInstance {
         }
     }
 
-    private showErrorScreen(error: unknown) {
-        const userLocales = getBrowserLocales();
-        const i18nConfig = new I18nConfig(["en", "de"]);
-        const { messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
-        const useLocale = messageLocale === "de" ? "de" : "en";
-        const intl = createPackageIntl(messageLocale, MESSAGES_BY_LOCALE[useLocale]);
+    private showErrorScreen(error: globalThis.Error) {
+        const { shadowRoot, elementOptions } = this.options;
 
-        const container = (this.container = createContainer(useLocale));
+        const userLocales = getBrowserLocales();
+        const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
+        const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
+
+        const container = (this.container = createContainer(locale));
         container.classList.add("pioneer-root-error-screen");
 
-        const { shadowRoot, elementOptions } = this.options;
+        const messages =
+            MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
+            MESSAGES_BY_LOCALE["en"];
+        const intl = createPackageIntl(locale, messages);
         this.reactIntegration = ReactIntegration.createForErrorScreen({
             rootNode: container,
             container: shadowRoot,
             theme: elementOptions.theme
         });
-        this.reactIntegration?.render(createElement(ErrorScreen, { intl, error }));
+        this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
 
         shadowRoot.replaceChildren(container);
     }

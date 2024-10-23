@@ -16,13 +16,21 @@ import { PackageIntl } from "./i18n";
 const MESSAGES_DE = {
     "title": "Anwendungsstart fehlgeschlagen",
     "alertTitle": "Fehler",
-    "alertDescription": "Leider ist beim Start der Anwendung ein Fehler aufgetreten."
+    "alertDescription": "Leider ist beim Start der Anwendung ein Fehler aufgetreten.",
+
+    "details.title": "Fehlerdetails",
+    "details.inspect": "Konsole öffnen, um weitere Details zu sehen.",
+    "details.errorMessage": "Fehler: {message}"
 };
 
 const MESSAGES_EN = {
     "title": "Application start failed",
     "alertTitle": "Error",
-    "alertDescription": "Unfortunately an error occurred during application start."
+    "alertDescription": "Unfortunately an error occurred during application start.",
+
+    "details.title": "Error details",
+    "details.inspect": "Inspect the console to see more details.",
+    "details.errorMessage": "Error: {message}"
 };
 
 export const MESSAGES_BY_LOCALE: Record<"en" | "de", Record<string, string>> = {
@@ -33,7 +41,6 @@ export const MESSAGES_BY_LOCALE: Record<"en" | "de", Record<string, string>> = {
 const isDev = import.meta.env.DEV;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Error = any;
 
 export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
     const intl = props.intl;
@@ -60,9 +67,9 @@ export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
                         borderRadius={"4px"}
                     >
                         <Text color={"red.600"} fontWeight={"bold"}>
-                            Error details:
+                            {intl.formatMessage({ id: "details.title" }) + ":"}
                         </Text>
-                        <ErrorRenderer error={props.error} />
+                        <ErrorRenderer {...props} />
                     </Box>
                 )}
             </VStack>
@@ -73,9 +80,10 @@ export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
 /**
  * Renders a single error instance.
  */
-function ErrorRenderer(props: { error: Error }) {
-    const error = props.error;
-    const stackTrace = import.meta.env.DEV && error?.stack;
+function ErrorRenderer(props: { error: Error; intl: PackageIntl }) {
+    const { error, intl } = props;
+    const message = error?.message || "Unknown";
+    const stackTrace = error?.stack;
     const stackTraceDisplay = stackTrace && (
         <>
             <Box
@@ -94,12 +102,14 @@ function ErrorRenderer(props: { error: Error }) {
             >
                 {stackTrace}
             </Box>
-            Inspect the console to see more details.
+            {intl.formatMessage({ id: "details.inspect" })}
         </>
     );
     return (
         <Box p={2} className={"error-screen-stack-trace"}>
-            <Text fontStyle={"italic"}>Error: {error?.message || "Unknown"}</Text>
+            <Text fontStyle={"italic"}>
+                {intl.formatMessage({ id: "details.errorMessage" }, { message })}
+            </Text>
             {stackTraceDisplay}
         </Box>
     );

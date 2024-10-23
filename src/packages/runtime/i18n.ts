@@ -100,8 +100,10 @@ export function createEmptyI18n(locale = "en"): PackageIntl {
     return createPackageIntl(locale, {});
 }
 
-interface LocalePickResult {
-    /** The actual locale (e.g. en-US) for number and date formatting etc. */
+export interface LocalePickResult {
+    /**
+     * The actual locale (e.g. en-US) for number and date formatting etc.
+     */
     locale: string;
 
     /**
