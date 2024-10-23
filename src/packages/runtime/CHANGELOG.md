@@ -1,5 +1,20 @@
 # @open-pioneer/runtime
 
+## 2.4.0
+
+### Minor Changes
+
+-   ac39468: Introducing an error screen that is shown in case of hard errors on app start.
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+-   Updated dependencies [1b63ebe]
+    -   @open-pioneer/chakra-integration@2.4.0
+    -   @open-pioneer/base-theme@2.4.0
+    -   @open-pioneer/core@2.4.0
+    -   @open-pioneer/runtime-react-support@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes

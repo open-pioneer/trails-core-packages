@@ -1,5 +1,11 @@
 # @open-pioneer/runtime-react-support
 
+## 2.4.0
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+
 ## 2.3.0
 
 ### Minor Changes

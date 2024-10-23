@@ -1,5 +1,14 @@
 # @open-pioneer/react-utils
 
+## 2.4.0
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+-   Updated dependencies [1b63ebe]
+    -   @open-pioneer/chakra-integration@2.4.0
+    -   @open-pioneer/core@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes
