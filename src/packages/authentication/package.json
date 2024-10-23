@@ -21,7 +21,9 @@
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
         "react": "catalog:",
-        "react-use": "catalog:"
+        "react-use": "catalog:",
+        "@conterra/reactivity-core": "catalog:",
+        "@open-pioneer/reactivity": "workspace:^"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",
