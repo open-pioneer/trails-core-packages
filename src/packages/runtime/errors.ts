@@ -10,7 +10,7 @@ export enum ErrorId {
     NOT_MOUNTED = "runtime:element-not-mounted",
     UNSUPPORTED_LOCALE = "runtime:unsupported-locale",
     CONFIG_RESOLUTION_FAILED = "runtime:config-resolution-failed",
-    INVALID_STATE = "runtime:invalide-state",
+    INVALID_STATE = "runtime:invalid-state",
 
     // Service layer
     INTERFACE_NOT_FOUND = "runtime:interface-not-found",
