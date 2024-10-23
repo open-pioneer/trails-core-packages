@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/integration",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "Provides techniques for the communication between an application (web component) and its embedding site.",
     "license": "Apache-2.0",
     "main": "index.ts",
