@@ -1,13 +1,12 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentType } from "react";
+import { ComponentType, createElement } from "react";
 import {
     createAbortError,
     createLogger,
     createManualPromise,
     destroyResource,
     Error,
-    isAbortError,
     ManualPromise,
     Resource,
     throwAbortError
@@ -26,8 +25,9 @@ import {
     RUNTIME_AUTO_START
 } from "./builtin-services";
 import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { AppI18n, initI18n } from "./i18n";
+import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
+import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -264,6 +264,8 @@ interface ApplicationOverrides {
     locale?: string;
 }
 
+type ApplicationState = "not-started" | "starting" | "started" | "destroyed" | "error";
+
 class ApplicationInstance {
     private options: InstanceOptions;
 
@@ -271,8 +273,7 @@ class ApplicationInstance {
     private apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
     private api: ApiMethods | undefined; // Present once started
 
-    private state = "not-started" as "not-started" | "starting" | "started" | "destroyed";
-    private locale: string | undefined;
+    private state: ApplicationState = "not-started";
     private container: HTMLDivElement | undefined;
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
@@ -291,11 +292,12 @@ class ApplicationInstance {
 
         this.state = "starting";
         this.startImpl().catch((e) => {
-            // TODO: Error splash?
-            this.destroy();
-            if (!isAbortError(e)) {
-                logError(e);
-            }
+            if (this.state === "destroyed") return;
+
+            logError(e);
+            this.reset();
+            this.state = "error";
+            this.showErrorScreen(e);
         });
     }
 
@@ -313,6 +315,10 @@ class ApplicationInstance {
             }
         }
         this.state = "destroyed";
+        this.reset();
+    }
+
+    private reset() {
         this.apiPromise?.reject(createAbortError());
         this.reactIntegration = destroyResource(this.reactIntegration);
         this.options.shadowRoot.replaceChildren();
@@ -363,23 +369,19 @@ class ApplicationInstance {
         this.checkAbort();
 
         // Launch react
-        this.reactIntegration = new ReactIntegration({
+        this.reactIntegration = ReactIntegration.createForApp({
             rootNode: container,
             container: shadowRoot,
             theme: elementOptions.theme,
             serviceLayer,
             packages
         });
-        this.render();
+        const component = this.options.elementOptions.component ?? emptyComponent;
+        this.reactIntegration.render(createElement(component));
         this.state = "started";
 
         this.triggerApplicationLifecycleEvent("after-start");
         LOG.debug("Application started");
-    }
-
-    private render() {
-        const component = this.options.elementOptions.component ?? emptyComponent;
-        this.reactIntegration?.render(component);
     }
 
     private initStyles() {
@@ -464,6 +466,30 @@ class ApplicationInstance {
         if (this.state === "destroyed") {
             throwAbortError();
         }
+    }
+
+    private showErrorScreen(error: globalThis.Error) {
+        const { shadowRoot, elementOptions } = this.options;
+
+        const userLocales = getBrowserLocales();
+        const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
+        const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
+
+        const container = (this.container = createContainer(locale));
+        container.classList.add("pioneer-root-error-screen");
+
+        const messages =
+            MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
+            MESSAGES_BY_LOCALE["en"];
+        const intl = createPackageIntl(locale, messages);
+        this.reactIntegration = ReactIntegration.createForErrorScreen({
+            rootNode: container,
+            container: shadowRoot,
+            theme: elementOptions.theme
+        });
+        this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
+
+        shadowRoot.replaceChildren(container);
     }
 }
 

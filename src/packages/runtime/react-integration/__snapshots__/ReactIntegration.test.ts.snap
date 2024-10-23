@@ -1,5 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`integration for error screen  > should throw an error when trying to access a service on an error screen 1`] = `[Error: runtime:invalid-state: Hook cannot be used within the error screen.]`;
+
 exports[`reports a helpful error when package metadata is missing 1`] = `[Error: runtime:missing-package: Package 'packageMissingFromMetadata' was not found in the application's metadata while it attempted to reference the interface 'test.Provider'. Check that the dependency is declared correctly in the packages that use 'packageMissingFromMetadata'.]`;
 
 exports[`should allow access to all services via react hook 1`] = `

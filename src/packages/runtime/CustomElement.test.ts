@@ -390,7 +390,7 @@ describe("application lifecycle events", function () {
         const { node } = await renderComponent(elem);
         await waitFor(() => {
             const state = (node as InternalElementType).$inspectElementState?.().state;
-            if (state !== "destroyed") {
+            if (state !== "error") {
                 throw new Error(`App did not reach destroyed state.`);
             }
         });
@@ -674,4 +674,30 @@ describe("i18n support", function () {
         };
         return result;
     }
+});
+
+it("renders an error screen when the app fails to start", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    const elem = createCustomElement({
+        async resolveConfig() {
+            throw new Error("help!");
+        }
+    });
+
+    const { node } = await renderComponent(elem);
+    await waitFor(() => {
+        const state = (node as InternalElementType).$inspectElementState?.().state;
+        if (state !== "error") {
+            throw new Error(`App did not reach error state.`);
+        }
+    });
+
+    const errorScreen = node.shadowRoot?.querySelector("div");
+    expect(errorScreen).not.toBe(undefined);
+    expect(errorScreen?.className).toBe("pioneer-root pioneer-root-error-screen");
+    const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
+        child.textContent?.includes("Error")
+    );
+    expect(includesErrorText).toBe(true);
 });

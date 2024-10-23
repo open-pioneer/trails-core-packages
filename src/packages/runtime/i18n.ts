@@ -31,7 +31,7 @@ export interface AppI18n {
  */
 export type PackageIntl = Pick<IntlShape, "locale" | "timeZone"> & IntlFormatters<string>;
 
-function createPackageIntl(locale: string, messages: Record<string, string>) {
+export function createPackageIntl(locale: string, messages: Record<string, string>) {
     const cache = createIntlCache();
     return createIntl(
         {
@@ -100,8 +100,10 @@ export function createEmptyI18n(locale = "en"): PackageIntl {
     return createPackageIntl(locale, {});
 }
 
-interface LocalePickResult {
-    /** The actual locale (e.g. en-US) for number and date formatting etc. */
+export interface LocalePickResult {
+    /**
+     * The actual locale (e.g. en-US) for number and date formatting etc.
+     */
     locale: string;
 
     /**
@@ -188,7 +190,7 @@ export class I18nConfig {
  *
  * See also https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages
  */
-function getBrowserLocales(): string[] {
+export function getBrowserLocales(): string[] {
     if (window.navigator.languages && window.navigator.languages.length) {
         return Array.from(window.navigator.languages);
     }
