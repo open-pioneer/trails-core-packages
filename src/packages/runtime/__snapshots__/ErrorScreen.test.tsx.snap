@@ -5,7 +5,7 @@ exports[`should successfully create an error screen component 1`] = `
   data-testid="error-screen"
 >
   <div
-    class="css-0"
+    class="css-130hpco"
     data-theme="light"
   >
     <div

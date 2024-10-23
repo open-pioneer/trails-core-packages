@@ -45,7 +45,7 @@ const isDev = import.meta.env.DEV;
 export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
     const intl = props.intl;
     return (
-        <Box>
+        <Box width="100%" height="100%" minWidth="500px" minHeight="150px">
             <VStack padding={4} width="100%" height="100%">
                 <Heading size="md">{intl.formatMessage({ id: "title" })}</Heading>
                 <Alert status="error" maxWidth={550} borderRadius="4px" mt={2}>
