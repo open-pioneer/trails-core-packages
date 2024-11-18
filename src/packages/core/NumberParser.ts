@@ -1,18 +1,12 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-export interface NumberParser {
-    /**
-     * Parses a number from a string considering the locale.
-     */
-    parse(inputNumber: string): number;
-}
 
 /**
  * This class allows to parse numbers from strings according to the given locale.
  * Currently, in JavaScript there is no built-in way to parse numbers according to the current locale.
  * Only arabic numerals are supported.
  */
-export class NumberParserImpl implements NumberParser {
+export class NumberParser {
     private readonly decimalRegexPattern: RegExp;
     private readonly groupingRegexPattern: RegExp;
 
@@ -43,6 +37,9 @@ export class NumberParserImpl implements NumberParser {
         }
     }
 
+    /**
+     * Parses a number from a string considering the locale.
+     */
     parse(numberString: string): number {
         numberString = numberString.trim();
 

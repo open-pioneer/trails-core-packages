@@ -12,3 +12,4 @@ export { EventEmitter, type EventSource, type EventNames } from "./events";
 export { destroyResource, destroyResources, type Resource } from "./resources";
 export { createLogger, type Logger, type LogLevel, type LogMethod } from "./Logger";
 export { createManualPromise, type ManualPromise } from "./utils";
+export { NumberParser } from "./NumberParser";
