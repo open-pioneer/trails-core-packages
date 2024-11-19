@@ -46,7 +46,7 @@ export class NumberParser {
         const parsedNumberString = numberString
             .replace(this.groupingRegexPattern, "")
             .replace(this.decimalRegexPattern, ".");
-        return !numberString ? NaN : +parsedNumberString;
+        return !parsedNumberString ? NaN : +parsedNumberString;
     }
 
     // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#escaping
