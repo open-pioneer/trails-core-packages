@@ -1,9 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { NumberParserService } from "../api";
-import { NumberParser } from "@open-pioneer/core/NumberParser";
 import { ServiceOptions } from "../Service";
-import { createLogger } from "@open-pioneer/core";
+import { createLogger, NumberParser } from "@open-pioneer/core";
 
 const LOG = createLogger("runtime:NumberParserService");
 
