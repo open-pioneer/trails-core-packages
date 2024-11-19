@@ -1,6 +1,5 @@
 ---
 "@open-pioneer/runtime": minor
-"@open-pioneer/core": minor
 ---
 
-Introduce NumberParserService for parsing strings to numbers according to the current locale.
+Introduce `NumberParserService` for parsing strings to numbers in the application's current locale.
