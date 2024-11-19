@@ -10,6 +10,7 @@ import {
 import { ApiServiceImpl } from "./ApiServiceImpl";
 import { ApplicationContextImpl, ApplicationContextProperties } from "./ApplicationContextImpl";
 import { ApplicationLifecycleEventService } from "./ApplicationLifecycleEventService";
+import { NumberParserServiceImpl } from "./NumberParserServiceImpl";
 
 export const RUNTIME_PACKAGE_NAME = "@open-pioneer/runtime";
 export const RUNTIME_API_EXTENSION = "integration.ApiExtension";
@@ -17,6 +18,7 @@ export const RUNTIME_API_SERVICE = "runtime.ApiService";
 export const RUNTIME_APPLICATION_CONTEXT = "runtime.ApplicationContext";
 export const RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE =
     "runtime.ApplicationLifecycleEventService";
+export const RUNTIME_NUMBER_PARSER_SERVICE = "runtime.NumberParserService";
 export const RUNTIME_AUTO_START = "runtime.AutoStart";
 
 export type BuiltinPackageProperties = ApplicationContextProperties;
@@ -85,10 +87,24 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
             }
         ]
     });
+    const numberParserService = new ServiceRepr({
+        name: "NumberParserServiceImpl",
+        packageName: RUNTIME_PACKAGE_NAME,
+        factory: createFunctionFactory(
+            (options) => new NumberParserServiceImpl(options, properties.locale)
+        ),
+        intl: i18n,
+        interfaces: [
+            {
+                interfaceName: RUNTIME_NUMBER_PARSER_SERVICE,
+                qualifier: "builtin"
+            }
+        ]
+    });
 
     return new PackageRepr({
         name: RUNTIME_PACKAGE_NAME,
-        services: [apiService, appContext, lifecycleEventService],
+        services: [apiService, appContext, lifecycleEventService, numberParserService],
         intl: i18n
     });
 }

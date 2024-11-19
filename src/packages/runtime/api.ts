@@ -97,3 +97,13 @@ export interface ApplicationLifecycleListener
      */
     beforeApplicationStop?(): void;
 }
+
+/**
+ * A service that allows to parse numbers from strings according to the current locale.
+ */
+export interface NumberParserService extends DeclaredService<"runtime.NumberParserService"> {
+    /**
+     * Parses a number from a string according to the current locale.
+     */
+    parseNumber(numberString: string): number;
+}
