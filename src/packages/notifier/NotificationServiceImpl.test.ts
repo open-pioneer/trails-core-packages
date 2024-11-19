@@ -6,9 +6,7 @@ import { NotificationServiceImpl, Notification } from "./NotificationServiceImpl
 
 it("dispatches events to the notification handler", async () => {
     const service = await createService(NotificationServiceImpl, {});
-
     const events: unknown[] = [];
-
     const handlerResource = service.registerHandler({
         showNotification(notification: Notification) {
             events.push({ type: "notification", notification: notification });
@@ -51,11 +49,54 @@ it("dispatches events to the notification handler", async () => {
     expect(events).toHaveLength(0);
 });
 
+it("dispatches events with convenience methods", async () => {
+    const service = await createService(NotificationServiceImpl, {});
+    const events: unknown[] = [];
+    service.registerHandler({
+        showNotification(notification: Notification) {
+            events.push(notification);
+        },
+        closeAll() {}
+    });
+
+    service.success({ title: "test1" });
+    service.info({ title: "test2" });
+    service.warning({ title: "test3" });
+    service.error({ title: "test4" });
+
+    expect(events).toMatchInlineSnapshot(`
+      [
+        {
+          "displayDuration": undefined,
+          "level": "success",
+          "message": undefined,
+          "title": "test1",
+        },
+        {
+          "displayDuration": undefined,
+          "level": "info",
+          "message": undefined,
+          "title": "test2",
+        },
+        {
+          "displayDuration": undefined,
+          "level": "warning",
+          "message": undefined,
+          "title": "test3",
+        },
+        {
+          "displayDuration": undefined,
+          "level": "error",
+          "message": undefined,
+          "title": "test4",
+        },
+      ]
+    `);
+});
+
 it("dispatches events to a later registered notification handler", async () => {
     const service = await createService(NotificationServiceImpl, {});
-
     const events: unknown[] = [];
-
     service.notify({ title: "test" });
     service.closeAll();
     service.notify({ title: "test2" });

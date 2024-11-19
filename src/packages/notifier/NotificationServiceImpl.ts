@@ -1,6 +1,11 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import type { NotificationLevel, NotificationOptions, NotificationService } from "./api";
+import type {
+    NotificationLevel,
+    NotificationOptions,
+    NotificationService,
+    SimpleNotificationOptions
+} from "./api";
 import { Resource, createLogger } from "@open-pioneer/core";
 import type { ReactNode } from "react";
 const LOG = createLogger("notifier:NotificationService");
@@ -60,6 +65,22 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
             level: options.level ?? "info",
             displayDuration: options.displayDuration
         });
+    }
+
+    success(options: SimpleNotificationOptions): void {
+        this.notify({ ...options, level: "success" });
+    }
+
+    info(options: SimpleNotificationOptions): void {
+        this.notify({ ...options, level: "info" });
+    }
+
+    warning(options: SimpleNotificationOptions): void {
+        this.notify({ ...options, level: "warning" });
+    }
+
+    error(options: SimpleNotificationOptions): void {
+        this.notify({ ...options, level: "error" });
     }
 
     closeAll(): void {
