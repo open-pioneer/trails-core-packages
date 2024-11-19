@@ -32,6 +32,15 @@ export interface NotificationOptions {
 }
 
 /**
+ * Options used when emitting a new notification via {@link NotificationService}
+ * using convenience methods like `warning` and `error`.
+ *
+ * Options can either be an object that is the same as {@link NotificationOptions}, but without the `level` property
+ * or a string, which will be used as the `message` of the Notification.
+ */
+export type SimpleNotificationOptions = Omit<NotificationOptions, "level"> | string;
+
+/**
  * The `NotificationService` allows any part of the application to emit
  * notifications to the user.
  *
@@ -47,6 +56,18 @@ export interface NotificationService extends DeclaredService<"notifier.Notificat
      * @param options Options for the new notification.
      */
     notify(options: NotificationOptions): void;
+
+    /** Emits a success notification. Same as {@link notify} with `type: "success"`. */
+    success(options: SimpleNotificationOptions): void;
+
+    /** Emits an info notification. Same as {@link notify} with `type: "info"`. */
+    info(options: SimpleNotificationOptions): void;
+
+    /** Emits a warning notification. Same as {@link notify} with `type: "warning"`. */
+    warning(options: SimpleNotificationOptions): void;
+
+    /** Emits an error notification. Same as {@link notify} with `type: "error"`. */
+    error(options: SimpleNotificationOptions): void;
 
     /** Closes all active notifications. */
     closeAll(): void;
