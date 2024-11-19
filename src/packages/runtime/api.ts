@@ -101,7 +101,7 @@ export interface ApplicationLifecycleListener
 /**
  * A service that allows to parse numbers from strings according to the current locale.
  */
-export interface NumberParserService extends DeclaredService<"runtime.NumberParser"> {
+export interface NumberParserService extends DeclaredService<"runtime.NumberParserService"> {
     /**
      * Parses a number from a string according to the current locale.
      */
