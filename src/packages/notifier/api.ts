@@ -32,11 +32,13 @@ export interface NotificationOptions {
 }
 
 /**
- * Same as {@link NotificationOptions}, but without the `level` property.
+ * Options used when emitting a new notification via {@link NotificationService}
+ * using convenience methods like `warning` and `error`.
  *
- * Used for convenience methods like `warning` and `error`.
+ * Options can either be an object that is the same as {@link NotificationOptions}, but without the `level` property
+ * or a string, which will be used as the `message` of the Notification.
  */
-export type SimpleNotificationOptions = Omit<NotificationOptions, "level">;
+export type SimpleNotificationOptions = Omit<NotificationOptions, "level"> | string;
 
 /**
  * The `NotificationService` allows any part of the application to emit

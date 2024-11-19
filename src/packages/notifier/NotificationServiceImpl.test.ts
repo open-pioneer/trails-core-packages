@@ -49,7 +49,7 @@ it("dispatches events to the notification handler", async () => {
     expect(events).toHaveLength(0);
 });
 
-it("dispatches events with convenience methods", async () => {
+it("dispatches events with convenience methods with object parameter", async () => {
     const service = await createService(NotificationServiceImpl, {});
     const events: unknown[] = [];
     service.registerHandler({
@@ -89,6 +89,51 @@ it("dispatches events with convenience methods", async () => {
           "level": "error",
           "message": undefined,
           "title": "test4",
+        },
+      ]
+    `);
+});
+
+it("dispatches events with convenience methods with string parameter", async () => {
+    const service = await createService(NotificationServiceImpl, {});
+    const events: unknown[] = [];
+    service.registerHandler({
+        showNotification(notification: Notification) {
+            events.push(notification);
+        },
+        closeAll() {}
+    });
+
+    service.success("test1");
+    service.info("test2");
+    service.warning("test3");
+    service.error("test4");
+
+    expect(events).toMatchInlineSnapshot(`
+      [
+        {
+          "displayDuration": undefined,
+          "level": "success",
+          "message": "test1",
+          "title": undefined,
+        },
+        {
+          "displayDuration": undefined,
+          "level": "info",
+          "message": "test2",
+          "title": undefined,
+        },
+        {
+          "displayDuration": undefined,
+          "level": "warning",
+          "message": "test3",
+          "title": undefined,
+        },
+        {
+          "displayDuration": undefined,
+          "level": "error",
+          "message": "test4",
+          "title": undefined,
         },
       ]
     `);

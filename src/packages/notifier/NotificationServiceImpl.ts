@@ -68,19 +68,26 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
     }
 
     success(options: SimpleNotificationOptions): void {
-        this.notify({ ...options, level: "success" });
+        this.#sendSimpleNotification("success", options);
     }
 
     info(options: SimpleNotificationOptions): void {
-        this.notify({ ...options, level: "info" });
+        this.#sendSimpleNotification("info", options);
     }
 
     warning(options: SimpleNotificationOptions): void {
-        this.notify({ ...options, level: "warning" });
+        this.#sendSimpleNotification("warning", options);
     }
 
     error(options: SimpleNotificationOptions): void {
-        this.notify({ ...options, level: "error" });
+        this.#sendSimpleNotification("error", options);
+    }
+
+    #sendSimpleNotification(level: NotificationLevel, options: SimpleNotificationOptions): void {
+        if (typeof options === "string") {
+            options = { message: options };
+        }
+        this.notify({ ...options, level });
     }
 
     closeAll(): void {
