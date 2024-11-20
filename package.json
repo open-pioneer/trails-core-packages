@@ -69,6 +69,7 @@
         }
     },
     "devDependencies": {
+        "@chakra-ui/cli": "catalog:",
         "@changesets/cli": "catalog:",
         "@open-pioneer/build-package-cli": "catalog:",
         "@open-pioneer/build-support": "catalog:",

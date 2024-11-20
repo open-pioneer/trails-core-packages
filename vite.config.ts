@@ -15,19 +15,20 @@ import eslint from "vite-plugin-eslint";
 const targets = ["chrome92", "edge92", "firefox91", "safari14"];
 
 const sampleSites = [
-    "samples/api-sample",
+    // TODO
+    // "samples/api-sample",
     "samples/chakra-sample",
-    "samples/extension-sample",
-    "samples/http-sample",
-    "samples/i18n-howto",
-    "samples/i18n-sample",
-    "samples/properties-sample",
-    "samples/styling-sample",
-    "samples/notify-sample",
-    "samples/theming-sample",
-    "samples/auth-sample",
-    "samples/keycloak-sample",
-    "samples/error-sample"
+    // "samples/extension-sample",
+    // "samples/http-sample",
+    // "samples/i18n-howto",
+    // "samples/i18n-sample",
+    // "samples/properties-sample",
+    // "samples/styling-sample",
+    // "samples/notify-sample",
+    // "samples/theming-sample",
+    // "samples/auth-sample",
+    // "samples/keycloak-sample",
+    // "samples/error-sample"
 ];
 
 // https://vitejs.dev/config/

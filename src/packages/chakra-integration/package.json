@@ -20,8 +20,6 @@
         "@chakra-ui/react": "catalog:",
         "@emotion/cache": "catalog:",
         "@emotion/react": "catalog:",
-        "@emotion/styled": "catalog:",
-        "framer-motion": ">=4.0.0",
         "react": "catalog:",
         "react-dom": "catalog:"
     },

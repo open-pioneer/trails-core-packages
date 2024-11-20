@@ -1,22 +1,16 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import {
-    CSSReset,
-    DarkMode,
+    ChakraProvider,
+    createSystem,
+    defaultConfig,
+    defineConfig,
     EnvironmentProvider,
-    GlobalStyle,
-    LightMode,
-    ThemeProvider,
-    ToastOptionProvider,
-    ToastProvider,
-    ToastProviderProps,
-    extendTheme,
-    theme as chakraBaseTheme
+    SystemStyleObject
 } from "@chakra-ui/react";
 import createCache, { EmotionCache } from "@emotion/cache";
-import { CacheProvider, Global } from "@emotion/react";
-import { FC, PropsWithChildren, RefObject, useEffect, useMemo, useRef } from "react";
-import { PortalRootProvider } from "./PortalFix";
+import { CacheProvider } from "@emotion/react";
+import { FC, PropsWithChildren, useRef } from "react";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
@@ -28,45 +22,50 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     container: Node;
 
     /**
-     * Configures the color mode of the application.
-     */
-    colorMode?: "light" | "dark";
-
-    /**
      * Chakra theming object.
      */
     theme?: Record<string, unknown>;
 }>;
 
-// todo min-height vs height
-const defaultStyles = `
-.chakra-host {
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    font-family: system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    -moz-osx-font-smoothing: grayscale;
-    touch-action: manipulation;
-    position: relative;
-    min-height: 100%;
-    height: 100%;
-    font-feature-settings: 'kern';
-}`;
+const system = createSystem(
+    defaultConfig,
+    defineConfig({
+        preflight: {
+            scope: ":host"
+        },
+        cssVarsRoot: ":host",
+        conditions: redirectLightCondition(defaultConfig.conditions),
+        globalCss: redirectHtmlProps(defaultConfig.globalCss)
+    })
+);
 
-// https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L3-L6
-const colorModeClassnames = {
-    light: "chakra-ui-light",
-    dark: "chakra-ui-dark"
-};
+function redirectHtmlProps(
+    css: Record<string, SystemStyleObject> | undefined
+): Record<string, SystemStyleObject> {
+    const { html, ...rest } = css ?? {};
+    if (!html) {
+        throw new Error("Internal error: expected global rules on html element.");
+    }
+    // Take default html styles and apply them to the host element instead
+    return {
+        ...rest,
+        ":host": html
+    };
+}
+
+function redirectLightCondition(
+    conditions: Record<string, unknown> | undefined
+): Record<string, unknown> {
+    // Make sure light mode tokens are applied
+    return {
+        ...conditions,
+        // Before: ":root &, .light &"
+        light: ":host &, .light &"
+    };
+}
 
 // https://github.com/chakra-ui/chakra-ui/issues/2439
-export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
-    container,
-    colorMode,
-    children,
-    theme: themeProp
-}) => {
+export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ container, children }) => {
     /* 
         Chakra integration internals:
 
@@ -104,86 +103,34 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     */
 
     const cache = useEmotionCache(container);
-
-    const theme = useMemo(() => wrapTheme(themeProp), [themeProp]);
-
-    const chakraHost = useRef<HTMLDivElement>(null);
-    const toastOptions: ToastProviderProps = {
-        portalProps: {
-            containerRef: chakraHost
-        }
-    };
-
-    const ColorMode = useSyncedColorMode(chakraHost, colorMode);
-
     return (
-        <div className="chakra-host" ref={chakraHost}>
+        /** TODO: Consider removing the chakra host altogether */
+        <div className="chakra-host">
             <CacheProvider value={cache}>
-                <ThemeProvider theme={theme}>
-                    <EnvironmentProvider>
-                        <ColorMode>
-                            <CSSReset />
-                            <Global styles={defaultStyles} />
-                            <GlobalStyle />
-                            <ToastOptionProvider value={toastOptions?.defaultOptions}>
-                                <PortalRootProvider value={chakraHost}>
-                                    {children}
-                                </PortalRootProvider>
-                            </ToastOptionProvider>
-                            <ToastProvider {...toastOptions} />
-                        </ColorMode>
-                    </EnvironmentProvider>
-                </ThemeProvider>
+                <EnvironmentProvider value={container}>
+                    <ChakraProvider value={system}>{children}</ChakraProvider>
+                </EnvironmentProvider>
             </CacheProvider>
         </div>
     );
 };
 
-/**
- * Computes the correct color mode and returns a component that will apply that mode.
- *
- * The current color mode is automatically propagates as a css class on the chakra host element.
- */
-function useSyncedColorMode(
-    chakraHost: RefObject<HTMLDivElement>,
-    colorMode: "light" | "dark" | undefined
-) {
-    const mode = colorMode ?? "light";
-    useEffect(() => {
-        const host = chakraHost.current;
-        if (!host) {
-            return;
-        }
-
-        // https://github.dev/chakra-ui/chakra-ui/blob/80971001d7b77d02d5f037487a37237ded315480/packages/components/color-mode/src/color-mode.utils.ts#L16-L25
-        const className = colorModeClassnames[mode];
-        host.classList.add(className);
-        host.dataset.theme = mode;
-        return () => {
-            host.classList.remove(className);
-            host.dataset.theme = undefined;
-        };
-    }, [chakraHost, mode]);
-    const ColorMode = mode === "light" ? LightMode : DarkMode;
-    return ColorMode;
-}
-
-function wrapTheme(theme: Record<string, unknown> = chakraBaseTheme): Record<string, unknown> {
-    return extendTheme(
-        {
-            styles: {
-                //add global css styles here
-                global: {
-                    // Apply the same styles to the application root node that chakra would usually apply to the html and body.
-                    ".chakra-host":
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (chakraBaseTheme.styles.global as Record<string, any>).body
-                }
-            }
-        },
-        theme
-    );
-}
+// function wrapTheme(theme: Record<string, unknown> = chakraBaseTheme): Record<string, unknown> {
+//     return extendTheme(
+//         {
+//             styles: {
+//                 //add global css styles here
+//                 global: {
+//                     // Apply the same styles to the application root node that chakra would usually apply to the html and body.
+//                     ".chakra-host":
+//                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//                         (chakraBaseTheme.styles.global as Record<string, any>).body
+//                 }
+//             }
+//         },
+//         theme
+//     );
+// }
 
 function useEmotionCache(container: Node): EmotionCache {
     const cacheRef = useRef<EmotionCache>();

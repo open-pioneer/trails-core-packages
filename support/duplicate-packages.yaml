@@ -16,7 +16,4 @@ allowed:
   - "escape-string-regexp"
   - "has-flag"
   - "react-is"
-  - "source-map"
-  - "stylis"
   - "supports-color"
-  - "tslib"

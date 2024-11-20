@@ -9,7 +9,6 @@ import { createElement } from "react";
 import { beforeEach, expect, it, MockInstance, afterEach, vi, describe } from "vitest";
 import { Service, ServiceConstructor } from "../Service";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
-import { useTheme } from "@open-pioneer/chakra-integration";
 import { PackageIntl, createEmptyI18n } from "../i18n";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
@@ -358,15 +357,8 @@ it("should apply the configured chakra theme", async () => {
     });
 
     function TestComponent() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const theme = useTheme() as any;
-        return createElement(
-            "div",
-            {
-                "data-testid": "test-div"
-            },
-            `Color: ${theme.colors.dummyColor}`
-        );
+        // TODO
+        throw new Error("not implemented");
     }
 
     act(() => {

@@ -1,22 +1,17 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentType, createElement } from "react";
 import {
     createAbortError,
     createLogger,
     createManualPromise,
     destroyResource,
     Error,
+    getErrorChain,
     ManualPromise,
     Resource,
     throwAbortError
 } from "@open-pioneer/core";
-import { ErrorId } from "./errors";
-import { ApplicationMetadata, PackageMetadata } from "./metadata";
-import { PackageRepr, createPackages } from "./service-layer/PackageRepr";
-import { ServiceLayer } from "./service-layer/ServiceLayer";
-import { getErrorChain } from "@open-pioneer/core";
-import { ReactIntegration } from "./react-integration/ReactIntegration";
+import { ComponentType, createElement } from "react";
 import { ApiMethods, ApiService } from "./api";
 import {
     createBuiltinPackage,
@@ -24,10 +19,14 @@ import {
     RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
     RUNTIME_AUTO_START
 } from "./builtin-services";
-import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
-import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
+import { ErrorId } from "./errors";
+import { AppI18n, initI18n } from "./i18n";
+import { ApplicationMetadata, PackageMetadata } from "./metadata";
+import { ReactIntegration } from "./react-integration/ReactIntegration";
+import { ReferenceSpec } from "./service-layer/InterfaceSpec";
+import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
+import { ServiceLayer } from "./service-layer/ServiceLayer";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -468,28 +467,29 @@ class ApplicationInstance {
         }
     }
 
-    private showErrorScreen(error: globalThis.Error) {
-        const { shadowRoot, elementOptions } = this.options;
+    private showErrorScreen(_error: globalThis.Error) {
+        // TODO
+        // const { shadowRoot, elementOptions } = this.options;
 
-        const userLocales = getBrowserLocales();
-        const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
-        const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
+        // const userLocales = getBrowserLocales();
+        // const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
+        // const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
 
-        const container = (this.container = createContainer(locale));
-        container.classList.add("pioneer-root-error-screen");
+        // const container = (this.container = createContainer(locale));
+        // container.classList.add("pioneer-root-error-screen");
 
-        const messages =
-            MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
-            MESSAGES_BY_LOCALE["en"];
-        const intl = createPackageIntl(locale, messages);
-        this.reactIntegration = ReactIntegration.createForErrorScreen({
-            rootNode: container,
-            container: shadowRoot,
-            theme: elementOptions.theme
-        });
-        this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
+        // const messages =
+        //     MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
+        //     MESSAGES_BY_LOCALE["en"];
+        // const intl = createPackageIntl(locale, messages);
+        // this.reactIntegration = ReactIntegration.createForErrorScreen({
+        //     rootNode: container,
+        //     container: shadowRoot,
+        //     theme: elementOptions.theme
+        // });
+        // this.reactIntegration.render(createElement("div", { intl, error }));
 
-        shadowRoot.replaceChildren(container);
+        // shadowRoot.replaceChildren(container);
     }
 }
 

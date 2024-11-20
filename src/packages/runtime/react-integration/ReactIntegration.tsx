@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
 import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import { Error } from "@open-pioneer/core";
 import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
@@ -64,7 +63,6 @@ export class ReactIntegration {
                 <CustomChakraProvider
                     container={this.containerNode}
                     colorMode="light"
-                    theme={this.theme ?? defaultTrailsTheme}
                 >
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}

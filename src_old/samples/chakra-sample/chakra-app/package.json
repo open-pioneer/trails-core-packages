@@ -3,8 +3,8 @@
     "version": "0.0.20",
     "private": true,
     "dependencies": {
+        "@open-pioneer/base-theme": "workspace:^",
         "@open-pioneer/chakra-integration": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
-        "react-icons": "catalog:"
+        "@open-pioneer/runtime": "workspace:^"
     }
 }
