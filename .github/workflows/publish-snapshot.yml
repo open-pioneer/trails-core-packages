@@ -1,0 +1,25 @@
+name: Publish snapshot
+on:
+  workflow_dispatch:
+jobs:
+  build_packages:
+    name: "Build and publish"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Build packages
+        run: pnpm build-packages
+
+      # Bumps versions in package.json (see https://github.com/changesets/changesets/blob/main/docs/snapshot-releases.md)
+      # The changes should not be committed to any branch: the "releases" are not part of the version history.
+      - name: Version packages
+        run: pnpm changeset version --snapshot dev
+
+      - name: Publish packages
+        run: pnpm publish -r --access public --tag dev
