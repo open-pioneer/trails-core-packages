@@ -3,9 +3,9 @@
 "@open-pioneer/authentication": minor
 ---
 
-Replace change events for auth state wiht signals from Reactivity API
+Replace change events for auth state with signals from Reactivity API
 
-watch for updates of the auth state
+Example: watch for updates of the auth state
 
 ```typescript
 const myAuthService = ...
