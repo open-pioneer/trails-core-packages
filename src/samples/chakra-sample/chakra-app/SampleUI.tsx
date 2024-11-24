@@ -3,6 +3,7 @@
 import {
     Button,
     Container,
+    Portal,
     Spinner,
     Stack,
     Text
@@ -21,6 +22,9 @@ export function SampleUI() {
             <Button onClick={(e) => console.log("Button clicked", e)}>Click me</Button>
 
             <Text>I am Text</Text>
+
+            {/* TODO: Portal appears at the wrong location (direct child of shadow root instead of .pioneer-root */}
+            <Portal><Button>Hello World</Button></Portal>
 
             <AccordionDemo />
             <Spinner />

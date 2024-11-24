@@ -4,6 +4,7 @@ packages:
   - src/packages/core
   - src/packages/chakra-integration
   - src/packages/test-utils
+  - src/samples/chakra-sample/**
   # TODO:
   # - src/**
   - "!**/test-data/**"
@@ -30,6 +31,7 @@ catalog:
   react-dom: *react_version
   react-json-view: ^1.21.3
   react-use: ^17.5.1
+  react-icons: ^5.3.0
   react: *react_version
 
   # Devtools

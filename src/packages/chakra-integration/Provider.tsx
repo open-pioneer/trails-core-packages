@@ -31,7 +31,7 @@ const system = createSystem(
     defaultConfig,
     defineConfig({
         preflight: {
-            scope: ":host"
+            scope: ".pioneer-root"
         },
         cssVarsRoot: ":host",
         conditions: redirectLightCondition(defaultConfig.conditions),
