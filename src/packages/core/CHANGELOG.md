@@ -1,5 +1,22 @@
 # @open-pioneer/core
 
+## 2.4.0
+
+### Minor Changes
+
+-   e3802fb: Introduce the `NumberParser` class for parsing strings in a specified locale.
+
+    ```js
+    import { NumberParser } from "@open-pioneer/core";
+
+    const parser = new NumberParser("de-DE");
+    const number = parser.parse("1.234,56");
+    ```
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+
 ## 2.3.0
 
 ## 2.2.0

@@ -1,5 +1,31 @@
 # @open-pioneer/notifier
 
+## 2.4.0
+
+### Minor Changes
+
+-   e4ba048: Introduce new convenience methods on the `NotificationService` in addition to the existing `notify()` method:
+
+    ```js
+    const notifier = ...; // injected
+    notifier.success(/* ... */)
+    notifier.info(/* ... */)
+    notifier.warning(/* ... */)
+    notifier.error(/* ... */)
+    ```
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+-   Updated dependencies [1b63ebe]
+-   Updated dependencies [e3802fb]
+-   Updated dependencies [ac39468]
+-   Updated dependencies [e3802fb]
+    -   @open-pioneer/chakra-integration@2.4.0
+    -   @open-pioneer/react-utils@2.4.0
+    -   @open-pioneer/core@2.4.0
+    -   @open-pioneer/runtime@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes

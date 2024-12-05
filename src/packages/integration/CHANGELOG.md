@@ -1,5 +1,15 @@
 # @open-pioneer/integration
 
+## 2.4.0
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+-   Updated dependencies [1b63ebe]
+-   Updated dependencies [e3802fb]
+-   Updated dependencies [ac39468]
+    -   @open-pioneer/runtime@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes
