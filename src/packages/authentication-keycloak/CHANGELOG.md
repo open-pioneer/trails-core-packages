@@ -1,5 +1,59 @@
 # @open-pioneer/authentication-keycloak
 
+## 2.4.0
+
+### Minor Changes
+
+-   1ce5f11: Replace change events for auth state with signals from Reactivity API
+
+    Example: watch for updates of the auth state
+
+    ```typescript
+    const myAuthService = ...
+    watch(
+        () => [myAuthService.getAuthState()],
+        ([state]) => {
+            console.log(state);
+        },
+        {
+            immediate: true
+        }
+    );
+    ```
+
+    The Auth Service forwards the auth state from the underlying AuthPlugin.
+    Therefore, the plugin implementation must use reactive signals when its auth state changes in order to signal changes to the service.
+
+    ```typescript
+    class DummyPlugin implements AuthPlugin {
+        #state = reactive<AuthState>({
+            kind: "not-authenticated"
+        });
+
+        getAuthState(): AuthState {
+            return this.#state.value;
+        }
+
+        $setAuthState(newState: AuthState) {
+            this.#state.value = newState;
+        }
+    }
+    ```
+
+### Patch Changes
+
+-   1b63ebe: Update dependencies
+-   Updated dependencies [1ce5f11]
+-   Updated dependencies [1b63ebe]
+-   Updated dependencies [e3802fb]
+-   Updated dependencies [e4ba048]
+-   Updated dependencies [ac39468]
+-   Updated dependencies [e3802fb]
+    -   @open-pioneer/authentication@2.4.0
+    -   @open-pioneer/core@2.4.0
+    -   @open-pioneer/notifier@2.4.0
+    -   @open-pioneer/runtime@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes
