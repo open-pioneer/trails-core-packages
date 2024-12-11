@@ -20,11 +20,6 @@ const sessionInfo = await authService.getSessionInfo();
 // Like the above, but synchronous and includes intermediate states like "pending".
 const state = authService.getAuthState();
 
-// Use `on("changed", ...)` to be notified about changes.
-const handle = authService.on("changed", () => {
-    const newState = authService.getAuthState();
-});
-
 // Don't forget to clean up event handles in the future
 handle.destroy();
 ```
