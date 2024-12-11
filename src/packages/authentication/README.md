@@ -80,8 +80,8 @@ The plugin must implement the `AuthPlugin` TypeScript interface exported by this
     When authenticated, a user's authentication state contains session information, such as the user's `id`,
     an optional display name and arbitrary additional `attributes` that can be defined by the plugin.
 
-    If the state changes internally (for example successful login, explicit logout, logout due to timeout, etc.),
-    the `changed` event must be emitted to notify the `AuthService`.
+    The state should be implemented based on signals (`@conterra/reactivity-core`).
+    This way, updates to the current state are transported automatically.
 
 -   Return the login behavior value (a React component or a function to call) by implementing `getLoginBehavior()`.
     This could be a login dialog, a "forbidden" message (_"fallback"_) or a function implementing a redirect ("effect").
