@@ -19,10 +19,12 @@ import {
     DialogTitle,
     DialogTrigger
 } from "./snippets/dialog";
+import { toaster, Toaster } from "./snippets/toaster";
 
 export function SampleUI() {
     return (
         <Container>
+            <Toaster></Toaster>
             <Button onClick={(e) => console.log("Button clicked", e)}>Click me</Button>
 
             <Text>I am Text</Text>
@@ -53,6 +55,9 @@ export function SampleUI() {
                     <DialogCloseTrigger />
                 </DialogContent>
             </DialogRoot>
+        
+            <ToastExample></ToastExample>
+        
         </Container>
     );
 }
@@ -71,6 +76,23 @@ const AccordionDemo = () => {
                 ))}
             </AccordionRoot>
         </Stack>
+    );
+};
+
+const ToastExample = () => {
+    return (
+        <Button
+            onClick={() =>
+            {
+                toaster.create({
+                    type: "loading",
+                    description: "We've created your account for you.",
+                });
+            }
+            }
+        >
+            Show Toast
+        </Button>
     );
 };
 
