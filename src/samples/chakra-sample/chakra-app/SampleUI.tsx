@@ -1,20 +1,24 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    Button,
-    Container,
-    Portal,
-    Spinner,
-    Stack,
-    Text
-} from "@open-pioneer/chakra-integration";
+import { Button, Container, Portal, Spinner, Stack, Text } from "@open-pioneer/chakra-integration";
 import {
     AccordionItem,
     AccordionItemContent,
     AccordionItemTrigger,
-    AccordionRoot,
+    AccordionRoot
 } from "./snippets/accordion";
 import { useState } from "react";
+import {
+    DialogActionTrigger,
+    DialogBody,
+    DialogCloseTrigger,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogRoot,
+    DialogTitle,
+    DialogTrigger
+} from "./snippets/dialog";
 
 export function SampleUI() {
     return (
@@ -23,11 +27,32 @@ export function SampleUI() {
 
             <Text>I am Text</Text>
 
-            {/* TODO: Portal appears at the wrong location (direct child of shadow root instead of .pioneer-root */}
-            <Portal><Button>Hello World</Button></Portal>
-
             <AccordionDemo />
             <Spinner />
+
+            <DialogRoot>
+                <DialogTrigger asChild>
+                    <Button variant="outline">Open Me</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Dialog Title</DialogTitle>
+                    </DialogHeader>
+                    <DialogBody>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                    </DialogBody>
+                    <DialogFooter>
+                        <DialogActionTrigger asChild>
+                            <Button variant="outline">Cancel</Button>
+                        </DialogActionTrigger>
+                        <Button>Save</Button>
+                    </DialogFooter>
+                    <DialogCloseTrigger />
+                </DialogContent>
+            </DialogRoot>
         </Container>
     );
 }

@@ -73,9 +73,10 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ container,
         2. Use chakra's EnvironmentProvider to tell it about the shadow root context
         3. Setup global styles correctly (selectors etc.) via chakra's system object
         4. Render the rest of the application
-
-        TODO: Force a specific portal container?
     */
+
+    // TODO: Support user style / chakra config
+
     const cache = useEmotionCache(container);
     return (
         <CacheProvider value={cache}>
@@ -85,23 +86,6 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ container,
         </CacheProvider>
     );
 };
-
-// function wrapTheme(theme: Record<string, unknown> = chakraBaseTheme): Record<string, unknown> {
-//     return extendTheme(
-//         {
-//             styles: {
-//                 //add global css styles here
-//                 global: {
-//                     // Apply the same styles to the application root node that chakra would usually apply to the html and body.
-//                     ".chakra-host":
-//                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//                         (chakraBaseTheme.styles.global as Record<string, any>).body
-//                 }
-//             }
-//         },
-//         theme
-//     );
-// }
 
 function useEmotionCache(container: Node): EmotionCache {
     const cacheRef = useRef<EmotionCache>();

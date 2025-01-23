@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import { Error } from "@open-pioneer/core";
 import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
 import { ReactNode, StrictMode } from "react";
@@ -10,6 +9,7 @@ import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSp
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
+import { CustomChakraProvider } from "./ChakraProvider";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
@@ -60,10 +60,7 @@ export class ReactIntegration {
     render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider
-                    container={this.containerNode}
-                    colorMode="light"
-                >
+                <CustomChakraProvider container={this.containerNode}>
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
                     </PackageContext.Provider>
