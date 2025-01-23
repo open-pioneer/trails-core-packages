@@ -1,13 +1,22 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Button, Container, Portal, Spinner, Stack, Text } from "@open-pioneer/chakra-integration";
+import { Toaster as ChakraToaster, CreateToasterReturn, Portal, Toast } from "@chakra-ui/react";
+import {
+    Button,
+    Container,
+    createToaster,
+    Spinner,
+    Stack,
+    Text,
+    useEnvironmentContext
+} from "@open-pioneer/chakra-integration";
+import { useMemo, useState } from "react";
 import {
     AccordionItem,
     AccordionItemContent,
     AccordionItemTrigger,
     AccordionRoot
 } from "./snippets/accordion";
-import { useState } from "react";
 import {
     DialogActionTrigger,
     DialogBody,
@@ -19,12 +28,12 @@ import {
     DialogTitle,
     DialogTrigger
 } from "./snippets/dialog";
-import { toaster, Toaster } from "./snippets/toaster";
 
 export function SampleUI() {
+    const [toaster, toasterUI] = useToaster();
     return (
         <Container>
-            <Toaster></Toaster>
+            {toasterUI}
             <Button onClick={(e) => console.log("Button clicked", e)}>Click me</Button>
 
             <Text>I am Text</Text>
@@ -55,9 +64,8 @@ export function SampleUI() {
                     <DialogCloseTrigger />
                 </DialogContent>
             </DialogRoot>
-        
-            <ToastExample></ToastExample>
-        
+
+            <ToastExample toaster={toaster}></ToastExample>
         </Container>
     );
 }
@@ -79,17 +87,15 @@ const AccordionDemo = () => {
     );
 };
 
-const ToastExample = () => {
+const ToastExample = (props: { toaster: CreateToasterReturn }) => {
     return (
         <Button
-            onClick={() =>
-            {
-                toaster.create({
+            onClick={() => {
+                props.toaster.create({
                     type: "loading",
-                    description: "We've created your account for you.",
+                    description: "We've created your account for you."
                 });
-            }
-            }
+            }}
         >
             Show Toast
         </Button>
@@ -101,3 +107,51 @@ const items = [
     { value: "second-item", title: "Second Item", text: "Some value 2..." },
     { value: "third-item", title: "Third Item", text: "Some value 3..." }
 ];
+
+// Sketch for integration of chakra toaster.
+// It needs the getRootNode function (-> #pioneer-root) to render correctly, so it
+// cannot be created as a module-level constant.
+// Use this as a base for the notifier package.
+function useToaster() {
+    const { getRootNode } = useEnvironmentContext();
+    const toaster = useMemo(
+        () =>
+            createToaster({
+                placement: "bottom-end",
+                pauseOnPageIdle: true,
+                getRootNode
+            }),
+        [getRootNode]
+    );
+
+    const toasterUI = useMemo(
+        () => (
+            <Portal>
+                <ChakraToaster toaster={toaster} insetInline={{ mdDown: "4" }}>
+                    {(toast) => (
+                        <Toast.Root width={{ md: "sm" }}>
+                            {toast.type === "loading" ? (
+                                <Spinner size="sm" color="blue.solid" />
+                            ) : (
+                                <Toast.Indicator />
+                            )}
+                            <Stack gap="1" flex="1" maxWidth="100%">
+                                {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
+                                {toast.description && (
+                                    <Toast.Description>{toast.description}</Toast.Description>
+                                )}
+                            </Stack>
+                            {toast.action && (
+                                <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
+                            )}
+                            {toast.meta?.closable && <Toast.CloseTrigger />}
+                        </Toast.Root>
+                    )}
+                </ChakraToaster>
+            </Portal>
+        ),
+        [toaster]
+    );
+
+    return [toaster, toasterUI] as const;
+}
