@@ -389,7 +389,6 @@ class ApplicationInstance {
         // See https://open-wc.org/guides/knowledge/styling/styles-piercing-shadow-dom/
         // NOTE: layer base comes from chakra (used for css resets etc).
         // TODO: Merge with global styles in chakra integration package
-        // TODO: Perhaps even move the chakra-provider in this package
         const builtinStyles = "@layer base { :host { all: initial; display: block; } }";
         const builtinStylesNode = document.createElement("style");
         applyStyles(builtinStylesNode, { value: builtinStyles });
