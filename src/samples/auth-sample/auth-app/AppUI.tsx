@@ -7,7 +7,7 @@ import { LogoutButton } from "./LogoutButton";
 export function AppUI() {
     return (
         <ForceAuth errorFallback={ErrorFallback}>
-            <Container p={5}>
+            <Container p={5} maxWidth="xl">
                 <Heading as="h1">Authenticated</Heading>
                 This is the actual content of the app. Authentication was successful.
                 <Flex pt={5} flexDirection="row" justifyContent="center">

@@ -24,7 +24,7 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
     };
 
     return (
-        <Container p={5}>
+        <Container p={5} maxWidth={"xl"}>
             <VStack as="form" onSubmit={onSubmit} gap={4}>
                 <Heading as="h1" textAlign="center">
                     Login
@@ -66,7 +66,7 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                     <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Field>
                 <HStack>
-                    <Button colorScheme={"red"} onClick={doFail}>
+                    <Button colorPalette={"red"} onClick={doFail}>
                         Let it fail!
                     </Button>
                     <Button type="submit">Login</Button>

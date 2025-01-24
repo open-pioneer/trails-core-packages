@@ -15,7 +15,7 @@ export function LogoutButton() {
         return null;
     }
     return (
-        <Button colorScheme="red" onClick={doLogout}>
+        <Button colorPalette="red" onClick={doLogout}>
             Log out
         </Button>
     );
