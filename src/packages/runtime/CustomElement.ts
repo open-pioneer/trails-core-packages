@@ -472,7 +472,7 @@ class ApplicationInstance {
 
     private showErrorScreen(error: globalThis.Error) {
         const { shadowRoot, elementOptions } = this.options;
-        
+
         const userLocales = getBrowserLocales();
         const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
         const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
