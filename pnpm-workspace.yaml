@@ -6,9 +6,12 @@ packages:
   - src/packages/test-utils
   - src/packages/notifier
   - src/packages/react-utils
+  - src/packages/reactivity
+  - src/packages/authentication
   - src/samples/notify-sample/**
   - src/samples/chakra-sample/**
   - src/samples/i18n-sample/**
+  - src/samples/auth-sample/**
   # TODO:
   # - src/**
   - "!**/test-data/**"
