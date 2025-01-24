@@ -691,6 +691,27 @@ importers:
 
   src/samples/i18n-sample/i18n-sample-package: {}
 
+  src/samples/keycloak-sample:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.5.0(@emotion/react@11.14.0(@types/react@18.3.11)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@open-pioneer/authentication':
+        specifier: workspace:^
+        version: link:../../packages/authentication
+      '@open-pioneer/authentication-keycloak':
+        specifier: workspace:^
+        version: link:../../packages/authentication-keycloak
+      '@open-pioneer/http':
+        specifier: workspace:^
+        version: link:../../packages/http
+      '@open-pioneer/notifier':
+        specifier: workspace:^
+        version: link:../../packages/notifier
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../packages/runtime
+
   src/samples/notify-sample/notify-app:
     dependencies:
       '@chakra-ui/react':
