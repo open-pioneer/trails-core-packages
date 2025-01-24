@@ -164,7 +164,10 @@ const ToastExample = (props: { toaster: CreateToasterReturn }) => {
             onClick={() => {
                 props.toaster.create({
                     type: "loading",
-                    description: "We've created your account for you."
+                    description: "We've created your account for you.",
+                    meta: {
+                        closable: true
+                    }
                 });
             }}
         >
@@ -173,15 +176,61 @@ const ToastExample = (props: { toaster: CreateToasterReturn }) => {
     );
 };
 
+// Sketch for integration of chakra toaster.
+// It needs the getRootNode function (-> #pioneer-root) to render correctly, so it
+// cannot be created as a module-level constant.
+// Use this as a base for the notifier package.
+function useToaster() {
+    const { getRootNode } = useEnvironmentContext();
+    const toaster = useMemo(
+        () =>
+            createToaster({
+                placement: "bottom-end",
+                pauseOnPageIdle: true,
+                getRootNode
+            }),
+        [getRootNode]
+    );
+
+    const toasterUI = useMemo(
+        () => (
+            <Portal>
+                <ChakraToaster toaster={toaster} insetInline={{ mdDown: "4" }}>
+                    {(toast) => (
+                        <Toast.Root width={{ md: "sm" }}>
+                            {toast.type === "loading" ? (
+                                <Spinner size="sm" color="blue.solid" />
+                            ) : (
+                                <Toast.Indicator />
+                            )}
+                            <Stack gap="1" flex="1" maxWidth="100%">
+                                {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
+                                {toast.description && (
+                                    <Toast.Description>{toast.description}</Toast.Description>
+                                )}
+                            </Stack>
+                            {toast.action && (
+                                <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
+                            )}
+                            {toast.meta?.closable && <Toast.CloseTrigger />}
+                        </Toast.Root>
+                    )}
+                </ChakraToaster>
+            </Portal>
+        ),
+        [toaster]
+    );
+
+    return [toaster, toasterUI] as const;
+}
+
 function AlertExample() {
     return (
         <Alert.Root status={"error"}>
             <Alert.Indicator></Alert.Indicator>
             <Alert.Content>
                 <Alert.Title>Test Alert!</Alert.Title>
-                <Alert.Description>
-                                This is a test alert (error)
-                </Alert.Description>
+                <Alert.Description>This is a test alert (error)</Alert.Description>
             </Alert.Content>
         </Alert.Root>
     );
@@ -245,54 +294,6 @@ const items = [
     { value: "second-item", title: "Second Item", text: "Some value 2..." },
     { value: "third-item", title: "Third Item", text: "Some value 3..." }
 ];
-
-// Sketch for integration of chakra toaster.
-// It needs the getRootNode function (-> #pioneer-root) to render correctly, so it
-// cannot be created as a module-level constant.
-// Use this as a base for the notifier package.
-function useToaster() {
-    const { getRootNode } = useEnvironmentContext();
-    const toaster = useMemo(
-        () =>
-            createToaster({
-                placement: "bottom-end",
-                pauseOnPageIdle: true,
-                getRootNode
-            }),
-        [getRootNode]
-    );
-
-    const toasterUI = useMemo(
-        () => (
-            <Portal>
-                <ChakraToaster toaster={toaster} insetInline={{ mdDown: "4" }}>
-                    {(toast) => (
-                        <Toast.Root width={{ md: "sm" }}>
-                            {toast.type === "loading" ? (
-                                <Spinner size="sm" color="blue.solid" />
-                            ) : (
-                                <Toast.Indicator />
-                            )}
-                            <Stack gap="1" flex="1" maxWidth="100%">
-                                {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
-                                {toast.description && (
-                                    <Toast.Description>{toast.description}</Toast.Description>
-                                )}
-                            </Stack>
-                            {toast.action && (
-                                <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
-                            )}
-                            {toast.meta?.closable && <Toast.CloseTrigger />}
-                        </Toast.Root>
-                    )}
-                </ChakraToaster>
-            </Portal>
-        ),
-        [toaster]
-    );
-
-    return [toaster, toasterUI] as const;
-}
 
 function PopoverExample() {
     return (
