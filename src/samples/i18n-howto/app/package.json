@@ -1,0 +1,9 @@
+{
+    "name": "i18n-howto-app",
+    "version": "0.0.20",
+    "private": true,
+    "dependencies": {
+        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/chakra-integration": "workspace:^"
+    }
+}
