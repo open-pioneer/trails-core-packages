@@ -15,16 +15,7 @@ import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo } from "react-ico
 import { InternalNotificationAPI, ToasterObject } from "./NotificationServiceImpl";
 
 /** Props supported by the {@link Notifier} component. */
-export interface NotifierProps {
-    /**
-     * The position for new notifications.
-     *
-     * TODO: no longer supported
-     *
-     * @default "top-right"
-     */
-    position?: "top" | "top-left" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
-}
+export interface NotifierProps {}
 
 /**
  * Shows notifications sent via the `NotificationService`.

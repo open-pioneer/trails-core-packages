@@ -72,3 +72,15 @@ export interface NotificationService extends DeclaredService<"notifier.Notificat
     /** Closes all active notifications. */
     closeAll(): void;
 }
+
+/**
+ * Properties supported by this package.
+ */
+export interface NotifierProperties {
+    /**
+     * The position for new notifications.
+     *
+     * @default "top-right"
+     */
+    position?: "top" | "top-left" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
+}

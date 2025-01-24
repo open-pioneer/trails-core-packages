@@ -18,5 +18,8 @@ export default defineBuildConfig({
     },
     publishConfig: {
         strict: true
+    },
+    properties: {
+        position: "top-right"
     }
 });

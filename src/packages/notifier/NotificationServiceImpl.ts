@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createToaster, CreateToasterReturn } from "@chakra-ui/react";
+import { createToaster, CreateToasterProps, CreateToasterReturn } from "@chakra-ui/react";
 import type {
     NotificationLevel,
     NotificationOptions,
     NotificationService,
+    NotifierProperties,
     SimpleNotificationOptions
 } from "./api";
 import { Resource, createLogger } from "@open-pioneer/core";
@@ -36,10 +37,12 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 
     readonly toaster: ToasterObject;
 
-    constructor({ references: { appCtx } }: ServiceOptions<References>) {
+    constructor({ references: { appCtx }, properties }: ServiceOptions<References>) {
+        const typedProperties = properties as NotifierProperties;
+
         const rootNode = appCtx.getShadowRoot();
         this.toaster = createToaster({
-            placement: "top-end", // TODO
+            placement: getPlacement(typedProperties.position),
             pauseOnPageIdle: true,
 
             // Needed for `.getElementById()` queries
@@ -139,4 +142,22 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
     }
 }
 
-
+// Map to chakra placement
+function getPlacement(configPosition: NotifierProperties["position"] = "top-right"): CreateToasterProps["placement"] {
+    switch (configPosition) {
+        case "top":
+            return "top";
+        case "top-left":
+            return "top-start";
+        case "top-right":
+            return "top-end";
+        case "bottom":
+            return "bottom";
+        case "bottom-left":
+            return "bottom-start";
+        case "bottom-right":
+            return "bottom-end";
+        default:
+            return "top-end";
+    }
+}
