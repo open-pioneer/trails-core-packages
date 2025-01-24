@@ -69,6 +69,9 @@ catalogs:
     '@vitejs/plugin-react-swc':
       specifier: ^3.7.1
       version: 3.7.1
+    classnames:
+      specifier: ^2.3.2
+      version: 2.5.1
     eslint:
       specifier: ^8.57.1
       version: 8.57.1
@@ -330,6 +333,58 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
+  src/packages/notifier:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.5.0(@emotion/react@11.13.3(@types/react@18.3.11)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../core
+      '@open-pioneer/react-utils':
+        specifier: workspace:^
+        version: link:../react-utils
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../runtime
+      react:
+        specifier: 'catalog:'
+        version: 18.3.1
+      react-icons:
+        specifier: 'catalog:'
+        version: 5.3.0(react@18.3.1)
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
+  src/packages/react-utils:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.5.0(@emotion/react@11.13.3(@types/react@18.3.11)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../core
+      classnames:
+        specifier: 'catalog:'
+        version: 2.5.1
+      react:
+        specifier: 'catalog:'
+        version: 18.3.1
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
   src/packages/runtime:
     dependencies:
       '@formatjs/intl':
@@ -413,6 +468,21 @@ importers:
       react-icons:
         specifier: 'catalog:'
         version: 5.3.0(react@18.3.1)
+
+  src/samples/notify-sample/notify-app:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.5.0(@emotion/react@11.13.3(@types/react@18.3.11)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@open-pioneer/notifier':
+        specifier: workspace:^
+        version: link:../../../packages/notifier
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../../packages/runtime
+      react:
+        specifier: 'catalog:'
+        version: 18.3.1
 
 packages:
 
@@ -2216,6 +2286,9 @@ packages:
   ci-info@3.8.0:
     resolution: {integrity: sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==}
     engines: {node: '>=8'}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   cli-cursor@5.0.0:
     resolution: {integrity: sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw==}
@@ -6452,6 +6525,8 @@ snapshots:
       readdirp: 4.0.2
 
   ci-info@3.8.0: {}
+
+  classnames@2.5.1: {}
 
   cli-cursor@5.0.0:
     dependencies:

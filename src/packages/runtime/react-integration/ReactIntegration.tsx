@@ -60,7 +60,7 @@ export class ReactIntegration {
     render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider container={this.containerNode}>
+                <CustomChakraProvider rootNode={this.containerNode}>
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
                     </PackageContext.Provider>

@@ -1,0 +1,5 @@
+messages:
+  regionLabel: "Benachrichtigungen"
+
+  notification:
+    close: "Benachrichtigung schließen"

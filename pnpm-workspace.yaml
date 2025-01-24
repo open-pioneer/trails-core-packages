@@ -4,6 +4,9 @@ packages:
   - src/packages/core
   - src/packages/chakra-integration
   - src/packages/test-utils
+  - src/packages/notifier
+  - src/packages/react-utils
+  - src/samples/notify-sample/**
   - src/samples/chakra-sample/**
   # TODO:
   # - src/**

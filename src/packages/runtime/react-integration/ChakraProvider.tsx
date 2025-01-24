@@ -14,12 +14,12 @@ import { FC, PropsWithChildren, useRef } from "react";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
-     * Container node where styles will be mounted.
+     * Document root node used for styles etc.
      * Note that updates of this property are not supported.
      *
      * This is typically the shadow root.
      */
-    container: Node;
+    rootNode: ShadowRoot | Document;
 
     /**
      * Chakra theming object.
@@ -65,7 +65,14 @@ function redirectLightCondition(
     };
 }
 
-export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ container, children }) => {
+/**
+ * Wraps the entire react application and configures chakra-ui (styling etc.).
+ *
+ * Exported so it can be used from the test-utils package.
+ *
+ * @internal
+ */
+export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ rootNode, children }) => {
     /*
         Setup chakra integration:
 
@@ -77,10 +84,10 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ container,
 
     // TODO: Support user style / chakra config
 
-    const cache = useEmotionCache(container);
+    const cache = useEmotionCache(rootNode);
     return (
         <CacheProvider value={cache}>
-            <EnvironmentProvider value={container}>
+            <EnvironmentProvider value={rootNode}>
                 <ChakraProvider value={system}>{children}</ChakraProvider>
             </EnvironmentProvider>
         </CacheProvider>

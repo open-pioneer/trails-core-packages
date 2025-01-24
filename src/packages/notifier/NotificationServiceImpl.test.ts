@@ -7,7 +7,7 @@ import { NotificationServiceImpl, Notification } from "./NotificationServiceImpl
 it("dispatches events to the notification handler", async () => {
     const service = await createService(NotificationServiceImpl, {});
     const events: unknown[] = [];
-    const handlerResource = service.registerHandler({
+    const handlerResource = service.registerUI({
         showNotification(notification: Notification) {
             events.push({ type: "notification", notification: notification });
         },
@@ -52,7 +52,7 @@ it("dispatches events to the notification handler", async () => {
 it("dispatches events with convenience methods with object parameter", async () => {
     const service = await createService(NotificationServiceImpl, {});
     const events: unknown[] = [];
-    service.registerHandler({
+    service.registerUI({
         showNotification(notification: Notification) {
             events.push(notification);
         },
@@ -97,7 +97,7 @@ it("dispatches events with convenience methods with object parameter", async () 
 it("dispatches events with convenience methods with string parameter", async () => {
     const service = await createService(NotificationServiceImpl, {});
     const events: unknown[] = [];
-    service.registerHandler({
+    service.registerUI({
         showNotification(notification: Notification) {
             events.push(notification);
         },
@@ -146,7 +146,7 @@ it("dispatches events to a later registered notification handler", async () => {
     service.closeAll();
     service.notify({ title: "test2" });
 
-    service.registerHandler({
+    service.registerUI({
         showNotification(notification: Notification) {
             events.push({ type: "notification", notification: notification });
         },
