@@ -8,6 +8,7 @@ packages:
   - src/packages/react-utils
   - src/samples/notify-sample/**
   - src/samples/chakra-sample/**
+  - src/samples/i18n-sample/**
   # TODO:
   # - src/**
   - "!**/test-data/**"
