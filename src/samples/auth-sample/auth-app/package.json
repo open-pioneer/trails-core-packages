@@ -3,8 +3,8 @@
     "version": "0.0.10",
     "private": true,
     "dependencies": {
+        "@chakra-ui/react": "catalog:",
         "@open-pioneer/authentication": "workspace:^",
-        "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
         "react": "catalog:"

@@ -3,7 +3,7 @@
     "version": "0.0.20",
     "private": true,
     "dependencies": {
-        "@open-pioneer/chakra-integration": "workspace:^",
+        "@chakra-ui/react": "catalog:",
         "@open-pioneer/runtime": "workspace:^",
         "react-icons": "catalog:"
     }

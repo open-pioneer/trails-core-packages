@@ -17,7 +17,7 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "@open-pioneer/chakra-integration": "workspace:^"
+        "@chakra-ui/react": "catalog:"
     },
     "devDependencies": {
         "core-packages": "workspace:^"

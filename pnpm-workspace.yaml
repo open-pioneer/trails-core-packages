@@ -1,24 +1,5 @@
 packages:
-  - src/packages/runtime
-  - src/packages/runtime-react-support
-  - src/packages/core
-  - src/packages/chakra-integration
-  - src/packages/test-utils
-  - src/packages/notifier
-  - src/packages/react-utils
-  - src/packages/reactivity
-  - src/packages/authentication
-  - src/packages/base-theme
-  - src/packages/http
-  - src/packages/integration
-  - src/packages/local-storage
-  - src/samples/notify-sample/**
-  - src/samples/chakra-sample/**
-  - src/samples/i18n-sample/**
-  - src/samples/auth-sample/**
-  - src/samples/properties-sample/**
-  # TODO:
-  # - src/**
+  - src/**
   - "!**/test-data/**"
   - "!**/dist/**"
   - .
@@ -33,12 +14,11 @@ catalog:
   "@chakra-ui/react": ^3.5.0
   "@chakra-ui/cli": ^3.5.0
   "@conterra/reactivity-core": ^0.4.3
-  "@emotion/cache": ^11.13.1
-  "@emotion/react": ^11.13.3
-  "@emotion/styled": ^11.13.0
+  "@emotion/cache": ^11.14.0
+  "@emotion/react": ^11.14.0
   "@formatjs/intl": ^2.10.8
   classnames: ^2.3.2
-  framer-motion: ^11.11.9
+  framer-motion: ^12.0.5
   keycloak-js: ^25.0.2
   react-dom: *react_version
   react-json-view: ^1.21.3

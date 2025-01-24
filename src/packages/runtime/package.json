@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@formatjs/intl": "catalog:",
-        "@open-pioneer/chakra-integration": "workspace:^",
+        "@chakra-ui/react": "catalog:",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",
         "@open-pioneer/base-theme": "workspace:^",

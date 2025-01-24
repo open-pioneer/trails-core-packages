@@ -17,9 +17,9 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
+        "@chakra-ui/react": "catalog:",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/chakra-integration": "workspace:^",
         "react": "catalog:",
         "react-use": "catalog:",
         "@conterra/reactivity-core": "catalog:",
