@@ -21,12 +21,13 @@ import {
 } from "./builtin-services";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
 import { ErrorId } from "./errors";
-import { AppI18n, initI18n } from "./i18n";
+import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationMetadata, PackageMetadata } from "./metadata";
 import { ReactIntegration } from "./react-integration/ReactIntegration";
 import { ReferenceSpec } from "./service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
 import { ServiceLayer } from "./service-layer/ServiceLayer";
+import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -470,25 +471,28 @@ class ApplicationInstance {
         }
     }
 
-    private showErrorScreen(_error: globalThis.Error) {
-        // TODO
-        // const { shadowRoot, elementOptions } = this.options;
-        // const userLocales = getBrowserLocales();
-        // const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
-        // const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
-        // const container = (this.container = createContainer(locale));
-        // container.classList.add("pioneer-root-error-screen");
-        // const messages =
-        //     MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
-        //     MESSAGES_BY_LOCALE["en"];
-        // const intl = createPackageIntl(locale, messages);
-        // this.reactIntegration = ReactIntegration.createForErrorScreen({
-        //     rootNode: container,
-        //     container: shadowRoot,
-        //     theme: elementOptions.theme
-        // });
-        // this.reactIntegration.render(createElement("div", { intl, error }));
-        // shadowRoot.replaceChildren(container);
+    private showErrorScreen(error: globalThis.Error) {
+        const { shadowRoot, elementOptions } = this.options;
+        
+        const userLocales = getBrowserLocales();
+        const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
+        const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
+        const messages =
+            MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
+            MESSAGES_BY_LOCALE["en"];
+        const intl = createPackageIntl(locale, messages);
+
+        const appRoot = (this.appRoot = createAppRoot(locale));
+        appRoot.classList.add("pioneer-root-error-screen");
+        const styles = this.initStyles();
+        shadowRoot.replaceChildren(appRoot, ...styles);
+
+        this.reactIntegration = ReactIntegration.createForErrorScreen({
+            appRoot: appRoot,
+            rootNode: shadowRoot,
+            config: elementOptions.theme // todo
+        });
+        this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }
 }
 
