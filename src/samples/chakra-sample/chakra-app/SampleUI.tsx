@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {    Button,
+import {
+    Button,
     Container,
     createToaster,
     Spinner,
@@ -9,9 +10,15 @@ import {    Button,
     Heading,
     Link,
     StackSeparator,
-    Box, Toaster as ChakraToaster, CreateToasterReturn, Portal, Toast , useEnvironmentContext,
+    Box,
+    Toaster as ChakraToaster,
+    CreateToasterReturn,
+    Portal,
+    Toast,
+    useEnvironmentContext,
     useDisclosure,
-    DrawerBackdrop} from "@chakra-ui/react";
+    DrawerBackdrop
+} from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import {
     AccordionItem,
@@ -32,7 +39,15 @@ import {
 } from "./snippets/dialog";
 import { Tooltip } from "./snippets/tooltip";
 import { Alert } from "./snippets/alert";
-import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot, DrawerActionTrigger, DrawerCloseTrigger } from "./snippets/drawer";
+import {
+    DrawerBody,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerRoot,
+    DrawerActionTrigger,
+    DrawerCloseTrigger
+} from "./snippets/drawer";
 
 export function SampleUI() {
     const [toaster, toasterUI] = useToaster();
@@ -49,8 +64,6 @@ export function SampleUI() {
 
                 <AccordionDemo />
                 <Spinner />
-
-
             </Container>
         </div>
     );
@@ -67,18 +80,25 @@ function LinkComponent() {
     );
 }
 
-const ComponentStack = (props: { toaster: CreateToasterReturn }) =>{
+const ComponentStack = (props: { toaster: CreateToasterReturn }) => {
     return (
         <Stack mb={5} mt={5} separator={<StackSeparator />} gap="24px" align="stretch">
             <Box>
-                <PortalExample/>
+                <PortalExample />
             </Box>
-            
+
             <Box>
                 <TooltipExample />
             </Box>
             <Box>
-                <ToastExample toaster={props.toaster}/>
+                <TooltipExample />
+            </Box>
+            <Box>
+                <TooltipExample />
+            </Box>
+
+            <Box>
+                <ToastExample toaster={props.toaster} />
             </Box>
             <Box>
                 <AlertExample />
@@ -105,14 +125,23 @@ function PortalExample() {
             <Heading size="sm">Portal Example: </Heading>
             This is box and displayed here. Scroll/Look down to see the portal that is added at the
             end of document.body. The Portal is part of this Box.
-            <Portal>This is the portal content!</Portal>
+            <Portal>
+                <Box className={"portal-content"}>This is the portal content!</Box>
+            </Portal>
         </Box>
     );
 }
 
 function TooltipExample() {
     return (
-        <Tooltip showArrow content="Button Tooltip" aria-label="A tooltip" positioning={{placement: "top"}}>
+        <Tooltip
+            showArrow
+            content="Button Tooltip"
+            aria-label="A tooltip"
+            positioning={{ placement: "top" }}
+            lazyMount={true}
+            unmountOnExit={true}
+        >
             <Button>Button with a tooltip</Button>
         </Tooltip>
     );
@@ -159,44 +188,39 @@ function AlertExample() {
 }
 
 function DialogExample() {
-    return (<DialogRoot>
-        <DialogTrigger asChild>
-            <Button variant="outline">Open Me</Button>
-        </DialogTrigger>
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Dialog Title</DialogTitle>
-            </DialogHeader>
-            <DialogBody>
-                <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-            </DialogBody>
-            <DialogFooter>
-                <DialogActionTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                </DialogActionTrigger>
-                <Button>Save</Button>
-            </DialogFooter>
-            <DialogCloseTrigger />
-        </DialogContent>
-    </DialogRoot>);
+    return (
+        <DialogRoot>
+            <DialogTrigger asChild>
+                <Button variant="outline">Open Me</Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Dialog Title</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                </DialogBody>
+                <DialogFooter>
+                    <DialogActionTrigger asChild>
+                        <Button variant="outline">Cancel</Button>
+                    </DialogActionTrigger>
+                    <Button>Save</Button>
+                </DialogFooter>
+                <DialogCloseTrigger />
+            </DialogContent>
+        </DialogRoot>
+    );
 }
 
 function DrawerExample() {
     const { open, onOpen, onClose } = useDisclosure();
     return (
         <>
-            <Button onClick={onOpen}>
-                Open Drawer
-            </Button>
-            <DrawerRoot
-                open={open}
-                placement="start"
-                onOpenChange={onClose}
-                size={"sm"}
-            >
+            <Button onClick={onOpen}>Open Drawer</Button>
+            <DrawerRoot open={open} placement="start" onOpenChange={onClose} size={"sm"}>
                 <DrawerBackdrop></DrawerBackdrop>
                 <DrawerContent>
                     <DrawerHeader>This is the drawer header</DrawerHeader>
@@ -208,7 +232,7 @@ function DrawerExample() {
                             <Button variant="outline">Cancel</Button>
                         </DrawerActionTrigger>
                         <Button>Save</Button>
-                    </DrawerFooter>        
+                    </DrawerFooter>
                     <DrawerCloseTrigger />
                 </DrawerContent>
             </DrawerRoot>
