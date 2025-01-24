@@ -24,7 +24,6 @@ interface LoginMaskProps {
 export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
     const [showLoggedOutMessage, setShowLoggedOutMessage] = useState(wasLoggedIn);
     const onSubmit = (e: Pick<Event, "preventDefault">) => {
