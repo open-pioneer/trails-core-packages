@@ -1,5 +1,0 @@
-{
-    // core-packages is a dev dependency (link to the project root)
-    "extends": ["core-packages/typedoc.base.json"],
-    "entryPoints": ["./index.ts"]
-}
