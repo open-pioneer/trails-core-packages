@@ -4,7 +4,7 @@
     "private": true,
     "main": "index",
     "dependencies": {
-        "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/chakra-integration": "workspace:^"
+        "@chakra-ui/react": "catalog:",
+        "@open-pioneer/runtime": "workspace:^"
     }
 }
