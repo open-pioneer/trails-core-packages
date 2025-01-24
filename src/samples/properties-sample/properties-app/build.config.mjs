@@ -3,15 +3,11 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
-    services: {
-        NotifierImpl: {
-            provides: ["properties-app.Notifier"]
-        }
-    },
+    i18n: ["en", "de"],
     properties: {
         notifierLevel: "INFO"
     },
     ui: {
-        references: ["properties-app.Notifier"]
+        references: ["notifier.NotificationService"]
     }
 });

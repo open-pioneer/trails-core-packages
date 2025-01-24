@@ -382,6 +382,54 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
+  src/packages/http:
+    dependencies:
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../core
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../runtime
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
+  src/packages/integration:
+    dependencies:
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../runtime
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
+  src/packages/local-storage:
+    dependencies:
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../core
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../runtime
+    devDependencies:
+      '@open-pioneer/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
+      core-packages:
+        specifier: workspace:^
+        version: link:../../..
+    publishDirectory: dist
+
   src/packages/notifier:
     dependencies:
       '@chakra-ui/react':
@@ -575,6 +623,24 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.5.0(@emotion/react@11.13.3(@types/react@18.3.11)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@open-pioneer/notifier':
+        specifier: workspace:^
+        version: link:../../../packages/notifier
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../../packages/runtime
+      react:
+        specifier: 'catalog:'
+        version: 18.3.1
+
+  src/samples/properties-sample/properties-app:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.5.0(@emotion/react@11.13.3(@types/react@18.3.11)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../../../packages/core
       '@open-pioneer/notifier':
         specifier: workspace:^
         version: link:../../../packages/notifier

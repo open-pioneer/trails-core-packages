@@ -52,7 +52,7 @@ export function AppUI() {
 
     return (
         <>
-            <Notifier position="top-right" />
+            <Notifier />
             <Container maxWidth="xl" p={5}>
                 <Stack gap={8}>
                     <Stack align="center">

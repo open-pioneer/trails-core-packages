@@ -9,10 +9,14 @@ packages:
   - src/packages/reactivity
   - src/packages/authentication
   - src/packages/base-theme
+  - src/packages/http
+  - src/packages/integration
+  - src/packages/local-storage
   - src/samples/notify-sample/**
   - src/samples/chakra-sample/**
   - src/samples/i18n-sample/**
   - src/samples/auth-sample/**
+  - src/samples/properties-sample/**
   # TODO:
   # - src/**
   - "!**/test-data/**"
