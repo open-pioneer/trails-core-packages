@@ -73,7 +73,6 @@ export function SampleUI() {
                 <TableExampleComponent />
                 <SelectComponent />
                 <AccordionDemo />
-                <Spinner mt={4} />
             </Container>
 
             {toasterUI}
