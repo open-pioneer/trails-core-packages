@@ -17,7 +17,8 @@ import {
     Toast,
     useEnvironmentContext,
     useDisclosure,
-    DrawerBackdrop
+    DrawerBackdrop,
+    Alert
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import {
@@ -38,7 +39,6 @@ import {
     DialogTrigger
 } from "./snippets/dialog";
 import { Tooltip } from "./snippets/tooltip";
-import { Alert } from "./snippets/alert";
 import {
     DrawerBody,
     DrawerContent,
@@ -175,9 +175,15 @@ const ToastExample = (props: { toaster: CreateToasterReturn }) => {
 
 function AlertExample() {
     return (
-        <Alert status="error" title={"Test Alert!"}>
-            This is a test alert (error)
-        </Alert>
+        <Alert.Root status={"error"}>
+            <Alert.Indicator></Alert.Indicator>
+            <Alert.Content>
+                <Alert.Title>Test Alert!</Alert.Title>
+                <Alert.Description>
+                                This is a test alert (error)
+                </Alert.Description>
+            </Alert.Content>
+        </Alert.Root>
     );
 }
 

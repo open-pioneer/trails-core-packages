@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
     Alert,
-    AlertIndicator,
     Button,
     Container,
     Heading,
@@ -46,7 +45,7 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                 </Text>
                 {errorMessage && (
                     <Alert.Root status="error">
-                        <AlertIndicator></AlertIndicator>
+                        <Alert.Indicator></Alert.Indicator>
                         <Alert.Content>
                             <Alert.Title>{errorMessage}</Alert.Title>
                         </Alert.Content>
@@ -56,7 +55,7 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                     <Alert.Root status="info" mb={5}>
 
                         
-                        <AlertIndicator></AlertIndicator>
+                        <Alert.Indicator></Alert.Indicator>
                         <Alert.Content>
                             <Alert.Description>
                                 Logout successful.
