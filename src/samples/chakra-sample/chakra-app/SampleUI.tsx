@@ -48,6 +48,19 @@ import {
     DrawerActionTrigger,
     DrawerCloseTrigger
 } from "./snippets/drawer";
+import {
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseTrigger,
+    PopoverContent,
+    PopoverFooter,
+    PopoverHeader,
+    PopoverRoot,
+    PopoverTrigger
+} from "./snippets/popover";
+import { Radio, RadioGroup } from "./snippets/radio";
+import { TableExampleComponent } from "./TableExample";
+import { SelectComponent } from "./SelectExample";
 
 export function SampleUI() {
     const [toaster, toasterUI] = useToaster();
@@ -57,14 +70,13 @@ export function SampleUI() {
                 <Heading mb={5}>chakra technical demo</Heading>
                 <LinkComponent></LinkComponent>
                 <ComponentStack toaster={toaster}></ComponentStack>
-                {toasterUI}
-                <Button onClick={(e) => console.log("Button clicked", e)}>Click me</Button>
-
-                <Text>I am Text</Text>
-
+                <TableExampleComponent />
+                <SelectComponent />
                 <AccordionDemo />
-                <Spinner />
+                <Spinner mt={4} />
             </Container>
+
+            {toasterUI}
         </div>
     );
 }
@@ -109,12 +121,12 @@ const ComponentStack = (props: { toaster: CreateToasterReturn }) => {
             <Box>
                 <DrawerExample />
             </Box>
-            {/*<Box>
+            <Box>
                 <PopoverExample />
             </Box>
             <Box>
                 <RadioGroupExample />
-            </Box> */}
+            </Box>
         </Stack>
     );
 };
@@ -146,23 +158,6 @@ function TooltipExample() {
         </Tooltip>
     );
 }
-
-const AccordionDemo = () => {
-    const [value, setValue] = useState(["second-item"]);
-    return (
-        <Stack gap="4">
-            <Text fontWeight="medium">Expanded: {value.join(", ")}</Text>
-            <AccordionRoot value={value} onValueChange={(e) => setValue(e.value)}>
-                {items.map((item, index) => (
-                    <AccordionItem key={index} value={item.value}>
-                        <AccordionItemTrigger>{item.title}</AccordionItemTrigger>
-                        <AccordionItemContent>{item.text}</AccordionItemContent>
-                    </AccordionItem>
-                ))}
-            </AccordionRoot>
-        </Stack>
-    );
-};
 
 const ToastExample = (props: { toaster: CreateToasterReturn }) => {
     return (
@@ -293,3 +288,84 @@ function useToaster() {
 
     return [toaster, toasterUI] as const;
 }
+
+function PopoverExample() {
+    return (
+        <>
+            <PopoverRoot>
+                <PopoverTrigger asChild>
+                    <Button>Show Popover</Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverHeader>Popover!</PopoverHeader>
+                    <PopoverBody>This is a very important Popover</PopoverBody>
+                    <PopoverCloseTrigger />
+                </PopoverContent>
+            </PopoverRoot>
+
+            <PopoverRoot>
+                <PopoverTrigger asChild>
+                    <Button ml={5}>Show Popover rendered in an portal</Button>
+                </PopoverTrigger>
+                <Portal>
+                    <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverHeader>Header</PopoverHeader>
+                        <PopoverCloseTrigger />
+                        <PopoverBody>
+                            <PopoverBody>This is a very important Popover</PopoverBody>
+                        </PopoverBody>
+                        <PopoverFooter>This is the footer</PopoverFooter>
+                    </PopoverContent>
+                </Portal>
+            </PopoverRoot>
+        </>
+    );
+}
+
+function RadioGroupExample() {
+    const [value, setValue] = useState("2");
+    return (
+        <>
+            <RadioGroup onValueChange={(e) => setValue(e.value)} value={value} size="md">
+                <Stack gap={4} direction="row">
+                    <Radio value="1" disabled>
+                        Radio 1 (Disabled)
+                    </Radio>
+                    <Radio value="2">Radio 2</Radio>
+                    <Radio value="3">Radio 3</Radio>
+                </Stack>
+            </RadioGroup>
+            <Text pt={1} fontStyle={"italic"}>
+                {"Checked radio: " + value}
+            </Text>
+
+            <RadioGroup size="sm" mt={4}>
+                <Stack gap={4} direction="row">
+                    <Radio value="1" disabled>
+                        Small Radio 1 (Disabled)
+                    </Radio>
+                    <Radio value="2">Small Radio 2</Radio>
+                </Stack>
+            </RadioGroup>
+        </>
+    );
+}
+
+const AccordionDemo = () => {
+    const [value, setValue] = useState(["second-item"]);
+    return (
+        <Stack gap="4" p={2} mb={4} border={"solid"}>
+            <AccordionRoot value={value} onValueChange={(e) => setValue(e.value)}>
+                {items.map((item, index) => (
+                    <AccordionItem key={index} value={item.value}>
+                        <AccordionItemTrigger>{item.title}</AccordionItemTrigger>
+                        <AccordionItemContent>{item.text}</AccordionItemContent>
+                    </AccordionItem>
+                ))}
+            </AccordionRoot>
+            <Text fontStyle={"italic"}>Expanded item: {value.join(", ")}</Text>
+        </Stack>
+    );
+};

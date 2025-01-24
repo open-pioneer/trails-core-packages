@@ -11,3 +11,5 @@
     unmountOnExit={true}
     ```
     // TODO: provide a custom snippet for the Tooltip component
+- Checkbox / Radios: Cursor does not change to pointer on hover. 
+    // TODO: check why this is the default behaviour (in Chakra)
