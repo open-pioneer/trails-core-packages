@@ -29,7 +29,7 @@ interface References {
 }
 
 // 7 days
-const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000; 
+const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
 
 export class NotificationServiceImpl implements InternalNotificationAPI {
     #uiPresent = false;
@@ -46,7 +46,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
             pauseOnPageIdle: true,
 
             // Needed for `.getElementById()` queries
-            getRootNode: () => rootNode,
+            getRootNode: () => rootNode
         });
 
         if (import.meta.env.DEV) {
@@ -72,7 +72,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
             // so we just use a very long timeout instead.
             // Note: MAX_VALUE or Infinity does not work either (probably too big for some computations made internally).
             duration: options.displayDuration ?? PERSISTENT_TIMEOUT,
-            
+
             // Additional data for the toast (can be arbitrary)
             meta: {
                 closable: true
@@ -117,7 +117,6 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
             return undefined;
         }
 
-        
         this.#uiPresent = true;
         let destroyed = false;
         return {
@@ -143,7 +142,9 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 }
 
 // Map to chakra placement
-function getPlacement(configPosition: NotifierProperties["position"] = "top-right"): CreateToasterProps["placement"] {
+function getPlacement(
+    configPosition: NotifierProperties["position"] = "top-right"
+): CreateToasterProps["placement"] {
     switch (configPosition) {
         case "top":
             return "top";

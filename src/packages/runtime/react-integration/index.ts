@@ -9,7 +9,4 @@ export {
 } from "./hooks";
 
 // test support
-export {
-    CustomChakraProvider,
-    type CustomChakraProviderProps
-} from "./ChakraProvider";
+export { CustomChakraProvider, type CustomChakraProviderProps } from "./ChakraProvider";

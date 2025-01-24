@@ -1,15 +1,6 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    Alert,
-    Button,
-    Container,
-    Heading,
-    HStack,
-    Input,
-    Text,
-    VStack
-} from "@chakra-ui/react";
+import { Alert, Button, Container, Heading, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { Field } from "../snippets/field";
 import { PasswordInput } from "../snippets/password-input";
@@ -53,8 +44,6 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                 )}
                 {showLoggedOutMessage && (
                     <Alert.Root status="info" mb={5}>
-
-                        
                         <Alert.Indicator></Alert.Indicator>
                         <Alert.Content>
                             <Alert.Description>

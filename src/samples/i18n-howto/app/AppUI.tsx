@@ -1,14 +1,6 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    Container,
-    Stack,
-    Text,
-    Heading,
-    StackSeparator,
-    Box,
-    Input,
-} from "@chakra-ui/react";
+import { Container, Stack, Text, Heading, StackSeparator, Box, Input } from "@chakra-ui/react";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useState } from "react";
 import { Radio, RadioGroup } from "./snippets/radio";
@@ -86,18 +78,10 @@ function PluralsExample() {
             </Heading>
             <RadioGroup onValueChange={(e) => setValue(e.value)} value={value}>
                 <Stack gap={4} direction="row">
-                    <Radio value="0">
-                        0
-                    </Radio>
-                    <Radio value="1">
-                        1
-                    </Radio>
-                    <Radio value="42">
-                        42
-                    </Radio>
-                    <Radio value="99">
-                        99
-                    </Radio>
+                    <Radio value="0">0</Radio>
+                    <Radio value="1">1</Radio>
+                    <Radio value="42">42</Radio>
+                    <Radio value="99">99</Radio>
                 </Stack>
             </RadioGroup>
             <Text mb="8px">{intl.formatMessage({ id: "plurals.value" }, { n: value })}</Text>
@@ -150,10 +134,16 @@ function NumberFormatExample() {
                 {intl.formatMessage({ id: "numberformat.heading" })}
             </Heading>
             <NumberInputRoot
-                onValueChange={(valueChangeDetails) => {setValue(valueChangeDetails.value);}}
+                onValueChange={(valueChangeDetails) => {
+                    setValue(valueChangeDetails.value);
+                }}
                 value={value}
                 step={0.25}
-                formatOptions={{minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false}}
+                formatOptions={{
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    useGrouping: false
+                }}
             >
                 <NumberInputField />
             </NumberInputRoot>
