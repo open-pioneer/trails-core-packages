@@ -6,11 +6,14 @@ import {
     defaultConfig,
     defineConfig,
     EnvironmentProvider,
+    mergeConfigs,
+    SystemConfig,
     SystemStyleObject
 } from "@chakra-ui/react";
 import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { FC, PropsWithChildren, useRef } from "react";
+import { FC, PropsWithChildren, useMemo, useRef } from "react";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
@@ -22,23 +25,12 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     rootNode: ShadowRoot | Document;
 
     /**
-     * Chakra theming object.
+     * Chakra system config (can be used to provide custom theme).
      */
-    theme?: Record<string, unknown>;
+    config?: SystemConfig;
 }>;
 
 const appRoot = ".pioneer-root";
-const system = createSystem(
-    defaultConfig,
-    defineConfig({
-        preflight: {
-            scope: appRoot
-        },
-        cssVarsRoot: appRoot,
-        conditions: redirectLightCondition(defaultConfig.conditions),
-        globalCss: redirectHtmlProps(defaultConfig.globalCss)
-    })
-);
 
 function redirectHtmlProps(
     css: Record<string, SystemStyleObject> | undefined
@@ -71,8 +63,11 @@ function redirectLightCondition(
  * Exported so it can be used from the test-utils package.
  *
  * @internal
- */
-export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ rootNode, children }) => {
+ */ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
+    rootNode,
+    children,
+    config = defaultTrailsConfig
+}) => {
     /*
         Setup chakra integration:
 
@@ -82,7 +77,20 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({ rootNode, 
         4. Render the rest of the application
     */
 
-    // TODO: Support user style / chakra config
+    const system = useMemo(() => {
+        const mergedConfig = mergeConfigs(defaultConfig, config);
+        return createSystem(
+            mergedConfig,
+            defineConfig({
+                preflight: {
+                    scope: appRoot
+                },
+                cssVarsRoot: appRoot,
+                conditions: redirectLightCondition(mergedConfig.conditions),
+                globalCss: redirectHtmlProps(mergedConfig.globalCss)
+            })
+        );
+    }, [config]);
 
     const cache = useEmotionCache(rootNode);
     return (

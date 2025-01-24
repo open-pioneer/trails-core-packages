@@ -6,6 +6,7 @@ packages:
   - src/packages/test-utils
   - src/packages/notifier
   - src/packages/react-utils
+  - src/packages/base-theme
   - src/samples/notify-sample/**
   - src/samples/chakra-sample/**
   - src/samples/i18n-sample/**
