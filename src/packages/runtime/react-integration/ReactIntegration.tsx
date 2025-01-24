@@ -14,14 +14,16 @@ import { CustomChakraProvider } from "./ChakraProvider";
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
-    rootNode: HTMLDivElement;
-    container: Node;
-    theme: Record<string, unknown> | undefined;
+    appRoot: HTMLDivElement;
+    rootNode: Document | ShadowRoot;
+    config: Record<string, unknown> | undefined;
 }
 
+// todo fix tests
+
 export class ReactIntegration {
-    private containerNode: Node;
-    private theme: Record<string, unknown> | undefined;
+    private rootNode: Document | ShadowRoot;
+    private config: Record<string, unknown> | undefined;
     private root: Root;
     private packageContext: PackageContextMethods;
 
@@ -51,16 +53,16 @@ export class ReactIntegration {
             packageContext: PackageContextMethods;
         }
     ) {
-        this.containerNode = options.container;
-        this.theme = options.theme;
-        this.root = createRoot(options.rootNode);
+        this.rootNode = options.rootNode;
+        this.config = options.config;
+        this.root = createRoot(options.appRoot);
         this.packageContext = options.packageContext;
     }
 
     render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider rootNode={this.containerNode}>
+                <CustomChakraProvider rootNode={this.rootNode} config={this.config}>
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
                     </PackageContext.Provider>

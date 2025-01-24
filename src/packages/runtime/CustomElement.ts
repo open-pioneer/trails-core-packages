@@ -273,7 +273,7 @@ class ApplicationInstance {
     private api: ApiMethods | undefined; // Present once started
 
     private state: ApplicationState = "not-started";
-    private container: HTMLDivElement | undefined;
+    private appRoot: HTMLDivElement | undefined;
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
@@ -321,7 +321,7 @@ class ApplicationInstance {
         this.apiPromise?.reject(createAbortError());
         this.reactIntegration = destroyResource(this.reactIntegration);
         this.options.shadowRoot.replaceChildren();
-        this.container = undefined;
+        this.appRoot = undefined;
         this.lifecycleEvents = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
@@ -349,13 +349,13 @@ class ApplicationInstance {
         this.checkAbort();
 
         // Setup application root node in the shadow dom
-        const container = (this.container = createContainer(i18n.locale));
+        const appRoot = (this.appRoot = createAppRoot(i18n.locale));
         const styles = this.initStyles();
-        shadowRoot.replaceChildren(container, ...styles);
+        shadowRoot.replaceChildren(appRoot, ...styles);
 
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
-            container,
+            container: appRoot,
             properties: config.properties,
             i18n
         });
@@ -369,9 +369,9 @@ class ApplicationInstance {
 
         // Launch react
         this.reactIntegration = ReactIntegration.createForApp({
-            rootNode: container,
-            container: shadowRoot,
-            theme: elementOptions.theme,
+            appRoot: appRoot,
+            rootNode: shadowRoot,
+            config: elementOptions.theme, // todo
             serviceLayer,
             packages
         });
@@ -473,14 +473,11 @@ class ApplicationInstance {
     private showErrorScreen(_error: globalThis.Error) {
         // TODO
         // const { shadowRoot, elementOptions } = this.options;
-
         // const userLocales = getBrowserLocales();
         // const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
         // const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
-
         // const container = (this.container = createContainer(locale));
         // container.classList.add("pioneer-root-error-screen");
-
         // const messages =
         //     MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
         //     MESSAGES_BY_LOCALE["en"];
@@ -491,12 +488,11 @@ class ApplicationInstance {
         //     theme: elementOptions.theme
         // });
         // this.reactIntegration.render(createElement("div", { intl, error }));
-
         // shadowRoot.replaceChildren(container);
     }
 }
 
-function createContainer(locale: string) {
+function createAppRoot(locale: string) {
     // Setup application root node in the shadow dom
     const container = document.createElement("div");
     container.classList.add("pioneer-root");

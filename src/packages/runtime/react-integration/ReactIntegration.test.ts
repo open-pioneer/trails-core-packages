@@ -372,8 +372,8 @@ it("should apply the configured chakra theme", async () => {
 describe("integration for error screen ", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
+            appRoot: document.createElement("div"),
             rootNode: document.createElement("div"),
-            container: document.createElement("div"),
             theme: undefined
         });
 
@@ -384,8 +384,8 @@ describe("integration for error screen ", function () {
         errorSpy.mockImplementation(doNothing);
 
         const integration = ReactIntegration.createForErrorScreen({
+            appRoot: document.createElement("div"),
             rootNode: document.createElement("div"),
-            container: document.createElement("div"),
             theme: undefined
         });
 
@@ -454,8 +454,8 @@ function createIntegration(options?: {
     serviceLayer.start();
 
     const integration = ReactIntegration.createForApp({
-        container: wrapper,
         rootNode: wrapper,
+        appRoot: wrapper,
         theme: options?.theme,
         packages,
         serviceLayer

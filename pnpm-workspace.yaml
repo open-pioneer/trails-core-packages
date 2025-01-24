@@ -8,6 +8,7 @@ packages:
   - src/packages/react-utils
   - src/packages/reactivity
   - src/packages/authentication
+  - src/packages/base-theme
   - src/samples/notify-sample/**
   - src/samples/chakra-sample/**
   - src/samples/i18n-sample/**
