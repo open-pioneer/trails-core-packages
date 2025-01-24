@@ -5,78 +5,59 @@ exports[`should successfully create an error screen component 1`] = `
   data-testid="error-screen"
 >
   <div
-    class="css-er2cov"
-    data-theme="light"
+    class="chakra-stack css-1p2n6g8"
   >
-    <div
-      class="chakra-stack css-1thqo0p"
-      data-theme="light"
+    <h2
+      class="chakra-heading css-eprwor"
     >
-      <h2
-        class="chakra-heading css-18j379d"
-        data-theme="light"
+      Application start failed
+    </h2>
+    <div
+      class="chakra-alert__root css-hvgib6"
+    >
+      <span
+        class="css-1ffmir3"
       >
-        Application start failed
-      </h2>
-      <div
-        class="chakra-alert css-1v22m0m"
-        data-status="error"
-        data-theme="light"
-        role="alert"
-      >
-        <span
-          class="chakra-alert__icon css-14ogjxt"
-          data-status="error"
-          data-theme="light"
+        <svg
+          class="css-126y6n1"
+          viewBox="0 0 24 24"
         >
-          <svg
-            class="chakra-icon css-qk6lof"
-            data-theme="light"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span>
+          <path
+            d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"
+          />
+        </svg>
+      </span>
+      <div
+        class="chakra-alert__content css-xlayl9"
+      >
         <div
-          class="chakra-alert__title css-tidvy5"
-          data-status="error"
-          data-theme="light"
+          class="chakra-alert__title css-3zgsx2"
         >
           Error
         </div>
         <div
-          class="chakra-alert__desc css-zzks76"
-          data-status="error"
-          data-theme="light"
+          class="chakra-alert__description css-t6kp1r"
         >
           Unfortunately an error occurred during application start.
         </div>
       </div>
+    </div>
+    <div
+      class="error-details css-8aw61z"
+    >
+      <p
+        class="css-19qpkh7"
+      >
+        Error details:
+      </p>
       <div
-        class="error-details css-12gngag"
-        data-theme="light"
+        class="error-screen-stack-trace css-1wo0eqd"
       >
         <p
-          class="chakra-text css-1pf3nin"
-          data-theme="light"
+          class="css-1msjh1x"
         >
-          Error details:
+          Error: test
         </p>
-        <div
-          class="error-screen-stack-trace css-1syq16t"
-          data-theme="light"
-        >
-          <p
-            class="chakra-text css-1msjh1x"
-            data-theme="light"
-          >
-            Error: test
-          </p>
-        </div>
       </div>
     </div>
   </div>
@@ -85,18 +66,15 @@ exports[`should successfully create an error screen component 1`] = `
 
 exports[`should successfully create an error screen component with a stack trace 1`] = `
 <div
-  class="error-screen-stack-trace css-1syq16t"
-  data-theme="light"
+  class="error-screen-stack-trace css-1wo0eqd"
 >
   <p
-    class="chakra-text css-1msjh1x"
-    data-theme="light"
+    class="css-1msjh1x"
   >
     Error: test
   </p>
   <div
-    class="css-1xl4qo1"
-    data-theme="light"
+    class="css-dfugtl"
   >
     test stack trace
   </div>
