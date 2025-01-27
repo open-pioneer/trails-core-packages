@@ -19,6 +19,8 @@
     "dependencies": {
         "@formatjs/intl": "catalog:",
         "@chakra-ui/react": "catalog:",
+        "@emotion/cache": "catalog:",
+        "@emotion/react": "catalog:",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",
         "@open-pioneer/base-theme": "workspace:^",
