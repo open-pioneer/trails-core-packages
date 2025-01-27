@@ -9,7 +9,7 @@ import { NumberInputField, NumberInputRoot } from "./snippets/number-input";
 export function AppUI() {
     const intl = useIntl();
     return (
-        <Container>
+        <Container maxWidth="xl">
             <Heading as="h1" size="lg">
                 {intl.formatMessage({ id: "heading" })}
             </Heading>
