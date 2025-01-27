@@ -783,6 +783,18 @@ importers:
 
   src/samples/styling-sample/styling-sample-components: {}
 
+  src/samples/theming-sample/theming-app:
+    dependencies:
+      '@open-pioneer/chakra-integration':
+        specifier: workspace:^
+        version: link:../../../packages/chakra-integration
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../../packages/runtime
+      react-icons:
+        specifier: ^5.4.0
+        version: 5.4.0(react@18.3.1)
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -4066,6 +4078,11 @@ packages:
 
   react-icons@5.3.0:
     resolution: {integrity: sha512-DnUk8aFbTyQPSkCfF8dbX6kQjXA9DktMeJqfjrg6cK9vwQVMxmcA3BfP4QoiztVmEHtwlTgLFsPuH2NskKT6eg==}
+    peerDependencies:
+      react: '*'
+
+  react-icons@5.4.0:
+    resolution: {integrity: sha512-7eltJxgVt7X64oHh6wSWNwwbKTCtMfK35hcjvJS0yxEAhPM8oUKdS3+kqaW1vicIltw+kR2unHaa12S9pPALoQ==}
     peerDependencies:
       react: '*'
 
@@ -8689,6 +8706,10 @@ snapshots:
       scheduler: 0.23.2
 
   react-icons@5.3.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
+  react-icons@5.4.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 

@@ -25,7 +25,7 @@ const sampleSites = [
     "samples/properties-sample",
     "samples/styling-sample",
     "samples/notify-sample",
-    // "samples/theming-sample",
+    "samples/theming-sample",
     "samples/auth-sample",
     "samples/keycloak-sample",
     "samples/error-sample"
