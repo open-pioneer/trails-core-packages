@@ -25,25 +25,45 @@ export const colorPalette = {
 };
 
 const semanticTokens = {
-    // todo additional tokens
     colors: {
-        "background_body": "white",
-        "background_primary": "trails.500",
-        "background_light": "trails.50",
-        //"background_secondary": "trails.700",
-        "placeholder": "gray.500",
-        "font_primary": "black",
-        //"font_secondary": "gray.500",
-        "font_inverse": "white",
-        "font_link": "trails.600",
-        "border": "gray.300",
+        trails: {
+            solid: { value: "{colors.trails.500}" },
+            contrast: { value: "{colors.trails.100}" },
+            fg: { value: "{colors.trails.700}" },
+            muted: { value: "{colors.trails.100}" },
+            subtle: { value: "{colors.trails.200}" },
+            emphasized: { value: "{colors.trails.300}" },
+            focusRing: { value: "{colors.trails.500}" }
+        },
+        background_body: { value: "{colors.white}" },
+        background_primary: { value: "{colors.trails.500}" },
+        background_light: { value: "{colors.trails.50}" },
+        //background_secondary: { value: "{colors.trails.70}0"},
+        placeholder: { value: "{colors.gray.500}" },
+        font_primary: { value: "{colors.black}" },
+        //font_secondary: { value: "{colors.gray.50}0"},
+        font_inverse: { value: "{colors.white}" },
+        font_link: { value: "{colors.trails.600}" },
+        border: { value: "{colors.gray.300}" },
 
         //override internal chakra theming variables
-        //https://github.com/chakra-ui/chakra-ui/blob/main/packages/components/theme/src/semantic-tokens.ts
-        "chakra-body-text": "font_primary",
+        //https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/semantic-tokens/colors.ts
+        // examples:
+        fg: {
+            DEFAULT: {
+                value: "{colors.font_primary}"
+            }
+        },
+        bg: {
+            DEFAULT: {
+                value: "{colors.background_body}"
+            }
+        }
+
+        /*  "chakra-body-text": "font_primary",
         "chakra-body-bg": "background_body",
-        "chakra-border-color": "border",
-        "chakra-placeholder-color": "placeholder"
+        "chakra-border-color": "border", // todo?
+        "chakra-placeholder-color": "placeholder" // todo? */
         //"chakra-inverse-text": "font_inverse",
         //"chakra-subtle-bg": "background_secondary",
         //"chakra-subtle-text": "font_secondary"
@@ -268,39 +288,10 @@ const old_theme = {
 export const config = defineConfig({
     globalCss: { html: { colorPalette: "trails" } },
     theme: {
-        /*tokens: {
-        colors: {
-            gray: {
-                50: "#eaf2f5",
-                100: "#d5e5ec",
-                200: "#abcbd9",
-                300: "#81b1c5",
-                400: "#5797b2",
-                500: "#2d7d9f",
-                600: "#24647f",
-                700: "#29a7dc",
-                800: "#8ce828",
-                900: "#e71919",
-                950: "#8ce828"
-            } as any // eslint-disable-line @typescript-eslint/no-explicit-any
-        }
-    }*/
         tokens: {
             // todo typescript
             colors: colorPalette as any // eslint-disable-line @typescript-eslint/no-explicit-any
         },
-        semanticTokens: {
-            colors: {
-                trails: {
-                    solid: { value: "{colors.trails.500}" },
-                    contrast: { value: "{colors.trails.100}" },
-                    fg: { value: "{colors.trails.700}" },
-                    muted: { value: "{colors.trails.100}" },
-                    subtle: { value: "{colors.trails.200}" },
-                    emphasized: { value: "{colors.trails.300}" },
-                    focusRing: { value: "{colors.trails.500}" }
-                }
-            }
-        }
+        semanticTokens: semanticTokens
     }
 });
