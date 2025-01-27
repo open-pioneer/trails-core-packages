@@ -1,12 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { defineConfig } from "@chakra-ui/react";
-const fonts = {
-    /* heading: "Tahoma",
-    body: "Courier New" */
-};
 
-//10 colors as hex values from 50 to 900 (light to dark)
+//11 colors as hex values from 50 to 950 (light to dark)
 export const colorPalette = {
     //trails = default color scheme
     trails: {
@@ -60,78 +56,19 @@ const semanticTokens = {
             }
         }
 
-        /*  "chakra-body-text": "font_primary",
-        "chakra-body-bg": "background_body",
+        /*
         "chakra-border-color": "border", // todo?
         "chakra-placeholder-color": "placeholder" // todo? */
-        //"chakra-inverse-text": "font_inverse",
-        //"chakra-subtle-bg": "background_secondary",
-        //"chakra-subtle-text": "font_secondary"
     }
 };
 
-//Get the color defined by a semantic token.
-//If it points to a color (e.g. red.500), get the hex color value out of the color scheme.
-//Overrides: "boxShadow" and "outline"
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getColor = (semanticToken: string, theme: any) => {
-    const color = theme.semanticTokens.colors[semanticToken];
-    if (color && color.includes(".")) {
-        const kvp = color.split(".");
-        const key = kvp[0],
-            value = kvp[1];
-        return theme.colors[key][value];
-    }
-    return color;
-};
-
-/**
- * Base theme for Open Pioneer Trails applications.
- *
- * All custom themes should extend this theme:
- *
- * ```ts
- * import { extendTheme } from "@open-pioneer/chakra-integration";
- * import { theme as baseTheme } from "@open-pioneer/base-theme";
- *
- * export const theme = extendTheme({
- *     // Your overrides
- * }, baseTheme);
- * ```
- */
-// todo transfer old props: https://www.chakra-ui.com/docs/theming/overview#theme
-const old_theme = {
-    tokens: {
-        colors: colorPalette
-    },
-    semanticTokens: semanticTokens,
-    fonts: fonts,
+// todo transfer old props:
+//  components to recipes -> recipes for components are linked at the top of the docu page of each component
+/*const old_theme = {
     components: {
-        Button: {
-            defaultProps: {
-                //colorScheme: "gray"
-                //size: "md", //"lg" | "md" | "sm" | "xs"
-                //variant: "solid" //"primary" | "secondary" | "cancel" | "solid" | "outline" | "ghost" | "link"
-            }
-        },
-        Checkbox: {
-            defaultProps: {
-                //colorScheme: "blue"
-                //size: "md" //"lg" | "md" | "sm"
-            }
-        },
-        Divider: {
-            baseStyle: {
-                borderColor: "background_primary"
-            }
-        },
         Input: {
-            defaultProps: {
-                //size: "md" //"lg" | "md" | "sm" | "xs"
-                //variant: "outline" //"outline" | "filled" | "flushed" | "unstyled"
-            },
             variants: {
-                /* outline({ theme }) {
+                outline({ theme }) {
                     return {
                         field: {
                             borderColor: "border",
@@ -145,7 +82,7 @@ const old_theme = {
                             bg: "background_primary"
                         }
                     };
-                }, todo*/
+                },
                 filled: {
                     field: {
                         _focusVisible: {
@@ -155,7 +92,7 @@ const old_theme = {
                     addon: {
                         bg: "background_primary"
                     }
-                } /*,
+                },
                 flushed({ theme }) {
                     return {
                         field: {
@@ -168,7 +105,7 @@ const old_theme = {
                             }
                         }
                     };
-                }todo */
+                }
             }
         },
         Link: {
@@ -176,17 +113,7 @@ const old_theme = {
                 color: "font_link"
             }
         },
-        Radio: {
-            defaultProps: {
-                //colorScheme: "blue",
-                //size: "md" //"lg" | "md" | "sm"
-            }
-        },
-        /*    Select: {
-            defaultProps: {
-                //size: "md" //"lg" | "md" | "sm" | "xs"
-                //variant: "outline" //"outline" | "filled" | "flushed" | "unstyled"
-            },
+        Select: {
             variants: {
                 outline({ theme }: StyleFunctionProps) {
                     return {
@@ -223,12 +150,8 @@ const old_theme = {
                     };
                 }
             }
-        },tod */
+        },
         Slider: {
-            defaultProps: {
-                //colorScheme: "blue"
-                //size: "md" //"lg" | "md" | "sm"
-            },
             baseStyle: {
                 thumb: {
                     borderColor: "background_primary",
@@ -238,17 +161,7 @@ const old_theme = {
                 }
             }
         },
-        Switch: {
-            defaultProps: {
-                //colorScheme: "blue",
-                //size: "md" //"lg" | "md" | "sm"
-            }
-        },
-        /*  Textarea: {
-            defaultProps: {
-                //size: "md", //"lg" | "md" | "sm" | "xs"
-                //variant: "outline" //"outline" | "filled" | "flushed" | "unstyled"
-            },
+        Textarea: {
             variants: {
                 outline({ theme }: StyleFunctionProps) {
                     return {
@@ -273,18 +186,30 @@ const old_theme = {
                     };
                 }
             }
-        },todo */
+        },
         Tooltip: {
             baseStyle: {
-                //bg: "background_primary",
-                //color: "font_inverse",
                 borderRadius: "md"
             }
         }
     }
-};
+};*/
 
-// todo docu
+/**
+ * Base theme for Open Pioneer Trails applications.
+ *
+ * All custom themes should extend this theme:
+ *
+ * ```ts
+ * import { mergeConfigs } from "@chakra-ui/react";
+ * import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
+ *
+ * export const themeConfig = mergeConfigs(defaultTrailsConfig, {
+ *     // Your overrides
+ * });
+ * ```
+ */
+// todo typscript support? https://www.chakra-ui.com/docs/theming/tokens#using-tokens
 export const config = defineConfig({
     globalCss: { html: { colorPalette: "trails" } },
     theme: {
@@ -292,6 +217,13 @@ export const config = defineConfig({
             // todo typescript
             colors: colorPalette as any // eslint-disable-line @typescript-eslint/no-explicit-any
         },
-        semanticTokens: semanticTokens
+        semanticTokens: semanticTokens,
+        recipes: {
+            separator: {
+                base: {
+                    borderColor: "background_primary"
+                }
+            }
+        }
     }
 });
