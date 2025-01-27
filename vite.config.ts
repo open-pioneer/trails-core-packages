@@ -23,7 +23,7 @@ const sampleSites = [
     "samples/i18n-howto",
     "samples/i18n-sample",
     "samples/properties-sample",
-    // "samples/styling-sample",
+    "samples/styling-sample",
     "samples/notify-sample",
     // "samples/theming-sample",
     "samples/auth-sample",

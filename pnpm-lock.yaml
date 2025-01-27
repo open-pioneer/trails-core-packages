@@ -766,6 +766,17 @@ importers:
         specifier: 'catalog:'
         version: 18.3.1
 
+  src/samples/styling-sample/styling-app:
+    dependencies:
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../../packages/runtime
+      styling-sample-components:
+        specifier: workspace:^
+        version: link:../styling-sample-components
+
+  src/samples/styling-sample/styling-sample-components: {}
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':
