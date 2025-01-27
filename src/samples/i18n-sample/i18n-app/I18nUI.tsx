@@ -25,7 +25,7 @@ export function I18nUI() {
     const list = ["Hans", "Peter", "Hape"];
 
     return (
-        <Container>
+        <Container maxWidth="xl">
             <Heading size="lg" mb={4}>
                 {intl.formatMessage({ id: "content.header" })}
             </Heading>
