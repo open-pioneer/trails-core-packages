@@ -28,6 +28,7 @@ import { ReferenceSpec } from "./service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
 import { ServiceLayer } from "./service-layer/ServiceLayer";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
+import { SystemConfig } from "@chakra-ui/react";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -67,7 +68,7 @@ export interface CustomElementOptions {
     /**
      * Chakra theming object.
      */
-    theme?: Record<string, unknown>;
+    chakraConfig?: SystemConfig;
 }
 
 /**
@@ -372,7 +373,7 @@ class ApplicationInstance {
         this.reactIntegration = ReactIntegration.createForApp({
             appRoot: appRoot,
             rootNode: shadowRoot,
-            config: elementOptions.theme, // todo
+            config: elementOptions.chakraConfig,
             serviceLayer,
             packages
         });
@@ -489,7 +490,7 @@ class ApplicationInstance {
         this.reactIntegration = ReactIntegration.createForErrorScreen({
             appRoot: appRoot,
             rootNode: shadowRoot,
-            config: elementOptions.theme // todo
+            config: elementOptions.chakraConfig
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }

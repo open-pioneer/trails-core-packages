@@ -10,20 +10,21 @@ import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "./ChakraProvider";
+import { SystemConfig } from "@chakra-ui/react";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
     appRoot: HTMLDivElement;
     rootNode: Document | ShadowRoot;
-    config: Record<string, unknown> | undefined;
+    config: SystemConfig | undefined;
 }
 
 // todo fix tests
 
 export class ReactIntegration {
     private rootNode: Document | ShadowRoot;
-    private config: Record<string, unknown> | undefined;
+    private chakraConfig: SystemConfig | undefined;
     private root: Root;
     private packageContext: PackageContextMethods;
 
@@ -54,7 +55,7 @@ export class ReactIntegration {
         }
     ) {
         this.rootNode = options.rootNode;
-        this.config = options.config;
+        this.chakraConfig = options.config;
         this.root = createRoot(options.appRoot);
         this.packageContext = options.packageContext;
     }
@@ -62,7 +63,7 @@ export class ReactIntegration {
     render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider rootNode={this.rootNode} config={this.config}>
+                <CustomChakraProvider rootNode={this.rootNode} config={this.chakraConfig}>
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
                     </PackageContext.Provider>
