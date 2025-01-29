@@ -116,7 +116,7 @@ function ToastIndicator(props: { type: string }) {
     return (
         <Icon css={styles.indicator}>
             <span>
-                <FiAlertTriangle style={{ width: "100%", height: "100%" }} />
+                <Component style={{ width: "100%", height: "100%" }} />
             </span>
         </Icon>
     );
