@@ -66,9 +66,9 @@
         },
         "peerDependencyRules": {
             "allowedVersions": {
-                "react-json-view>react": ">=18",
-                "react-json-view>react-dom": ">=18",
-                "flux>react": ">=18"
+                "react-json-view>react": ">=19",
+                "react-json-view>react-dom": ">=19",
+                "flux>react": ">=19"
             }
         }
     },

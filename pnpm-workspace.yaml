@@ -7,12 +7,12 @@ packages:
 # Shared version expressions (yaml anchors).
 # This is a yaml feature and is not interpreted by pnpm directly.
 __versions:
-  - &react_version ^18.3.1
+  - &react_version ^19.0.0
 
 # https://pnpm.io/catalogs
 catalog:
   "@chakra-ui/icons": ^2.2.4
-  "@chakra-ui/react": ^2.10.3
+  "@chakra-ui/react": ^2.10.6
   "@chakra-ui/system": ^2.6.2
   "@conterra/reactivity-core": ^0.4.3
   "@emotion/cache": ^11.13.1
@@ -20,7 +20,7 @@ catalog:
   "@emotion/styled": ^11.13.0
   "@formatjs/intl": ^3.1.4
   classnames: ^2.3.2
-  framer-motion: ^11.11.9
+  framer-motion: ^12.4.7
   keycloak-js: ^25.0.2
   react-dom: *react_version
   react-json-view: ^1.21.3
@@ -35,7 +35,7 @@ catalog:
   "@open-pioneer/vite-plugin-pioneer": ^3.0.5
   "@testing-library/dom": ^10.4.0
   "@testing-library/jest-dom": ^6.6.2
-  "@testing-library/react": ^16.0.1
+  "@testing-library/react": ^16.2.0
   "@testing-library/user-event": ^14.5.2
   "@types/js-yaml": ^4.0.9
   "@types/node": ^18.19.41
