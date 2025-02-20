@@ -28,7 +28,7 @@ catalog:
   react: *react_version
 
   # Devtools
-  "@changesets/cli": ^2.27.9
+  "@changesets/cli": 2.27.9
   "@open-pioneer/build-package-cli": ^2.1.1
   "@open-pioneer/build-support": ^2.0.2
   "@open-pioneer/check-pnpm-duplicates": "^0.1.0"

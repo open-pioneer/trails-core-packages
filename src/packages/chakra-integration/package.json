@@ -21,13 +21,12 @@
         "@emotion/cache": "catalog:",
         "@emotion/react": "catalog:",
         "@emotion/styled": "catalog:",
-        "framer-motion": ">=4.0.0",
+        "framer-motion": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^",
-        "framer-motion": "catalog:"
+        "core-packages": "workspace:^"
     },
     "publishConfig": {
         "directory": "dist",
