@@ -10,10 +10,4 @@ skipDevDependencies: true
 # You SHOULD NOT list central dependencies here, such as react or any trails packages.
 allowed:
   - "ansi-styles"
-  - "chalk"
-  - "color-convert"
-  - "color-name"
-  - "escape-string-regexp"
-  - "has-flag"
   - "react-is"
-  - "supports-color"

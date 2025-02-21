@@ -1,63 +1,80 @@
 # @open-pioneer/runtime
 
+## 2.4.0
+
+### Minor Changes
+
+- e3802fb: Introduce `NumberParserService` for parsing strings to numbers in the application's current locale.
+- ac39468: Introducing an error screen that is shown in case of hard errors on app start.
+
+### Patch Changes
+
+- 1b63ebe: Update dependencies
+- Updated dependencies [1b63ebe]
+- Updated dependencies [e3802fb]
+    - @open-pioneer/chakra-integration@2.4.0
+    - @open-pioneer/base-theme@2.4.0
+    - @open-pioneer/core@2.4.0
+    - @open-pioneer/runtime-react-support@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes
 
--   2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
+- 2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
 
 ### Patch Changes
 
--   Updated dependencies [2fbaaa0]
-    -   @open-pioneer/runtime-react-support@2.3.0
-    -   @open-pioneer/chakra-integration@2.3.0
-    -   @open-pioneer/base-theme@2.3.0
-    -   @open-pioneer/core@2.3.0
+- Updated dependencies [2fbaaa0]
+    - @open-pioneer/runtime-react-support@2.3.0
+    - @open-pioneer/chakra-integration@2.3.0
+    - @open-pioneer/base-theme@2.3.0
+    - @open-pioneer/core@2.3.0
 
 ## 2.2.0
 
 ### Patch Changes
 
--   39dad46: Switch to a new versioning strategy.
-    From now on, packages released by this repository share a common version number.
--   Updated dependencies [39dad46]
-    -   @open-pioneer/base-theme@2.2.0
-    -   @open-pioneer/chakra-integration@2.2.0
-    -   @open-pioneer/core@2.2.0
-    -   @open-pioneer/runtime-react-support@2.2.0
+- 39dad46: Switch to a new versioning strategy.
+  From now on, packages released by this repository share a common version number.
+- Updated dependencies [39dad46]
+    - @open-pioneer/base-theme@2.2.0
+    - @open-pioneer/chakra-integration@2.2.0
+    - @open-pioneer/core@2.2.0
+    - @open-pioneer/runtime-react-support@2.2.0
 
 ## 2.1.7
 
 ### Patch Changes
 
--   58ce24f: Export `DECLARE_SERVICE_INTERFACE` as a value instead of a type only.
-    It was previously necessary to import this symbol via `import type` to avoid errors during development.
-    The `type` keyword can now be omitted.
--   e0b2fae: Update dependencies
--   6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
--   Updated dependencies [5c62522]
--   Updated dependencies [50550d3]
--   Updated dependencies [e0b2fae]
-    -   @open-pioneer/chakra-integration@1.1.4
-    -   @open-pioneer/core@1.3.0
-    -   @open-pioneer/base-theme@0.3.3
-    -   @open-pioneer/runtime-react-support@1.0.2
+- 58ce24f: Export `DECLARE_SERVICE_INTERFACE` as a value instead of a type only.
+  It was previously necessary to import this symbol via `import type` to avoid errors during development.
+  The `type` keyword can now be omitted.
+- e0b2fae: Update dependencies
+- 6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
+- Updated dependencies [5c62522]
+- Updated dependencies [50550d3]
+- Updated dependencies [e0b2fae]
+    - @open-pioneer/chakra-integration@1.1.4
+    - @open-pioneer/core@1.3.0
+    - @open-pioneer/base-theme@0.3.3
+    - @open-pioneer/runtime-react-support@1.0.2
 
 ## 2.1.6
 
 ### Patch Changes
 
--   e945264: Improve error message when metadata is missing (#55)
-    -   @open-pioneer/runtime-react-support@1.0.2
+- e945264: Improve error message when metadata is missing (#55)
+    - @open-pioneer/runtime-react-support@1.0.2
 
 ## 2.1.5
 
 ### Patch Changes
 
--   90d0cce: The `resolveConfig` callback of an app's configuration can now inspect the application's `hostElement`.
--   90d0cce: Add a builtin method on the `ApplicationContext` to change the application's locale.
-    Note that with the current implementation, the application will simply restart with the new locale.
-    The application's state will be lost.
+- 90d0cce: The `resolveConfig` callback of an app's configuration can now inspect the application's `hostElement`.
+- 90d0cce: Add a builtin method on the `ApplicationContext` to change the application's locale.
+  Note that with the current implementation, the application will simply restart with the new locale.
+  The application's state will be lost.
 
     Example:
 
@@ -68,55 +85,55 @@
     appCtx.setLocale("en-US");
     ```
 
-    -   @open-pioneer/runtime-react-support@1.0.2
+    - @open-pioneer/runtime-react-support@1.0.2
 
 ## 2.1.4
 
 ### Patch Changes
 
--   64645aa: Update to react 18.3
--   b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
--   Updated dependencies [5d3aafd]
--   Updated dependencies [64645aa]
--   Updated dependencies [64645aa]
--   Updated dependencies [b3c60f2]
-    -   @open-pioneer/core@1.2.3
-    -   @open-pioneer/runtime-react-support@1.0.2
-    -   @open-pioneer/chakra-integration@1.1.3
-    -   @open-pioneer/base-theme@0.3.2
+- 64645aa: Update to react 18.3
+- b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
+- Updated dependencies [5d3aafd]
+- Updated dependencies [64645aa]
+- Updated dependencies [64645aa]
+- Updated dependencies [b3c60f2]
+    - @open-pioneer/core@1.2.3
+    - @open-pioneer/runtime-react-support@1.0.2
+    - @open-pioneer/chakra-integration@1.1.3
+    - @open-pioneer/base-theme@0.3.2
 
 ## 2.1.3
 
 ### Patch Changes
 
--   5ff8f30: Update package.json metadata.
--   Updated dependencies [be236af]
--   Updated dependencies [5ff8f30]
-    -   @open-pioneer/base-theme@0.3.1
-    -   @open-pioneer/runtime-react-support@1.0.1
-    -   @open-pioneer/chakra-integration@1.1.2
-    -   @open-pioneer/core@1.2.2
+- 5ff8f30: Update package.json metadata.
+- Updated dependencies [be236af]
+- Updated dependencies [5ff8f30]
+    - @open-pioneer/base-theme@0.3.1
+    - @open-pioneer/runtime-react-support@1.0.1
+    - @open-pioneer/chakra-integration@1.1.2
+    - @open-pioneer/core@1.2.2
 
 ## 2.1.2
 
 ### Patch Changes
 
--   Updated dependencies [6380aa4]
-    -   @open-pioneer/base-theme@0.3.0
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [6380aa4]
+    - @open-pioneer/base-theme@0.3.0
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.1.1
 
 ### Patch Changes
 
--   f749d96: Add a hint that `DECLARE_SERVICE_INTERFACE` should be imported via `import type`.
-    -   @open-pioneer/runtime-react-support@1.0.0
+- f749d96: Add a hint that `DECLARE_SERVICE_INTERFACE` should be imported via `import type`.
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.1.0
 
 ### Minor Changes
 
--   80cd62d: Improve TypeScript integration for service classes.
+- 80cd62d: Improve TypeScript integration for service classes.
 
     Add a way for a service class to specify its interface name directly.
     Usually services used across package boundaries split their public interface and their implementation such as this:
@@ -161,37 +178,37 @@
 
 ### Patch Changes
 
--   @open-pioneer/runtime-react-support@1.0.0
+- @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.0.2
 
 ### Patch Changes
 
--   Updated dependencies [11b1428]
-    -   @open-pioneer/core@1.2.1
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [11b1428]
+    - @open-pioneer/core@1.2.1
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.0.1
 
 ### Patch Changes
 
--   Updated dependencies [a18d227]
-    -   @open-pioneer/core@1.2.0
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [a18d227]
+    - @open-pioneer/core@1.2.0
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.0.0
 
 ### Major Changes
 
--   ce9e060: Remove support for closed shadow roots.
-    Shadow roots used by Open Pioneer Trails applications are now always `"open"`.
-    See #19.
--   6f954e3: **Breaking Change**: change how services integrate into TypeScript (fixes #22).
-    The old TypeScript integration had unexpected edge cases, see the linked issue.
+- ce9e060: Remove support for closed shadow roots.
+  Shadow roots used by Open Pioneer Trails applications are now always `"open"`.
+  See #19.
+- 6f954e3: **Breaking Change**: change how services integrate into TypeScript (fixes #22).
+  The old TypeScript integration had unexpected edge cases, see the linked issue.
 
     NOTE: The changes below have no impact on runtime behavior, but they may trigger TypeScript errors in your code.
 
-    -   To register a service's type with TypeScript, one previously used a block such as this:
+    - To register a service's type with TypeScript, one previously used a block such as this:
 
         ```ts
         // OLD! Can be removed
@@ -220,7 +237,7 @@
         - }
         ```
 
-    -   To use a service from React code (i.e. `useService` and `useServices`), you must now use the explicit service type in the hook's generic parameter list. Otherwise the hook will simply return `unknown`:
+    - To use a service from React code (i.e. `useService` and `useServices`), you must now use the explicit service type in the hook's generic parameter list. Otherwise the hook will simply return `unknown`:
 
         ```diff
         + import { HttpService } from "@open-pioneer/http";
@@ -232,118 +249,118 @@
 
         The system will still check that the provided string matches the string constant used in the service's declaration (`DeclaredService<...>`), so type safety is preserved.
 
-    -   The types `InterfaceName` and `ServiceType<I>` have been removed. Use explicit service interfaces instead.
-    -   The interfaces `ServiceRegistry` and `PropertiesRegistry` have been removed as global registration is no longer possible.
-    -   The type `RawApplicationProperties` has been removed. Use `ApplicationProperties` instead.
+    - The types `InterfaceName` and `ServiceType<I>` have been removed. Use explicit service interfaces instead.
+    - The interfaces `ServiceRegistry` and `PropertiesRegistry` have been removed as global registration is no longer possible.
+    - The type `RawApplicationProperties` has been removed. Use `ApplicationProperties` instead.
 
 ### Patch Changes
 
--   f5c0e31: Bump @formatjs/intl version
--   Updated dependencies [f5c0e31]
--   Updated dependencies [6f954e3]
-    -   @open-pioneer/chakra-integration@1.1.1
-    -   @open-pioneer/base-theme@0.2.0
-    -   @open-pioneer/runtime-react-support@1.0.0
+- f5c0e31: Bump @formatjs/intl version
+- Updated dependencies [f5c0e31]
+- Updated dependencies [6f954e3]
+    - @open-pioneer/chakra-integration@1.1.1
+    - @open-pioneer/base-theme@0.2.0
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 1.1.0
 
 ### Minor Changes
 
--   6632892: Implement support for custom chakra themes via the `theme` parameter in `createCustomElement()`.
-    `theme` from `@open-pioneer/base-theme` is used as default when no other theme is configured.
+- 6632892: Implement support for custom chakra themes via the `theme` parameter in `createCustomElement()`.
+  `theme` from `@open-pioneer/base-theme` is used as default when no other theme is configured.
 
 ### Patch Changes
 
--   Updated dependencies [6632892]
--   Updated dependencies [6632892]
-    -   @open-pioneer/base-theme@0.1.0
-    -   @open-pioneer/chakra-integration@1.1.0
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [6632892]
+- Updated dependencies [6632892]
+    - @open-pioneer/base-theme@0.1.0
+    - @open-pioneer/chakra-integration@1.1.0
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 1.0.2
 
 ### Patch Changes
 
--   Updated dependencies [69c0fcd]
-    -   @open-pioneer/core@1.1.0
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [69c0fcd]
+    - @open-pioneer/core@1.1.0
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 1.0.1
 
 ### Patch Changes
 
--   Updated dependencies [88fd710]
-    -   @open-pioneer/core@1.0.1
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [88fd710]
+    - @open-pioneer/core@1.0.1
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 1.0.0
 
 ### Major Changes
 
--   22ff68a: Initial release
+- 22ff68a: Initial release
 
 ### Patch Changes
 
--   Updated dependencies [22ff68a]
-    -   @open-pioneer/chakra-integration@1.0.0
-    -   @open-pioneer/core@1.0.0
-    -   @open-pioneer/runtime-react-support@1.0.0
+- Updated dependencies [22ff68a]
+    - @open-pioneer/chakra-integration@1.0.0
+    - @open-pioneer/core@1.0.0
+    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 0.1.5
 
 ### Patch Changes
 
--   9eac5c9: Use peer dependencies for (most) dependencies
--   Updated dependencies [9eac5c9]
-    -   @open-pioneer/runtime-react-support@0.1.2
-    -   @open-pioneer/chakra-integration@0.1.4
-    -   @open-pioneer/core@0.1.4
+- 9eac5c9: Use peer dependencies for (most) dependencies
+- Updated dependencies [9eac5c9]
+    - @open-pioneer/runtime-react-support@0.1.2
+    - @open-pioneer/chakra-integration@0.1.4
+    - @open-pioneer/core@0.1.4
 
 ## 0.1.4
 
 ### Patch Changes
 
--   234b3be: Fix registrations in ServiceRegistry
--   49ba4e1: Use build-package CLI to build.
--   Updated dependencies [49ba4e1]
-    -   @open-pioneer/chakra-integration@0.1.3
-    -   @open-pioneer/core@0.1.3
-    -   @open-pioneer/runtime-react-support@0.1.1
+- 234b3be: Fix registrations in ServiceRegistry
+- 49ba4e1: Use build-package CLI to build.
+- Updated dependencies [49ba4e1]
+    - @open-pioneer/chakra-integration@0.1.3
+    - @open-pioneer/core@0.1.3
+    - @open-pioneer/runtime-react-support@0.1.1
 
 ## 0.1.3
 
 ### Patch Changes
 
--   e752d49: Use new runtime-react-support package
--   Updated dependencies [e752d49]
-    -   @open-pioneer/runtime-react-support@0.1.0
+- e752d49: Use new runtime-react-support package
+- Updated dependencies [e752d49]
+    - @open-pioneer/runtime-react-support@0.1.0
 
 ## 0.1.2
 
 ### Patch Changes
 
--   a40f12d: Update build-package tool. TypeScript declaration files should now be available.
--   Updated dependencies [a40f12d]
-    -   @open-pioneer/chakra-integration@0.1.2
-    -   @open-pioneer/core@0.1.2
+- a40f12d: Update build-package tool. TypeScript declaration files should now be available.
+- Updated dependencies [a40f12d]
+    - @open-pioneer/chakra-integration@0.1.2
+    - @open-pioneer/core@0.1.2
 
 ## 0.1.1
 
 ### Patch Changes
 
--   e1c7295: Compiled with build-package 0.5.2
--   Updated dependencies [e1c7295]
-    -   @open-pioneer/chakra-integration@0.1.1
-    -   @open-pioneer/core@0.1.1
+- e1c7295: Compiled with build-package 0.5.2
+- Updated dependencies [e1c7295]
+    - @open-pioneer/chakra-integration@0.1.1
+    - @open-pioneer/core@0.1.1
 
 ## 0.1.0
 
 ### Minor Changes
 
--   77f7d5c: Initial test release
+- 77f7d5c: Initial test release
 
 ### Patch Changes
 
--   Updated dependencies [77f7d5c]
-    -   @open-pioneer/chakra-integration@0.1.0
-    -   @open-pioneer/core@0.1.0
+- Updated dependencies [77f7d5c]
+    - @open-pioneer/chakra-integration@0.1.0
+    - @open-pioneer/core@0.1.0

@@ -1,11 +1,11 @@
-// SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
+// SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 /**
  * @vitest-environment node
  */
 import { it, expect } from "vitest";
 import { AuthPlugin, AuthState, LoginFallback } from "./api";
-import { createElement } from "react";
+import { createElement, ReactNode } from "react";
 import { createService } from "@open-pioneer/test-utils/services";
 import { AuthServiceImpl } from "./AuthServiceImpl";
 import { reactive, syncWatch } from "@conterra/reactivity-core";
@@ -145,7 +145,7 @@ class TestPlugin implements AuthPlugin {
     }
 }
 
-function DummyFallback(): JSX.Element {
+function DummyFallback(): ReactNode {
     return createElement("span", undefined, "Permission denied");
 }
 

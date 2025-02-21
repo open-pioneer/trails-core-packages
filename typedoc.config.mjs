@@ -1,16 +1,18 @@
-// SPDX-FileCopyrightText: 2023 Open Pioneer project (https://github.com/open-pioneer)
+// SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { readFileSync } = require("fs");
-const { sync: fastGlobSync } = require("fast-glob");
-const { dirname } = require("path");
-const DEFAULT_HIGHLIGHT_LANGS = require("typedoc").OptionDefaults.highlightLanguages;
+/* eslint-disable @typescript-eslint/no-require-imports */
+import { readFileSync } from "fs";
+import fastGlob from "fast-glob";
+import { dirname } from "path";
+import { OptionDefaults } from "typedoc";
+
+const DEFAULT_HIGHLIGHT_LANGS = OptionDefaults.highlightLanguages;
 
 const documentedPackages = getPackageDirectories().sort();
 console.info("Creating documentation for packages:", documentedPackages);
 
 // See https://typedoc.org/options/
-module.exports = {
+export default {
     name: "Trails Packages",
     readme: "none",
     out: "dist/docs",
@@ -28,7 +30,7 @@ module.exports = {
 };
 
 function getPackageDirectories() {
-    const packageJsonPaths = fastGlobSync("./src/packages/**/package.json", {
+    const packageJsonPaths = fastGlob.sync("./src/packages/**/package.json", {
         ignore: ["**/dist/**", "**/node_modules/**", "**/test-data/**"],
         followSymbolicLinks: false
     });

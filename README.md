@@ -5,11 +5,13 @@
 
 Core packages of the Open Pioneer Trails client framework.
 
-[Samples](https://open-pioneer.github.io/trails-demo/core-packages/) | [API Documentation](https://open-pioneer.github.io/trails-demo/core-packages/docs/) | [User manual](https://github.com/open-pioneer/trails-starter/tree/main/docs)
+- Samples: [latest](https://open-pioneer.github.io/trails-demo/core-packages/latest) | [dev](https://open-pioneer.github.io/trails-demo/core-packages/dev)
+- API Documentation: [latest](https://open-pioneer.github.io/trails-demo/core-packages/latest/docs) | [dev](https://open-pioneer.github.io/trails-demo/core-packages/dev/docs)
+- [User manual](https://github.com/open-pioneer/trails-starter/tree/main/docs)
 
 ## Getting started
 
-Requirements: Node >= 18, pnpm >= 9.
+Requirements: Node >= 20, pnpm >= 9.
 
 To start the development server, run:
 

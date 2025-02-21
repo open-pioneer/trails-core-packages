@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/chakra-integration",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "Integrates Chakra UI into Open Pioneer Trails application.",
     "main": "index.ts",
     "license": "Apache-2.0",
@@ -24,8 +24,7 @@
         "react-dom": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^",
-        "framer-motion": "catalog:"
+        "core-packages": "workspace:^"
     },
     "publishConfig": {
         "directory": "dist",
