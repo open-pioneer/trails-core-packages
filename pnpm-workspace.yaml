@@ -21,7 +21,7 @@ catalog:
   "@formatjs/intl": ^3.1.4
   classnames: ^2.3.2
   framer-motion: ^12.4.7
-  keycloak-js: ^25.0.2
+  keycloak-js: ^26.0.2
   react-dom: *react_version
   react-json-view: ^1.21.3
   react-use: ^17.5.1
@@ -38,23 +38,23 @@ catalog:
   "@testing-library/react": ^16.2.0
   "@testing-library/user-event": ^14.5.2
   "@types/js-yaml": ^4.0.9
-  "@types/node": ^18.19.41
-  "@types/react-dom": ^18.3.1
-  "@types/react": ^18.3.11
+  "@types/node": ^20.14.8
+  "@types/react-dom": ^19.0.4
+  "@types/react": ^19.0.10
   "@typescript-eslint/eslint-plugin": ^8.11.0
   "@typescript-eslint/parser": ^8.11.0
   "@vitejs/plugin-react-swc": ^3.7.1
-  eslint-config-prettier: ^9.1.0
+  eslint-config-prettier: ^10.0.1
   eslint-import-resolver-typescript: ^3.6.3
   eslint-plugin-header: ^3.1.1
   eslint-plugin-import: ^2.31.0
-  eslint-plugin-react-hooks: ^4.6.2
+  eslint-plugin-react-hooks: ^5.1.0
   eslint-plugin-react: ^7.37.1
   eslint-plugin-unused-imports: ^4.1.4
   eslint: ^8.57.1
   fast-glob: ^3.3.3
   handlebars: ^4.7.8
-  happy-dom: ^15.10.2
+  happy-dom: ^17.1.1
   husky: ^9.1.6
   js-yaml: ^4.1.0
   lint-staged: ^15.2.10
