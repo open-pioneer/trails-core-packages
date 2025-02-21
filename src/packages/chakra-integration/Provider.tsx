@@ -120,7 +120,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         <div className="chakra-host" ref={chakraHost}>
             <CacheProvider value={cache}>
                 <ThemeProvider theme={theme}>
-                    <EnvironmentProvider>
+                    <EnvironmentProvider> 
                         <ColorMode>
                             <CSSReset />
                             <Global styles={defaultStyles} />
@@ -145,7 +145,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
  * The current color mode is automatically propagates as a css class on the chakra host element.
  */
 function useSyncedColorMode(
-    chakraHost: RefObject<HTMLDivElement>,
+    chakraHost: RefObject<HTMLDivElement | null>,
     colorMode: "light" | "dark" | undefined
 ) {
     const mode = colorMode ?? "light";
@@ -186,7 +186,7 @@ function wrapTheme(theme: Record<string, unknown> = chakraBaseTheme): Record<str
 }
 
 function useEmotionCache(container: Node): EmotionCache {
-    const cacheRef = useRef<EmotionCache>();
+    const cacheRef = useRef<EmotionCache>(undefined);
     if (!cacheRef.current) {
         cacheRef.current = createCache({
             key: "css",
