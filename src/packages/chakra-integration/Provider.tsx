@@ -120,7 +120,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         <div className="chakra-host" ref={chakraHost}>
             <CacheProvider value={cache}>
                 <ThemeProvider theme={theme}>
-                    <EnvironmentProvider> 
+                    <EnvironmentProvider>
                         <ColorMode>
                             <CSSReset />
                             <Global styles={defaultStyles} />

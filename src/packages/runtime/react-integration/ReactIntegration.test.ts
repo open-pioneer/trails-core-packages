@@ -6,7 +6,7 @@
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import { createElement } from "react";
-import { beforeEach, expect, it, MockInstance, afterEach, vi, describe } from "vitest";
+import { beforeEach, expect, it, afterEach, vi, describe } from "vitest";
 import { Service, ServiceConstructor } from "../Service";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { useTheme } from "@open-pioneer/chakra-integration";
@@ -26,11 +26,6 @@ interface TestProvider {
 
 beforeEach(() => {
     document.body.innerHTML = "";
-});
-
-let errorSpy!: MockInstance;
-beforeEach(() => {
-    errorSpy = vi.spyOn(console, "error");
 });
 
 afterEach(() => {

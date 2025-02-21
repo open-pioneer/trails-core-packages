@@ -41,12 +41,12 @@ export function YourComponent({ model }: YourComponentProps) {
 }
 ```
 
--   `callback` is a function that accesses reactive values which are based on signals (see example below) and returns some computed _result_.
-    In the example above, we used the values of `firstName` and `lastName`.
-    The access to those values was tracked by `useReactiveSnapshot`; updates will result in the React component rendering with the updated `fullName`.
--   `deps` are an array of React dependencies (such as props or local variables), very similar to `useEffect` or `useMemo`.
-    The hook cannot detect changes of values that are _not_ based on the reactivity API (such as react props), so they need to be listed here.
-    In this case we had to specify the `model` itself (it may change as well!) but not its properties.
+- `callback` is a function that accesses reactive values which are based on signals (see example below) and returns some computed _result_.
+  In the example above, we used the values of `firstName` and `lastName`.
+  The access to those values was tracked by `useReactiveSnapshot`; updates will result in the React component rendering with the updated `fullName`.
+- `deps` are an array of React dependencies (such as props or local variables), very similar to `useEffect` or `useMemo`.
+  The hook cannot detect changes of values that are _not_ based on the reactivity API (such as react props), so they need to be listed here.
+  In this case we had to specify the `model` itself (it may change as well!) but not its properties.
 
 To complete the example from above, here is the full source of a compatible `Model` implementation:
 
