@@ -103,7 +103,7 @@ function redirectLightCondition(
 };
 
 function useEmotionCache(container: Node): EmotionCache {
-    const cacheRef = useRef<EmotionCache>();
+    const cacheRef = useRef<EmotionCache>(null);
     if (!cacheRef.current) {
         cacheRef.current = createCache({
             key: "css",

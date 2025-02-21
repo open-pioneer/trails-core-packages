@@ -5,7 +5,7 @@
  */
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
-import { createElement } from "react";
+import { createElement, ReactNode } from "react";
 import { beforeEach, expect, it, afterEach, vi, describe } from "vitest";
 import { Service, ServiceConstructor } from "../Service";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
@@ -334,6 +334,7 @@ it("should throw error when requesting properties from an unknown package", asyn
 });
 
 it("should apply the configured chakra theme", async () => {
+    // TODO: Object shape is probably wrong, this is still Chakra v2
     const testTheme = {
         colors: {
             dummyColor: "#123456"
@@ -341,10 +342,10 @@ it("should apply the configured chakra theme", async () => {
     };
     const { integration, wrapper } = createIntegration({
         disablePackage: true,
-        theme: testTheme
+        config: testTheme
     });
 
-    function TestComponent() {
+    function TestComponent(): ReactNode {
         // TODO
         throw new Error("not implemented");
     }
@@ -361,8 +362,8 @@ describe("integration for error screen ", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
-            rootNode: document.createElement("div"),
-            theme: undefined
+            rootNode: document,
+            config: undefined
         });
 
         expect(integration).toBeInstanceOf(ReactIntegration);
@@ -371,8 +372,8 @@ describe("integration for error screen ", function () {
     it("should throw an error when trying to access a service on an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
-            rootNode: document.createElement("div"),
-            theme: undefined
+            rootNode: document,
+            config: undefined
         });
 
         function TestComponent() {
@@ -408,9 +409,11 @@ function createIntegration(options?: {
     packageUiReferences?: ReferenceSpec[];
     i18n?: PackageIntl;
     services?: ServiceSpec[];
-    theme?: Record<string, unknown>;
+    config?: Record<string, unknown>;
 }): TestIntegration {
     const wrapper = document.createElement("div");
+    const shadowRoot = wrapper.attachShadow({ mode: "open" });
+
     const packages = new Map<string, PackageRepr>();
     const i18n = options?.i18n ?? createEmptyI18n();
     if (!options?.disablePackage) {
@@ -441,9 +444,9 @@ function createIntegration(options?: {
     serviceLayer.start();
 
     const integration = ReactIntegration.createForApp({
-        rootNode: wrapper,
+        rootNode: shadowRoot,
         appRoot: wrapper,
-        theme: options?.theme,
+        config: options?.config,
         packages,
         serviceLayer
     });
