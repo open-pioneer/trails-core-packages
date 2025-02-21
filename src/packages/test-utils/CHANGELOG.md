@@ -1,5 +1,25 @@
 # @open-pioneer/test-utils
 
+## 3.0.0
+
+### Major Changes
+
+- 9477e54: Update dependencies
+
+    - React 19
+    - Vite 6
+    - FormatJS 3
+    - Open Pioneer Build Tools
+    - ...
+
+    For more details, see https://github.com/open-pioneer/trails-core-packages/pull/81
+
+### Patch Changes
+
+- Updated dependencies [9477e54]
+    - @open-pioneer/chakra-integration@3.0.0
+    - @open-pioneer/runtime-react-support@3.0.0
+
 ## 2.4.0
 
 ### Patch Changes
