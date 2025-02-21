@@ -9,7 +9,7 @@ Core packages of the Open Pioneer Trails client framework.
 
 ## Getting started
 
-Requirements: Node >= 18, pnpm >= 9.
+Requirements: Node >= 20, pnpm >= 9.
 
 To start the development server, run:
 
