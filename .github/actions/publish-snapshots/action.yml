@@ -1,0 +1,39 @@
+# Assumes that pnpm is set up correctly and that dependencies are installed.
+name: Publish Snapshots
+description: Publish development snapshots to the npm registry
+inputs:
+  npm-token:
+    description: "NPM token for publishing packages"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    # Bumps versions in package.json (see https://github.com/changesets/changesets/blob/main/docs/snapshot-releases.md)
+    # The changes should not be committed to any branch: the "releases" are not part of the version history.
+    - name: Version packages
+      shell: bash
+      run: pnpm changeset version --snapshot dev
+
+    # Note: must happen after versioning because the updated package.json files will be copied into dist/
+    - name: Build packages
+      shell: bash
+      run: pnpm build-packages
+
+    - name: Publish packages
+      shell: bash
+      run: |
+        echo "Published packages" >> publish.log
+        echo "==================" >> publish.log
+        echo "" >> publish.log
+
+        # Stdout of publish contains the published package names and versions
+        pnpm publish -r --access public --tag dev --no-git-checks | tee -a publish.log
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+
+    - name: List packages
+      shell: bash
+      run: |
+        echo "Published packages:"
+        echo ""
+        cat publish.log

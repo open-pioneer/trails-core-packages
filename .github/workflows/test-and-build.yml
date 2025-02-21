@@ -4,6 +4,7 @@ on:
   push:
   pull_request:
 jobs:
+  # Performs quality checks
   checks:
     # Don't run for pull requests from this repository to avoid duplicate builds (push also triggers build).
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -20,6 +21,7 @@ jobs:
       - name: Run tests
         run: pnpm ci:test
 
+  # Builds samples and documentation and uploads contents of ./dist/ as an artifact ("build")
   build_site:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     name: "Build samples and documentation"
@@ -46,6 +48,7 @@ jobs:
           path: dist/
           retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 1 }}
 
+  # Builds all publishable packages
   build_packages:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     name: "Build packages"
@@ -61,7 +64,8 @@ jobs:
       - name: Build packages
         run: pnpm build-packages
 
-  call_version:
+  # Publishes packages using changesets
+  version:
     if: github.ref == 'refs/heads/main'
     name: "Publish or create version PR"
     uses: "./.github/workflows/version.yml"
@@ -71,6 +75,7 @@ jobs:
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # Deploys demo site
   deploy:
     if: github.ref == 'refs/heads/main'
     name: "Deploy site"
@@ -79,6 +84,7 @@ jobs:
     needs:
       - checks
       - build_site
+      - version
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -98,18 +104,9 @@ jobs:
           mv dist/www/* site/;
           mv dist/docs site/docs;
 
-      - name: Setup git
-        shell: bash
-        run: |
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: ./.github/actions/deploy-demo
         with:
-          repository-name: open-pioneer/trails-demo
+          src-repo: core-packages
+          target-path: ${{ needs.version.outputs.published == 'true' && 'latest' || 'dev' }}
           token: ${{ secrets.DEPLOY_TOKEN }}
-          git-config-name: "github-actions[bot]"
-          git-config-email: "41898282+github-actions[bot]@users.noreply.github.com"
-          folder: site
-          target-folder: core-packages
