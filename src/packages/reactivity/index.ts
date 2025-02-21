@@ -168,7 +168,7 @@ export function useReactiveSnapshot<T>(compute: () => T, deps: DependencyList): 
 }
 
 function useComputedDeps(deps: DependencyList): DependencyList {
-    const computedDeps = useRef<DependencyList>();
+    const computedDeps = useRef<DependencyList>(null);
     if (computedDeps.current == null || !shallowEqual(computedDeps.current, deps)) {
         computedDeps.current = deps ?? [];
     }

@@ -81,7 +81,7 @@ export interface TitledSectionProps {
  * </TitledSection>
  * ```
  */
-export function TitledSection(props: TitledSectionProps): JSX.Element {
+export function TitledSection(props: TitledSectionProps): ReactNode {
     const { title, sectionHeadingProps, children } = props;
     const currentLevel = useContext(LevelContext);
     const heading =
@@ -119,7 +119,7 @@ export interface SectionHeadingProps extends HeadingProps {
 export const SectionHeading = forwardRef(function SectionHeading(
     props: SectionHeadingProps,
     forwardedRef: ForwardedRef<HTMLHeadingElement>
-): JSX.Element {
+): ReactNode {
     const { children, ...rest } = props;
     const level = useHeadingLevel();
     const tag = getHeadingTag(level);

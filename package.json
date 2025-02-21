@@ -44,10 +44,11 @@
             "",
             "patches",
             "=======",
-            "@changesets/assemble-release-plan: don't bump major if peerDep has a minor release. see https://github.com/changesets/changesets/pull/1132"
+            "@changesets/assemble-release-plan: (also in overrides) don't bump major if peerDep has a minor release. see https://github.com/changesets/changesets/pull/1132"
         ],
         "overrides": {
             "ol-mapbox-style": "workspace:disabled-package@*",
+            "@changesets/assemble-release-plan": "6.0.4",
             "semver@<7.5.2": ">=7.5.2",
             "tough-cookie@<4.1.3": ">=4.1.3",
             "braces@<3.0.3": ">=3.0.3",
@@ -66,9 +67,9 @@
         },
         "peerDependencyRules": {
             "allowedVersions": {
-                "react-json-view>react": ">=18",
-                "react-json-view>react-dom": ">=18",
-                "flux>react": ">=18"
+                "react-json-view>react": ">=19",
+                "react-json-view>react-dom": ">=19",
+                "flux>react": ">=19"
             }
         }
     },
@@ -116,7 +117,7 @@
         "vitest": "catalog:"
     },
     "engines": {
-        "node": ">= 18",
+        "node": ">= 20",
         "pnpm": ">= 9"
     }
 }
