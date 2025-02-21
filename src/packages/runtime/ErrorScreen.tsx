@@ -1,16 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-
-import {
-    Box,
-    VStack,
-    Heading,
-    AlertIcon,
-    AlertTitle,
-    AlertDescription,
-    Alert,
-    Text
-} from "@open-pioneer/chakra-integration";
+import { Alert, Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { PackageIntl } from "./i18n";
 
 const MESSAGES_DE = {
@@ -38,42 +28,40 @@ export const MESSAGES_BY_LOCALE: Record<"en" | "de", Record<string, string>> = {
     "de": MESSAGES_DE
 };
 
-const isDev = import.meta.env.DEV;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
 export function ErrorScreen(props: { intl: PackageIntl; error: Error }) {
     const intl = props.intl;
     return (
-        <Box width="100%" height="100%" minWidth="350px" minHeight="150px">
-            <VStack padding={4} width="100%" height="100%">
-                <Heading size="md">{intl.formatMessage({ id: "title" })}</Heading>
-                <Alert status="error" maxWidth={550} borderRadius="4px" mt={2}>
-                    <AlertIcon />
-                    <AlertTitle>{intl.formatMessage({ id: "alertTitle" })}</AlertTitle>
-                    <AlertDescription>
+        <VStack padding={4} width="100%" height="100%" minWidth="350px" minHeight="150px">
+            <Heading>{intl.formatMessage({ id: "title" })}</Heading>
+            <Alert.Root status="error" size="lg" maxWidth={550} borderRadius="4px" mt={2}>
+                <Alert.Indicator />
+                <Alert.Content>
+                    <Alert.Title fontWeight="bold">
+                        {intl.formatMessage({ id: "alertTitle" })}
+                    </Alert.Title>
+                    <Alert.Description>
                         {intl.formatMessage({ id: "alertDescription" })}
-                    </AlertDescription>
-                </Alert>
+                    </Alert.Description>
+                </Alert.Content>
+            </Alert.Root>
 
-                {isDev && (
-                    <Box
-                        className="error-details"
-                        mt={4}
-                        p={2}
-                        maxWidth="100%"
-                        border={"dotted 2px"}
-                        borderColor={"red.600"}
-                        borderRadius={"4px"}
-                    >
-                        <Text color={"red.600"} fontWeight={"bold"}>
-                            {intl.formatMessage({ id: "details.title" }) + ":"}
-                        </Text>
-                        <ErrorRenderer {...props} />
-                    </Box>
-                )}
-            </VStack>
-        </Box>
+            {import.meta.env.DEV && (
+                <Box
+                    className="error-details"
+                    mt={4}
+                    p={2}
+                    maxWidth="100%"
+                    border={"dotted 2px"}
+                    borderColor={"red.600"}
+                    borderRadius={"4px"}
+                >
+                    <Text color={"red.600"} fontWeight={"bold"}>
+                        {intl.formatMessage({ id: "details.title" }) + ":"}
+                    </Text>
+                    <ErrorRenderer {...props} />
+                </Box>
+            )}
+        </VStack>
     );
 }
 

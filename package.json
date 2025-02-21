@@ -37,6 +37,7 @@
             "cross-spawn: https://github.com/advisories/GHSA-3xgq-45jj-v275",
             "nanoid: https://github.com/advisories/GHSA-mwcw-c2x4-8c55",
             "esbuild: https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+            "source-map: just to get rid of duplicated packages",
             "",
             "ignored cves",
             "============",
@@ -57,13 +58,16 @@
             "vite-plugin-eslint>rollup": ">=3.29.5",
             "cross-spawn@<7.0.5": ">=7.0.5",
             "nanoid@<3.3.8": "^3.3.8",
-            "esbuild@<0.25.0": ">=0.25.0"
+            "esbuild@<0.25.0": ">=0.25.0",
+            "source-map@<0.6.1": ">=0.6.1",
+            "stylis@<4.3.5": ">= 4.3.5"
         },
         "auditConfig": {
             "ignoreCves": []
         },
         "patchedDependencies": {
-            "@changesets/assemble-release-plan@6.0.4": "patches/@changesets__assemble-release-plan.patch"
+            "@changesets/assemble-release-plan@6.0.4": "patches/@changesets__assemble-release-plan.patch",
+            "@ark-ui/react": "patches/@ark-ui__react.patch"
         },
         "peerDependencyRules": {
             "allowedVersions": {
@@ -74,6 +78,7 @@
         }
     },
     "devDependencies": {
+        "@chakra-ui/cli": "catalog:",
         "@changesets/cli": "catalog:",
         "@open-pioneer/build-package-cli": "catalog:",
         "@open-pioneer/build-support": "catalog:",

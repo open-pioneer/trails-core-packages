@@ -1,7 +1,5 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
-import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import { Error } from "@open-pioneer/core";
 import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
 import { ReactNode, StrictMode } from "react";
@@ -11,18 +9,22 @@ import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSp
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
+import { CustomChakraProvider } from "./ChakraProvider";
+import { SystemConfig } from "@chakra-ui/react";
 
 export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
-    rootNode: HTMLDivElement;
-    container: Node;
-    theme: Record<string, unknown> | undefined;
+    appRoot: HTMLDivElement;
+    rootNode: Document | ShadowRoot;
+    config: SystemConfig | undefined;
 }
 
+// todo fix tests
+
 export class ReactIntegration {
-    private containerNode: Node;
-    private theme: Record<string, unknown> | undefined;
+    private rootNode: Document | ShadowRoot;
+    private chakraConfig: SystemConfig | undefined;
     private root: Root;
     private packageContext: PackageContextMethods;
 
@@ -52,20 +54,16 @@ export class ReactIntegration {
             packageContext: PackageContextMethods;
         }
     ) {
-        this.containerNode = options.container;
-        this.theme = options.theme;
-        this.root = createRoot(options.rootNode);
+        this.rootNode = options.rootNode;
+        this.chakraConfig = options.config;
+        this.root = createRoot(options.appRoot);
         this.packageContext = options.packageContext;
     }
 
     render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider
-                    container={this.containerNode}
-                    colorMode="light"
-                    theme={this.theme ?? defaultTrailsTheme}
-                >
+                <CustomChakraProvider rootNode={this.rootNode} config={this.chakraConfig}>
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
                     </PackageContext.Provider>

@@ -8,14 +8,14 @@ const element = createCustomElement({
     component: AppUI,
     appMetadata,
     async resolveConfig(ctx) {
-        const customLevel = ctx.getAttribute("level");
-        if (!customLevel) {
-            return undefined;
-        }
-
+        const customLevel = ctx.getAttribute("level") ?? "INFO";
+        const customPosition = ctx.getAttribute("position") ?? "top-right";
         const properties: ApplicationProperties = {
             "properties-app": {
                 notifierLevel: customLevel
+            },
+            "@open-pioneer/notifier": {
+                position: customPosition
             }
         };
         return { properties };

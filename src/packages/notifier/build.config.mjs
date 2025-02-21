@@ -3,10 +3,14 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
+    i18n: ["en", "de"],
     entryPoints: ["index"],
     services: {
         NotificationServiceImpl: {
-            provides: "notifier.NotificationService"
+            provides: "notifier.NotificationService",
+            references: {
+                appCtx: "runtime.ApplicationContext"
+            }
         }
     },
     ui: {
@@ -14,5 +18,8 @@ export default defineBuildConfig({
     },
     publishConfig: {
         strict: true
+    },
+    properties: {
+        position: "top-right"
     }
 });
