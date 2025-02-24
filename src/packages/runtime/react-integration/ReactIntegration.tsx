@@ -26,10 +26,11 @@ export interface ReactIntegrationOptions {
 
 export class ReactIntegration {
     private rootNode: Document | ShadowRoot;
-    private chakraConfig: SystemConfig | undefined;
-    private root: Root;
+    private appRoot: HTMLDivElement;
+    private reactRoot: Root;
     private packageContext: PackageContextMethods;
     private locale: string;
+    private chakraConfig: SystemConfig | undefined;
 
     static createForApp(options: ReactIntegrationOptions): ReactIntegration {
         const { serviceLayer, packages } = options;
@@ -58,17 +59,19 @@ export class ReactIntegration {
         }
     ) {
         this.rootNode = options.rootNode;
+        this.appRoot = options.appRoot;
+        this.reactRoot = createRoot(options.appRoot);
         this.chakraConfig = options.config;
-        this.root = createRoot(options.appRoot);
         this.packageContext = options.packageContext;
         this.locale = options.locale;
     }
 
     render(contentNode: ReactNode) {
-        this.root.render(
+        this.reactRoot.render(
             <StrictMode>
                 <CustomChakraProvider
                     rootNode={this.rootNode}
+                    appRoot={this.appRoot}
                     config={this.chakraConfig}
                     locale={this.locale}
                 >
@@ -81,7 +84,7 @@ export class ReactIntegration {
     }
 
     destroy() {
-        this.root.unmount();
+        this.reactRoot.unmount();
     }
 }
 

@@ -61,9 +61,9 @@ export interface PackageContextProviderProps {
  */
 export const PackageContextProvider: FC<PackageContextProviderProps> = (props) => {
     const { children, ...rest } = props;
-    const contextMethods = useMemo(() => createPackageContextMethods(rest), [rest]);
+    const [locale, contextMethods] = useMemo(() => createPackageContextMethods(rest), [rest]);
     return (
-        <CustomChakraProvider rootNode={document}>
+        <CustomChakraProvider rootNode={document} appRoot={document.body} locale={locale}>
             <InternalPackageContext.Provider value={contextMethods}>
                 {children}
             </InternalPackageContext.Provider>
@@ -73,14 +73,14 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
 
 function createPackageContextMethods(
     options: Omit<PackageContextProviderProps, "children">
-): PackageContextMethods {
+): [locale: string, PackageContextMethods] {
     const services = options?.services ?? {};
     const qualifiedServices = options?.qualifiedServices ?? {};
     const properties = options?.properties ?? {};
     const locale = options?.locale ?? "en";
     const messages = options?.messages ?? {};
     const cachedIntl: Record<string, PackageIntl> = {};
-    return {
+    const methods: PackageContextMethods = {
         getService(packageName, interfaceName, options) {
             if (!options.qualifier) {
                 const service = services[interfaceName];
@@ -134,4 +134,5 @@ function createPackageContextMethods(
             return (cachedIntl[packageName] ??= initIntl());
         }
     };
+    return [locale, methods];
 }

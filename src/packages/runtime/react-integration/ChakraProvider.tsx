@@ -13,9 +13,12 @@ import {
 } from "@chakra-ui/react";
 import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { FC, PropsWithChildren, useMemo, useRef } from "react";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
+import { Error } from "@open-pioneer/core";
+import { FC, PropsWithChildren, useEffect, useMemo, useRef } from "react";
+import { ErrorId } from "../errors";
 
+/** @internal */
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
      * Document root node used for styles etc.
@@ -24,6 +27,11 @@ export type CustomChakraProviderProps = PropsWithChildren<{
      * This is typically the shadow root.
      */
     rootNode: ShadowRoot | Document;
+
+    /**
+     * Application container (react's render target).
+     */
+    appRoot: HTMLElement;
 
     /**
      * Chakra system config (can be used to provide custom theme).
@@ -36,32 +44,8 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     locale?: string;
 }>;
 
-const appRoot = ".pioneer-root";
-
-function redirectHtmlProps(
-    css: Record<string, SystemStyleObject> | undefined
-): Record<string, SystemStyleObject> {
-    const { html, ...rest } = css ?? {};
-    if (!html) {
-        throw new Error("Internal error: expected global rules on html element.");
-    }
-    // Take default html styles and apply them to the host element instead
-    return {
-        ...rest,
-        [appRoot]: html
-    };
-}
-
-function redirectLightCondition(
-    conditions: Record<string, unknown> | undefined
-): Record<string, unknown> {
-    // Make sure light mode tokens are applied
-    return {
-        ...conditions,
-        // Before: ":root &, .light &"
-        light: `${appRoot} &, .light &`
-    };
-}
+const APP_ROOT = "pioneer-root";
+const APP_ROOT_CSS = `.${APP_ROOT}`;
 
 /**
  * Wraps the entire react application and configures chakra-ui (styling etc.).
@@ -69,8 +53,10 @@ function redirectLightCondition(
  * Exported so it can be used from the test-utils package.
  *
  * @internal
- */ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
+ */
+export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     rootNode,
+    appRoot,
     children,
     config = defaultTrailsConfig,
     locale = "en-US"
@@ -88,16 +74,27 @@ function redirectLightCondition(
         const mergedConfig = mergeConfigs(defaultConfig, config);
         return createSystem(
             mergedConfig,
+
+            // https://www.chakra-ui.com/docs/get-started/environments/shadow-dom
             defineConfig({
                 preflight: {
-                    scope: appRoot
+                    scope: APP_ROOT_CSS
                 },
-                cssVarsRoot: appRoot,
+                cssVarsRoot: APP_ROOT_CSS,
                 conditions: redirectLightCondition(mergedConfig.conditions),
                 globalCss: redirectHtmlProps(mergedConfig.globalCss)
             })
         );
     }, [config]);
+
+    useEffect(() => {
+        const classes = appRoot.classList;
+        const colorMode = "light"; // "light" | "dark"
+        classes.add(colorMode);
+        return () => {
+            classes.remove(colorMode);
+        };
+    }, [appRoot]);
 
     const cache = useEmotionCache(rootNode);
     return (
@@ -110,6 +107,31 @@ function redirectLightCondition(
         </CacheProvider>
     );
 };
+
+function redirectHtmlProps(
+    css: Record<string, SystemStyleObject> | undefined
+): Record<string, SystemStyleObject> {
+    const { html, ...rest } = css ?? {};
+    if (!html) {
+        throw new Error(ErrorId.INTERNAL, "Expected global rules on html element.");
+    }
+    // Take default html styles and apply them to the host element instead
+    return {
+        ...rest,
+        [APP_ROOT_CSS]: html
+    };
+}
+
+function redirectLightCondition(
+    conditions: Record<string, unknown> | undefined
+): Record<string, unknown> {
+    // Make sure light mode tokens are applied
+    return {
+        ...conditions,
+        // Before: ":root &, .light &"
+        light: `${APP_ROOT_CSS} &, .light &`
+    };
+}
 
 function useEmotionCache(container: Node): EmotionCache {
     const cacheRef = useRef<EmotionCache>(null);
