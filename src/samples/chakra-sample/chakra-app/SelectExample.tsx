@@ -37,7 +37,7 @@ export function SelectComponent() {
             <SelectRoot collection={frameworks} size="sm" width="320px" mb={4}>
                 <SelectLabel>New select component</SelectLabel>
                 <SelectTrigger>
-                    <SelectValueText placeholder="Selct an item" />
+                    <SelectValueText placeholder="Select an item" />
                 </SelectTrigger>
                 <SelectContent>
                     {frameworks.items.map((item) => (
