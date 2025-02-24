@@ -13,10 +13,12 @@ import { CustomChakraProvider } from "./ChakraProvider";
 import { SystemConfig } from "@chakra-ui/react";
 
 export interface ReactIntegrationOptions {
-    packages: Map<string, PackageRepr>;
-    serviceLayer: ServiceLayer;
     appRoot: HTMLDivElement;
     rootNode: Document | ShadowRoot;
+    packages: Map<string, PackageRepr>;
+    serviceLayer: ServiceLayer;
+
+    locale: string;
     config: SystemConfig | undefined;
 }
 
@@ -27,6 +29,7 @@ export class ReactIntegration {
     private chakraConfig: SystemConfig | undefined;
     private root: Root;
     private packageContext: PackageContextMethods;
+    private locale: string;
 
     static createForApp(options: ReactIntegrationOptions): ReactIntegration {
         const { serviceLayer, packages } = options;
@@ -58,12 +61,17 @@ export class ReactIntegration {
         this.chakraConfig = options.config;
         this.root = createRoot(options.appRoot);
         this.packageContext = options.packageContext;
+        this.locale = options.locale;
     }
 
     render(contentNode: ReactNode) {
         this.root.render(
             <StrictMode>
-                <CustomChakraProvider rootNode={this.rootNode} config={this.chakraConfig}>
+                <CustomChakraProvider
+                    rootNode={this.rootNode}
+                    config={this.chakraConfig}
+                    locale={this.locale}
+                >
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
                     </PackageContext.Provider>

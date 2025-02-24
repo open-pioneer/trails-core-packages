@@ -373,9 +373,10 @@ class ApplicationInstance {
         this.reactIntegration = ReactIntegration.createForApp({
             appRoot: appRoot,
             rootNode: shadowRoot,
-            config: elementOptions.chakraConfig,
             serviceLayer,
-            packages
+            packages,
+            locale: i18n.locale,
+            config: elementOptions.chakraConfig
         });
         const component = this.options.elementOptions.component ?? emptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -490,6 +491,7 @@ class ApplicationInstance {
         this.reactIntegration = ReactIntegration.createForErrorScreen({
             appRoot: appRoot,
             rootNode: shadowRoot,
+            locale: locale,
             config: elementOptions.chakraConfig
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));

@@ -3,17 +3,18 @@
 /**
  * @vitest-environment happy-dom
  */
+import { FormatNumber } from "@chakra-ui/react";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
-import { createElement, ReactNode } from "react";
-import { beforeEach, expect, it, afterEach, vi, describe } from "vitest";
-import { Service, ServiceConstructor } from "../Service";
-import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
+import { ReactNode, createElement } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PackageIntl, createEmptyI18n } from "../i18n";
+import { Service, ServiceConstructor } from "../Service";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ServiceRepr, createConstructorFactory } from "../service-layer/ServiceRepr";
+import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
@@ -358,12 +359,47 @@ it("should apply the configured chakra theme", async () => {
     expect(node.textContent).toBe("Color: #123456");
 });
 
+it("should apply the configured locale (en-US)", async () => {
+    const { integration, wrapper } = createIntegration({
+        disablePackage: true,
+        locale: "en-US"
+    });
+
+    function TestComponent(): ReactNode {
+        return createElement(FormatNumber, {
+            value: 123.456
+        });
+    }
+    act(() => {
+        integration.render(createElement(TestComponent));
+    });
+    expect(wrapper.textContent).toEqual("123.456");
+});
+
+it("should apply the configured locale (de-DE)", async () => {
+    const { integration, wrapper } = createIntegration({
+        disablePackage: true,
+        locale: "de-DE"
+    });
+
+    function TestComponent(): ReactNode {
+        return createElement(FormatNumber, {
+            value: 123.456
+        });
+    }
+    act(() => {
+        integration.render(createElement(TestComponent));
+    });
+    expect(wrapper.textContent).toEqual("123,456");
+});
+
 describe("integration for error screen ", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
             rootNode: document,
-            config: undefined
+            config: undefined,
+            locale: "en"
         });
 
         expect(integration).toBeInstanceOf(ReactIntegration);
@@ -373,7 +409,8 @@ describe("integration for error screen ", function () {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
             rootNode: document,
-            config: undefined
+            config: undefined,
+            locale: "en"
         });
 
         function TestComponent() {
@@ -410,6 +447,7 @@ function createIntegration(options?: {
     i18n?: PackageIntl;
     services?: ServiceSpec[];
     config?: Record<string, unknown>;
+    locale?: string;
 }): TestIntegration {
     const wrapper = document.createElement("div");
     const shadowRoot = wrapper.attachShadow({ mode: "open" });
@@ -448,7 +486,8 @@ function createIntegration(options?: {
         appRoot: wrapper,
         config: options?.config,
         packages,
-        serviceLayer
+        serviceLayer,
+        locale: options?.locale ?? "en"
     });
     return { integration, wrapper };
 }

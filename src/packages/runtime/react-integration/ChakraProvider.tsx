@@ -6,6 +6,7 @@ import {
     defaultConfig,
     defineConfig,
     EnvironmentProvider,
+    LocaleProvider,
     mergeConfigs,
     SystemConfig,
     SystemStyleObject
@@ -28,6 +29,11 @@ export type CustomChakraProviderProps = PropsWithChildren<{
      * Chakra system config (can be used to provide custom theme).
      */
     config?: SystemConfig;
+
+    /**
+     * Application locale for chakra's `LocaleProvider`.
+     */
+    locale?: string;
 }>;
 
 const appRoot = ".pioneer-root";
@@ -66,7 +72,8 @@ function redirectLightCondition(
  */ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     rootNode,
     children,
-    config = defaultTrailsConfig
+    config = defaultTrailsConfig,
+    locale = "en-US"
 }) => {
     /*
         Setup chakra integration:
@@ -96,7 +103,9 @@ function redirectLightCondition(
     return (
         <CacheProvider value={cache}>
             <EnvironmentProvider value={rootNode}>
-                <ChakraProvider value={system}>{children}</ChakraProvider>
+                <LocaleProvider locale={locale}>
+                    <ChakraProvider value={system}>{children}</ChakraProvider>
+                </LocaleProvider>
             </EnvironmentProvider>
         </CacheProvider>
     );
