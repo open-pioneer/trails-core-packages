@@ -45,7 +45,9 @@
             "",
             "patches",
             "=======",
-            "@changesets/assemble-release-plan: (also in overrides) don't bump major if peerDep has a minor release. see https://github.com/changesets/changesets/pull/1132"
+            "@changesets/assemble-release-plan: (also in overrides) don't bump major if peerDep has a minor release. see https://github.com/changesets/changesets/pull/1132",
+            "@ark-ui/react: Mount portal content within .pioneer-root element",
+            "@zag-js/interact-outside: Fix outside click detection in shadow dom (might be resolved by https://github.com/chakra-ui/zag/pull/2152)"
         ],
         "overrides": {
             "ol-mapbox-style": "workspace:disabled-package@*",
