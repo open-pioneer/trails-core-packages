@@ -21,10 +21,7 @@ import { ErrorId } from "../errors";
 /** @internal */
 export type CustomChakraProviderProps = PropsWithChildren<{
     /**
-     * Document root node used for styles etc.
-     * Note that updates of this property are not supported.
-     *
-     * This is typically the shadow root.
+     * Document root node.
      */
     rootNode: ShadowRoot | Document;
 
@@ -133,13 +130,28 @@ function redirectLightCondition(
     };
 }
 
-function useEmotionCache(container: Node): EmotionCache {
+function useEmotionCache(rootNode: Document | ShadowRoot): EmotionCache {
+    const stylesRoot = useMemo(
+        () => (isShadowRoot(rootNode) ? rootNode : rootNode.head),
+        [rootNode]
+    );
+
+    const originalStylesRoot = useRef<Node>(stylesRoot);
+    if (stylesRoot !== originalStylesRoot.current) {
+        // Needs some cleanup for the emotion cache below?
+        throw new Error(ErrorId.INTERNAL, "Changes of root node are not supported.");
+    }
+
     const cacheRef = useRef<EmotionCache>(null);
     if (!cacheRef.current) {
         cacheRef.current = createCache({
             key: "css",
-            container: container
+            container: stylesRoot
         });
     }
     return cacheRef.current;
+}
+
+function isShadowRoot(node: Node): node is ShadowRoot {
+    return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && "host" in node;
 }

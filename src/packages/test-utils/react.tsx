@@ -62,6 +62,7 @@ export interface PackageContextProviderProps {
 export const PackageContextProvider: FC<PackageContextProviderProps> = (props) => {
     const { children, ...rest } = props;
     const [locale, contextMethods] = useMemo(() => createPackageContextMethods(rest), [rest]);
+
     return (
         <CustomChakraProvider rootNode={document} appRoot={document.body} locale={locale}>
             <InternalPackageContext.Provider value={contextMethods}>
