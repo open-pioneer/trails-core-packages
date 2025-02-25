@@ -3,8 +3,12 @@ name: Publish Snapshots
 description: Publish development snapshots to the npm registry
 inputs:
   npm-token:
-    description: "NPM token for publishing packages"
+    description: NPM token for publishing packages
     required: true
+  snapshot-tag:
+    description: Name of the snapshot build tag (e.g. "dev")
+    required: false
+    default: "dev"
 runs:
   using: "composite"
   steps:
@@ -12,7 +16,9 @@ runs:
     # The changes should not be committed to any branch: the "releases" are not part of the version history.
     - name: Version packages
       shell: bash
-      run: pnpm changeset version --snapshot dev
+      run: |
+        echo "Publishing snapshot from ${{ github.ref_name}} using tag ${{ inputs.snapshot-tag }}"
+        pnpm changeset version --snapshot ${{ inputs.snapshot-tag }}
 
     # Note: must happen after versioning because the updated package.json files will be copied into dist/
     - name: Build packages
@@ -27,7 +33,7 @@ runs:
         echo "" >> publish.log
 
         # Stdout of publish contains the published package names and versions
-        pnpm publish -r --access public --tag dev --no-git-checks | tee -a publish.log
+        pnpm publish -r --access public --tag ${{ inputs.snapshot-tag }} --no-git-checks | tee -a publish.log
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
 
