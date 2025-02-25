@@ -122,9 +122,7 @@ export function AppUI() {
                     <Heading size={"md"}>Radio</Heading>
                     <RadioGroup defaultValue={"0"}>
                         <Stack direction="column" my={2} gap={1}>
-                            <Radio value="0">
-                                defaultChecked
-                            </Radio>
+                            <Radio value="0">defaultChecked</Radio>
                             <Radio disabled value="1">
                                 disabled
                             </Radio>
