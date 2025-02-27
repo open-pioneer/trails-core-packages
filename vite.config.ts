@@ -15,6 +15,7 @@ import eslint from "vite-plugin-eslint";
 const targets = ["chrome92", "edge92", "firefox91", "safari14"];
 
 const sampleSites = [
+    // TODO
     "samples/api-sample",
     "samples/chakra-sample",
     "samples/extension-sample",

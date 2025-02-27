@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
 import type { PackageIntl, Service } from "@open-pioneer/runtime";
 import {
     PackageContext as InternalPackageContext,
     PackageContextMethods
 } from "@open-pioneer/runtime-react-support";
+import { CustomChakraProvider } from "@open-pioneer/runtime/react-integration";
 import { FC, ReactNode, useMemo } from "react";
 import { createIntl } from "./vanilla";
 
@@ -61,9 +61,10 @@ export interface PackageContextProviderProps {
  */
 export const PackageContextProvider: FC<PackageContextProviderProps> = (props) => {
     const { children, ...rest } = props;
-    const contextMethods = useMemo(() => createPackageContextMethods(rest), [rest]);
+    const [locale, contextMethods] = useMemo(() => createPackageContextMethods(rest), [rest]);
+
     return (
-        <CustomChakraProvider container={document.body}>
+        <CustomChakraProvider rootNode={document} appRoot={document.body} locale={locale}>
             <InternalPackageContext.Provider value={contextMethods}>
                 {children}
             </InternalPackageContext.Provider>
@@ -73,14 +74,14 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
 
 function createPackageContextMethods(
     options: Omit<PackageContextProviderProps, "children">
-): PackageContextMethods {
+): [locale: string, PackageContextMethods] {
     const services = options?.services ?? {};
     const qualifiedServices = options?.qualifiedServices ?? {};
     const properties = options?.properties ?? {};
     const locale = options?.locale ?? "en";
     const messages = options?.messages ?? {};
     const cachedIntl: Record<string, PackageIntl> = {};
-    return {
+    const methods: PackageContextMethods = {
         getService(packageName, interfaceName, options) {
             if (!options.qualifier) {
                 const service = services[interfaceName];
@@ -134,4 +135,5 @@ function createPackageContextMethods(
             return (cachedIntl[packageName] ??= initIntl());
         }
     };
+    return [locale, methods];
 }

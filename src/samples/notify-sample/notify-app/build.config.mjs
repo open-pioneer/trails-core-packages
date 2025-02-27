@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { defineBuildConfig } from "@open-pioneer/build-support";
 export default defineBuildConfig({
+    i18n: ["en", "de"],
     ui: {
         references: ["notifier.NotificationService"]
     }

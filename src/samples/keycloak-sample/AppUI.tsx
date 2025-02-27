@@ -1,22 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { Box, Button, Code, Container, Flex, Heading, List, Text, VStack } from "@chakra-ui/react";
 import { AuthService, ForceAuth, useAuthState } from "@open-pioneer/authentication";
-import {
-    Box,
-    Button,
-    Code,
-    Container,
-    Flex,
-    Heading,
-    ListItem,
-    Text,
-    UnorderedList,
-    VStack
-} from "@open-pioneer/chakra-integration";
+import { HttpService } from "@open-pioneer/http";
 import { Notifier } from "@open-pioneer/notifier";
 import { useService } from "open-pioneer:react-hooks";
 import { LogoutButton } from "./LogoutButton";
-import { HttpService } from "@open-pioneer/http";
 
 export function AppUI() {
     const authService = useService<AuthService>("authentication.AuthService");
@@ -41,7 +30,7 @@ export function AppUI() {
                         Keycloak Sample
                     </Heading>
 
-                    <VStack mt={4} spacing={2} align="stretch">
+                    <VStack mt={4} gap={2} align="stretch">
                         <Heading as="h2" size="xl">
                             Additional Setup
                         </Heading>
@@ -53,19 +42,19 @@ export function AppUI() {
                             The following environment properties should be set via vite (e.g. in{" "}
                             <Code>.env.local</Code>):
                         </Text>
-                        <UnorderedList>
-                            <ListItem>
+                        <List.Root>
+                            <List.Item>
                                 <Code>VITE_KEYCLOAK_CONFIG_URL</Code> (the URL to the Keycloak
                                 instance)
-                            </ListItem>
-                            <ListItem>
+                            </List.Item>
+                            <List.Item>
                                 <Code>VITE_KEYCLOAK_CONFIG_REALM</Code> (the Keycloak realm)
-                            </ListItem>
-                            <ListItem>
+                            </List.Item>
+                            <List.Item>
                                 <Code>VITE_KEYCLOAK_CONFIG_CLIENT_ID</Code> (the client id of this
                                 application)
-                            </ListItem>
-                        </UnorderedList>
+                            </List.Item>
+                        </List.Root>
 
                         <Text textAlign="center">
                             <Text as="b">Status: </Text>
@@ -91,7 +80,7 @@ export function AppUI() {
                         align="center"
                         p={10}
                         mt={2}
-                        spacing={3}
+                        gap={3}
                         border="2px solid red"
                         borderRadius={5}
                     >

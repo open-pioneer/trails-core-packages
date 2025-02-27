@@ -5,7 +5,7 @@ exports[`element API > should throw an error when trying to use the element's AP
 exports[`simple rendering > should render use styles 1`] = `
 [
   <style>
-    :host { all: initial; display: block; }
+    @layer base { :host { all: initial; display: block; } }
   </style>,
   <style>
     .test { color: red }
