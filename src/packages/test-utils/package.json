@@ -16,13 +16,13 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
+        "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",
         "@testing-library/react": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "@testing-library/dom": "catalog:",
-        "@formatjs/intl": "catalog:",
-        "@open-pioneer/chakra-integration": "workspace:^"
+        "@formatjs/intl": "catalog:"
     },
     "devDependencies": {
         "core-packages": "workspace:^"

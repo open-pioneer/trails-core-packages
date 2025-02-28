@@ -1,22 +1,17 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentType, createElement } from "react";
 import {
     createAbortError,
     createLogger,
     createManualPromise,
     destroyResource,
     Error,
+    getErrorChain,
     ManualPromise,
     Resource,
     throwAbortError
 } from "@open-pioneer/core";
-import { ErrorId } from "./errors";
-import { ApplicationMetadata, PackageMetadata } from "./metadata";
-import { PackageRepr, createPackages } from "./service-layer/PackageRepr";
-import { ServiceLayer } from "./service-layer/ServiceLayer";
-import { getErrorChain } from "@open-pioneer/core";
-import { ReactIntegration } from "./react-integration/ReactIntegration";
+import { ComponentType, createElement } from "react";
 import { ApiMethods, ApiService } from "./api";
 import {
     createBuiltinPackage,
@@ -24,10 +19,21 @@ import {
     RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
     RUNTIME_AUTO_START
 } from "./builtin-services";
-import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
+import { ErrorId } from "./errors";
+import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
+import { ApplicationMetadata, PackageMetadata } from "./metadata";
+import { ReactIntegration } from "./react-integration/ReactIntegration";
+import { ReferenceSpec } from "./service-layer/InterfaceSpec";
+import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
+import { ServiceLayer } from "./service-layer/ServiceLayer";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
+import { SystemConfig } from "@chakra-ui/react";
+
+// Imported for typedoc link
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { type ApiExtension } from "./api";
+
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -55,6 +61,11 @@ export interface CustomElementOptions {
     config?: ApplicationConfig;
 
     /**
+     * Chakra theming object.
+     */
+    chakraConfig?: SystemConfig;
+
+    /**
      * Function to provide additional application defined configuration parameters.
      *
      * Compared to {@link config}, this function receives a context object
@@ -63,11 +74,6 @@ export interface CustomElementOptions {
      * Parameters returned by this function take precedence over the ones defined by {@link config}.
      */
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
-
-    /**
-     * Chakra theming object.
-     */
-    theme?: Record<string, unknown>;
 }
 
 /**
@@ -102,6 +108,12 @@ export interface ApplicationConfig {
      * Properties specified here will override default properties of the application's packages.
      */
     properties?: ApplicationProperties | undefined;
+
+    /**
+     * TODO: Decide on a name for this property.
+     * Perhaps include a new object (e.g. `environment.shadowRoot` or `component.shadowRoot`).
+     */
+    disableShadowRoot?: boolean;
 }
 
 /**
@@ -123,7 +135,12 @@ export interface ApplicationProperties {
  * The interface implemented by web components produced via {@link createCustomElement}.
  */
 export interface ApplicationElement extends HTMLElement {
-    /** Resolves to the element's API when the application has started. */
+    /**
+     * Resolves to the element's API when the application has started.
+     *
+     * The API exposed by an application can be defined by implementing an {@link ApiExtension}.
+     * For more details, open the documentation of the `@open-pioneer/integration` package.
+     */
     when(): Promise<ApiMethods>;
 }
 
@@ -150,7 +167,7 @@ export interface ApplicationElementConstructor {
  */
 export function createCustomElement(options: CustomElementOptions): ApplicationElementConstructor {
     class PioneerApplication extends HTMLElement implements ApplicationElement {
-        #shadowRoot: ShadowRoot;
+        #shadowRoot: ShadowRoot | undefined;
         #instance: ApplicationInstance | undefined;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -163,9 +180,14 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         constructor() {
             super();
 
-            this.#shadowRoot = this.attachShadow({
-                mode: "open"
-            });
+            const disableShadowRoot = options.config?.disableShadowRoot ?? false;
+            if (!disableShadowRoot) {
+                this.#shadowRoot = this.attachShadow({
+                    mode: "open"
+                });
+            } else {
+                LOG.debug("Creating component instance without shadow root");
+            }
 
             if (import.meta.env.DEV) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -245,7 +267,7 @@ interface InstanceOptions {
     hostElement: HTMLElement;
 
     /** The shadow root inside the host element that contains the rest of the application. */
-    shadowRoot: ShadowRoot;
+    shadowRoot: ShadowRoot | undefined;
 
     /** Trails options for the application. */
     elementOptions: CustomElementOptions;
@@ -274,7 +296,9 @@ class ApplicationInstance {
     private api: ApiMethods | undefined; // Present once started
 
     private state: ApplicationState = "not-started";
-    private container: HTMLDivElement | undefined;
+    private root: Document | ShadowRoot; // The root node of the application (for styles, node queries, etc.)
+    private container: HTMLElement | ShadowRoot; // parent of .pioneer-root
+    private appRoot: HTMLDivElement | undefined; // .pioneer-root
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
@@ -283,6 +307,8 @@ class ApplicationInstance {
 
     constructor(options: InstanceOptions) {
         this.options = options;
+        this.container = options.shadowRoot ?? options.hostElement;
+        this.root = options.shadowRoot ?? document;
     }
 
     start() {
@@ -321,8 +347,8 @@ class ApplicationInstance {
     private reset() {
         this.apiPromise?.reject(createAbortError());
         this.reactIntegration = destroyResource(this.reactIntegration);
-        this.options.shadowRoot.replaceChildren();
-        this.container = undefined;
+        this.container.replaceChildren();
+        this.appRoot = undefined;
         this.lifecycleEvents = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
@@ -338,7 +364,8 @@ class ApplicationInstance {
     }
 
     private async startImpl() {
-        const { shadowRoot, hostElement, elementOptions, overrides } = this.options;
+        const { hostElement, elementOptions, overrides } = this.options;
+        const root = this.root;
 
         // Resolve custom application config
         const config = (this.config = await gatherConfig(hostElement, elementOptions, overrides));
@@ -350,13 +377,13 @@ class ApplicationInstance {
         this.checkAbort();
 
         // Setup application root node in the shadow dom
-        const container = (this.container = createContainer(i18n.locale));
+        const appRoot = (this.appRoot = createAppRoot(i18n.locale));
         const styles = this.initStyles();
-        shadowRoot.replaceChildren(container, ...styles);
+        this.container.replaceChildren(appRoot, ...styles);
 
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
-            container,
+            container: appRoot,
             properties: config.properties,
             i18n
         });
@@ -370,11 +397,12 @@ class ApplicationInstance {
 
         // Launch react
         this.reactIntegration = ReactIntegration.createForApp({
-            rootNode: container,
-            container: shadowRoot,
-            theme: elementOptions.theme,
+            appRoot: appRoot,
+            rootNode: root,
             serviceLayer,
-            packages
+            packages,
+            locale: i18n.locale,
+            config: elementOptions.chakraConfig
         });
         const component = this.options.elementOptions.component ?? emptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -387,7 +415,9 @@ class ApplicationInstance {
     private initStyles() {
         // Prevent inheritance of certain css values and normalize to display: block by default.
         // See https://open-wc.org/guides/knowledge/styling/styles-piercing-shadow-dom/
-        const builtinStyles = ":host { all: initial; display: block; }";
+        // NOTE: layer base comes from chakra (used for css resets etc).
+        // TODO: Merge with global styles in chakra integration package
+        const builtinStyles = "@layer base { :host { all: initial; display: block; } }";
         const builtinStylesNode = document.createElement("style");
         applyStyles(builtinStylesNode, { value: builtinStyles });
 
@@ -469,31 +499,33 @@ class ApplicationInstance {
     }
 
     private showErrorScreen(error: globalThis.Error) {
+        const container = this.container;
         const { shadowRoot, elementOptions } = this.options;
 
         const userLocales = getBrowserLocales();
         const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
         const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
-
-        const container = (this.container = createContainer(locale));
-        container.classList.add("pioneer-root-error-screen");
-
         const messages =
             MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
             MESSAGES_BY_LOCALE["en"];
         const intl = createPackageIntl(locale, messages);
+
+        const appRoot = (this.appRoot = createAppRoot(locale));
+        appRoot.classList.add("pioneer-root-error-screen");
+        const styles = this.initStyles();
+        container.replaceChildren(appRoot, ...styles);
+
         this.reactIntegration = ReactIntegration.createForErrorScreen({
-            rootNode: container,
-            container: shadowRoot,
-            theme: elementOptions.theme
+            appRoot: appRoot,
+            rootNode: shadowRoot ?? document,
+            locale: locale,
+            config: elementOptions.chakraConfig
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
-
-        shadowRoot.replaceChildren(container);
     }
 }
 
-function createContainer(locale: string) {
+function createAppRoot(locale: string) {
     // Setup application root node in the shadow dom
     const container = document.createElement("div");
     container.classList.add("pioneer-root");

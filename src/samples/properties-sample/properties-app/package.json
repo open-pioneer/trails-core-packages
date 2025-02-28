@@ -3,9 +3,10 @@
     "version": "0.0.20",
     "private": true,
     "dependencies": {
-        "@open-pioneer/chakra-integration": "workspace:^",
+        "@chakra-ui/react": "catalog:",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/notifier": "workspace:^",
         "react": "catalog:"
     }
 }

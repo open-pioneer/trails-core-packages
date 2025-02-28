@@ -5,7 +5,7 @@ import { ServiceOptions } from "../Service";
 
 export interface ApplicationContextProperties {
     host: HTMLElement;
-    shadowRoot: ShadowRoot;
+    shadowRoot: ShadowRoot | undefined;
     container: HTMLElement;
     locale: string;
     supportedLocales: string[];
@@ -16,7 +16,7 @@ export interface ApplicationContextProperties {
 
 export class ApplicationContextImpl implements ApplicationContext {
     #host: HTMLElement;
-    #shadowRoot: ShadowRoot;
+    #shadowRoot: ShadowRoot | undefined;
     #container: HTMLElement;
     #locale: string;
     #supportedLocales: readonly string[];
@@ -35,7 +35,11 @@ export class ApplicationContextImpl implements ApplicationContext {
         return this.#host;
     }
 
-    getShadowRoot(): ShadowRoot {
+    getRoot(): Document | ShadowRoot {
+        return this.#shadowRoot ?? document;
+    }
+
+    getShadowRoot(): ShadowRoot | undefined {
         return this.#shadowRoot;
     }
 

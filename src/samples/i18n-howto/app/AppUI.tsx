@@ -1,28 +1,15 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    Container,
-    Heading,
-    Text,
-    Input,
-    Box,
-    Stack,
-    StackDivider,
-    RadioGroup,
-    Radio,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper
-} from "@open-pioneer/chakra-integration";
+import { Container, Stack, Text, Heading, StackSeparator, Box, Input } from "@chakra-ui/react";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useState } from "react";
+import { Radio, RadioGroup } from "./snippets/radio";
+import { NumberInputField, NumberInputRoot } from "./snippets/number-input";
 
 export function AppUI() {
     const intl = useIntl();
     return (
-        <Container>
+        <Container maxWidth="xl">
             <Heading as="h1" size="lg">
                 {intl.formatMessage({ id: "heading" })}
             </Heading>
@@ -37,8 +24,8 @@ function ExampleStack() {
         <Stack
             mb={5}
             mt={5}
-            divider={<StackDivider borderColor="gray.200" />}
-            spacing="24px"
+            separator={<StackSeparator borderColor="gray.200" />}
+            gap="24px"
             align="stretch"
         >
             <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
@@ -89,20 +76,12 @@ function PluralsExample() {
             <Heading as="h4" size="md">
                 {intl.formatMessage({ id: "plurals.heading" })}
             </Heading>
-            <RadioGroup onChange={setValue} value={value}>
-                <Stack spacing={4} direction="row">
-                    <Radio size="md" value="0">
-                        0
-                    </Radio>
-                    <Radio size="md" value="1">
-                        1
-                    </Radio>
-                    <Radio size="md" value="42">
-                        42
-                    </Radio>
-                    <Radio size="md" value="99">
-                        99
-                    </Radio>
+            <RadioGroup onValueChange={(e) => setValue(e.value)} value={value}>
+                <Stack gap={4} direction="row">
+                    <Radio value="0">0</Radio>
+                    <Radio value="1">1</Radio>
+                    <Radio value="42">42</Radio>
+                    <Radio value="99">99</Radio>
                 </Stack>
             </RadioGroup>
             <Text mb="8px">{intl.formatMessage({ id: "plurals.value" }, { n: value })}</Text>
@@ -124,16 +103,17 @@ function SelectionExample() {
                 onChange={(evt) => setValue1(evt.target.value)}
                 placeholder={intl.formatMessage({ id: "interpolation.placeholder" })}
                 size="sm"
+                mb={"5px"}
             />
-            <RadioGroup onChange={setValue2} value={value2}>
-                <Stack spacing={4} direction="row">
-                    <Radio size="md" value="female">
+            <RadioGroup onValueChange={(e) => setValue2(e.value)} value={value2}>
+                <Stack gap={4} direction="row">
+                    <Radio value="female">
                         {intl.formatMessage({ id: "selection.gender.female" })}
                     </Radio>
-                    <Radio size="md" value="male">
+                    <Radio value="male">
                         {intl.formatMessage({ id: "selection.gender.male" })}
                     </Radio>
-                    <Radio size="md" value="other">
+                    <Radio value="other">
                         {intl.formatMessage({ id: "selection.gender.other" })}
                     </Radio>
                 </Stack>
@@ -147,24 +127,26 @@ function SelectionExample() {
 
 function NumberFormatExample() {
     const intl = useIntl();
-    const [value, setValue] = useState("424224.24");
+    const [value, setValue] = useState("2334232.24");
     return (
         <>
             <Heading as="h4" size="md">
                 {intl.formatMessage({ id: "numberformat.heading" })}
             </Heading>
-            <NumberInput
-                onChange={(valueString) => setValue(valueString)}
+            <NumberInputRoot
+                onValueChange={(valueChangeDetails) => {
+                    setValue(valueChangeDetails.value);
+                }}
                 value={value}
-                precision={2}
                 step={0.25}
+                formatOptions={{
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    useGrouping: false
+                }}
             >
                 <NumberInputField />
-                <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                </NumberInputStepper>
-            </NumberInput>
+            </NumberInputRoot>
             <Text mb="8px">
                 {intl.formatMessage({ id: "numberformat.example.currency1" })}
                 {intl.formatNumber(+value, { style: "currency", currency: "EUR" })}
