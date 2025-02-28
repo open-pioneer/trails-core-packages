@@ -65,8 +65,8 @@ async function create() {
     const service = await createService(NotificationServiceImpl, {
         references: {
             appCtx: {
-                getShadowRoot() {
-                    return document as any;
+                getRoot() {
+                    return document;
                 }
             } satisfies Partial<ApplicationContext>
         }

@@ -75,9 +75,9 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
             // https://www.chakra-ui.com/docs/get-started/environments/shadow-dom
             defineConfig({
                 preflight: {
-                    scope: APP_ROOT_CSS
+                    scope: `:root, ${APP_ROOT_CSS}`
                 },
-                cssVarsRoot: APP_ROOT_CSS,
+                cssVarsRoot: `:root, ${APP_ROOT_CSS}`,
                 conditions: redirectLightCondition(mergedConfig.conditions),
                 globalCss: redirectHtmlProps(mergedConfig.globalCss)
             })
@@ -126,7 +126,7 @@ function redirectLightCondition(
     return {
         ...conditions,
         // Before: ":root &, .light &"
-        light: `${APP_ROOT_CSS} &, .light &`
+        light: `:root, ${APP_ROOT_CSS} &, .light &`
     };
 }
 

@@ -40,7 +40,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
     constructor({ references: { appCtx }, properties }: ServiceOptions<References>) {
         const typedProperties = properties as NotifierProperties;
 
-        const rootNode = appCtx.getShadowRoot();
+        const rootNode = appCtx.getRoot();
         this.toaster = createToaster({
             placement: getPlacement(typedProperties.position),
             pauseOnPageIdle: true,
