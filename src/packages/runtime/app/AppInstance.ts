@@ -21,10 +21,10 @@ import {
 import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
 import { ApplicationConfig, ApplicationProperties, CustomElementOptions } from "../CustomElement";
 import { ErrorId } from "../errors";
-import { ErrorScreen, MESSAGES_BY_LOCALE } from "../ErrorScreen";
+import { ErrorScreen, MESSAGES_BY_LOCALE } from "../react-integration/ErrorScreen";
 import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "../i18n";
 import { PackageMetadata } from "../metadata";
-import { ReactIntegration } from "../react-integration/ReactIntegration";
+import { EmptyComponent, ReactIntegration } from "../react-integration/ReactIntegration";
 import { ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
@@ -176,7 +176,7 @@ export class AppInstance {
             locale: i18n.locale,
             config: elementOptions.chakraConfig
         });
-        const component = this.options.elementOptions.component ?? emptyComponent;
+        const component = this.options.elementOptions.component ?? EmptyComponent;
         this.reactIntegration.render(createElement(component));
         this.state = "started";
 
@@ -381,8 +381,4 @@ function applyStyles(styleNode: HTMLStyleElement, styles: { value: string } | un
     cssValue = cssValue.replace(/\/\*# sourceMappingURL=.*$/, "");
     const cssNode = document.createTextNode(cssValue);
     styleNode.replaceChildren(cssNode);
-}
-
-function emptyComponent() {
-    return null;
 }

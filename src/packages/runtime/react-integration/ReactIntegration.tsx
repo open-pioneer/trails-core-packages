@@ -89,6 +89,10 @@ export class ReactIntegration {
     }
 }
 
+export function EmptyComponent(): ReactNode {
+    return null;
+}
+
 function createPackageContext(
     serviceLayer: ServiceLayer,
     packages: Map<string, PackageRepr>
