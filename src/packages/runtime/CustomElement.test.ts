@@ -685,7 +685,7 @@ it("renders an error screen when the app fails to start", async () => {
         }
     });
 
-    const { node } = await renderComponent(elem);
+    const { node, shadowRoot } = await renderComponentShadowDOM(elem);
     await waitFor(() => {
         const state = (node as InternalElementType).$inspectElementState?.().state;
         if (state !== "error") {
@@ -693,11 +693,16 @@ it("renders an error screen when the app fails to start", async () => {
         }
     });
 
-    const errorScreen = node.shadowRoot?.querySelector("div");
-    expect(errorScreen).not.toBe(undefined);
-    expect(errorScreen?.className).toBe("pioneer-root pioneer-root-error-screen");
-    const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
-        child.textContent?.includes("Error")
-    );
-    expect(includesErrorText).toBe(true);
+    const errorScreen = shadowRoot.querySelector("div.pioneer-root")!;
+    expect(errorScreen).toBeTruthy();
+
+    const classes = Array.from(errorScreen.classList);
+    expect(classes).toContain("pioneer-root-error-screen");
+
+    await waitFor(() => {
+        const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
+            child.textContent?.includes("Error")
+        );
+        expect(includesErrorText).toBe(true);
+    });
 });

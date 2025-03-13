@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { SystemConfig } from "@chakra-ui/react";
 import { Error } from "@open-pioneer/core";
 import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
 import { ReactNode, StrictMode } from "react";
@@ -10,11 +11,11 @@ import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "./ChakraProvider";
-import { SystemConfig } from "@chakra-ui/react";
+import { RootNode } from "../dom";
 
 export interface ReactIntegrationOptions {
     appRoot: HTMLDivElement;
-    rootNode: Document | ShadowRoot;
+    rootNode: RootNode;
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
 
@@ -25,7 +26,7 @@ export interface ReactIntegrationOptions {
 // todo fix tests
 
 export class ReactIntegration {
-    private rootNode: Document | ShadowRoot;
+    private rootNode: RootNode;
     private appRoot: HTMLDivElement;
     private reactRoot: Root;
     private packageContext: PackageContextMethods;

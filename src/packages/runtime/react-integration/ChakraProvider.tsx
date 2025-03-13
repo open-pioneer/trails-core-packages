@@ -15,7 +15,8 @@ import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { Error } from "@open-pioneer/core";
-import { FC, PropsWithChildren, useEffect, useMemo, useRef } from "react";
+import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { APP_ROOT_CLASS, getStylesRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
 
 /** @internal */
@@ -23,7 +24,7 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     /**
      * Document root node.
      */
-    rootNode: ShadowRoot | Document;
+    rootNode: RootNode;
 
     /**
      * Application container (react's render target).
@@ -41,8 +42,7 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     locale?: string;
 }>;
 
-const APP_ROOT = "pioneer-root";
-const APP_ROOT_CSS = `.${APP_ROOT}`;
+const APP_ROOT_CSS = `.${APP_ROOT_CLASS}`;
 
 /**
  * Wraps the entire react application and configures chakra-ui (styling etc.).
@@ -75,9 +75,9 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
             // https://www.chakra-ui.com/docs/get-started/environments/shadow-dom
             defineConfig({
                 preflight: {
-                    scope: `:root, ${APP_ROOT_CSS}`
+                    scope: APP_ROOT_CSS
                 },
-                cssVarsRoot: `:root, ${APP_ROOT_CSS}`,
+                cssVarsRoot: APP_ROOT_CSS,
                 conditions: redirectLightCondition(mergedConfig.conditions),
                 globalCss: redirectHtmlProps(mergedConfig.globalCss)
             })
@@ -95,13 +95,15 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
 
     const cache = useEmotionCache(rootNode);
     return (
-        <CacheProvider value={cache}>
-            <EnvironmentProvider value={rootNode}>
-                <LocaleProvider locale={locale}>
-                    <ChakraProvider value={system}>{children}</ChakraProvider>
-                </LocaleProvider>
-            </EnvironmentProvider>
-        </CacheProvider>
+        cache && (
+            <CacheProvider value={cache}>
+                <EnvironmentProvider value={rootNode} portalNode={appRoot}>
+                    <LocaleProvider locale={locale}>
+                        <ChakraProvider value={system}>{children}</ChakraProvider>
+                    </LocaleProvider>
+                </EnvironmentProvider>
+            </CacheProvider>
+        )
     );
 };
 
@@ -126,32 +128,26 @@ function redirectLightCondition(
     return {
         ...conditions,
         // Before: ":root &, .light &"
-        light: `:root, ${APP_ROOT_CSS} &, .light &`
+        light: `${APP_ROOT_CSS} &, .light &`
     };
 }
 
-function useEmotionCache(rootNode: Document | ShadowRoot): EmotionCache {
-    const stylesRoot = useMemo(
-        () => (isShadowRoot(rootNode) ? rootNode : rootNode.head),
-        [rootNode]
-    );
+function useEmotionCache(rootNode: RootNode): EmotionCache | undefined {
+    const stylesRoot = useMemo(() => getStylesRoot(rootNode), [rootNode]);
 
-    const originalStylesRoot = useRef<Node>(stylesRoot);
-    if (stylesRoot !== originalStylesRoot.current) {
-        // Needs some cleanup for the emotion cache below?
-        throw new Error(ErrorId.INTERNAL, "Changes of root node are not supported.");
-    }
-
-    const cacheRef = useRef<EmotionCache>(null);
-    if (!cacheRef.current) {
-        cacheRef.current = createCache({
+    const [cache, setCache] = useState<EmotionCache | undefined>();
+    useEffect(() => {
+        const cache = createCache({
             key: "css",
             container: stylesRoot
         });
-    }
-    return cacheRef.current;
-}
-
-function isShadowRoot(node: Node): node is ShadowRoot {
-    return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && "host" in node;
+        setCache(cache);
+        return () => {
+            setCache(undefined);
+            for (const tag of cache.sheet.tags) {
+                tag.remove();
+            }
+        };
+    }, [stylesRoot]);
+    return cache;
 }
