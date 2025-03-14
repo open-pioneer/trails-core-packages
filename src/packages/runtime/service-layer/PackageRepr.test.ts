@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { expect, it } from "vitest";
-import { AppI18n, createEmptyI18n, PackageIntl } from "../i18n";
+import { AppIntl, createEmptyPackageIntl, PackageIntl } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { expectError } from "../test-utils/expectError";
 import { createPackages, PackageRepr } from "./PackageRepr";
@@ -53,11 +53,11 @@ it("parses package metadata into internal package representations", function () 
         }
     };
 
-    const testi18n: AppI18n = {
+    const testi18n: AppIntl = {
         locale: "test-locale",
         supportedMessageLocales: [],
         createPackageI18n() {
-            return createEmptyI18n("zh-CN");
+            return createEmptyPackageIntl("zh-CN");
         },
         supportsLocale() {
             return true;
@@ -232,5 +232,5 @@ function createPackageFromMetadata(
     properties?: Record<string, unknown>,
     i18n?: PackageIntl
 ) {
-    return PackageRepr.create(data, i18n ?? createEmptyI18n(), properties);
+    return PackageRepr.create(data, i18n ?? createEmptyPackageIntl(), properties);
 }
