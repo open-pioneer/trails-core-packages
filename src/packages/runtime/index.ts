@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 export * from "./api";
-export { type PackageIntl } from "./i18n";
+export { type PackageIntl, type PackageIntlExtensions, type RichTextValue } from "./i18n";
 export {
     type ApplicationElement,
     type ApplicationElementConstructor,
