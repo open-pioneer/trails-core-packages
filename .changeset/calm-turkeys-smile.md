@@ -10,6 +10,7 @@ _Example with react node as value:_
 
 ```tsx
 function Example() {
+    const intl = useIntl();
     // Given i18n message "Hello, {name}!"
     // replaces 'name' with the given react node:
     const message = intl.formatRichMessage(
@@ -26,6 +27,7 @@ _Example with basic formatting:_
 
 ```tsx
 function Example() {
+    const intl = useIntl();
     // Given i18n message "Hello, <strong>{name}</strong>!"
     // renders with actual <strong> html node:
     return <Box>{intl.formatRichMessage({ id: "foo" }, { name: "User" })}</Box>;
@@ -38,6 +40,7 @@ _Example with custom tag:_
 
 ```tsx
 function Example() {
+    const intl = useIntl();
     // Given i18n message "Open <foo>the door</foo>!",
     // renders 'foo' using the formatter function below:
     const message = intl.formatRichMessage(

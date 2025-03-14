@@ -40,6 +40,7 @@ export interface PackageIntlExtensions {
      *
      * ```tsx
      * function Example() {
+     *   const intl = useIntl();
      *   // Given i18n message "Hello, {name}!"
      *   // replaces 'name' with the given react node:
      *   const message = intl.formatRichMessage({ id: "foo"}, {
@@ -53,6 +54,7 @@ export interface PackageIntlExtensions {
      *
      * ```tsx
      * function Example() {
+     *   const intl = useIntl();
      *   // Given i18n message "Hello, <strong>{name}</strong>!"
      *   // renders with actual <strong> html node:
      *   return <Box>{intl.formatRichMessage({ id: "foo"}, { name: "User" })}</Box>;
@@ -66,6 +68,7 @@ export interface PackageIntlExtensions {
      *
      * ```tsx
      * function Example() {
+     *   const intl = useIntl();
      *   // Given i18n message "Open <foo>the door</foo>!",
      *   // renders 'foo' using the formatter function below:
      *   const message = intl.formatRichMessage({ id: "foo"}, {
