@@ -31,10 +31,7 @@ export function getStylesRoot(node: RootNode): ShadowRoot | HTMLHeadElement {
 }
 
 /**
- * Creates the node that contains all other (normal) application content.
- *
- * When using shadow roots, this also contains portal contents such as modals, tooltips, etc.
- * When not using shadow roots, portal content is mounted on the document body instead (this is a chakra limitation).
+ * Creates the node that contains all other application content.
  */
 export function createAppRoot(locale: string): HTMLDivElement {
     // Setup application root node in the shadow dom
