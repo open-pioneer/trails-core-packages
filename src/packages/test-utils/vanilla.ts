@@ -1,12 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    createIntlCache,
-    createIntl as createFormatJsIntl,
-    IntlErrorCode,
-    OnErrorFn
-} from "@formatjs/intl";
 import { PackageIntl } from "@open-pioneer/runtime";
+import { createPackageIntl } from "@open-pioneer/runtime/test-support";
 
 /** Options for `createIntl`. */
 export interface I18nOptions {
@@ -49,24 +44,8 @@ export function createIntl(options?: I18nOptions): PackageIntl {
     const messages = options?.messages ?? {};
     const locale = options?.locale ?? "en";
     const defaultMessageLocale = options?.defaultMessageLocale ?? "en";
-    const cache = createIntlCache();
-    const intl = createFormatJsIntl(
-        {
-            locale,
-            defaultLocale: defaultMessageLocale,
-            messages,
-            onError: INTL_ERROR_HANDLER
-        },
-        cache
-    );
-    return intl;
+    return createPackageIntl(locale, messages, {
+        defaultLocale: defaultMessageLocale,
+        suppressNotFoundError: true
+    });
 }
-
-/** Hides missing translation errors during tests */
-const INTL_ERROR_HANDLER: OnErrorFn = (err) => {
-    if (err.code === IntlErrorCode.MISSING_TRANSLATION) {
-        return;
-    }
-
-    console.error(err);
-};
