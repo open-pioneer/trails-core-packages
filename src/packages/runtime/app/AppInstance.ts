@@ -278,8 +278,6 @@ export class AppInstance {
     }
 
     private showErrorScreen(error: globalThis.Error) {
-        const { rootNode: shadowRoot, elementOptions } = this.options;
-
         const userLocales = getBrowserLocales();
         const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
         const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
@@ -295,9 +293,9 @@ export class AppInstance {
 
         this.reactIntegration = ReactIntegration.createForErrorScreen({
             appRoot: appRoot,
-            rootNode: shadowRoot ?? document,
+            rootNode: this.rootNode,
             locale: locale,
-            config: elementOptions.chakraConfig
+            config: this.options.elementOptions.chakraConfig
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }
