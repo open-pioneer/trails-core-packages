@@ -22,43 +22,53 @@ export const colorPalette = {
 
 const semanticTokens = {
     colors: {
+        // define semantic tokens to allow usage of `colorPalette` property in components
+        // see: https://chakra-ui.com/docs/theming/customization/colors#color-palette
         trails: {
             solid: { value: "{colors.trails.500}" },
-            contrast: { value: "{colors.trails.100}" },
+            contrast: { value: "{colors.white}" },
             fg: { value: "{colors.trails.700}" },
             muted: { value: "{colors.trails.100}" },
-            subtle: { value: "{colors.trails.200}" },
+            subtle: { value: "{colors.trails.50}" },
             emphasized: { value: "{colors.trails.300}" },
             focusRing: { value: "{colors.trails.500}" }
         },
-        background_body: { value: "{colors.white}" },
-        background_primary: { value: "{colors.trails.500}" },
-        background_light: { value: "{colors.trails.50}" },
-        //background_secondary: { value: "{colors.trails.70}0"},
-        placeholder: { value: "{colors.gray.500}" },
-        font_primary: { value: "{colors.black}" },
-        //font_secondary: { value: "{colors.gray.50}0"},
-        font_inverse: { value: "{colors.white}" },
-        font_link: { value: "{colors.trails.600}" },
-        border: { value: "{colors.gray.300}" },
 
-        //override internal chakra theming variables
+        // define custom semantic tokens
+        trails_background_body: { value: "{colors.white}" },
+        trails_background_primary: { value: "{colors.trails.500}" },
+        trails_background_light: { value: "{colors.trails.50}" },
+        //background_secondary: { value: "{colors.trails.700}"},
+        trails_placeholder: { value: "{colors.red.500}" },
+        trails_font_primary: { value: "{colors.black}" },
+        //font_secondary: { value: "{colors.gray.500}"},
+        trails_font_inverse: { value: "{colors.white}" },
+        trails_font_link: { value: "{colors.trails.600}" },
+        trails_border: { value: "{colors.gray.300}" },
+
+        // override chakra internal semantic tokens
         //https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/semantic-tokens/colors.ts
         // examples:
         fg: {
             DEFAULT: {
-                value: "{colors.font_primary}"
+                value: "{colors.trails_font_primary}"
             }
         },
         bg: {
             DEFAULT: {
-                value: "{colors.background_body}"
+                value: "{colors.trails_background_body}"
+            },
+            muted: {
+                value: "{colors.trails_background_light}"
+            }
+        },
+        border: {
+            DEFAULT: {
+                value: "{colors.trails_border}"
             }
         }
 
-        /*
-        "chakra-border-color": "border", // todo?
-        "chakra-placeholder-color": "placeholder" // todo? */
+        // "chakra-placeholder-color": "trails_placeholder" // todo: change placeholder color; token does not longer exist; overwriting globalCss ::placeholder does not work: https://chakra-ui.com/docs/theming/customization/global-css#example
     }
 };
 
@@ -66,97 +76,14 @@ const semanticTokens = {
 //  components to recipes -> recipes for components are linked at the top of the docu page of each component
 /*const old_theme = {
     components: {
-        Input: {
-            variants: {
-                outline({ theme }) {
-                    return {
-                        field: {
-                            borderColor: "border",
-                            _focusVisible: {
-                                borderColor: "background_primary",
-                                boxShadow: `0 0 0 1px ${getColor("background_primary", theme)}`
-                            }
-                        },
-                        addon: {
-                            borderColor: "border",
-                            bg: "background_primary"
-                        }
-                    };
-                },
-                filled: {
-                    field: {
-                        _focusVisible: {
-                            borderColor: "background_primary"
-                        }
-                    },
-                    addon: {
-                        bg: "background_primary"
-                    }
-                },
-                flushed({ theme }) {
-                    return {
-                        field: {
-                            _focusVisible: {
-                                borderColor: "background_primary",
-                                boxShadow: `0px 1px 0px 0px ${getColor(
-                                    "background_primary",
-                                    theme
-                                )}`
-                            }
-                        }
-                    };
-                }
-            }
-        },
-        Link: {
-            baseStyle: {
-                color: "font_link"
-            }
-        },
-        Select: {
-            variants: {
-                outline({ theme }: StyleFunctionProps) {
-                    return {
-                        field: {
-                            borderColor: "border",
-                            _focusVisible: {
-                                borderColor: "background_primary",
-                                boxShadow: `0 0 0 1px ${getColor("background_primary", theme)}`
-                            }
-                        }
-                    };
-                },
-                filled: {
-                    field: {
-                        _focusVisible: {
-                            borderColor: "background_primary"
-                        }
-                    },
-                    addon: {
-                        bg: "background_primary"
-                    }
-                },
-                flushed({ theme }: StyleFunctionProps) {
-                    return {
-                        field: {
-                            _focusVisible: {
-                                borderColor: "background_primary",
-                                boxShadow: `0px 1px 0px 0px ${getColor(
-                                    "background_primary",
-                                    theme
-                                )}`
-                            }
-                        }
-                    };
-                }
-            }
-        },
+      
+       
         Slider: {
             baseStyle: {
                 thumb: {
-                    borderColor: "background_primary",
+                    borderColor: "trails_background_primary",
                     _hover: {
-                        bg: "background_primary"
+                        bg: "trails_background_primary"
                     }
                 }
             }
@@ -165,23 +92,23 @@ const semanticTokens = {
             variants: {
                 outline({ theme }: StyleFunctionProps) {
                     return {
-                        borderColor: "border",
+                        borderColor: "trails_border",
                         _focusVisible: {
-                            borderColor: "background_primary",
-                            boxShadow: `0 0 0 1px ${getColor("background_primary", theme)}`
+                            borderColor: "trails_background_primary",
+                            boxShadow: `0 0 0 1px ${getColor("trails_background_primary", theme)}`
                         }
                     };
                 },
                 filled: {
                     _focusVisible: {
-                        borderColor: "background_primary"
+                        borderColor: "trails_background_primary"
                     }
                 },
                 flushed({ theme }: StyleFunctionProps) {
                     return {
                         _focusVisible: {
-                            borderColor: "background_primary",
-                            boxShadow: `0px 1px 0px 0px ${getColor("background_primary", theme)}`
+                            borderColor: "trails_background_primary",
+                            boxShadow: `0px 1px 0px 0px ${getColor("trails_background_primary", theme)}`
                         }
                     };
                 }
@@ -211,7 +138,9 @@ const semanticTokens = {
  */
 // todo typscript support? https://www.chakra-ui.com/docs/theming/tokens#using-tokens
 export const config = defineConfig({
-    globalCss: { html: { colorPalette: "trails" } },
+    globalCss: {
+        html: { colorPalette: "trails" }
+    },
     theme: {
         tokens: {
             // todo typescript
@@ -221,9 +150,36 @@ export const config = defineConfig({
         recipes: {
             separator: {
                 base: {
-                    borderColor: "background_primary"
+                    borderColor: "trails_background_primary"
                 }
-            }
+            },
+            button: {
+                variants: {
+                    variant: {
+                        solid: {
+                            _hover: {
+                                bg: "colorPalette.700"
+                            }
+                        },
+                        outline: {
+                            borderColor: "colorPalette.solid"
+                        }
+                    }
+                }
+            },
+            inputAddon: {
+                variants: {
+                    variant: {
+                        outline: {
+                            bg: "colorPalette.solid"
+                        },
+                        subtle: {
+                            bg: "colorPalette.solid"
+                        }
+                    }
+                }
+            },
+            slider: {} // todo hover color of the handle
         }
     }
 });

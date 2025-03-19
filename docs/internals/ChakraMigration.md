@@ -27,3 +27,7 @@
         </span>
     </ChakraIcon>
     ```
+
+- Theme
+  // TODO describe that theming has changed (new docu in starter repo)
+    - Semantic tokens of chakra have been renamed and to no longer have a prefix. Thus, we added prefix to the tokens in the trails theme. Tokens that have been used in the projects need to be renamed (see Charka 3 PR for details).

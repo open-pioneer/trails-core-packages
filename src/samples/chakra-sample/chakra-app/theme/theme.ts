@@ -6,7 +6,7 @@ import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 // todo update documentation in starter repo how to do a custom theme that extends the base theme
 // - Use mergeConfigs to merge the base theme with your custom theme (instead of extendTheme)
 // - to override the default color palette, define a new color palette in the theme color config,
-// and then use the new color palette in the semantic token config
+// and then use the new color palette in the semantic token config to allow usage of `colorPalette`property in components
 // and set the globalCss html colorPalette to the new color palette
 // - to not use the trails base theme as a base, use defineConfig instead of mergeConfigs
 
