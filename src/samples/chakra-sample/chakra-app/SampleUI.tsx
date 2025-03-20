@@ -300,27 +300,27 @@ function PopoverExample() {
         <>
             <PopoverRoot>
                 <PopoverTrigger asChild>
-                    <Button>Show Popover</Button>
+                    <Button>Show Popover rendered in an portal</Button>
                 </PopoverTrigger>
                 <PopoverContent>
                     <PopoverArrow />
                     <PopoverHeader>Popover!</PopoverHeader>
-                    <PopoverBody>This is a very important Popover</PopoverBody>
+                    <PopoverBody>This Popover is rendered in Portal by default</PopoverBody>
                     <PopoverCloseTrigger />
                 </PopoverContent>
             </PopoverRoot>
 
             <PopoverRoot>
                 <PopoverTrigger asChild>
-                    <Button ml={5}>Show Popover rendered in an portal</Button>
+                    <Button ml={5}>Show Popover without an portal</Button>
                 </PopoverTrigger>
                 <Portal>
-                    <PopoverContent>
+                    <PopoverContent portalled={false}>
                         <PopoverArrow />
                         <PopoverHeader>Header</PopoverHeader>
                         <PopoverCloseTrigger />
                         <PopoverBody>
-                            <PopoverBody>This is a very important Popover</PopoverBody>
+                            <PopoverBody>This Popover is not portalled</PopoverBody>
                         </PopoverBody>
                         <PopoverFooter>This is the footer</PopoverFooter>
                     </PopoverContent>
