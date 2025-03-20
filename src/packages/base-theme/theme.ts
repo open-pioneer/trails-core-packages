@@ -107,44 +107,20 @@ const recipes = {
             }
         }
     },
-    "checkmark": {
+    heading: {
         variants: {
             size: {
-                xs: {
-                    boxSize: "3"
-                },
-                sm: {
-                    boxSize: "4"
-                },
-                md: {
-                    boxSize: "3",
-                    p: "0.5"
-                },
-                lg: {
-                    boxSize: "6",
-                    p: "0.5"
-                }
-            }
-        }
-    },
-    radiomark: {
-        base: {
-            cursor: "grab"
-        },
-        variants: {
-            size: {
-                xs: {
-                    boxSize: "2"
-                },
-                sm: {
-                    boxSize: "3"
-                },
-                md: {
-                    boxSize: "4"
-                },
-                lg: {
-                    boxSize: "5"
-                }
+                xs: { textStyle: "sm" },
+                sm: { textStyle: "md" },
+                md: { textStyle: "xl" },
+                lg: { textStyle: "xl" },
+                xl: { textStyle: "2xl" },
+                "2xl": { textStyle: "3xl" },
+                "3xl": { textStyle: "4xl" },
+                "4xl": { textStyle: "5xl" },
+                "5xl": { textStyle: "6xl" },
+                "6xl": { textStyle: "7xl" },
+                "7xl": { textStyle: "8xl" }
             }
         }
     }
@@ -156,14 +132,17 @@ const slotRecipes = {
     checkbox: {
         slots: checkboxAnatomy.keys(),
         base: {
-            // todo does not work yet: control should only have a red border if invalid
             control: {
-                base: {
-                    _invalid: {
-                        colorPalette: "colorPalette.700",
-                        borderColor: "border.error"
+                // only change the border color for invalid state
+                _invalid: {
+                    colorPalette: "trails",
+                    borderColor: "red",
+                    borderWidth: "2px",
+                    "&:is([data-state=checked], [data-state=indeterminate])": {
+                        borderColor: "red"
                     }
-                }
+                },
+                cursor: "pointer"
             }
         },
         variants: {
@@ -204,6 +183,20 @@ const slotRecipes = {
     },
     radioGroup: {
         slots: radioGroupAnatomy.keys(),
+        base: {
+            itemControl: {
+                // only change the border color for invalid state
+                _invalid: {
+                    colorPalette: "trails",
+                    borderColor: "red",
+                    borderWidth: "2px",
+                    "&:is([data-state=checked], [data-state=indeterminate])": {
+                        borderColor: "red"
+                    }
+                },
+                cursor: "pointer"
+            }
+        },
         variants: {
             // reduce size for backwarts compatibility
             size: {
@@ -237,6 +230,9 @@ const slotRecipes = {
     slider: {
         slots: sliderAnatomy.keys(),
         base: {
+            control: {
+                cursor: "pointer"
+            },
             thumb: {
                 _hover: {
                     bg: "colorPalette.solid"

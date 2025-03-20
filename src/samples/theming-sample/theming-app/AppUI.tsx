@@ -25,7 +25,7 @@ import { Slider } from "./snippets/slider";
 
 export function AppUI() {
     return (
-        <Container>
+        <Container centerContent={true}>
             <Heading size={"md"} py={2}>
                 Demo page based on color scheme &quot;trails&quot;
             </Heading>
