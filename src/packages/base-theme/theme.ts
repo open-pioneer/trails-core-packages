@@ -1,22 +1,23 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { defineConfig } from "@chakra-ui/react";
+import { radioGroupAnatomy, sliderAnatomy, checkboxAnatomy } from "@chakra-ui/react/anatomy";
 
 //11 colors as hex values from 50 to 950 (light to dark)
 export const colorPalette = {
     //trails = default color scheme
     trails: {
-        50: "#eaf2f5",
-        100: "#d5e5ec",
-        200: "#abcbd9",
-        300: "#81b1c5",
-        400: "#5797b2",
-        500: "#2d7d9f",
-        600: "#24647f",
-        700: "#1b4b5f",
-        800: "#123240",
-        900: "#091920",
-        950: "#050505"
+        50: { value: "#eaf2f5" },
+        100: { value: "#d5e5ec" },
+        200: { value: "#abcbd9" },
+        300: { value: "#81b1c5" },
+        400: { value: "#5797b2" },
+        500: { value: "#2d7d9f" },
+        600: { value: "#24647f" },
+        700: { value: "#1b4b5f" },
+        800: { value: "#123240" },
+        900: { value: "#091920" },
+        950: { value: "#050505" }
     }
 };
 
@@ -72,55 +73,201 @@ const semanticTokens = {
     }
 };
 
-// todo transfer old props:
-//  components to recipes -> recipes for components are linked at the top of the docu page of each component
-/*const old_theme = {
-    components: {
-      
-       
-        Slider: {
-            baseStyle: {
-                thumb: {
-                    borderColor: "trails_background_primary",
+// Change style of components
+// see https://chakra-ui.com/docs/theming/customization/recipes#recipes
+const recipes = {
+    separator: {
+        base: {
+            borderColor: "trails_background_primary"
+        }
+    },
+    button: {
+        variants: {
+            variant: {
+                solid: {
                     _hover: {
-                        bg: "trails_background_primary"
-                    }
-                }
-            }
-        },
-        Textarea: {
-            variants: {
-                outline({ theme }: StyleFunctionProps) {
-                    return {
-                        borderColor: "trails_border",
-                        _focusVisible: {
-                            borderColor: "trails_background_primary",
-                            boxShadow: `0 0 0 1px ${getColor("trails_background_primary", theme)}`
-                        }
-                    };
-                },
-                filled: {
-                    _focusVisible: {
-                        borderColor: "trails_background_primary"
+                        bg: "colorPalette.700"
                     }
                 },
-                flushed({ theme }: StyleFunctionProps) {
-                    return {
-                        _focusVisible: {
-                            borderColor: "trails_background_primary",
-                            boxShadow: `0px 1px 0px 0px ${getColor("trails_background_primary", theme)}`
-                        }
-                    };
+                outline: {
+                    borderColor: "colorPalette.solid"
                 }
             }
+        }
+    },
+    inputAddon: {
+        variants: {
+            variant: {
+                outline: {
+                    bg: "colorPalette.solid"
+                },
+                subtle: {
+                    bg: "colorPalette.solid"
+                }
+            }
+        }
+    },
+    "checkmark": {
+        variants: {
+            size: {
+                xs: {
+                    boxSize: "3"
+                },
+                sm: {
+                    boxSize: "4"
+                },
+                md: {
+                    boxSize: "3",
+                    p: "0.5"
+                },
+                lg: {
+                    boxSize: "6",
+                    p: "0.5"
+                }
+            }
+        }
+    },
+    radiomark: {
+        base: {
+            cursor: "grab"
         },
-        Tooltip: {
-            baseStyle: {
-                borderRadius: "md"
+        variants: {
+            size: {
+                xs: {
+                    boxSize: "2"
+                },
+                sm: {
+                    boxSize: "3"
+                },
+                md: {
+                    boxSize: "4"
+                },
+                lg: {
+                    boxSize: "5"
+                }
             }
         }
     }
-};*/
+};
+
+// Change style of multipart components
+// see https://chakra-ui.com/docs/theming/customization/recipes#slot-recipes
+const slotRecipes = {
+    checkbox: {
+        slots: checkboxAnatomy.keys(),
+        base: {
+            // todo does not work yet: control should only have a red border if invalid
+            control: {
+                base: {
+                    _invalid: {
+                        colorPalette: "colorPalette.700",
+                        borderColor: "border.error"
+                    }
+                }
+            }
+        },
+        variants: {
+            // reduce size for backwarts compatibility
+            size: {
+                xs: {
+                    root: { gap: "1.5" },
+                    label: { textStyle: "xs" },
+                    control: {
+                        boxSize: "2"
+                    }
+                },
+                sm: {
+                    root: { gap: "2" },
+                    label: { textStyle: "sm" },
+                    control: {
+                        boxSize: "3"
+                    }
+                },
+                md: {
+                    root: { gap: "2.5" },
+                    label: { textStyle: "sm" },
+                    control: {
+                        boxSize: "4",
+                        p: "0.2"
+                    }
+                },
+                lg: {
+                    root: { gap: "3" },
+                    label: { textStyle: "md" },
+                    control: {
+                        boxSize: "5",
+                        p: "0.2"
+                    }
+                }
+            }
+        }
+    },
+    radioGroup: {
+        slots: radioGroupAnatomy.keys(),
+        variants: {
+            // reduce size for backwarts compatibility
+            size: {
+                xs: {
+                    item: { textStyle: "xs", gap: "1.5" },
+                    itemControl: {
+                        boxSize: "2"
+                    }
+                },
+                sm: {
+                    item: { textStyle: "sm", gap: "2" },
+                    itemControl: {
+                        boxSize: "3"
+                    }
+                },
+                md: {
+                    item: { textStyle: "sm", gap: "2.5" },
+                    itemControl: {
+                        boxSize: "4"
+                    }
+                },
+                lg: {
+                    item: { textStyle: "md", gap: "3" },
+                    itemControl: {
+                        boxSize: "5"
+                    }
+                }
+            }
+        }
+    },
+    slider: {
+        slots: sliderAnatomy.keys(),
+        base: {
+            thumb: {
+                _hover: {
+                    bg: "colorPalette.solid"
+                }
+            }
+        },
+        variants: {
+            // reduce size for backwarts compatibility
+            size: {
+                sm: {
+                    root: {
+                        "--slider-thumb-size": "sizes.2.5",
+                        "--slider-track-size": "sizes.0.5"
+                    }
+                },
+                md: {
+                    root: {
+                        "--slider-thumb-size": "sizes.3.5",
+                        "--slider-track-size": "sizes.1"
+                    }
+                },
+                lg: {
+                    root: {
+                        "--slider-thumb-size": "sizes.4",
+                        "--slider-track-size": "sizes.1"
+                    }
+                }
+            }
+        }
+    }
+};
 
 /**
  * Base theme for Open Pioneer Trails applications.
@@ -136,50 +283,23 @@ const semanticTokens = {
  * });
  * ```
  */
-// todo typscript support? https://www.chakra-ui.com/docs/theming/tokens#using-tokens
+// Todo mouse cursor is not chaning on hover (checkbox, radio, slider)
 export const config = defineConfig({
     globalCss: {
         html: { colorPalette: "trails" }
     },
     theme: {
         tokens: {
-            // todo typescript
-            colors: colorPalette as any // eslint-disable-line @typescript-eslint/no-explicit-any
+            colors: colorPalette
         },
         semanticTokens: semanticTokens,
-        recipes: {
-            separator: {
-                base: {
-                    borderColor: "trails_background_primary"
-                }
-            },
-            button: {
-                variants: {
-                    variant: {
-                        solid: {
-                            _hover: {
-                                bg: "colorPalette.700"
-                            }
-                        },
-                        outline: {
-                            borderColor: "colorPalette.solid"
-                        }
-                    }
-                }
-            },
-            inputAddon: {
-                variants: {
-                    variant: {
-                        outline: {
-                            bg: "colorPalette.solid"
-                        },
-                        subtle: {
-                            bg: "colorPalette.solid"
-                        }
-                    }
-                }
-            },
-            slider: {} // todo hover color of the handle
-        }
+        recipes: recipes,
+        slotRecipes: slotRecipes
     }
 });
+
+// TODO Add typscript support? https://www.chakra-ui.com/docs/theming/tokens#using-tokens
+//  The CLI can be used to generate TypeScript types for your theme tokens and variants.
+//  By default the CLI will overwrite the existing types in the node modules folder of the chakra react package. It is possible to provide another path to save the types to by using the --output flag. However, we need to find a way to transport these types to the users.
+//  Another problem ist, that the CLI requires the config file to have a default export of the SystemContext (createSystem) and not just the SystemConfig.
+//  If we do not add typescript support, the trails specific semanticTokens will not be present in the ts suggestion (but no error, as type is string). However, if providing new variants, ts will throw an error if the variant does not exist in the theme.
