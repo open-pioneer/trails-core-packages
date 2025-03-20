@@ -34,73 +34,62 @@ export const themeConfig = mergeConfigs(defaultTrailsConfig, {
             colors: {
                 primary: {
                     solid: { value: "{colors.primary.500}" },
-                    contrast: { value: "{colors.primary.100}" },
+                    contrast: { value: "{colors.white}" },
                     fg: { value: "{colors.primary.700}" },
                     muted: { value: "{colors.primary.100}" },
-                    subtle: { value: "{colors.primary.200}" },
+                    subtle: { value: "{colors.primary.50}" },
                     emphasized: { value: "{colors.primary.300}" },
                     focusRing: { value: "{colors.primary.500}" }
+                },
+
+                // define custom semantic tokens
+                primary_background_primary: { value: "{colors.primary.300}" },
+                primary_background_light: { value: "{colors.primary.50}" },
+                primary_background_secondary: { value: "{colors.primary.500}" },
+                primary_placeholder: { value: "{colors.red.500}" },
+                primary_font_primary: { value: "{colors.black}" },
+                primary_font_secondary: { value: "{colors.gray.500}" },
+                primary_font_inverse: { value: "{colors.white}" },
+                primary_font_link: { value: "{colors.yellow.300}" },
+                primary_border: { value: "{colors.black}" },
+
+                // overwrite chakra theming variables
+                fg: {
+                    DEFAULT: {
+                        value: "{colors.primary_font_primary}"
+                    },
+                    subtle: {
+                        value: "{colors.primary_font_secondary}"
+                    },
+                    inverted: {
+                        value: "{colors.primary_font_inverse}"
+                    }
+                },
+                bg: {
+                    DEFAULT: {
+                        value: "{colors.primary_background_primary}"
+                    },
+                    muted: {
+                        value: "{colors.primary_background_light}"
+                    }
+                },
+                border: {
+                    DEFAULT: {
+                        value: "{colors.primary_border}"
+                    }
+                }
+            }
+        },
+        recipes: {
+            link: {
+                variants: {
+                    variant: {
+                        plain: {
+                            color: "primary_font_link"
+                        }
+                    }
                 }
             }
         }
     }
 });
-
-// todo migrate all properties
-/*export const theme = extendTheme(
-    {
-        fonts: {
-            heading: "Helvetica"
-        },
-        components: {
-            Button: {
-                defaultProps: {
-                    colorScheme: "primary"
-                },
-                variants: {
-                    cancel: {
-                        color: "font_inverse",
-                        bg: "error",
-                        _hover: { backgroundColor: "error_hover" }
-                    }
-                }
-            },
-            Link: {
-                baseStyle: {
-                    color: "font_link"
-                }
-            },
-            Divider: {
-                baseStyle: {
-                    borderColor: "border"
-                }
-            }
-        },
-        semanticTokens: {
-            colors: {
-                "background_primary": "primary.300",
-                "background_secondary": "primary.500",
-                "placeholder": "primary.100",
-                "font_primary": "black",
-                "font_secondary": "grey.500",
-                "font_inverse": "white",
-                "font_link": "yellow.300",
-                "border": "black",
-                "error": "red.500",
-                "error_hover": "red.600",
-                "success": "green.500",
-                "highlight": "yellow.300",
-
-                // override internal chakra theming variables
-                "chakra-body-bg": "background_primary",
-                "chakra-subtle-bg": "background_secondary",
-                "chakra-body-text": "font_primary",
-                "chakra-subtle-text": "font_secondary",
-                "chakra-inverse-text": "font_inverse",
-                "chakra-border-color": "border",
-                "chakra-placeholder-color": "placeholder"
-            }
-        }
-    },
-    baseTheme
-);*/

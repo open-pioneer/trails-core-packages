@@ -132,7 +132,7 @@ const ComponentStack = (props: { toaster: CreateToasterReturn }) => {
 
 function PortalExample() {
     return (
-        <Box bg="background_secondary">
+        <Box bg="primary_background_secondary">
             <Heading size="sm">Portal Example: </Heading>
             This is box and displayed here. Scroll/Look down to see the portal that is added at the
             end of document.body. The Portal is part of this Box.

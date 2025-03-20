@@ -113,14 +113,14 @@ const recipes = {
                 xs: { textStyle: "sm" },
                 sm: { textStyle: "md" },
                 md: { textStyle: "xl" },
-                lg: { textStyle: "xl" },
-                xl: { textStyle: "2xl" },
-                "2xl": { textStyle: "3xl" },
-                "3xl": { textStyle: "4xl" },
-                "4xl": { textStyle: "5xl" },
-                "5xl": { textStyle: "6xl" },
-                "6xl": { textStyle: "7xl" },
-                "7xl": { textStyle: "8xl" }
+                lg: { textStyle: "2xl" },
+                xl: { textStyle: "3xl" },
+                "2xl": { textStyle: "4xl" },
+                "3xl": { textStyle: "5xl" },
+                "4xl": { textStyle: "6xl" },
+                "5xl": { textStyle: "7xl" },
+                "6xl": { textStyle: "8xl" },
+                "7xl": { textStyle: "9xl" }
             }
         }
     }
