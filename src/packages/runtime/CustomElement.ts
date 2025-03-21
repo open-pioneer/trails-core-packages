@@ -66,9 +66,9 @@ export interface CustomElementOptions {
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
 
     /**
-     * Chakra theming object.
+     * Chakra style system object.
      */
-    chakraConfig?: SystemConfig;
+    chakraConfig?: SystemConfig; // todo rename to chakraStyleConfig?
 }
 
 /**

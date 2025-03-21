@@ -99,7 +99,6 @@ export function AppUI() {
                             </Checkbox>
                             <ButtonGroup justifyContent="center">
                                 <Button onClick={emitNotification}>Emit Notification</Button>
-                                {/* TODO: Cancel button from theme? */}
                                 <Button colorPalette="red" onClick={clearNotifications}>
                                     Clear notifications
                                 </Button>

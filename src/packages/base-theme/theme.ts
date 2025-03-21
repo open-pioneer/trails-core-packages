@@ -40,16 +40,15 @@ const semanticTokens = {
         trails_background_primary: { value: "{colors.trails.500}" },
         trails_background_light: { value: "{colors.trails.50}" },
         //background_secondary: { value: "{colors.trails.700}"},
-        trails_placeholder: { value: "{colors.red.500}" },
+        trails_placeholder: { value: "{colors.gray.500}" },
         trails_font_primary: { value: "{colors.black}" },
         //font_secondary: { value: "{colors.gray.500}"},
         trails_font_inverse: { value: "{colors.white}" },
         trails_font_link: { value: "{colors.trails.600}" },
         trails_border: { value: "{colors.gray.300}" },
 
-        // override chakra internal semantic tokens
+        // overwrite chakra internal semantic tokens
         //https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/semantic-tokens/colors.ts
-        // examples:
         fg: {
             DEFAULT: {
                 value: "{colors.trails_font_primary}"
@@ -282,8 +281,9 @@ const slotRecipes = {
  * });
  * ```
  */
-// Todo mouse cursor is not chaning on hover (checkbox, radio, slider)
 export const config = defineConfig({
+    // change default color palette to "trails" color palette
+    // see https://www.chakra-ui.com/guides/theming-change-default-color-palette
     globalCss: {
         html: { colorPalette: "trails" }
     },

@@ -17,7 +17,7 @@
 - React icons + Chakra `<Icon />` do not work together well by default.
   This is a bug with react icons (see https://github.com/chakra-ui/chakra-ui/issues/9227 and https://github.com/react-icons/react-icons/issues/336).
 
-    Sample Workaround (-> reusable component?). Simply wrap the the react icons in a span or div.
+    Sample Workaround (-> reusable component?). Simply wrap the react icons in a span or div.
     Chakra will style the span and the icon child with fill its parent.
 
     ```jsx
@@ -28,6 +28,7 @@
     </ChakraIcon>
     ```
 
-- Theme
-  // TODO describe that theming has changed (new docu in starter repo)
-    - Semantic tokens of chakra have been renamed and to no longer have a prefix. Thus, we added prefix to the tokens in the trails theme. Tokens that have been used in the projects need to be renamed (see Charka 3 PR for details).
+- Theming mechanism has changed
+    - Use mergeConfigs to merge the base theme with your custom theme (instead of extendTheme). Pass theme to chakraConfig in createCustomElement in app.ts
+    - Adjust theme config object to match the new Chakra 3 theme structure of the style SystemConfig object (many changes, see Chakra 3 PR for details). To overwrite the default color scheme, you need to specify the color scheme as a token, then set specific semantic tokens and set the colorPalette property in the globalCss object.
+    - Semantic tokens of chakra have been renamed and to no longer have a prefix. Thus, we added a prefix to the custom tokens in the trails theme. Tokens that have been used in the projects need to be renamed (see Charka 3 PR for details).
