@@ -13,7 +13,7 @@ exports[`should successfully create an error screen component 1`] = `
       Application start failed
     </h2>
     <div
-      class="chakra-alert__root css-hvgib6"
+      class="chakra-alert__root css-1n3jb2e"
     >
       <span
         class="css-1ffmir3"
@@ -43,7 +43,7 @@ exports[`should successfully create an error screen component 1`] = `
       </div>
     </div>
     <div
-      class="error-details css-8aw61z"
+      class="error-details css-1leuu0c"
     >
       <p
         class="css-19qpkh7"
@@ -74,7 +74,7 @@ exports[`should successfully create an error screen component with a stack trace
     Error: test
   </p>
   <div
-    class="css-dfugtl"
+    class="css-e0djsn"
   >
     test stack trace
   </div>
