@@ -3,7 +3,7 @@
 /**
  * @vitest-environment happy-dom
  */
-import { FormatNumber } from "@chakra-ui/react";
+import { FormatNumber, mergeConfigs, SystemConfig, useChakraContext } from "@chakra-ui/react";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import { ReactNode, createElement } from "react";
@@ -19,6 +19,7 @@ import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 
 interface TestProvider {
     value: string;
@@ -334,21 +335,31 @@ it("should throw error when requesting properties from an unknown package", asyn
     );
 });
 
-it("should apply the configured chakra theme", async () => {
-    // TODO: Object shape is probably wrong, this is still Chakra v2
-    const testTheme = {
-        colors: {
-            dummyColor: "#123456"
+it("should apply the configured chakra config", async () => {
+    const testConfig = mergeConfigs(defaultTrailsConfig, {
+        theme: {
+            semanticTokens: {
+                colors: {
+                    dummyColor: { value: "#123456" }
+                }
+            }
         }
-    };
+    });
     const { integration, wrapper } = createIntegration({
         disablePackage: true,
-        config: testTheme
+        config: testConfig
     });
 
     function TestComponent(): ReactNode {
-        // TODO
-        throw new Error("not implemented");
+        const sys = useChakraContext();
+        const dummyColorToken = sys.tokens.getByName("colors.dummyColor");
+        return createElement(
+            "div",
+            {
+                "data-testid": "test-div"
+            },
+            `Color: ${dummyColorToken?.value}`
+        );
     }
 
     act(() => {
@@ -446,7 +457,7 @@ function createIntegration(options?: {
     packageUiReferences?: ReferenceSpec[];
     i18n?: PackageIntl;
     services?: ServiceSpec[];
-    config?: Record<string, unknown>;
+    config?: SystemConfig | undefined;
     locale?: string;
 }): TestIntegration {
     const wrapper = document.createElement("div");

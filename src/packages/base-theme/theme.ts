@@ -87,6 +87,9 @@ const recipes = {
                 solid: {
                     _hover: {
                         bg: "colorPalette.700"
+                    },
+                    _pressed: {
+                        bg: "colorPalette.800"
                     }
                 },
                 outline: {

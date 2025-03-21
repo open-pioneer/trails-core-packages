@@ -29,30 +29,30 @@ it("renders a hierarchy of headings", () => {
       >
         <main>
           <h1
-            class="chakra-heading css-eprwor"
+            class="chakra-heading css-1xpw4tw"
           >
             Site title
           </h1>
           <article>
             <h2
-              class="chakra-heading css-eprwor"
+              class="chakra-heading css-1xpw4tw"
             >
               Article Title
             </h2>
             <h3
-              class="chakra-heading css-eprwor"
+              class="chakra-heading css-1xpw4tw"
             >
               Article Child
             </h3>
             <h2
-              class="chakra-heading css-eprwor"
+              class="chakra-heading css-1xpw4tw"
             >
               Heading ???
             </h2>
           </article>
           <article>
             <h2
-              class="chakra-heading css-eprwor"
+              class="chakra-heading css-1xpw4tw"
             >
               Other Article
             </h2>
@@ -75,7 +75,7 @@ it("renders its children", () => {
       >
         <main>
           <h1
-            class="chakra-heading css-eprwor"
+            class="chakra-heading css-1xpw4tw"
           >
             Site title
           </h1>
@@ -114,7 +114,7 @@ it("supports manual react nodes as heading", () => {
           class="useless"
         >
           <h1
-            class="chakra-heading css-eprwor"
+            class="chakra-heading css-1xpw4tw"
           >
             Heading
           </h1>
@@ -123,7 +123,7 @@ it("supports manual react nodes as heading", () => {
           class="useless2"
         >
           <h2
-            class="chakra-heading css-eprwor"
+            class="chakra-heading css-1xpw4tw"
           >
             Sub Heading
           </h2>
@@ -155,37 +155,37 @@ it("limits heading level to 6", () => {
         data-testid="content"
       >
         <h1
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           1
         </h1>
         <h2
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           2
         </h2>
         <h3
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           3
         </h3>
         <h4
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           4
         </h4>
         <h5
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           5
         </h5>
         <h6
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           6
         </h6>
         <h6
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           7
         </h6>
@@ -218,18 +218,18 @@ it("allows to configure the current heading level", () => {
         data-testid="content"
       >
         <h1
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           Root Header
         </h1>
         <h5
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           Some header in widget
         </h5>
         Some content in Widget
         <h6
-          class="chakra-heading css-eprwor"
+          class="chakra-heading css-1xpw4tw"
         >
           Some nested header in widget
         </h6>

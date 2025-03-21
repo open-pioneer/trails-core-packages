@@ -8,7 +8,7 @@ exports[`should successfully create an error screen component 1`] = `
     class="chakra-stack css-1p2n6g8"
   >
     <h2
-      class="chakra-heading css-eprwor"
+      class="chakra-heading css-1xpw4tw"
     >
       Application start failed
     </h2>
