@@ -25,7 +25,7 @@ import {
     RUNTIME_AUTO_START
 } from "./builtin-services";
 import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
+import { AppIntl, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
 const LOG = createLogger("runtime:CustomElement");
@@ -406,7 +406,7 @@ class ApplicationInstance {
     private initServiceLayer(config: {
         container: HTMLDivElement;
         properties: ApplicationProperties;
-        i18n: AppI18n;
+        i18n: AppIntl;
     }) {
         const { hostElement, shadowRoot, elementOptions, restart } = this.options;
         const { container, properties, i18n } = config;
@@ -509,7 +509,7 @@ function createServiceLayer(config: {
     packageMetadata: Record<string, PackageMetadata> | undefined;
     properties: ApplicationProperties;
     builtinPackage: PackageRepr;
-    i18n: AppI18n;
+    i18n: AppIntl;
 }) {
     const { packageMetadata, properties, builtinPackage, i18n } = config;
 

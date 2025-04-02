@@ -3,7 +3,7 @@
 import { Error } from "@open-pioneer/core";
 import { ApplicationProperties } from "../CustomElement";
 import { ErrorId } from "../errors";
-import { PackageIntl, AppI18n } from "../i18n";
+import { PackageIntl, AppIntl } from "../i18n";
 import { PackageMetadata, PropertyMetadata } from "../metadata";
 import { parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { ServiceRepr } from "./ServiceRepr";
@@ -77,7 +77,7 @@ export class PackageRepr {
 
 export function createPackages(
     packages: Record<string, PackageMetadata>,
-    i18n: AppI18n,
+    i18n: AppIntl,
     customProperties?: ApplicationProperties
 ) {
     return Object.entries(packages).map<PackageRepr>(([name, packageMetadata]) => {
