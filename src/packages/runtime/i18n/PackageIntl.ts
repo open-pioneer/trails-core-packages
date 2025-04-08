@@ -17,7 +17,8 @@ import {
 } from "intl-messageformat"; // not a dependency, this is a dependency of formatjs
 import { createElement, Fragment, ReactNode, Children } from "react";
 
-type BaseIntl = Pick<IntlShape, "locale" | "timeZone"> & IntlFormatters<string>;
+type BaseIntl = Pick<IntlShape, "locale" | "timeZone"> &
+    Omit<IntlFormatters<string>, "formatMessage">;
 
 /**
  * Gives access to the package's i18n messages for the current locale.
@@ -27,9 +28,28 @@ type BaseIntl = Pick<IntlShape, "locale" | "timeZone"> & IntlFormatters<string>;
 export type PackageIntl = BaseIntl & PackageIntlExtensions;
 
 /**
- * Trails specific extensions to formatjs' intl API.
+ * Trails specific extensions to FormatJS' intl API.
  */
 export interface PackageIntlExtensions {
+    /**
+     * Formats a message with the given descriptor and values.
+     *
+     * This is a method directly implemented by FormatJS see
+     * - [Documentation](<https://formatjs.github.io/docs/intl/#formatmessage>)
+     * - {@link IntlShape.formatMessage | Base Implementation}
+     *
+     * The typings here make the signature a little bit stricter: only primitive values
+     * are allowed for formatting.
+     *
+     * If you need rich text (react) formatting, see {@link PackageIntlExtensions.formatRichMessage}.
+     */
+    formatMessage(
+        this: void,
+        descriptor: MessageDescriptor,
+        values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+        opts?: IntlMessageFormatOptions
+    ): string;
+
     /**
      * Similar to `formatMessage()`, but supports _rich text formatting_.
      *

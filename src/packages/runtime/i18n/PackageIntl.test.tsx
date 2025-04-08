@@ -107,4 +107,28 @@ describe("formatRichMessage", () => {
           </div>
         `);
     });
+
+    it("generates a type error when using formatMessage with non-primitive types", async () => {
+        const intl = createPackageIntl("en-US", {
+            test: "Hello, {name}!"
+        });
+        const message = intl.formatMessage(
+            {
+                id: "test"
+            },
+            {
+                // @ts-expect-error Only primitive types are supported
+                name: {}
+            }
+        );
+
+        // This would need some postprocessing to work well in react, which is why formatRichMessage() exists.
+        expect(message).toMatchInlineSnapshot(`
+          [
+            "Hello, ",
+            {},
+            "!",
+          ]
+        `);
+    });
 });

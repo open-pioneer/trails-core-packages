@@ -52,3 +52,5 @@ function Example() {
     return <Box>{message}</Box>;
 }
 ```
+
+The TypeScript signature for the `intl.formatMessage()` function has been made a little bit stricter compared with FormatJS: only primitive values are allowed for the `values` argument (this should not affect users in practice).
