@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { expect, it } from "vitest";
-import { I18nConfig } from "./i18n";
+import { I18nConfig } from "./pick";
 
 it("picks a supported locale by default", () => {
     const appLocales = ["en", "de"];

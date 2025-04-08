@@ -7,7 +7,9 @@ export default defineBuildConfig({
         "index",
         // Needed for build plugin
         "metadata/index",
-        // Needed for react hooks and test utils
-        "react-integration/index"
+        // Needed for react hooks and @open-pioneer/test-utils
+        "react-integration/index",
+        // Needed for @open-pioneer/test-utils
+        "test-support/index"
     ]
 });

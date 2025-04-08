@@ -28,3 +28,8 @@ messages:
     heading: Beispiel DateTimeFormat
     timelabel: "Der gewählte Zeitpunkt ist "
     relativetimelabel: "Relative Zeit zum gewählten Zeitpunkt: "
+  richtext:
+    heading: Beispiel für Rich Text
+    messageWithReactNode: "Dieser Text enthält (hier: {element}) ein beliebiges React-Element."
+    messageWithInlineCode: "Dieser Text enthält <code>inline code</code>."
+    messageWithReactTag: "Dieser Text verwendet <customTag>einen Tag, der über React-Elemente definiert ist.</customTag>"

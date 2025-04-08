@@ -1,104 +1,8 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createIntl, createIntlCache, IntlFormatters, IntlShape } from "@formatjs/intl";
-import { ErrorId } from "./errors";
 import { createLogger, Error } from "@open-pioneer/core";
-import { ApplicationMetadata } from "./metadata";
+import { ErrorId } from "../errors";
 const LOG = createLogger("runtime:i18n");
-
-/**
- * Represents i18n info for the entire application.
- * Currently not exposed to user code.
- */
-export interface AppI18n {
-    /** Chosen locale */
-    readonly locale: string;
-
-    /** Supported locales from app metadata. */
-    readonly supportedMessageLocales: string[];
-
-    /** True if the locale can be used in this application (i.e. if there are any messages). */
-    supportsLocale(locale: string): boolean;
-
-    /** Given the package name, constructs a package i18n instance. */
-    createPackageI18n(packageName: string): PackageIntl;
-}
-
-/**
- * Gives access to the package's i18n messages for the current locale.
- *
- * See also https://formatjs.io/docs/intl
- */
-export type PackageIntl = Pick<IntlShape, "locale" | "timeZone"> & IntlFormatters<string>;
-
-export function createPackageIntl(locale: string, messages: Record<string, string>) {
-    const cache = createIntlCache();
-    return createIntl(
-        {
-            locale,
-            messages
-        },
-        cache
-    );
-}
-
-/**
- * Initializes the application's locale and fetches the appropriate i18n messages.
- */
-export async function initI18n(
-    appMetadata: ApplicationMetadata | undefined,
-    forcedLocale: string | undefined
-): Promise<AppI18n> {
-    const messageLocales = appMetadata?.locales ?? [];
-    const userLocales = getBrowserLocales();
-    if (LOG.isDebug()) {
-        LOG.debug(
-            `Attempting to pick locale for user (locales: ${userLocales.join(
-                ", "
-            )}) from app (supported locales: ${messageLocales.join(
-                ", "
-            )}) [forcedLocale=${forcedLocale}].`
-        );
-    }
-
-    const i18nConfig = new I18nConfig(messageLocales);
-    const { locale, messageLocale } = i18nConfig.pickSupportedLocale(forcedLocale, userLocales);
-
-    if (LOG.isDebug()) {
-        LOG.debug(`Using locale '${locale}' with messages from locale '${messageLocale}'.`);
-    }
-
-    let messages: Record<string, Record<string, string>>;
-    if (messageLocales.includes(messageLocale)) {
-        try {
-            messages = (await appMetadata?.loadMessages?.(messageLocale)) ?? {};
-        } catch (e) {
-            throw new Error(
-                ErrorId.INTERNAL,
-                `Failed to load messages for locale '${messageLocale}'.`,
-                {
-                    cause: e
-                }
-            );
-        }
-    }
-    return {
-        locale,
-        supportedMessageLocales: messageLocales,
-        supportsLocale(locale) {
-            return i18nConfig.supportsLocale(locale);
-        },
-        createPackageI18n(packageName) {
-            const packageMessage = messages?.[packageName] ?? {};
-            return createPackageIntl(locale, packageMessage);
-        }
-    };
-}
-
-/** Creates an empty i18n instance, e.g. for tests. */
-export function createEmptyI18n(locale = "en"): PackageIntl {
-    return createPackageIntl(locale, {});
-}
 
 export interface LocalePickResult {
     /**
@@ -113,7 +17,7 @@ export interface LocalePickResult {
 }
 
 /**
- * Picks a locale for the app. Exported for tests.
+ * Picks a locale for the app.
  */
 export class I18nConfig {
     private appLocales: string[];
