@@ -26,7 +26,7 @@ import {
     AccordionItemContent,
     AccordionItemTrigger,
     AccordionRoot
-} from "./snippets/accordion";
+} from "@open-pioneer/chakra-snippets/accordion";
 import {
     DialogActionTrigger,
     DialogBody,
@@ -37,8 +37,8 @@ import {
     DialogRoot,
     DialogTitle,
     DialogTrigger
-} from "./snippets/dialog";
-import { Tooltip } from "./snippets/tooltip";
+} from "@open-pioneer/chakra-snippets/dialog";
+import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import {
     DrawerBody,
     DrawerContent,
@@ -47,7 +47,7 @@ import {
     DrawerRoot,
     DrawerActionTrigger,
     DrawerCloseTrigger
-} from "./snippets/drawer";
+} from "@open-pioneer/chakra-snippets/drawer";
 import {
     PopoverArrow,
     PopoverBody,
@@ -57,10 +57,12 @@ import {
     PopoverHeader,
     PopoverRoot,
     PopoverTrigger
-} from "./snippets/popover";
-import { Radio, RadioGroup } from "./snippets/radio";
+} from "@open-pioneer/chakra-snippets/popover";
+import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
 import { TableExampleComponent } from "./TableExample";
 import { SelectComponent } from "./SelectExample";
+import { CloseButton } from "@open-pioneer/chakra-snippets/close-button";
+import { ClipboardButton, ClipboardInput } from "@open-pioneer/chakra-snippets/clipboard";
 
 export function SampleUI() {
     const [toaster, toasterUI] = useToaster();
@@ -73,6 +75,7 @@ export function SampleUI() {
                 <TableExampleComponent />
                 <SelectComponent />
                 <AccordionDemo />
+                <CloseButton></CloseButton>
             </Container>
 
             {toasterUI}

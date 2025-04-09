@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createListCollection, Spinner, Text } from "@chakra-ui/react";
-import { NativeSelectField, NativeSelectRoot } from "./snippets/native-select";
+import { NativeSelectField, NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
 import {
     SelectContent,
     SelectItem,
@@ -9,7 +9,7 @@ import {
     SelectRoot,
     SelectTrigger,
     SelectValueText
-} from "./snippets/select";
+} from "@open-pioneer/chakra-snippets/select";
 
 const frameworks = createListCollection({
     items: [
