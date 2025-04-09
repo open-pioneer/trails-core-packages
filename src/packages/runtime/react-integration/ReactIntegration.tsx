@@ -11,6 +11,7 @@ import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "./ChakraProvider";
 import { SystemConfig } from "@chakra-ui/react";
+import { ReadonlyReactive } from "@conterra/reactivity-core";
 
 export interface ReactIntegrationOptions {
     appRoot: HTMLDivElement;
@@ -20,6 +21,7 @@ export interface ReactIntegrationOptions {
 
     locale: string;
     config: SystemConfig | undefined;
+    styles: ReadonlyReactive<string>;
 }
 
 export class ReactIntegration {
@@ -29,6 +31,7 @@ export class ReactIntegration {
     private packageContext: PackageContextMethods;
     private locale: string;
     private chakraConfig: SystemConfig | undefined;
+    private styles: ReadonlyReactive<string>;
 
     static createForApp(options: ReactIntegrationOptions): ReactIntegration {
         const { serviceLayer, packages } = options;
@@ -62,6 +65,7 @@ export class ReactIntegration {
         this.chakraConfig = options.config;
         this.packageContext = options.packageContext;
         this.locale = options.locale;
+        this.styles = options.styles;
     }
 
     render(contentNode: ReactNode) {
@@ -72,6 +76,7 @@ export class ReactIntegration {
                     appRoot={this.appRoot}
                     config={this.chakraConfig}
                     locale={this.locale}
+                    styles={this.styles}
                 >
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}

@@ -17,6 +17,7 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
+        "@conterra/reactivity-core": "catalog:",
         "@formatjs/intl": "catalog:",
         "@chakra-ui/react": "catalog:",
         "@emotion/cache": "catalog:",
@@ -24,6 +25,7 @@
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime-react-support": "workspace:^",
         "@open-pioneer/base-theme": "workspace:^",
+        "@open-pioneer/reactivity": "workspace:^",
         "react": "catalog:",
         "react-dom": "catalog:"
     },

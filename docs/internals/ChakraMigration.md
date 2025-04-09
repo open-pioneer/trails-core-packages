@@ -31,6 +31,8 @@
 - Theming mechanism has changed
     - Use mergeConfigs to merge the base theme with your custom theme (instead of extendTheme). Pass theme to chakraConfig in createCustomElement in app.ts
     - Adjust theme config object to match the new Chakra 3 theme structure of the style SystemConfig object (many changes, see Chakra 3 PR for details). To overwrite the default color scheme, you need to specify the color scheme as a token, then set specific semantic tokens and set the colorPalette property in the globalCss object.
-    - Semantic tokens of chakra have been renamed and no longer have a prefix. Thus, we added a prefix to the custom tokens in the trails theme. Tokens that have been used in the projects need to be renamed (see Chakra 3 PR for details).
+    - Removed custom semantics tokens where possible (if chakra has native support). Examples: background_body, background_primary.
+    - Added a new prefix to custom semantic tokens (trails\_\*) to avoid conflicts with other tokens / css variables.
+    - Tokens that have been used in the projects need to be renamed (see Chakra 3 PR for details).
     - `theme` export of `@open-pioneer/base-theme` has been renamed to `config` (of type `SystemConfig`).
 - @open-pioneer/chakra-integration has been removed

@@ -36,35 +36,26 @@ const semanticTokens = {
         },
 
         // define custom semantic tokens
-        trails_background_body: { value: "{colors.white}" },
-        trails_background_primary: { value: "{colors.trails.500}" },
-        trails_background_light: { value: "{colors.trails.50}" },
-        //background_secondary: { value: "{colors.trails.700}"},
-        trails_placeholder: { value: "{colors.gray.500}" },
-        trails_font_primary: { value: "{colors.black}" },
-        //font_secondary: { value: "{colors.gray.500}"},
-        trails_font_inverse: { value: "{colors.white}" },
-        trails_font_link: { value: "{colors.trails.600}" },
-        trails_border: { value: "{colors.gray.300}" },
+        trails_placeholder: { value: "{colors.gray.700}" },
 
         // overwrite chakra internal semantic tokens
         //https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/semantic-tokens/colors.ts
         fg: {
             DEFAULT: {
-                value: "{colors.trails_font_primary}"
+                value: "{colors.black}"
             }
         },
         bg: {
             DEFAULT: {
-                value: "{colors.trails_background_body}"
+                value: "{colors.white}"
             },
             muted: {
-                value: "{colors.trails_background_light}"
+                value: "{colors.trails.50}"
             }
         },
         border: {
             DEFAULT: {
-                value: "{colors.trails_border}"
+                value: "{colors.gray.300}"
             }
         }
     }
@@ -75,7 +66,7 @@ const semanticTokens = {
 const recipes = {
     separator: {
         base: {
-            borderColor: "trails_background_primary"
+            borderColor: "colorPalette.solid"
         }
     },
     button: {
@@ -288,7 +279,7 @@ export const config = defineConfig({
         html: { colorPalette: "trails" },
         "*::placeholder": {
             opacity: 1,
-            color: "green.900"
+            color: "trails_placeholder"
         }
     },
     theme: {

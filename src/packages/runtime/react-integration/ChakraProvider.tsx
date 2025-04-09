@@ -11,10 +11,12 @@ import {
     SystemConfig,
     SystemStyleObject
 } from "@chakra-ui/react";
+import { ReadonlyReactive } from "@conterra/reactivity-core";
 import createCache, { EmotionCache } from "@emotion/cache";
-import { CacheProvider } from "@emotion/react";
+import { CacheProvider, Global } from "@emotion/react";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { Error } from "@open-pioneer/core";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { FC, PropsWithChildren, useEffect, useMemo, useRef } from "react";
 import { ErrorId } from "../errors";
 
@@ -39,6 +41,11 @@ export type CustomChakraProviderProps = PropsWithChildren<{
      * Application locale for chakra's `LocaleProvider`.
      */
     locale?: string;
+
+    /**
+     * Custom CSS used by the application.
+     */
+    styles?: ReadonlyReactive<string>;
 }>;
 
 const APP_ROOT = "pioneer-root";
@@ -56,7 +63,8 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     appRoot,
     children,
     config = defaultTrailsConfig,
-    locale = "en-US"
+    locale = "en-US",
+    styles
 }) => {
     /*
         Setup chakra integration:
@@ -98,12 +106,26 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         <CacheProvider value={cache}>
             <EnvironmentProvider value={rootNode}>
                 <LocaleProvider locale={locale}>
-                    <ChakraProvider value={system}>{children}</ChakraProvider>
+                    <ChakraProvider value={system}>
+                        <GlobalStyles styles={styles} />
+                        {children}
+                    </ChakraProvider>
                 </LocaleProvider>
             </EnvironmentProvider>
         </CacheProvider>
     );
 };
+
+function GlobalStyles(props: { styles: ReadonlyReactive<string> | undefined }) {
+    const stylesSignal = props.styles;
+    const currentStyles = useReactiveSnapshot(() => stylesSignal?.value, [stylesSignal]);
+    return (
+        <>
+            <Global styles="@layer base { :host { all: initial; display: block; } }" />
+            {currentStyles && <Global styles={currentStyles} />}
+        </>
+    );
+}
 
 function redirectHtmlProps(
     css: Record<string, SystemStyleObject> | undefined

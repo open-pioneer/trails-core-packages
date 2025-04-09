@@ -532,6 +532,9 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.13.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.4.4
       '@emotion/cache':
         specifier: 'catalog:'
         version: 11.14.0
@@ -547,6 +550,9 @@ importers:
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
+      '@open-pioneer/reactivity':
+        specifier: workspace:^
+        version: link:../reactivity
       '@open-pioneer/runtime-react-support':
         specifier: workspace:^
         version: link:../runtime-react-support

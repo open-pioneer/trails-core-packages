@@ -38,8 +38,6 @@ export function AppUI() {
                     boxShadow="lg"
                     margin={3}
                     minW={"400px"}
-                    colorPalette="trails"
-                    color="trails.500"
                 >
                     <Heading size={"md"}>Button</Heading>
                     <Heading size={"xs"}>default with tooltip</Heading>

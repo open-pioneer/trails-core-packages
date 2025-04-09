@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
+import { reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
@@ -282,6 +283,7 @@ class ApplicationInstance {
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
     private reactIntegration: ReactIntegration | undefined;
+
     private stylesWatch: Resource | undefined;
 
     constructor(options: InstanceOptions) {
@@ -354,8 +356,9 @@ class ApplicationInstance {
 
         // Setup application root node in the shadow dom
         const appRoot = (this.appRoot = createAppRoot(i18n.locale));
-        const styles = this.initStyles();
-        shadowRoot.replaceChildren(appRoot, ...styles);
+        shadowRoot.replaceChildren(appRoot);
+
+        const styles = this.initStylesSignal();
 
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
@@ -378,7 +381,8 @@ class ApplicationInstance {
             serviceLayer,
             packages,
             locale: i18n.locale,
-            config: elementOptions.chakraSystemConfig
+            config: elementOptions.chakraSystemConfig,
+            styles: styles
         });
         const component = this.options.elementOptions.component ?? emptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -388,25 +392,24 @@ class ApplicationInstance {
         LOG.debug("Application started");
     }
 
-    private initStyles() {
-        // Prevent inheritance of certain css values and normalize to display: block by default.
-        // See https://open-wc.org/guides/knowledge/styling/styles-piercing-shadow-dom/
-        // NOTE: layer base comes from chakra (used for css resets etc).
-        // TODO: Merge with global styles in chakra integration package
-        const builtinStyles = "@layer base { :host { all: initial; display: block; } }";
-        const builtinStylesNode = document.createElement("style");
-        applyStyles(builtinStylesNode, { value: builtinStyles });
+    /**
+     * Returns a signal that contains the application's styles.
+     * During development, the signal is updated when the user edits .css files.
+     * In production, the signal is static.
+     */
+    private initStylesSignal(): ReadonlyReactive<string> {
+        const stylesBox = this.options.elementOptions.appMetadata?.styles;
+        if (!stylesBox) {
+            return reactive("");
+        }
 
-        const appStyles = this.options.elementOptions.appMetadata?.styles;
-        const appStylesNode = document.createElement("style");
-        applyStyles(appStylesNode, appStyles);
+        const signal = reactive(stylesBox.value);
         if (import.meta.hot) {
-            this.stylesWatch = appStyles?.on?.("changed", () => {
-                LOG.debug("Application styles changed");
-                applyStyles(appStylesNode, appStyles);
+            this.stylesWatch = stylesBox.on?.("changed", () => {
+                signal.value = stylesBox.value;
             });
         }
-        return [builtinStylesNode, appStylesNode];
+        return signal;
     }
 
     private initServiceLayer(config: {
@@ -487,14 +490,16 @@ class ApplicationInstance {
 
         const appRoot = (this.appRoot = createAppRoot(locale));
         appRoot.classList.add("pioneer-root-error-screen");
-        const styles = this.initStyles();
-        shadowRoot.replaceChildren(appRoot, ...styles);
+        shadowRoot.replaceChildren(appRoot);
+
+        const styles = this.initStylesSignal();
 
         this.reactIntegration = ReactIntegration.createForErrorScreen({
             appRoot: appRoot,
             rootNode: shadowRoot,
             locale: locale,
-            config: elementOptions.chakraSystemConfig
+            config: elementOptions.chakraSystemConfig,
+            styles
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }
@@ -639,21 +644,6 @@ function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig>
     }
 
     return mergedConfig;
-}
-
-// Applies application styles to the given style node.
-// Can be called multiple times in development mode to implement hot reloading.
-function applyStyles(styleNode: HTMLStyleElement, styles: { value: string } | undefined) {
-    let cssValue = styles?.value ?? "";
-    // Remove sourcemaps from inline css.
-    // This currently does not work because a) the 'importer' (the index.html file) does not
-    // match the actual path the source map would exist and b) vite refuses to generate it anyway, probably
-    // because of our virtual modules.
-    // TODO: both should be fixed once we can refer to actual `.css` files
-    // and don't have to embed inline css anymore.
-    cssValue = cssValue.replace(/\/\*# sourceMappingURL=.*$/, "");
-    const cssNode = document.createTextNode(cssValue);
-    styleNode.replaceChildren(cssNode);
 }
 
 function logError(e: unknown) {

@@ -17,6 +17,7 @@ import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ServiceRepr, createConstructorFactory } from "../service-layer/ServiceRepr";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
+import { reactive } from "@conterra/reactivity-core";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
@@ -410,7 +411,8 @@ describe("integration for error screen ", function () {
             appRoot: document.createElement("div"),
             rootNode: document,
             config: undefined,
-            locale: "en"
+            locale: "en",
+            styles: reactive("")
         });
 
         expect(integration).toBeInstanceOf(ReactIntegration);
@@ -421,7 +423,8 @@ describe("integration for error screen ", function () {
             appRoot: document.createElement("div"),
             rootNode: document,
             config: undefined,
-            locale: "en"
+            locale: "en",
+            styles: reactive("")
         });
 
         function TestComponent() {
@@ -498,7 +501,8 @@ function createIntegration(options?: {
         config: options?.config,
         packages,
         serviceLayer,
-        locale: options?.locale ?? "en"
+        locale: options?.locale ?? "en",
+        styles: reactive("")
     });
     return { integration, wrapper };
 }

@@ -50,12 +50,15 @@ describe("simple rendering", function () {
         expect(div.className).toBe("test");
     });
 
-    it("should render use styles", async () => {
+    it("should render user styles", async () => {
         const { shadowRoot } = await renderComponentShadowDOM("simple-elem");
         // filter stuff from chakra for clarity
-        const style = Array.from(shadowRoot.querySelectorAll("style")).filter(
-            (n) => !n.dataset["emotion"]
-        );
+        const style = Array.from(shadowRoot.querySelectorAll("style")).filter((styleNode) => {
+            return (
+                styleNode.innerHTML.includes("all:initial") ||
+                styleNode.innerHTML.includes(".test{")
+            );
+        });
         expect(style).toMatchSnapshot();
     });
 
