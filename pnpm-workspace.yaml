@@ -11,8 +11,8 @@ __versions:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/react": ^3.13.0
-  "@chakra-ui/cli": ^3.13.0
+  "@chakra-ui/react": ^3.15.1
+  "@chakra-ui/cli": ^3.15.1
   "@conterra/reactivity-core": ^0.4.3
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0

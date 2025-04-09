@@ -7,10 +7,7 @@ export default defineBuildConfig({
     entryPoints: ["index"],
     services: {
         NotificationServiceImpl: {
-            provides: "notifier.NotificationService",
-            references: {
-                appCtx: "runtime.ApplicationContext"
-            }
+            provides: "notifier.NotificationService"
         }
     },
     ui: {
