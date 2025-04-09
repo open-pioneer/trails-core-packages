@@ -5,7 +5,7 @@ import {
     PackageContext as InternalPackageContext,
     PackageContextMethods
 } from "@open-pioneer/runtime-react-support";
-import { CustomChakraProvider } from "@open-pioneer/runtime/react-integration";
+import { CustomChakraProvider } from "@open-pioneer/runtime/test-support";
 import { FC, ReactNode, useMemo } from "react";
 import { createIntl } from "./vanilla";
 

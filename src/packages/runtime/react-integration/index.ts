@@ -7,6 +7,3 @@ export {
     useIntlInternal,
     type UseServiceOptions
 } from "./hooks";
-
-// test support
-export { CustomChakraProvider, type CustomChakraProviderProps } from "./ChakraProvider";
