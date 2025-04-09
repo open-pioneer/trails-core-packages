@@ -5,6 +5,7 @@ import {
   IconButton,
   Input,
 } from "@chakra-ui/react"
+import { useIntl } from "open-pioneer:react-hooks"
 import * as React from "react"
 import { LuCheck, LuClipboard, LuLink } from "react-icons/lu"
 
@@ -23,11 +24,15 @@ const ClipboardCopyText = React.forwardRef<
   HTMLDivElement,
   ChakraClipboard.IndicatorProps
 >(function ClipboardCopyText(props, ref) {
+    const intl = useIntl();
+
+  //PATCH START add i18n
   return (
-    <ChakraClipboard.Indicator copied="Copied" {...props} ref={ref}>
-      Copy
+    <ChakraClipboard.Indicator copied={intl.formatMessage({id: "clipboard.copied"})} {...props} ref={ref}>
+      {intl.formatMessage({id: "clipboard.copy"})}
     </ChakraClipboard.Indicator>
   )
+  //PATCH END
 })
 
 export const ClipboardLabel = React.forwardRef<
