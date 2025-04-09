@@ -29,4 +29,4 @@
     - Tokens that have been used in the projects need to be renamed (see Chakra 3 PR for details).
     - `theme` export of `@open-pioneer/base-theme` has been renamed to `config` (of type `SystemConfig`).
 - @open-pioneer/chakra-integration has been removed
-- @open-pioneer/
+- @open-pioneer/runtime-react-support has been removed. This was an internal package.
