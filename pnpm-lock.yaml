@@ -386,29 +386,6 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
-  src/packages/chakra-integration:
-    dependencies:
-      '@chakra-ui/react':
-        specifier: 'catalog:'
-        version: 3.13.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@emotion/cache':
-        specifier: 'catalog:'
-        version: 11.14.0
-      '@emotion/react':
-        specifier: 'catalog:'
-        version: 11.14.0(@types/react@19.0.10)(react@19.0.0)
-      react:
-        specifier: 'catalog:'
-        version: 19.0.0
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.0.0(react@19.0.0)
-    devDependencies:
-      core-packages:
-        specifier: workspace:^
-        version: link:../../..
-    publishDirectory: dist
-
   src/packages/core:
     devDependencies:
       core-packages:
@@ -679,9 +656,6 @@ importers:
 
   src/samples/http-sample/http-app:
     dependencies:
-      '@open-pioneer/chakra-integration':
-        specifier: workspace:^
-        version: link:../../../packages/chakra-integration
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../../../packages/core
@@ -700,9 +674,6 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.13.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@open-pioneer/chakra-integration':
-        specifier: workspace:^
-        version: link:../../../packages/chakra-integration
 
   src/samples/i18n-sample/i18n-app:
     dependencies:
@@ -785,9 +756,6 @@ importers:
 
   src/samples/theming-sample/theming-app:
     dependencies:
-      '@open-pioneer/chakra-integration':
-        specifier: workspace:^
-        version: link:../../../packages/chakra-integration
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime

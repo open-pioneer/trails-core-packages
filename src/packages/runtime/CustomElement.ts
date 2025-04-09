@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import {
     createAbortError,
     createLogger,
@@ -21,14 +22,13 @@ import {
 } from "./builtin-services";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
 import { ErrorId } from "./errors";
+import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
 import { AppI18n, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationMetadata, PackageMetadata } from "./metadata";
 import { ReactIntegration } from "./react-integration/ReactIntegration";
 import { ReferenceSpec } from "./service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
 import { ServiceLayer } from "./service-layer/ServiceLayer";
-import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
-import { SystemConfig } from "@chakra-ui/react";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -66,9 +66,11 @@ export interface CustomElementOptions {
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
 
     /**
-     * Chakra style system object.
+     * Chakra styled system object.
+     *
+     * Used to configure chakra's theme.
      */
-    chakraConfig?: SystemConfig; // todo rename to chakraStyleConfig?
+    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**
@@ -376,7 +378,7 @@ class ApplicationInstance {
             serviceLayer,
             packages,
             locale: i18n.locale,
-            config: elementOptions.chakraConfig
+            config: elementOptions.chakraSystemConfig
         });
         const component = this.options.elementOptions.component ?? emptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -492,7 +494,7 @@ class ApplicationInstance {
             appRoot: appRoot,
             rootNode: shadowRoot,
             locale: locale,
-            config: elementOptions.chakraConfig
+            config: elementOptions.chakraSystemConfig
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }

@@ -3,7 +3,6 @@
     "version": "0.0.10",
     "private": true,
     "dependencies": {
-        "@open-pioneer/chakra-integration": "workspace:^",
         "@open-pioneer/runtime": "workspace:^"
     }
 }

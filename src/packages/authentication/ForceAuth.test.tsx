@@ -6,7 +6,7 @@ import { expect, it } from "vitest";
 import { reactive, Reactive } from "@conterra/reactivity-core";
 import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
 import { AuthState, LoginBehavior, SessionInfo } from "./api";
-import { Box } from "@open-pioneer/chakra-integration";
+import { Box } from "@chakra-ui/react";
 
 it("renders children if the user is authenticated", async () => {
     const mocks = {

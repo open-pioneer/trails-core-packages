@@ -4,7 +4,7 @@ import { defineConfig } from "@chakra-ui/react";
 import { radioGroupAnatomy, sliderAnatomy, checkboxAnatomy } from "@chakra-ui/react/anatomy";
 
 //11 colors as hex values from 50 to 950 (light to dark)
-export const colorPalette = {
+const colorPalette = {
     //trails = default color scheme
     trails: {
         50: { value: "#eaf2f5" },
@@ -67,8 +67,6 @@ const semanticTokens = {
                 value: "{colors.trails_border}"
             }
         }
-
-        // "chakra-placeholder-color": "trails_placeholder" // todo: change placeholder color; token does not longer exist; overwriting globalCss ::placeholder does not work: https://chakra-ui.com/docs/theming/customization/global-css#example
     }
 };
 
@@ -268,9 +266,11 @@ const slotRecipes = {
 };
 
 /**
- * Base theme for Open Pioneer Trails applications.
+ * Base chakra system config for Open Pioneer Trails applications.
  *
- * All custom themes should extend this theme:
+ * This configures the default color palette, the `trails` color scheme, etc.
+ *
+ * All custom chakra configs should extend this config:
  *
  * ```ts
  * import { mergeConfigs } from "@chakra-ui/react";
@@ -285,7 +285,11 @@ export const config = defineConfig({
     // change default color palette to "trails" color palette
     // see https://www.chakra-ui.com/guides/theming-change-default-color-palette
     globalCss: {
-        html: { colorPalette: "trails" }
+        html: { colorPalette: "trails" },
+        "*::placeholder": {
+            opacity: 1,
+            color: "green.900"
+        }
     },
     theme: {
         tokens: {
@@ -296,9 +300,3 @@ export const config = defineConfig({
         slotRecipes: slotRecipes
     }
 });
-
-// TODO Add typscript support? https://www.chakra-ui.com/docs/theming/tokens#using-tokens
-//  The CLI can be used to generate TypeScript types for your theme tokens and variants.
-//  By default the CLI will overwrite the existing types in the node modules folder of the chakra react package. It is possible to provide another path to save the types to by using the --output flag. However, we need to find a way to transport these types to the users.
-//  Another problem ist, that the CLI requires the config file to have a default export of the SystemContext (createSystem) and not just the SystemConfig.
-//  If we do not add typescript support, the trails specific semanticTokens will not be present in the ts suggestion (but no error, as type is string). However, if providing new variants, ts will throw an error if the variant does not exist in the theme.

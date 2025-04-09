@@ -22,8 +22,6 @@ export interface ReactIntegrationOptions {
     config: SystemConfig | undefined;
 }
 
-// todo fix tests
-
 export class ReactIntegration {
     private rootNode: Document | ShadowRoot;
     private appRoot: HTMLDivElement;

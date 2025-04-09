@@ -3,25 +3,25 @@
 import {
     Box,
     Button,
-    Link,
-    Stack,
-    Input,
-    Textarea,
-    Heading,
-    Flex,
     Container,
+    Flex,
+    Group,
+    Heading,
+    Input,
+    InputAddon,
+    Link,
     NativeSelectField,
     Separator,
-    Group,
-    InputAddon
+    Stack,
+    Textarea
 } from "@chakra-ui/react";
-import { Tooltip } from "./snippets/tooltip";
 import { Checkbox } from "./snippets/checkbox";
 import { Field } from "./snippets/field";
 import { NativeSelectRoot } from "./snippets/native-select";
-import { Switch } from "./snippets/switch";
 import { Radio, RadioGroup } from "./snippets/radio";
 import { Slider } from "./snippets/slider";
+import { Switch } from "./snippets/switch";
+import { Tooltip } from "./snippets/tooltip";
 
 export function AppUI() {
     return (
@@ -38,6 +38,8 @@ export function AppUI() {
                     boxShadow="lg"
                     margin={3}
                     minW={"400px"}
+                    colorPalette="trails"
+                    color="trails.500"
                 >
                     <Heading size={"md"}>Button</Heading>
                     <Heading size={"xs"}>default with tooltip</Heading>

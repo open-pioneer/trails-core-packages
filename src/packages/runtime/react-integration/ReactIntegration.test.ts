@@ -3,7 +3,8 @@
 /**
  * @vitest-environment happy-dom
  */
-import { FormatNumber, mergeConfigs, SystemConfig, useChakraContext } from "@chakra-ui/react";
+import { FormatNumber, SystemConfig, mergeConfigs, useChakraContext } from "@chakra-ui/react";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import { ReactNode, createElement } from "react";
@@ -19,7 +20,6 @@ import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
-import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 
 interface TestProvider {
     value: string;
