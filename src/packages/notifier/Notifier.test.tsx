@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ApplicationContext } from "@open-pioneer/runtime";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { createService } from "@open-pioneer/test-utils/services";
 import { act, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
@@ -12,6 +11,7 @@ import { Notifier } from "./Notifier";
 it("shows notifications as toasts", async () => {
     const { service, content } = await create();
     render(content);
+    await screen.findByRole("region"); // Wait for mount
 
     act(() => {
         service.notify({
@@ -37,6 +37,7 @@ it("shows notifications as toasts", async () => {
 it("closes all notifications", async () => {
     const { service, content } = await create();
     render(content);
+    await screen.findByRole("region"); // Wait for mount
 
     act(() => {
         service.notify({ title: "test1" });
@@ -62,15 +63,7 @@ it("closes all notifications", async () => {
 });
 
 async function create() {
-    const service = await createService(NotificationServiceImpl, {
-        references: {
-            appCtx: {
-                getShadowRoot() {
-                    return document as any;
-                }
-            } satisfies Partial<ApplicationContext>
-        }
-    });
+    const service = await createService(NotificationServiceImpl);
     const services = {
         "notifier.NotificationService": service
     };

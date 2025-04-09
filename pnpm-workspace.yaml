@@ -11,8 +11,8 @@ __versions:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/react": ^3.13.0
-  "@chakra-ui/cli": ^3.13.0
+  "@chakra-ui/react": ^3.15.1
+  "@chakra-ui/cli": ^3.15.1
   "@conterra/reactivity-core": ^0.4.3
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
@@ -63,5 +63,5 @@ catalog:
   typedoc: ^0.27.7
   typescript: ^5.7.3
   vite-plugin-eslint: ^1.8.1
-  vite: ^6.1.1
+  vite: ^6.2.5
   vitest: ^3.0.6

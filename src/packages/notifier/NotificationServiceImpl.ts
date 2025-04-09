@@ -28,7 +28,7 @@ interface References {
     appCtx: ApplicationContext;
 }
 
-// 7 days
+// 7 days. Needed because there is no "indefinite" timeout for tooltips in current chakra.
 const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
 
 export class NotificationServiceImpl implements InternalNotificationAPI {
@@ -37,19 +37,15 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 
     readonly toaster: ToasterObject;
 
-    constructor({ references: { appCtx }, properties }: ServiceOptions<References>) {
+    constructor({ properties }: ServiceOptions<References>) {
         const typedProperties = properties as NotifierProperties;
 
-        const rootNode = appCtx.getShadowRoot();
         this.toaster = createToaster({
             placement: getPlacement(typedProperties.position),
             pauseOnPageIdle: true,
-
-            // Needed for `.getElementById()` queries
-            getRootNode: () => rootNode
         });
 
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV && !import.meta.env.VITEST) {
             this.#uiCheckTimeoutId = setTimeout(() => {
                 this.#checkUiNotification();
                 this.#uiCheckTimeoutId = undefined;
@@ -64,7 +60,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 
     notify(options: NotificationOptions): void {
         this.toaster.create({
-            type: options.level,
+            type: options.level ?? "info",
             title: options.title,
             description: options.message,
 
