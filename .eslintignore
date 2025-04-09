@@ -3,4 +3,4 @@ node_modules
 temp
 test-data
 support/licenses
-**/snippets
+chakra-snippets
