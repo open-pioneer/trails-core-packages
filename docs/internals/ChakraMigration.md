@@ -4,13 +4,6 @@
   The toaster (`createToaster`) needs a reference to the root node (`#pioneer-root`),
   so it cannot be created at module scope.
   Create it from a hook or a React component instead, or use the NotificationService.
-- The Tooltip snippet is not lazy by default.
-  It is recommended to use the `Tooltip` component with the following props:
-    ```jsx
-    lazyMount={true}
-    unmountOnExit={true}
-    ```
-    // TODO: provide a custom snippet for the Tooltip component
 - Checkbox / Radios: Cursor does not change to pointer on hover.
   // TODO: check why this is the default behaviour (in Chakra)
 
@@ -36,3 +29,4 @@
     - Tokens that have been used in the projects need to be renamed (see Chakra 3 PR for details).
     - `theme` export of `@open-pioneer/base-theme` has been renamed to `config` (of type `SystemConfig`).
 - @open-pioneer/chakra-integration has been removed
+- @open-pioneer/

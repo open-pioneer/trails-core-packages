@@ -150,8 +150,6 @@ function TooltipExample() {
             content="Button Tooltip"
             aria-label="A tooltip"
             positioning={{ placement: "top" }}
-            lazyMount={true}
-            unmountOnExit={true}
         >
             <Button>Button with a tooltip</Button>
         </Tooltip>
