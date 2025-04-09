@@ -6,3 +6,4 @@ export {
     CustomChakraProvider,
     type CustomChakraProviderProps
 } from "../react-integration/ChakraProvider";
+export { PackageContext, type PackageContextMethods } from "../react-integration/PackageContext";

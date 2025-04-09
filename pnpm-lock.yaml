@@ -553,9 +553,6 @@ importers:
       '@open-pioneer/reactivity':
         specifier: workspace:^
         version: link:../reactivity
-      '@open-pioneer/runtime-react-support':
-        specifier: workspace:^
-        version: link:../runtime-react-support
       react:
         specifier: 'catalog:'
         version: 19.0.0
@@ -571,20 +568,6 @@ importers:
         version: link:../../..
     publishDirectory: dist
 
-  src/packages/runtime-react-support:
-    dependencies:
-      react:
-        specifier: 'catalog:'
-        version: 19.0.0
-    devDependencies:
-      '@open-pioneer/runtime':
-        specifier: workspace:^
-        version: link:../runtime
-      core-packages:
-        specifier: workspace:^
-        version: link:../../..
-    publishDirectory: dist
-
   src/packages/test-utils:
     dependencies:
       '@formatjs/intl':
@@ -593,9 +576,6 @@ importers:
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../runtime
-      '@open-pioneer/runtime-react-support':
-        specifier: workspace:^
-        version: link:../runtime-react-support
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.0

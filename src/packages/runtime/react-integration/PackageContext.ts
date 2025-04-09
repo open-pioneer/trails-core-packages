@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createContext } from "react";
-import type { PackageIntl } from "@open-pioneer/runtime/i18n";
-import type { Service } from "@open-pioneer/runtime/Service";
-import type { UseServiceOptions } from "@open-pioneer/runtime/react-integration/hooks";
+import type { PackageIntl } from "../i18n";
+import type { Service } from "../Service";
+import type { UseServiceOptions } from "./hooks";
 
 export interface PackageContextMethods {
     getService: (packageName: string, interfaceName: string, options: UseServiceOptions) => Service;

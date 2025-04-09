@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { PackageIntl, Service } from "@open-pioneer/runtime";
 import {
-    PackageContext as InternalPackageContext,
+    CustomChakraProvider,
+    PackageContext,
     PackageContextMethods
-} from "@open-pioneer/runtime-react-support";
-import { CustomChakraProvider } from "@open-pioneer/runtime/test-support";
+} from "@open-pioneer/runtime/test-support";
 import { FC, ReactNode, useMemo } from "react";
 import { createIntl } from "./vanilla";
 
@@ -65,9 +65,7 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
 
     return (
         <CustomChakraProvider rootNode={document} appRoot={document.body} locale={locale}>
-            <InternalPackageContext.Provider value={contextMethods}>
-                {children}
-            </InternalPackageContext.Provider>
+            <PackageContext.Provider value={contextMethods}>{children}</PackageContext.Provider>
         </CustomChakraProvider>
     );
 };
