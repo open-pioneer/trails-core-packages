@@ -1,10 +1,11 @@
-import { $ } from "zx";
+import { $, usePowerShell } from "zx";
 import glob from "fast-glob";
 import { unlinkSync } from "fs";
 import { resolve } from "path";
 
+usePowerShell()
+
 const unwantedSnippets = new Set([
-    "accordion.tsx",
     "action-bar.tsx",
     "color-mode.tsx",
     "color-picker.tsx",
