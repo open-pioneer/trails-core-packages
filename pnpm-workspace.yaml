@@ -1,6 +1,5 @@
 packages:
   - src/**
-  - "!src/packages/chakra-snippets" # TODO Remove
   - "!**/test-data/**"
   - "!**/dist/**"
   - .

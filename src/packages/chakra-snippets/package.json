@@ -2,8 +2,6 @@
     "name": "@open-pioneer/chakra-snippets",
     "description": "TODO",
     "version": "3.0.0",
-    "main": "index.ts",
-    "private": true,
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
