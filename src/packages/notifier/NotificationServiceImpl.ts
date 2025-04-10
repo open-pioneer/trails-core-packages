@@ -42,7 +42,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 
         this.toaster = createToaster({
             placement: getPlacement(typedProperties.position),
-            pauseOnPageIdle: true,
+            pauseOnPageIdle: true
         });
 
         if (import.meta.env.DEV && !import.meta.env.VITEST) {
