@@ -3,4 +3,4 @@ messages:
     copy: copy
     copied: copied
   close-button:
-    ariaLabel: close
+    ariaLabel: Close
