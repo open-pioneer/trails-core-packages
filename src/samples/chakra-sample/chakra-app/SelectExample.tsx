@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createListCollection, Spinner, Text } from "@chakra-ui/react";
+import { createListCollection, Spinner, Text, Portal } from "@chakra-ui/react";
 import { NativeSelect } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
 
@@ -32,14 +32,22 @@ export function SelectComponent() {
                 <Select.Trigger>
                     <Select.ValueText placeholder="Select an item" />
                 </Select.Trigger>
-                <Select.Content>
-                    {frameworks.items.map((item) => (
-                        <Select.Item item={item} key={item.value} justifyContent="flex-start">
-                            {item.label}
-                            <Spinner />
-                        </Select.Item>
-                    ))}
-                </Select.Content>
+                <Portal>
+                    <Select.Positioner>
+                        <Select.Content>
+                            {frameworks.items.map((item) => (
+                                <Select.Item
+                                    item={item}
+                                    key={item.value}
+                                    justifyContent="flex-start"
+                                >
+                                    {item.label}
+                                    <Spinner />
+                                </Select.Item>
+                            ))}
+                        </Select.Content>
+                    </Select.Positioner>
+                </Portal>
             </Select.Root>
         </>
     );
