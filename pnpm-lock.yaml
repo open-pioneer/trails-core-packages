@@ -399,6 +399,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react:
+        specifier: 'catalog:'
+        version: 19.0.0
       react-icons:
         specifier: ^5.5.0
         version: 5.5.0(react@19.0.0)
