@@ -622,6 +622,9 @@ importers:
       '@open-pioneer/authentication':
         specifier: workspace:^
         version: link:../../../packages/authentication
+      '@open-pioneer/chakra-snippets':
+        specifier: workspace:^
+        version: link:../../../packages/chakra-snippets
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../../../packages/core

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Alert, Button, Container, Heading, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
-import { Field } from "../snippets/field";
-import { PasswordInput } from "../snippets/password-input";
+import { Field } from "@open-pioneer/chakra-snippets/field";
+import { PasswordInput } from "@open-pioneer/chakra-snippets/password-input";
 
 interface LoginMaskProps {
     wasLoggedIn: boolean;
