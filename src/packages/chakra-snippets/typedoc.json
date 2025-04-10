@@ -1,4 +1,36 @@
 {
     "extends": ["core-packages/typedoc.base.json"],
-    "entryPoints": []
+    "entryPoints": [
+        "alert.tsx",
+        "avatar.tsx",
+        "blockquote.tsx",
+        "breadcrumb.tsx",
+        "checkbox.tsx",
+        "checkbox-card.tsx",
+        "clipboard.tsx",
+        "close-button.tsx",
+        "data-list.tsx",
+        "empty-state.tsx",
+        "field.tsx",
+        "input-group.tsx",
+        "link-button.tsx",
+        "native-select.tsx",
+        "number-input.tsx",
+        "password-input.tsx",
+        "pin-input.tsx",
+        "prose.tsx",
+        "qr-code.tsx",
+        "radio.tsx",
+        "radio-card.tsx",
+        "rating.tsx",
+        "slider.tsx",
+        "status.tsx",
+        "stepper-input.tsx",
+        "switch.tsx",
+        "tag.tsx",
+        "toggle.tsx",
+        "toggle-tip.tsx",
+        "tooltip.tsx"
+    ],
+    "validation": false
 }
