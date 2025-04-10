@@ -20,7 +20,6 @@ export default defineBuildConfig({
         "link-button.tsx",
         "native-select.tsx",
         "number-input.tsx",
-        "pagination.tsx",
         "password-input.tsx",
         "pin-input.tsx",
         "prose.tsx",
