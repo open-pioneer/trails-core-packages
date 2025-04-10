@@ -124,7 +124,9 @@
         "typescript": "catalog:",
         "vite": "catalog:",
         "vite-plugin-eslint": "catalog:",
-        "vitest": "catalog:"
+        "vitest": "catalog:",
+        "tsx": "catalog:",
+        "zx": "catalog:"
     },
     "engines": {
         "node": ">= 20",
