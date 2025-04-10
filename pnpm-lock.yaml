@@ -184,9 +184,6 @@ patchedDependencies:
   '@changesets/assemble-release-plan@6.0.4':
     hash: h7fa74ddz2lm7t3hquqctf7dgq
     path: patches/@changesets__assemble-release-plan.patch
-  '@zag-js/interact-outside':
-    hash: oir6j3mivchjqlwgltdm2hmsd4
-    path: patches/@zag-js__interact-outside.patch
 
 importers:
 
@@ -5670,7 +5667,7 @@ snapshots:
   '@zag-js/dismissable@1.8.2':
     dependencies:
       '@zag-js/dom-query': 1.8.2
-      '@zag-js/interact-outside': 1.8.2(patch_hash=oir6j3mivchjqlwgltdm2hmsd4)
+      '@zag-js/interact-outside': 1.8.2
       '@zag-js/utils': 1.8.2
 
   '@zag-js/dom-query@1.8.2':
@@ -5682,7 +5679,7 @@ snapshots:
       '@zag-js/anatomy': 1.8.2
       '@zag-js/core': 1.8.2
       '@zag-js/dom-query': 1.8.2
-      '@zag-js/interact-outside': 1.8.2(patch_hash=oir6j3mivchjqlwgltdm2hmsd4)
+      '@zag-js/interact-outside': 1.8.2
       '@zag-js/types': 1.8.2
       '@zag-js/utils': 1.8.2
 
@@ -5724,7 +5721,7 @@ snapshots:
     dependencies:
       '@zag-js/dom-query': 1.8.2
 
-  '@zag-js/interact-outside@1.8.2(patch_hash=oir6j3mivchjqlwgltdm2hmsd4)':
+  '@zag-js/interact-outside@1.8.2':
     dependencies:
       '@zag-js/dom-query': 1.8.2
       '@zag-js/utils': 1.8.2
@@ -5917,7 +5914,7 @@ snapshots:
       '@zag-js/auto-resize': 1.8.2
       '@zag-js/core': 1.8.2
       '@zag-js/dom-query': 1.8.2
-      '@zag-js/interact-outside': 1.8.2(patch_hash=oir6j3mivchjqlwgltdm2hmsd4)
+      '@zag-js/interact-outside': 1.8.2
       '@zag-js/live-region': 1.8.2
       '@zag-js/types': 1.8.2
       '@zag-js/utils': 1.8.2
@@ -5984,7 +5981,7 @@ snapshots:
       '@zag-js/dismissable': 1.8.2
       '@zag-js/dom-query': 1.8.2
       '@zag-js/focus-trap': 1.8.2
-      '@zag-js/interact-outside': 1.8.2(patch_hash=oir6j3mivchjqlwgltdm2hmsd4)
+      '@zag-js/interact-outside': 1.8.2
       '@zag-js/popper': 1.8.2
       '@zag-js/types': 1.8.2
       '@zag-js/utils': 1.8.2
