@@ -1,33 +1,28 @@
-import { Field as ChakraField } from "@chakra-ui/react"
-import * as React from "react"
+// SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
+// SPDX-License-Identifier: Apache-2.0
+import { Field as ChakraField } from "@chakra-ui/react";
+import * as React from "react";
 
 export interface FieldProps extends Omit<ChakraField.RootProps, "label"> {
-  label?: React.ReactNode
-  helperText?: React.ReactNode
-  errorText?: React.ReactNode
-  optionalText?: React.ReactNode
+    label?: React.ReactNode;
+    helperText?: React.ReactNode;
+    errorText?: React.ReactNode;
+    optionalText?: React.ReactNode;
 }
 
-export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
-  function Field(props, ref) {
-    const { label, children, helperText, errorText, optionalText, ...rest } =
-      props
+export const Field = React.forwardRef<HTMLDivElement, FieldProps>(function Field(props, ref) {
+    const { label, children, helperText, errorText, optionalText, ...rest } = props;
     return (
-      <ChakraField.Root ref={ref} {...rest}>
-        {label && (
-          <ChakraField.Label>
-            {label}
-            <ChakraField.RequiredIndicator fallback={optionalText} />
-          </ChakraField.Label>
-        )}
-        {children}
-        {helperText && (
-          <ChakraField.HelperText>{helperText}</ChakraField.HelperText>
-        )}
-        {errorText && (
-          <ChakraField.ErrorText>{errorText}</ChakraField.ErrorText>
-        )}
-      </ChakraField.Root>
-    )
-  },
-)
+        <ChakraField.Root ref={ref} {...rest}>
+            {label && (
+                <ChakraField.Label>
+                    {label}
+                    <ChakraField.RequiredIndicator fallback={optionalText} />
+                </ChakraField.Label>
+            )}
+            {children}
+            {helperText && <ChakraField.HelperText>{helperText}</ChakraField.HelperText>}
+            {errorText && <ChakraField.ErrorText>{errorText}</ChakraField.ErrorText>}
+        </ChakraField.Root>
+    );
+});

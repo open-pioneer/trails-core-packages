@@ -6,6 +6,7 @@
         "@chakra-ui/react": "catalog:",
         "@open-pioneer/notifier": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/chakra-snippets": "workspace:^",
         "react": "catalog:"
     }
 }

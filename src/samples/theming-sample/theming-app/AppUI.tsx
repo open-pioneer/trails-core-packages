@@ -15,13 +15,13 @@ import {
     Stack,
     Textarea
 } from "@chakra-ui/react";
-import { Checkbox } from "./snippets/checkbox";
-import { Field } from "./snippets/field";
-import { NativeSelectRoot } from "./snippets/native-select";
-import { Radio, RadioGroup } from "./snippets/radio";
-import { Slider } from "./snippets/slider";
-import { Switch } from "./snippets/switch";
-import { Tooltip } from "./snippets/tooltip";
+import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
+import { Field } from "@open-pioneer/chakra-snippets/field";
+import { NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
+import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
+import { Slider } from "@open-pioneer/chakra-snippets/slider";
+import { Switch } from "@open-pioneer/chakra-snippets/switch";
+import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 
 export function AppUI() {
     return (

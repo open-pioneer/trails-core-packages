@@ -3,8 +3,8 @@
 import { Container, Stack, Text, Heading, StackSeparator, Box, Input } from "@chakra-ui/react";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { Radio, RadioGroup } from "./snippets/radio";
-import { NumberInputField, NumberInputRoot } from "./snippets/number-input";
+import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
+import { NumberInputField, NumberInputRoot } from "@open-pioneer/chakra-snippets/number-input";
 
 export function AppUI() {
     const intl = useIntl();

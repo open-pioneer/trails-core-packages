@@ -688,6 +688,9 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.15.1(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@open-pioneer/chakra-snippets':
+        specifier: workspace:^
+        version: link:../../../packages/chakra-snippets
 
   src/samples/i18n-sample/i18n-app:
     dependencies:
@@ -729,6 +732,9 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.15.1(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@open-pioneer/chakra-snippets':
+        specifier: workspace:^
+        version: link:../../../packages/chakra-snippets
       '@open-pioneer/notifier':
         specifier: workspace:^
         version: link:../../../packages/notifier
@@ -770,6 +776,9 @@ importers:
 
   src/samples/theming-sample/theming-app:
     dependencies:
+      '@open-pioneer/chakra-snippets':
+        specifier: workspace:^
+        version: link:../../../packages/chakra-snippets
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime

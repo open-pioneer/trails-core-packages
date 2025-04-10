@@ -3,6 +3,7 @@
     "version": "0.0.20",
     "private": true,
     "dependencies": {
-        "@chakra-ui/react": "catalog:"
+        "@chakra-ui/react": "catalog:",
+        "@open-pioneer/chakra-snippets": "workspace:^"
     }
 }

@@ -19,9 +19,9 @@ import {
 } from "@open-pioneer/notifier";
 import { useService } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { Checkbox } from "./snippets/checkbox";
-import { NativeSelectField, NativeSelectRoot } from "./snippets/native-select";
-import { Field } from "./snippets/field";
+import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
+import { NativeSelectField, NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
+import { Field } from "@open-pioneer/chakra-snippets/field";
 
 export function AppUI() {
     const notifications = useService<NotificationService>("notifier.NotificationService");

@@ -106,7 +106,7 @@ function PortalExample() {
             <Heading size="sm">Portal Example: </Heading>
             This is box and displayed here. Scroll/Look down to see the portal that is added at the
             end of document.body. The Portal is part of this Box.
-            <Portal >
+            <Portal>
                 <Box className={"portal-content"}>This is the portal content!</Box>
             </Portal>
         </Box>
@@ -216,8 +216,8 @@ function DialogExample() {
                         </Dialog.Header>
                         <Dialog.Body>
                             <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                                eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             </p>
                         </Dialog.Body>
                         <Dialog.Footer>
@@ -297,9 +297,7 @@ function PopoverExample() {
                         <Popover.Arrow />
                         <Popover.Header>Header</Popover.Header>
                         <Popover.CloseTrigger />
-                        <Popover.Body>
-                            This Popover is not portalled
-                        </Popover.Body>
+                        <Popover.Body>This Popover is not portalled</Popover.Body>
                         <Popover.Footer>This is the footer</Popover.Footer>
                     </Popover.Content>
                 </Popover.Positioner>
