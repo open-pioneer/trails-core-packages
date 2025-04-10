@@ -1,15 +1,8 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createListCollection, Spinner, Text } from "@chakra-ui/react";
-import { NativeSelectField, NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
-import {
-    SelectContent,
-    SelectItem,
-    SelectLabel,
-    SelectRoot,
-    SelectTrigger,
-    SelectValueText
-} from "@open-pioneer/chakra-snippets/select";
+import { NativeSelect } from "@chakra-ui/react";
+import { Select } from "@chakra-ui/react";
 
 const frameworks = createListCollection({
     items: [
@@ -26,28 +19,28 @@ export function SelectComponent() {
             <Text fontSize={"sm"} fontWeight={500} mt={4} mb={1}>
                 Native select component
             </Text>
-            <NativeSelectRoot mb={4}>
-                <NativeSelectField placeholder="Select an item">
+            <NativeSelect.Root mb={4}>
+                <NativeSelect.Field placeholder="Select an item">
                     <option value="item1">Item 1</option>
                     <option value="item2">Item 2</option>
                     <option value="item3">Item 3</option>
-                </NativeSelectField>
-            </NativeSelectRoot>
+                </NativeSelect.Field>
+            </NativeSelect.Root>
 
-            <SelectRoot collection={frameworks} size="sm" width="320px" mb={4}>
-                <SelectLabel>New select component</SelectLabel>
-                <SelectTrigger>
-                    <SelectValueText placeholder="Select an item" />
-                </SelectTrigger>
-                <SelectContent>
+            <Select.Root collection={frameworks} size="sm" width="320px" mb={4}>
+                <Select.Label>New select component</Select.Label>
+                <Select.Trigger>
+                    <Select.ValueText placeholder="Select an item" />
+                </Select.Trigger>
+                <Select.Content>
                     {frameworks.items.map((item) => (
-                        <SelectItem item={item} key={item.value} justifyContent="flex-start">
+                        <Select.Item item={item} key={item.value} justifyContent="flex-start">
                             {item.label}
                             <Spinner />
-                        </SelectItem>
+                        </Select.Item>
                     ))}
-                </SelectContent>
-            </SelectRoot>
+                </Select.Content>
+            </Select.Root>
         </>
     );
 }

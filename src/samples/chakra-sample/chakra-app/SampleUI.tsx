@@ -139,7 +139,7 @@ function PortalExample() {
             <Heading size="sm">Portal Example: </Heading>
             This is box and displayed here. Scroll/Look down to see the portal that is added at the
             end of document.body. The Portal is part of this Box.
-            <Portal>
+            <Portal >
                 <Box className={"portal-content"}>This is the portal content!</Box>
             </Portal>
         </Box>
