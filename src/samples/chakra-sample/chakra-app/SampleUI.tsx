@@ -15,54 +15,21 @@ import {
     CreateToasterReturn,
     Portal,
     Toast,
-    useEnvironmentContext,
     useDisclosure,
     DrawerBackdrop,
-    Alert
+    Alert,
+    Accordion,
+    Span,
+    Dialog,
+    Drawer,
+    Popover
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import {
-    AccordionItem,
-    AccordionItemContent,
-    AccordionItemTrigger,
-    AccordionRoot
-} from "@open-pioneer/chakra-snippets/accordion";
-import {
-    DialogActionTrigger,
-    DialogBody,
-    DialogCloseTrigger,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogRoot,
-    DialogTitle,
-    DialogTrigger
-} from "@open-pioneer/chakra-snippets/dialog";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
-import {
-    DrawerBody,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerRoot,
-    DrawerActionTrigger,
-    DrawerCloseTrigger
-} from "@open-pioneer/chakra-snippets/drawer";
-import {
-    PopoverArrow,
-    PopoverBody,
-    PopoverCloseTrigger,
-    PopoverContent,
-    PopoverFooter,
-    PopoverHeader,
-    PopoverRoot,
-    PopoverTrigger
-} from "@open-pioneer/chakra-snippets/popover";
 import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
 import { TableExampleComponent } from "./TableExample";
 import { SelectComponent } from "./SelectExample";
 import { CloseButton } from "@open-pioneer/chakra-snippets/close-button";
-import { ClipboardButton, ClipboardInput } from "@open-pioneer/chakra-snippets/clipboard";
 
 export function SampleUI() {
     const [toaster, toasterUI] = useToaster();
@@ -182,15 +149,13 @@ const ToastExample = (props: { toaster: CreateToasterReturn }) => {
 // cannot be created as a module-level constant.
 // Use this as a base for the notifier package.
 function useToaster() {
-    const { getRootNode } = useEnvironmentContext();
     const toaster = useMemo(
         () =>
             createToaster({
                 placement: "bottom-end",
-                pauseOnPageIdle: true,
-                getRootNode
+                pauseOnPageIdle: true
             }),
-        [getRootNode]
+        []
     );
 
     const toasterUI = useMemo(
@@ -239,29 +204,33 @@ function AlertExample() {
 
 function DialogExample() {
     return (
-        <DialogRoot>
-            <DialogTrigger asChild>
+        <Dialog.Root>
+            <Dialog.Trigger asChild>
                 <Button variant="outline">Open Me</Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Dialog Title</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
-                    <p>
+            </Dialog.Trigger>
+            <Portal>
+                <Dialog.Positioner>
+                    <Dialog.Content>
+                        <Dialog.Header>
+                            <Dialog.Title>Dialog Title</Dialog.Title>
+                        </Dialog.Header>
+                        <Dialog.Body>
+                            <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
                         tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-                </DialogBody>
-                <DialogFooter>
-                    <DialogActionTrigger asChild>
-                        <Button variant="outline">Cancel</Button>
-                    </DialogActionTrigger>
-                    <Button>Save</Button>
-                </DialogFooter>
-                <DialogCloseTrigger />
-            </DialogContent>
-        </DialogRoot>
+                            </p>
+                        </Dialog.Body>
+                        <Dialog.Footer>
+                            <Dialog.ActionTrigger asChild>
+                                <Button variant="outline">Cancel</Button>
+                            </Dialog.ActionTrigger>
+                            <Button>Save</Button>
+                        </Dialog.Footer>
+                        <Dialog.CloseTrigger />
+                    </Dialog.Content>
+                </Dialog.Positioner>
+            </Portal>
+        </Dialog.Root>
     );
 }
 
@@ -270,22 +239,26 @@ function DrawerExample() {
     return (
         <>
             <Button onClick={onOpen}>Open Drawer</Button>
-            <DrawerRoot open={open} placement="start" onOpenChange={onClose} size={"sm"}>
-                <DrawerBackdrop></DrawerBackdrop>
-                <DrawerContent>
-                    <DrawerHeader>This is the drawer header</DrawerHeader>
-
-                    <DrawerBody>This is the body.</DrawerBody>
-
-                    <DrawerFooter>
-                        <DrawerActionTrigger asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DrawerActionTrigger>
-                        <Button>Save</Button>
-                    </DrawerFooter>
-                    <DrawerCloseTrigger />
-                </DrawerContent>
-            </DrawerRoot>
+            <Drawer.Root open={open} placement="start" onOpenChange={onClose} size={"sm"}>
+                <Portal>
+                    <DrawerBackdrop></DrawerBackdrop>
+                    <Drawer.Positioner>
+                        <Drawer.Content>
+                            <Drawer.Header>This is the drawer header</Drawer.Header>
+                            <Drawer.Body>This is the body.</Drawer.Body>
+                            <Drawer.Footer>
+                                <Drawer.ActionTrigger asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </Drawer.ActionTrigger>
+                                <Button>Save</Button>
+                            </Drawer.Footer>
+                            <Drawer.CloseTrigger asChild>
+                                <CloseButton size="sm" />
+                            </Drawer.CloseTrigger>
+                        </Drawer.Content>
+                    </Drawer.Positioner>
+                </Portal>
+            </Drawer.Root>
         </>
     );
 }
@@ -299,40 +272,44 @@ const items = [
 function PopoverExample() {
     return (
         <>
-            <PopoverRoot>
-                <PopoverTrigger asChild>
+            <Popover.Root>
+                <Popover.Trigger asChild>
                     <Button>Show Popover rendered in an portal</Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                    <PopoverArrow />
-                    <PopoverHeader>Popover!</PopoverHeader>
-                    <PopoverBody>This Popover is rendered in Portal by default</PopoverBody>
-                    <PopoverCloseTrigger />
-                </PopoverContent>
-            </PopoverRoot>
-
-            <PopoverRoot>
-                <PopoverTrigger asChild>
-                    <Button ml={5}>Show Popover without an portal</Button>
-                </PopoverTrigger>
+                </Popover.Trigger>
                 <Portal>
-                    <PopoverContent portalled={false}>
-                        <PopoverArrow />
-                        <PopoverHeader>Header</PopoverHeader>
-                        <PopoverCloseTrigger />
-                        <PopoverBody>
-                            <PopoverBody>This Popover is not portalled</PopoverBody>
-                        </PopoverBody>
-                        <PopoverFooter>This is the footer</PopoverFooter>
-                    </PopoverContent>
+                    <Popover.Positioner>
+                        <Popover.Content>
+                            <Popover.Arrow />
+                            <Popover.Header>Popover!</Popover.Header>
+                            <Popover.Body>This Popover is rendered in Portal</Popover.Body>
+                            <Popover.CloseTrigger />
+                        </Popover.Content>
+                    </Popover.Positioner>
                 </Portal>
-            </PopoverRoot>
+            </Popover.Root>
+
+            <Popover.Root>
+                <Popover.Trigger asChild>
+                    <Button ml={5}>Show Popover without an portal</Button>
+                </Popover.Trigger>
+                <Popover.Positioner>
+                    <Popover.Content>
+                        <Popover.Arrow />
+                        <Popover.Header>Header</Popover.Header>
+                        <Popover.CloseTrigger />
+                        <Popover.Body>
+                            This Popover is not portalled
+                        </Popover.Body>
+                        <Popover.Footer>This is the footer</Popover.Footer>
+                    </Popover.Content>
+                </Popover.Positioner>
+            </Popover.Root>
         </>
     );
 }
 
 function RadioGroupExample() {
-    const [value, setValue] = useState("2");
+    const [value, setValue] = useState<string | null>("2");
     return (
         <>
             <RadioGroup onValueChange={(e) => setValue(e.value)} value={value} size="md">
@@ -364,14 +341,17 @@ const AccordionDemo = () => {
     const [value, setValue] = useState(["second-item"]);
     return (
         <Stack gap="4" p={2} mb={4} border={"solid"}>
-            <AccordionRoot value={value} onValueChange={(e) => setValue(e.value)}>
+            <Accordion.Root value={value} onValueChange={(e) => setValue(e.value)}>
                 {items.map((item, index) => (
-                    <AccordionItem key={index} value={item.value}>
-                        <AccordionItemTrigger>{item.title}</AccordionItemTrigger>
-                        <AccordionItemContent>{item.text}</AccordionItemContent>
-                    </AccordionItem>
+                    <Accordion.Item key={index} value={item.value}>
+                        <Accordion.ItemTrigger>
+                            <Span flex="1">{item.title}</Span>
+                            <Accordion.ItemIndicator />
+                        </Accordion.ItemTrigger>
+                        <Accordion.ItemContent>{item.text}</Accordion.ItemContent>
+                    </Accordion.Item>
                 ))}
-            </AccordionRoot>
+            </Accordion.Root>
             <Text fontStyle={"italic"}>Expanded item: {value.join(", ")}</Text>
         </Stack>
     );

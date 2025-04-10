@@ -70,7 +70,7 @@ function InterpolationExample() {
 
 function PluralsExample() {
     const intl = useIntl();
-    const [value, setValue] = useState("1");
+    const [value, setValue] = useState<string | null>("1");
     return (
         <>
             <Heading as="h4" size="md">
@@ -92,7 +92,7 @@ function PluralsExample() {
 function SelectionExample() {
     const intl = useIntl();
     const [value1, setValue1] = useState("");
-    const [value2, setValue2] = useState("male");
+    const [value2, setValue2] = useState<string | null>("male");
     return (
         <>
             <Heading as="h4" size="md">
