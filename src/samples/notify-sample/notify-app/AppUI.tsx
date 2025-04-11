@@ -4,17 +4,13 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Checkbox,
     Container,
-    FormControl,
-    FormLabel,
     Heading,
     Input,
-    Select,
     Stack,
     Text,
     Textarea
-} from "@open-pioneer/chakra-integration";
+} from "@chakra-ui/react";
 import {
     NotificationLevel,
     NotificationOptions,
@@ -23,6 +19,9 @@ import {
 } from "@open-pioneer/notifier";
 import { useService } from "open-pioneer:react-hooks";
 import { useState } from "react";
+import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
+import { NativeSelectField, NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
+import { Field } from "@open-pioneer/chakra-snippets/field";
 
 export function AppUI() {
     const notifications = useService<NotificationService>("notifier.NotificationService");
@@ -53,56 +52,54 @@ export function AppUI() {
 
     return (
         <>
-            <Notifier position="top-right" />
-            <Container p={5}>
-                <Stack spacing={8}>
+            <Notifier />
+            <Container maxWidth="xl" p={5}>
+                <Stack gap={8}>
                     <Stack align="center">
                         <Heading as="h1">Notify Sample</Heading>
                         <Text>Use the form below to emit notifications.</Text>
                     </Stack>
                     <Box rounded="lg" boxShadow="lg" p={8}>
-                        <Stack spacing={4}>
-                            <FormControl isRequired>
-                                <FormLabel>Title</FormLabel>
+                        <Stack gap={4}>
+                            <Field label="Title" required>
                                 <Input
                                     type="text"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
-                            </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel>Level</FormLabel>
-                                <Select
-                                    value={level}
-                                    onChange={(e) => {
-                                        setLevel(e.target.value);
-                                    }}
-                                >
-                                    <option value="success">Success</option>
-                                    <option value="info">Info</option>
-                                    <option value="warning">Warning</option>
-                                    <option value="error">Error</option>
-                                </Select>
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>Message</FormLabel>
+                            </Field>
+                            <Field label="Level" required>
+                                <NativeSelectRoot>
+                                    <NativeSelectField
+                                        value={level}
+                                        onChange={(e) => {
+                                            setLevel(e.target.value);
+                                        }}
+                                        items={[
+                                            { value: "success", label: "Success" },
+                                            { value: "info", label: "Info" },
+                                            { value: "warning", label: "Warning" },
+                                            { value: "error", label: "Error" }
+                                        ]}
+                                    />
+                                </NativeSelectRoot>
+                            </Field>
+                            <Field label="Message">
                                 <Textarea
                                     placeholder="Enter additional message"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                 />
-                            </FormControl>
+                            </Field>
                             <Checkbox
-                                isChecked={autoHide}
-                                onChange={(e) => setAutoHide(e.target.checked)}
+                                checked={autoHide}
+                                onCheckedChange={(e) => setAutoHide(!!e.checked)}
                             >
                                 Hide after 5 seconds
                             </Checkbox>
                             <ButtonGroup justifyContent="center">
-                                <Button flex="1" onClick={emitNotification}>
-                                    Emit Notification
-                                </Button>
-                                <Button flex="1" variant="cancel" onClick={clearNotifications}>
+                                <Button onClick={emitNotification}>Emit Notification</Button>
+                                <Button colorPalette="red" onClick={clearNotifications}>
                                     Clear notifications
                                 </Button>
                             </ButtonGroup>

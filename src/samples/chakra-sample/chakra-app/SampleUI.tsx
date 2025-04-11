@@ -3,65 +3,49 @@
 import {
     Button,
     Container,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    useDisclosure,
-    useToast,
-    Heading,
-    Text,
-    Link,
+    createToaster,
+    Spinner,
     Stack,
-    StackDivider,
+    Text,
+    Heading,
+    Link,
+    StackSeparator,
     Box,
-    Tooltip,
-    RadioGroup,
-    Radio,
-    Alert,
-    AlertIcon,
-    AlertTitle,
-    AlertDescription,
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
+    Toaster as ChakraToaster,
+    CreateToasterReturn,
     Portal,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverHeader,
-    PopoverBody,
-    PopoverArrow,
-    PopoverCloseButton,
-    PopoverFooter,
-    Select
-} from "@open-pioneer/chakra-integration";
-import { useRef, useState } from "react";
+    Toast,
+    useDisclosure,
+    DrawerBackdrop,
+    Alert,
+    Accordion,
+    Span,
+    Dialog,
+    Drawer,
+    Popover
+} from "@chakra-ui/react";
+import { useMemo, useState } from "react";
+import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
+import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
 import { TableExampleComponent } from "./TableExample";
+import { SelectComponent } from "./SelectExample";
+import { CloseButton } from "@open-pioneer/chakra-snippets/close-button";
 
 export function SampleUI() {
+    const [toaster, toasterUI] = useToaster();
     return (
         <div style={{ overflow: "auto", height: "100%", width: "100%" }}>
             <Container>
                 <Heading mb={5}>chakra technical demo</Heading>
                 <LinkComponent></LinkComponent>
-                <ComponentStack></ComponentStack>
+                <ComponentStack toaster={toaster}></ComponentStack>
                 <TableExampleComponent />
                 <SelectComponent />
+                <AccordionDemo />
+                <CloseButton></CloseButton>
             </Container>
+
+            {toasterUI}
         </div>
     );
 }
@@ -70,33 +54,38 @@ function LinkComponent() {
     return (
         <Text>
             This is a{" "}
-            <Link href="https://chakra-ui.com" isExternal>
+            <Link href="https://chakra-ui.com" target="_blank">
                 link to Chakra&apos;s Design system
             </Link>
         </Text>
     );
 }
 
-function ComponentStack() {
+const ComponentStack = (props: { toaster: CreateToasterReturn }) => {
     return (
-        <Stack mb={5} mt={5} divider={<StackDivider />} spacing="24px" align="stretch">
+        <Stack mb={5} mt={5} separator={<StackSeparator />} gap="24px" align="stretch">
             <Box>
                 <PortalExample />
+            </Box>
+
+            <Box>
+                <TooltipExample />
             </Box>
             <Box>
                 <TooltipExample />
             </Box>
             <Box>
-                <ToastExample />
+                <TooltipExample />
+            </Box>
+
+            <Box>
+                <ToastExample toaster={props.toaster} />
             </Box>
             <Box>
                 <AlertExample />
             </Box>
             <Box>
-                <AlertDialogExample />
-            </Box>
-            <Box>
-                <ModalExample />
+                <DialogExample />
             </Box>
             <Box>
                 <DrawerExample />
@@ -109,212 +98,259 @@ function ComponentStack() {
             </Box>
         </Stack>
     );
-}
+};
 
 function PortalExample() {
     return (
-        <Box bg="background_secondary">
+        <Box bg="primary_background_secondary">
             <Heading size="sm">Portal Example: </Heading>
             This is box and displayed here. Scroll/Look down to see the portal that is added at the
             end of document.body. The Portal is part of this Box.
-            <Portal>This is the portal content!</Portal>
+            <Portal>
+                <Box className={"portal-content"}>This is the portal content!</Box>
+            </Portal>
         </Box>
     );
 }
 
 function TooltipExample() {
     return (
-        <Tooltip hasArrow label="Button Tooltip" aria-label="A tooltip" placement="top">
+        <Tooltip
+            showArrow
+            content="Button Tooltip"
+            aria-label="A tooltip"
+            positioning={{ placement: "top" }}
+        >
             <Button>Button with a tooltip</Button>
         </Tooltip>
     );
 }
 
-function ToastExample() {
-    const toast = useToast();
+const ToastExample = (props: { toaster: CreateToasterReturn }) => {
     return (
         <Button
-            onClick={() =>
-                toast({
-                    title: "Account created.",
+            onClick={() => {
+                props.toaster.create({
+                    type: "loading",
                     description: "We've created your account for you.",
-                    status: "success",
-                    duration: 9000,
-                    position: "bottom-left",
-                    isClosable: true
-                })
-            }
+                    meta: {
+                        closable: true
+                    }
+                });
+            }}
         >
             Show Toast
         </Button>
     );
+};
+
+// Sketch for integration of chakra toaster.
+// It needs the getRootNode function (-> #pioneer-root) to render correctly, so it
+// cannot be created as a module-level constant.
+// Use this as a base for the notifier package.
+function useToaster() {
+    const toaster = useMemo(
+        () =>
+            createToaster({
+                placement: "bottom-end",
+                pauseOnPageIdle: true
+            }),
+        []
+    );
+
+    const toasterUI = useMemo(
+        () => (
+            <Portal>
+                <ChakraToaster toaster={toaster} insetInline={{ mdDown: "4" }}>
+                    {(toast) => (
+                        <Toast.Root width={{ md: "sm" }}>
+                            {toast.type === "loading" ? (
+                                <Spinner size="sm" color="blue.solid" />
+                            ) : (
+                                <Toast.Indicator />
+                            )}
+                            <Stack gap="1" flex="1" maxWidth="100%">
+                                {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
+                                {toast.description && (
+                                    <Toast.Description>{toast.description}</Toast.Description>
+                                )}
+                            </Stack>
+                            {toast.action && (
+                                <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
+                            )}
+                            {toast.meta?.closable && <Toast.CloseTrigger />}
+                        </Toast.Root>
+                    )}
+                </ChakraToaster>
+            </Portal>
+        ),
+        [toaster]
+    );
+
+    return [toaster, toasterUI] as const;
 }
 
 function AlertExample() {
     return (
-        <Alert status="error">
-            <AlertIcon />
-            <AlertTitle>Test Alert!</AlertTitle>
-            <AlertDescription>This is a test alert (error)</AlertDescription>
-        </Alert>
+        <Alert.Root status={"error"}>
+            <Alert.Indicator></Alert.Indicator>
+            <Alert.Content>
+                <Alert.Title>Test Alert!</Alert.Title>
+                <Alert.Description>This is a test alert (error)</Alert.Description>
+            </Alert.Content>
+        </Alert.Root>
     );
 }
 
-function AlertDialogExample() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const cancelRef = useRef<HTMLButtonElement>(null);
-
+function DialogExample() {
     return (
-        <>
-            <Button onClick={onOpen}>Open Alert</Button>
-
-            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-                <AlertDialogOverlay>
-                    <AlertDialogContent className="class-from-app">
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Alert Title
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                            This is the text in the alert dialog body.
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose} variant="cancel">
-                                Cancel
-                            </Button>
-                            <Button onClick={onClose} ml={3}>
-                                Okay
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog>
-        </>
-    );
-}
-
-function ModalExample() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
-    return (
-        <>
-            <Button onClick={onOpen}>Show Modal</Button>
-
-            <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>This is a modal</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody pb={6}>This is a modal text!</ModalBody>
-
-                    <ModalFooter>
-                        <Button mr={2}>Got it</Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-        </>
+        <Dialog.Root>
+            <Dialog.Trigger asChild>
+                <Button variant="outline">Open Me</Button>
+            </Dialog.Trigger>
+            <Portal>
+                <Dialog.Positioner>
+                    <Dialog.Content>
+                        <Dialog.Header>
+                            <Dialog.Title>Dialog Title</Dialog.Title>
+                        </Dialog.Header>
+                        <Dialog.Body>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        </Dialog.Body>
+                        <Dialog.Footer>
+                            <Dialog.ActionTrigger asChild>
+                                <Button variant="outline">Cancel</Button>
+                            </Dialog.ActionTrigger>
+                            <Button>Save</Button>
+                        </Dialog.Footer>
+                        <Dialog.CloseTrigger />
+                    </Dialog.Content>
+                </Dialog.Positioner>
+            </Portal>
+        </Dialog.Root>
     );
 }
 
 function DrawerExample() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const btnRef = useRef<HTMLButtonElement>(null);
+    const { open, onOpen, onClose } = useDisclosure();
     return (
         <>
-            <Button ref={btnRef} onClick={onOpen}>
-                Open Drawer
-            </Button>
-            <Drawer
-                isOpen={isOpen}
-                placement="left"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-                isFullHeight={false}
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>This is the drawer header</DrawerHeader>
-
-                    <DrawerBody>This is the body.</DrawerBody>
-
-                    <DrawerFooter>
-                        <Button variant="outline" mr={3} onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button>Got it</Button>
-                    </DrawerFooter>
-                </DrawerContent>
-            </Drawer>
+            <Button onClick={onOpen}>Open Drawer</Button>
+            <Drawer.Root open={open} placement="start" onOpenChange={onClose} size={"sm"}>
+                <Portal>
+                    <DrawerBackdrop></DrawerBackdrop>
+                    <Drawer.Positioner>
+                        <Drawer.Content>
+                            <Drawer.Header>This is the drawer header</Drawer.Header>
+                            <Drawer.Body>This is the body.</Drawer.Body>
+                            <Drawer.Footer>
+                                <Drawer.ActionTrigger asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </Drawer.ActionTrigger>
+                                <Button>Save</Button>
+                            </Drawer.Footer>
+                            <Drawer.CloseTrigger asChild>
+                                <CloseButton size="sm" />
+                            </Drawer.CloseTrigger>
+                        </Drawer.Content>
+                    </Drawer.Positioner>
+                </Portal>
+            </Drawer.Root>
         </>
     );
 }
 
+const items = [
+    { value: "first-item", title: "First Item", text: "Some value 1..." },
+    { value: "second-item", title: "Second Item", text: "Some value 2..." },
+    { value: "third-item", title: "Third Item", text: "Some value 3..." }
+];
+
 function PopoverExample() {
     return (
         <>
-            <Popover>
-                <PopoverTrigger>
-                    <Button>Show Popover</Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverHeader>Popover!</PopoverHeader>
-                    <PopoverBody>This is a very important Popover</PopoverBody>
-                </PopoverContent>
-            </Popover>
-
-            <Popover>
-                <PopoverTrigger>
-                    <Button ml={5}>Show Popover rendered in an portal</Button>
-                </PopoverTrigger>
+            <Popover.Root>
+                <Popover.Trigger asChild>
+                    <Button>Show Popover rendered in an portal</Button>
+                </Popover.Trigger>
                 <Portal>
-                    <PopoverContent>
-                        <PopoverArrow />
-                        <PopoverHeader>Header</PopoverHeader>
-                        <PopoverCloseButton />
-                        <PopoverBody>
-                            <PopoverBody>This is a very important Popover</PopoverBody>
-                        </PopoverBody>
-                        <PopoverFooter>This is the footer</PopoverFooter>
-                    </PopoverContent>
+                    <Popover.Positioner>
+                        <Popover.Content>
+                            <Popover.Arrow />
+                            <Popover.Header>Popover!</Popover.Header>
+                            <Popover.Body>This Popover is rendered in Portal</Popover.Body>
+                            <Popover.CloseTrigger />
+                        </Popover.Content>
+                    </Popover.Positioner>
                 </Portal>
-            </Popover>
+            </Popover.Root>
+
+            <Popover.Root>
+                <Popover.Trigger asChild>
+                    <Button ml={5}>Show Popover without an portal</Button>
+                </Popover.Trigger>
+                <Popover.Positioner>
+                    <Popover.Content>
+                        <Popover.Arrow />
+                        <Popover.Header>Header</Popover.Header>
+                        <Popover.CloseTrigger />
+                        <Popover.Body>This Popover is not portalled</Popover.Body>
+                        <Popover.Footer>This is the footer</Popover.Footer>
+                    </Popover.Content>
+                </Popover.Positioner>
+            </Popover.Root>
         </>
     );
 }
 
 function RadioGroupExample() {
-    const [value, setValue] = useState("2");
+    const [value, setValue] = useState<string | null>("2");
     return (
         <>
-            <RadioGroup onChange={setValue} value={value}>
-                <Stack spacing={4} direction="row">
-                    <Radio size="sm" value="1" isDisabled>
+            <RadioGroup onValueChange={(e) => setValue(e.value)} value={value} size="md">
+                <Stack gap={4} direction="row">
+                    <Radio value="1" disabled>
                         Radio 1 (Disabled)
                     </Radio>
-                    <Radio size="md" value="2">
-                        Radio 2
-                    </Radio>
-                    <Radio size="lg" value="3">
-                        Radio 3
-                    </Radio>
+                    <Radio value="2">Radio 2</Radio>
+                    <Radio value="3">Radio 3</Radio>
                 </Stack>
             </RadioGroup>
-            <p>{"Checked radio: " + value}</p>
+            <Text pt={1} fontStyle={"italic"}>
+                {"Checked radio: " + value}
+            </Text>
+
+            <RadioGroup size="sm" mt={4}>
+                <Stack gap={4} direction="row">
+                    <Radio value="1" disabled>
+                        Small Radio 1 (Disabled)
+                    </Radio>
+                    <Radio value="2">Small Radio 2</Radio>
+                </Stack>
+            </RadioGroup>
         </>
     );
 }
 
-function SelectComponent() {
+const AccordionDemo = () => {
+    const [value, setValue] = useState(["second-item"]);
     return (
-        <Select m={5} placeholder="Select an item">
-            <option value="item1">Item 1</option>
-            <option value="item2">Item 2</option>
-            <option value="item3">Item 3</option>
-        </Select>
+        <Stack gap="4" p={2} mb={4} border={"solid"}>
+            <Accordion.Root value={value} onValueChange={(e) => setValue(e.value)}>
+                {items.map((item, index) => (
+                    <Accordion.Item key={index} value={item.value}>
+                        <Accordion.ItemTrigger>
+                            <Span flex="1">{item.title}</Span>
+                            <Accordion.ItemIndicator />
+                        </Accordion.ItemTrigger>
+                        <Accordion.ItemContent>{item.text}</Accordion.ItemContent>
+                    </Accordion.Item>
+                ))}
+            </Accordion.Root>
+            <Text fontStyle={"italic"}>Expanded item: {value.join(", ")}</Text>
+        </Stack>
     );
-}
+};

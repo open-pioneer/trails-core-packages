@@ -1,9 +1,8 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { theme as defaultTrailsTheme } from "@open-pioneer/base-theme";
-import { CustomChakraProvider } from "@open-pioneer/chakra-integration";
+import { SystemConfig } from "@chakra-ui/react";
+import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { Error } from "@open-pioneer/core";
-import { PackageContext, PackageContextMethods } from "@open-pioneer/runtime-react-support";
 import { ReactNode, StrictMode } from "react";
 import { createRoot, Root } from "react-dom/client";
 import { ErrorId } from "../errors";
@@ -11,20 +10,28 @@ import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSp
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
+import { CustomChakraProvider } from "./ChakraProvider";
+import { PackageContext, PackageContextMethods } from "./PackageContext";
 
 export interface ReactIntegrationOptions {
+    appRoot: HTMLDivElement;
+    rootNode: Document | ShadowRoot;
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
-    rootNode: HTMLDivElement;
-    container: Node;
-    theme: Record<string, unknown> | undefined;
+
+    locale: string;
+    config: SystemConfig | undefined;
+    styles: ReadonlyReactive<string>;
 }
 
 export class ReactIntegration {
-    private containerNode: Node;
-    private theme: Record<string, unknown> | undefined;
-    private root: Root;
+    private rootNode: Document | ShadowRoot;
+    private appRoot: HTMLDivElement;
+    private reactRoot: Root;
     private packageContext: PackageContextMethods;
+    private locale: string;
+    private chakraConfig: SystemConfig | undefined;
+    private styles: ReadonlyReactive<string>;
 
     static createForApp(options: ReactIntegrationOptions): ReactIntegration {
         const { serviceLayer, packages } = options;
@@ -52,19 +59,24 @@ export class ReactIntegration {
             packageContext: PackageContextMethods;
         }
     ) {
-        this.containerNode = options.container;
-        this.theme = options.theme;
-        this.root = createRoot(options.rootNode);
+        this.rootNode = options.rootNode;
+        this.appRoot = options.appRoot;
+        this.reactRoot = createRoot(options.appRoot);
+        this.chakraConfig = options.config;
         this.packageContext = options.packageContext;
+        this.locale = options.locale;
+        this.styles = options.styles;
     }
 
     render(contentNode: ReactNode) {
-        this.root.render(
+        this.reactRoot.render(
             <StrictMode>
                 <CustomChakraProvider
-                    container={this.containerNode}
-                    colorMode="light"
-                    theme={this.theme ?? defaultTrailsTheme}
+                    rootNode={this.rootNode}
+                    appRoot={this.appRoot}
+                    config={this.chakraConfig}
+                    locale={this.locale}
+                    styles={this.styles}
                 >
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
@@ -75,7 +87,7 @@ export class ReactIntegration {
     }
 
     destroy() {
-        this.root.unmount();
+        this.reactRoot.unmount();
     }
 }
 

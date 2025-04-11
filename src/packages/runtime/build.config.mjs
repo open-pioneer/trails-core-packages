@@ -7,7 +7,9 @@ export default defineBuildConfig({
         "index",
         // Needed for build plugin
         "metadata/index",
-        // Needed for react hooks and test utils
-        "react-integration/index"
+        // Needed for react hooks (e.g. useService)
+        "react-integration/index",
+        // Needed by test utils package
+        "test-support/index"
     ]
 });

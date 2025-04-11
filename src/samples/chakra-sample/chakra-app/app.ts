@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createCustomElement } from "@open-pioneer/runtime";
 import * as appMetadata from "open-pioneer:app";
-import { theme } from "./theme/theme";
+import { config } from "./theme/config";
 import { SampleUI } from "./SampleUI";
 
 const Element = createCustomElement({
     component: SampleUI,
-    theme,
+    chakraSystemConfig: config,
     appMetadata
 });
 

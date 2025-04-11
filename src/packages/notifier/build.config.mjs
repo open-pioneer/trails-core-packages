@@ -3,6 +3,7 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
+    i18n: ["en", "de"],
     entryPoints: ["index"],
     services: {
         NotificationServiceImpl: {
@@ -14,5 +15,8 @@ export default defineBuildConfig({
     },
     publishConfig: {
         strict: true
+    },
+    properties: {
+        position: "top-right"
     }
 });

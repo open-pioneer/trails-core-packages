@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useService } from "open-pioneer:react-hooks";
 import { TextService } from "./TextService";
-import { Button, Container, VStack, Text, Heading } from "@open-pioneer/chakra-integration";
+import { Button, Container, VStack, Text, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ExternalEventService } from "@open-pioneer/integration";
 
@@ -25,7 +25,7 @@ export function DemoUI() {
     }, [textService]);
 
     return (
-        <Container>
+        <Container maxWidth="xl">
             <VStack>
                 <Heading size="md">Emitting Events</Heading>
                 <Text>Click this button to emit a browser event:</Text>

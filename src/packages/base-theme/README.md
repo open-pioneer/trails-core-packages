@@ -1,6 +1,7 @@
 # @open-pioneer/base-theme
 
 This package provides the default theme for all Open Pioneer Trails applications.
+This is implemented as a chakra (styled-) system configuration object.
 
 ## Usage
 

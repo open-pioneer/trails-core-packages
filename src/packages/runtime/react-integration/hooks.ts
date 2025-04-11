@@ -1,14 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { useContext, useMemo } from "react";
 import { Error } from "@open-pioneer/core";
-import {
-    PackageContext as PackageContext,
-    PackageContextMethods
-} from "@open-pioneer/runtime-react-support";
+import { useContext, useMemo } from "react";
+import { InterfaceNameForServiceType } from "../DeclaredService";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
-import { InterfaceNameForServiceType } from "../DeclaredService";
+import { PackageContext, PackageContextMethods } from "./PackageContext";
 
 /*
 

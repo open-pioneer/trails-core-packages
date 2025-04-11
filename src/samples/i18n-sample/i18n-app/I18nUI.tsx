@@ -1,21 +1,20 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    Button,
-    Center,
-    Container,
-    Heading,
-    HStack,
-    ListItem,
-    Text,
-    UnorderedList,
-    VStack,
-    Divider
-} from "@open-pioneer/chakra-integration";
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { ReactNode } from "react";
-import { SamplePackageComponent } from "i18n-sample-package/SamplePackageComponent";
 import { ApplicationContext } from "@open-pioneer/runtime";
+import {
+    Center,
+    Container,
+    Text,
+    Heading,
+    List,
+    Separator,
+    Button,
+    VStack,
+    HStack
+} from "@chakra-ui/react";
+import { SamplePackageComponent } from "i18n-sample-package/SamplePackageComponent";
 
 export function I18nUI() {
     const intl = useIntl();
@@ -26,78 +25,78 @@ export function I18nUI() {
     const list = ["Hans", "Peter", "Hape"];
 
     return (
-        <Container>
+        <Container maxWidth="xl">
             <Heading size="lg" mb={4}>
                 {intl.formatMessage({ id: "content.header" })}
             </Heading>
 
             <Text mb={4}>{intl.formatMessage({ id: "content.description" })}</Text>
 
-            <UnorderedList mb={4}>
-                <ListItem>Current locale: {locale}</ListItem>
-                <ListItem>Supported locales: {supportedLocales.join(", ")}</ListItem>
-                <ListItem>
+            <List.Root mb={4}>
+                <List.Item>Current locale: {locale}</List.Item>
+                <List.Item>Supported locales: {supportedLocales.join(", ")}</List.Item>
+                <List.Item>
                     Current date and time:{" "}
                     {intl.formatDate(new Date(), { dateStyle: "full", timeStyle: "short" })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Relative Time - 1:{" "}
                     {intl.formatRelativeTime(1, "minute", { numeric: "auto", style: "long" })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Relative Time - 15:{" "}
                     {intl.formatRelativeTime(15, "minute", { numeric: "auto", style: "long" })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Relative Time - 0:{" "}
                     {intl.formatRelativeTime(0, "minute", { numeric: "auto", style: "long" })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Large number (Currency):{" "}
                     {intl.formatNumber(1234567.89, { style: "currency", currency: "EUR" })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Large number (Unit):{" "}
                     {intl.formatNumber(1234567.89, { style: "unit", unit: "kilogram-per-second" })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Plural - Count 0: {intl.formatMessage({ id: "content.testplural" }, { n: 0 })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Plural - Count 1: {intl.formatMessage({ id: "content.testplural" }, { n: 1 })}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Plural - Count 2: {intl.formatMessage({ id: "content.testplural" }, { n: 2 })}
-                </ListItem>
-                <ListItem>List: {intl.formatList(list, { type: "conjunction" })}</ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>List: {intl.formatList(list, { type: "conjunction" })}</List.Item>
+                <List.Item>
                     Gender - female:{" "}
                     {intl.formatMessage(
                         { id: "content.testgender" },
                         { gender: "female", name: name }
                     )}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Gender - male:{" "}
                     {intl.formatMessage(
                         { id: "content.testgender" },
                         { gender: "male", name: name }
                     )}
-                </ListItem>
-                <ListItem>
+                </List.Item>
+                <List.Item>
                     Gender - other:{" "}
                     {intl.formatMessage(
                         { id: "content.testgender" },
                         { gender: "other", name: name }
                     )}
-                </ListItem>
-            </UnorderedList>
+                </List.Item>
+            </List.Root>
 
             <Center mb={4}>
                 <LocalePicker />
             </Center>
 
-            <Divider my={4} />
+            <Separator my={4} />
 
             <Text mb={4}>
                 This component is from another package which does <em>not</em> support de-simple by
@@ -126,7 +125,7 @@ function LocalePicker() {
     return (
         <VStack>
             <Text>{intl.formatMessage({ id: "picker.choose" })}</Text>
-            <HStack spacing={2}>{buttons}</HStack>
+            <HStack gap={2}>{buttons}</HStack>
         </VStack>
     );
 }

@@ -3,7 +3,7 @@
 import { useService } from "open-pioneer:react-hooks";
 import type { HttpClient } from "./HttpClient";
 import { useEffect, useState } from "react";
-import { Box, VStack, Text } from "@open-pioneer/chakra-integration";
+import { Box, VStack, Text } from "@chakra-ui/react";
 import ReactJson from "react-json-view";
 
 export function AppUI() {
