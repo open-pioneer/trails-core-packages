@@ -586,6 +586,9 @@ importers:
       '@open-pioneer/chakra-integration':
         specifier: workspace:^
         version: link:../chakra-integration
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../runtime
       '@open-pioneer/runtime-react-support':
         specifier: workspace:^
         version: link:../runtime-react-support

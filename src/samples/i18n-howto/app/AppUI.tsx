@@ -1,20 +1,22 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import {
+    Box,
     Container,
     Heading,
-    Text,
     Input,
-    Box,
-    Stack,
-    StackDivider,
-    RadioGroup,
-    Radio,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
     NumberInput,
     NumberInputField,
     NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper
+    Radio,
+    RadioGroup,
+    Stack,
+    StackDivider,
+    Tag,
+    Text,
+    VStack
 } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useState } from "react";
@@ -55,6 +57,9 @@ function ExampleStack() {
             </Box>
             <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
                 <DateTimeFormatExample></DateTimeFormatExample>
+            </Box>
+            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+                <RichTextExample></RichTextExample>
             </Box>
         </Stack>
     );
@@ -218,6 +223,47 @@ function DateTimeFormatExample() {
                     style: "long"
                 })}
             </Text>
+        </>
+    );
+}
+
+function RichTextExample() {
+    const intl = useIntl();
+
+    return (
+        <>
+            <Heading as="h4" size="md">
+                {intl.formatMessage({ id: "richtext.heading" })}
+            </Heading>
+            <VStack spacing={2} align="start">
+                <Box>
+                    {intl.formatRichMessage(
+                        { id: "richtext.messageWithReactNode" },
+                        {
+                            element: <Tag>Hi</Tag>
+                        }
+                    )}
+                </Box>
+                <Box>
+                    {intl.formatRichMessage({
+                        id: "richtext.messageWithInlineCode"
+                    })}
+                </Box>
+                <Box>
+                    {intl.formatRichMessage(
+                        {
+                            id: "richtext.messageWithReactTag"
+                        },
+                        {
+                            customTag: (parts) => (
+                                <Box display="inline-block" background="trails.200">
+                                    {parts}
+                                </Box>
+                            )
+                        }
+                    )}
+                </Box>
+            </VStack>
         </>
     );
 }

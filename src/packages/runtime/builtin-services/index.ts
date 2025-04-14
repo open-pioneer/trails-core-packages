@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createEmptyI18n } from "../i18n";
+import { createEmptyPackageIntl } from "../i18n";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import {
     createConstructorFactory,
@@ -34,7 +34,7 @@ export type BuiltinPackageProperties = ApplicationContextProperties;
  * The package produced here is always part of the application.
  */
 export function createBuiltinPackage(properties: BuiltinPackageProperties): PackageRepr {
-    const i18n = createEmptyI18n();
+    const i18n = createEmptyPackageIntl();
     const apiService = new ServiceRepr({
         name: "ApiServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,

@@ -10,7 +10,7 @@ import { beforeEach, expect, it, afterEach, vi, describe } from "vitest";
 import { Service, ServiceConstructor } from "../Service";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { useTheme } from "@open-pioneer/chakra-integration";
-import { PackageIntl, createEmptyI18n } from "../i18n";
+import { PackageIntl, createEmptyPackageIntl } from "../i18n";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
@@ -420,7 +420,7 @@ function createIntegration(options?: {
 }): TestIntegration {
     const wrapper = document.createElement("div");
     const packages = new Map<string, PackageRepr>();
-    const i18n = options?.i18n ?? createEmptyI18n();
+    const i18n = options?.i18n ?? createEmptyPackageIntl();
     if (!options?.disablePackage) {
         const packageName = options?.packageName ?? "test";
         const services =
