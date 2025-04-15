@@ -9,7 +9,7 @@ export default defineBuildConfig({
         "metadata/index",
         // Needed for react hooks (e.g. useService)
         "react-integration/index",
-        // Needed by test utils package
+        // Needed for @open-pioneer/test-utils
         "test-support/index"
     ]
 });

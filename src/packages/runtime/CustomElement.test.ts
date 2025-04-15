@@ -698,7 +698,11 @@ it("renders an error screen when the app fails to start", async () => {
 
     const errorScreen = node.shadowRoot?.querySelector("div");
     expect(errorScreen).not.toBe(undefined);
-    expect(errorScreen?.className).toBe("pioneer-root pioneer-root-error-screen");
+
+    const classes = Array.from(errorScreen?.classList ?? []);
+    expect(classes).toContain("pioneer-root");
+    expect(classes).toContain("pioneer-root-error-screen");
+
     const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
         child.textContent?.includes("Error")
     );

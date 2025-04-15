@@ -4,12 +4,13 @@
  * @vitest-environment happy-dom
  */
 import { FormatNumber, SystemConfig, mergeConfigs, useChakraContext } from "@chakra-ui/react";
+import { reactive } from "@conterra/reactivity-core";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import { ReactNode, createElement } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { PackageIntl, createEmptyI18n } from "../i18n";
+import { PackageIntl, createEmptyPackageIntl } from "../i18n";
 import { Service, ServiceConstructor } from "../Service";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
@@ -17,7 +18,6 @@ import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ServiceRepr, createConstructorFactory } from "../service-layer/ServiceRepr";
 import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
-import { reactive } from "@conterra/reactivity-core";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
@@ -467,7 +467,7 @@ function createIntegration(options?: {
     const shadowRoot = wrapper.attachShadow({ mode: "open" });
 
     const packages = new Map<string, PackageRepr>();
-    const i18n = options?.i18n ?? createEmptyI18n();
+    const i18n = options?.i18n ?? createEmptyPackageIntl();
     if (!options?.disablePackage) {
         const packageName = options?.packageName ?? "test";
         const services =

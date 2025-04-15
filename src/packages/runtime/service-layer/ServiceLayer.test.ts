@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { expect, it } from "vitest";
-import { createEmptyI18n } from "../i18n";
+import { createEmptyPackageIntl } from "../i18n";
 import { Service, ServiceOptions } from "../Service";
 import { PackageRepr, PackageReprOptions } from "./PackageRepr";
 import { ServiceLayer } from "./ServiceLayer";
@@ -447,7 +447,7 @@ function createService(options: Partial<ServiceReprOptions>) {
         name: "test-service",
         packageName: "test-package",
         factory: createConstructorFactory(class {}),
-        intl: createEmptyI18n(),
+        intl: createEmptyPackageIntl(),
         ...options
     });
 }
@@ -455,7 +455,7 @@ function createService(options: Partial<ServiceReprOptions>) {
 function createPackage(options: Partial<PackageReprOptions>) {
     return new PackageRepr({
         name: "test-package",
-        intl: createEmptyI18n(),
+        intl: createEmptyPackageIntl(),
         ...options
     });
 }
