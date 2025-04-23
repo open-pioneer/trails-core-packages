@@ -123,6 +123,12 @@ const slotRecipes = {
     checkbox: {
         slots: checkboxAnatomy.keys(),
         base: {
+            root: {
+                cursor: "pointer",
+                _disabled: {
+                    cursor: "not-allowed"
+                }
+            },
             control: {
                 // only change the border color for invalid state
                 _invalid: {
@@ -132,8 +138,7 @@ const slotRecipes = {
                     "&:is([data-state=checked], [data-state=indeterminate])": {
                         borderColor: "red"
                     }
-                },
-                cursor: "pointer"
+                }
             }
         },
         variants: {
@@ -175,6 +180,9 @@ const slotRecipes = {
     radioGroup: {
         slots: radioGroupAnatomy.keys(),
         base: {
+            item: {
+                cursor: "pointer"
+            },
             itemControl: {
                 // only change the border color for invalid state
                 _invalid: {
