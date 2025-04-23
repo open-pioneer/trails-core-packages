@@ -15,7 +15,7 @@ import {
     type Options as IntlMessageFormatOptions,
     type PrimitiveType
 } from "intl-messageformat"; // not a dependency, this is a dependency of formatjs
-import { createElement, Fragment, ReactNode, Children } from "react";
+import { Children, createElement, Fragment, isValidElement, ReactNode } from "react";
 
 type BaseIntl = Pick<IntlShape, "locale" | "timeZone"> &
     Omit<IntlFormatters<string>, "formatMessage">;
@@ -173,8 +173,9 @@ function formatRichMessage(
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formatResult: any = intl.formatMessage(descriptor, preprocessValues(values) as any, opts);
-    return createElement(Fragment, undefined, ...formatResult);
+    const chunks: any = intl.formatMessage(descriptor, preprocessValues(values) as any, opts);
+    const nodes = assignKeys(chunks);
+    return createElement(Fragment, undefined, ...nodes);
 }
 
 function preprocessValues(values: Record<string, RichTextValue> | undefined) {
@@ -186,7 +187,7 @@ function preprocessValues(values: Record<string, RichTextValue> | undefined) {
     for (const [key, valueOrFn] of Object.entries(values)) {
         let fixedValue = valueOrFn;
         if (typeof valueOrFn === "function") {
-            fixedValue = (parts) => toKeyedChildren(valueOrFn(parts));
+            fixedValue = (parts) => valueOrFn(assignKeys(parts));
         }
         fixedValues[key] = fixedValue;
     }
@@ -199,10 +200,18 @@ function renderTag(tag: string): FormatXMLElementFn<ReactNode> {
     };
 }
 
-// Seems to be necessary to avoid "Each child in a list should have a unique "key" prop." error
+// Seems to be required to get rid of "key" warnings.
+// See https://github.com/formatjs/formatjs/pull/4895/files
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function toKeyedChildren(children: any) {
-    return Children.toArray(children);
+function assignKeys(chunks: any): any[] {
+    const nodes = Children.map(chunks, assignKey) ?? [];
+    return Children.toArray(nodes);
+}
+
+const ANY_KEY = { key: 42 };
+
+function assignKey(reactNode: React.ReactNode) {
+    return isValidElement(reactNode) ? createElement(Fragment, ANY_KEY, reactNode) : reactNode;
 }
 
 /** Hides missing translation errors during tests */

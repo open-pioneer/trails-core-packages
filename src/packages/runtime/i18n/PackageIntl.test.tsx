@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { Box, Tag } from "@chakra-ui/react";
+import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { render, screen } from "@testing-library/react";
+import { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 import { createPackageIntl } from "./PackageIntl";
-import { PackageContextProvider } from "@open-pioneer/test-utils/react";
-import { ReactNode } from "react";
 
 describe("formatRichMessage", () => {
     it("formats messages containing react nodes", async () => {
@@ -118,30 +118,139 @@ describe("formatRichMessage", () => {
         `);
     });
 
-    it("generates a type error when using formatMessage with non-primitive types", async () => {
+    it("does not error for static strings", async () => {
         const intl = createPackageIntl("en-US", {
-            test: "Hello, {name}!"
+            test: "hi"
         });
-        const message = intl.formatMessage(
+        const message = intl.formatRichMessage({
+            id: "test"
+        });
+        const nodes = dumpReactTree(message);
+        expect(nodes).toMatchInlineSnapshot(`
+          {
+            "children": [
+              {
+                "key": "<no key>",
+                "type": "primitive",
+                "value": "hi",
+              },
+            ],
+            "key": "<no key>",
+            "type": Symbol(react.fragment),
+          }
+        `);
+    });
+
+    it("assigns unique keys to children and nested children", async () => {
+        const intl = createPackageIntl("en-US", {
+            test: "a <nested2><code>b</code> c <nested1> d <code>e</code> f <code>g</code> h</nested1></nested2>"
+        });
+        const message = intl.formatRichMessage(
             {
                 id: "test"
             },
             {
-                // @ts-expect-error Only primitive types are supported
-                name: {}
+                nested1(parts) {
+                    return <Box className="nested1">{parts}</Box>;
+                },
+                nested2(parts) {
+                    return <Box className="nested2">{parts}</Box>;
+                },
+                h: "foo"
             }
         );
 
-        // This would need some postprocessing to work well in react, which is why formatRichMessage() exists.
-        expect(message).toMatchInlineSnapshot(`
-          [
-            "Hello, ",
-            {},
-            "!",
-          ]
+        renderBox(message);
+        const element = await screen.findByTestId("test");
+        expect(element).toMatchInlineSnapshot(`
+          <div
+            class="css-0"
+            data-testid="test"
+          >
+            a 
+            <div
+              class="nested2 css-0"
+            >
+              <code>
+                b
+              </code>
+               c 
+              <div
+                class="nested1 css-0"
+              >
+                 d 
+                <code>
+                  e
+                </code>
+                 f 
+                <code>
+                  g
+                </code>
+                 h
+              </div>
+            </div>
+          </div>
         `);
+
+        const nodes = dumpReactTree(message);
+        expect(nodes).toMatchSnapshot();
     });
 });
+
+it("generates a type error when using formatMessage with non-primitive types", async () => {
+    const intl = createPackageIntl("en-US", {
+        test: "Hello, {name}!"
+    });
+    const message = intl.formatMessage(
+        {
+            id: "test"
+        },
+        {
+            // @ts-expect-error Only primitive types are supported
+            name: {}
+        }
+    );
+
+    // This would need some postprocessing to work well in react, which is why formatRichMessage() exists.
+    expect(message).toMatchInlineSnapshot(`
+    [
+      "Hello, ",
+      {},
+      "!",
+    ]
+  `);
+});
+
+interface TreeNode {
+    type: string;
+    key: string;
+    value?: string;
+    children?: TreeNode[];
+}
+
+function dumpReactTree(node: any): TreeNode {
+    if (node == null || typeof node === "boolean" || typeof node === "string") {
+        return {
+            type: "primitive",
+            key: "<no key>",
+            value: node
+        };
+    }
+
+    const type = node.type || "<no type>";
+    const key = node.key || "<no key>";
+    const children = node.props?.children;
+
+    const treeNode: TreeNode = {
+        type,
+        key
+    };
+    if (children) {
+        const childrenArray = Array.isArray(children) ? children : [children];
+        treeNode.children = childrenArray.map((child: any) => dumpReactTree(child));
+    }
+    return treeNode;
+}
 
 function renderBox(content: ReactNode) {
     return render(
