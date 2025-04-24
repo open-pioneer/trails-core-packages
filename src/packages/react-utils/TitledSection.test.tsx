@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { render } from "@testing-library/react";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { ConfigureTitledSection, SectionHeading, TitledSection } from "./TitledSection";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 
 it("renders a hierarchy of headings", () => {
@@ -237,6 +237,21 @@ it("allows to configure the current heading level", () => {
          
       </div>
     `);
+});
+
+it("supports 'ref' prop on SectionHeading", async () => {
+    let value: HTMLHeadingElement | undefined;
+
+    function Component() {
+        const ref = useRef<HTMLHeadingElement>(null);
+        useEffect(() => {
+            value = ref.current ?? undefined;
+        });
+        return <SectionHeading ref={ref}>Test</SectionHeading>;
+    }
+
+    renderContent(<Component />);
+    expect(value!.tagName).toBe("H1");
 });
 
 function renderContent(children: ReactNode): HTMLElement {

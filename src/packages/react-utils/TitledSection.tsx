@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { Heading, HeadingProps } from "@chakra-ui/react";
-import { FC, ForwardedRef, ReactNode, createContext, forwardRef, useContext } from "react";
+import { FC, ReactNode, RefAttributes, createContext, useContext } from "react";
 
 const DEFAULT_LEVEL = 1;
 
@@ -104,7 +104,7 @@ export function TitledSection(props: TitledSectionProps): ReactNode {
  *
  * All chakra properties are forwarded to the [Heading](https://chakra-ui.com/docs/components/heading) component.
  */
-export interface SectionHeadingProps extends HeadingProps {
+export interface SectionHeadingProps extends HeadingProps, RefAttributes<HTMLHeadingElement> {
     children?: ReactNode | undefined;
 }
 
@@ -116,19 +116,16 @@ export interface SectionHeadingProps extends HeadingProps {
  *
  * Heading levels are managed by nesting {@link TitledSection}.
  */
-export const SectionHeading = forwardRef(function SectionHeading(
-    props: SectionHeadingProps,
-    forwardedRef: ForwardedRef<HTMLHeadingElement>
-): ReactNode {
-    const { children, ...rest } = props;
+export function SectionHeading(props: SectionHeadingProps): ReactNode {
+    const { children, ref, ...rest } = props;
     const level = useHeadingLevel();
     const tag = getHeadingTag(level);
     return (
-        <Heading as={tag} ref={forwardedRef} {...rest}>
+        <Heading as={tag} ref={ref} {...rest}>
             {children}
         </Heading>
     );
-});
+}
 
 /**
  * Properties for the {@link ConfigureTitledSection} component.
