@@ -13,7 +13,6 @@ __versions:
 catalog:
   "@chakra-ui/icons": ^2.2.4
   "@chakra-ui/react": ^2.10.6
-  "@chakra-ui/system": ^2.6.2
   "@conterra/reactivity-core": ^0.5.0
   "@emotion/cache": ^11.13.1
   "@emotion/react": ^11.13.3
@@ -31,7 +30,7 @@ catalog:
   "@changesets/cli": 2.27.9
   "@open-pioneer/build-package-cli": ^3.0.1
   "@open-pioneer/build-support": ^3.0.1
-  "@open-pioneer/check-pnpm-duplicates": "^0.2.1"
+  "@open-pioneer/check-pnpm-duplicates": ^0.2.1
   "@open-pioneer/vite-plugin-pioneer": ^4.0.1
   "@testing-library/dom": ^10.4.0
   "@testing-library/jest-dom": ^6.6.2
@@ -44,14 +43,14 @@ catalog:
   "@typescript-eslint/eslint-plugin": ^8.31.0
   "@typescript-eslint/parser": ^8.31.0
   "@vitejs/plugin-react-swc": ^3.9.0
+  eslint: ^8.57.1
   eslint-config-prettier: ^10.0.2
   eslint-import-resolver-typescript: ^4.3.4
   eslint-plugin-header: ^3.1.1
   eslint-plugin-import: ^2.31.0
-  eslint-plugin-react-hooks: ^5.2.0
   eslint-plugin-react: ^7.37.5
+  eslint-plugin-react-hooks: ^5.2.0
   eslint-plugin-unused-imports: ^4.1.4
-  eslint: ^8.57.1
   fast-glob: ^3.3.3
   handlebars: ^4.7.8
   happy-dom: ^17.4.4
@@ -63,8 +62,8 @@ catalog:
   sass: ^1.87.0
   typedoc: ^0.28.3
   typescript: ^5.8.3
-  vite-plugin-eslint: ^1.8.1
   vite: ^6.3.3
+  vite-plugin-eslint: ^1.8.1
   vitest: ^3.1.2
 
 auditConfig:
@@ -92,7 +91,7 @@ overrides:
   "nanoid@<3.3.8": "^3.3.8"
   # https://github.com/advisories/GHSA-67mh-4wv8-2f99
   "esbuild@<0.25.0": ">=0.25.0"
-  # ??
+  # https://github.com/advisories/GHSA-968p-4wvh-cqc8
   "@babel/runtime": ">=7.26.10"
 
 patchedDependencies:
