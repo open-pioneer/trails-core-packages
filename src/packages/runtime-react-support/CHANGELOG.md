@@ -1,5 +1,11 @@
 # @open-pioneer/runtime-react-support
 
+## 3.1.0
+
+### Patch Changes
+
+- 1c1ede8: Bump dependencies.
+
 ## 3.0.0
 
 ### Major Changes

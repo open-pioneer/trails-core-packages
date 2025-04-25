@@ -1,5 +1,71 @@
 # @open-pioneer/runtime
 
+## 3.1.0
+
+### Minor Changes
+
+- 248dab0: Add support for rich text formatting using the `intl` object.
+  In addition to primitive values, rich text formatting supports react values and custom react tags.
+  It always returns a react node, so can only be used in combination with react components.
+
+    _Example with react node as value:_
+
+    ```tsx
+    function Example() {
+        const intl = useIntl();
+        // Given i18n message "Hello, {name}!"
+        // replaces 'name' with the given react node:
+        const message = intl.formatRichMessage(
+            { id: "foo" },
+            {
+                name: <FancyUserName />
+            }
+        );
+        return <Box>{message}</Box>;
+    }
+    ```
+
+    _Example with basic formatting:_
+
+    ```tsx
+    function Example() {
+        const intl = useIntl();
+        // Given i18n message "Hello, <strong>{name}</strong>!"
+        // renders with actual <strong> html node:
+        return <Box>{intl.formatRichMessage({ id: "foo" }, { name: "User" })}</Box>;
+    }
+    ```
+
+    Note that only a few basic formatting tags are predefined ("b", "strong", "i", "em", "code", "br").
+    If you need more advanced tags, you can define your own, see below.
+    _Example with custom tag:_
+
+    ```tsx
+    function Example() {
+        const intl = useIntl();
+        // Given i18n message "Open <foo>the door</foo>!",
+        // renders 'foo' using the formatter function below:
+        const message = intl.formatRichMessage(
+            { id: "foo" },
+            {
+                foo: (parts) => <FancyTag>{parts}</FancyTag>
+            }
+        );
+        return <Box>{message}</Box>;
+    }
+    ```
+
+    The TypeScript signature for the `intl.formatMessage()` function has been made a little bit stricter compared with FormatJS: only primitive values are allowed for the `values` argument (this should not affect users in practice).
+
+### Patch Changes
+
+- 1c1ede8: Bump dependencies.
+- Updated dependencies [1c1ede8]
+    - @open-pioneer/base-theme@3.1.0
+    - @open-pioneer/chakra-integration@3.1.0
+    - @open-pioneer/core@3.1.0
+    - @open-pioneer/runtime-react-support@3.1.0
+
 ## 3.0.0
 
 ### Major Changes
