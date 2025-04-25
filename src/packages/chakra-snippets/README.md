@@ -21,6 +21,8 @@ import {
 } from "@open-pioneer/chakra-snippets/password-input";
 ```
 
+If you notice a problem with one of the snippets, or if snippets are missing, feel free to open an issue or a pull request.
+
 ## Usage
 
 ### Available Snippets
