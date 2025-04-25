@@ -1,7 +1,9 @@
 {
     "name": "@open-pioneer/chakra-snippets",
     "description": "Contains snippets for Chakra UI.",
-    "version": "3.0.0",
+    "version": "3.1.0",
+    "description": "Integrates Chakra UI into Open Pioneer Trails application.",
+    "main": "index.ts",
     "license": "Apache-2.0",
     "type": "module",
     "repository": {

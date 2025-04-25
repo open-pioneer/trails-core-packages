@@ -1,5 +1,17 @@
 # @open-pioneer/authentication-keycloak
 
+## 3.1.0
+
+### Patch Changes
+
+- 1c1ede8: Bump dependencies.
+- Updated dependencies [248dab0]
+- Updated dependencies [1c1ede8]
+    - @open-pioneer/runtime@3.1.0
+    - @open-pioneer/authentication@3.1.0
+    - @open-pioneer/core@3.1.0
+    - @open-pioneer/notifier@3.1.0
+
 ## 3.0.0
 
 ### Major Changes
