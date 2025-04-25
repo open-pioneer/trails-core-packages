@@ -36,6 +36,11 @@ $ pnpm test ./src/packages/core
 
 For more details, consult the starter project's [Repository Guide](https://github.com/open-pioneer/trails-starter/blob/main/docs/RepositoryGuide.md).
 
+## Branches
+
+- [main](https://github.com/open-pioneer/trails-core-packages/): Current development state.
+- [3.x](https://github.com/open-pioneer/trails-core-packages/tree/3.x): Contains the 3.x versions based on Chakra v2.
+
 ## Packages
 
 This repository publishes the following packages:
