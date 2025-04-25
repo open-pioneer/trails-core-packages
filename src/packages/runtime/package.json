@@ -17,11 +17,14 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
+        "@conterra/reactivity-core": "catalog:",
         "@formatjs/intl": "catalog:",
-        "@open-pioneer/base-theme": "workspace:^",
-        "@open-pioneer/chakra-integration": "workspace:^",
+        "@chakra-ui/react": "catalog:",
+        "@emotion/cache": "catalog:",
+        "@emotion/react": "catalog:",
         "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/runtime-react-support": "workspace:^",
+        "@open-pioneer/base-theme": "workspace:^",
+        "@open-pioneer/reactivity": "workspace:^",
         "react": "catalog:",
         "react-dom": "catalog:"
     },

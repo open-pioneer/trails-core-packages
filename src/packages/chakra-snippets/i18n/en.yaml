@@ -1,0 +1,6 @@
+messages:
+  clipboard:
+    copy: copy
+    copied: copied
+  close-button:
+    ariaLabel: Close

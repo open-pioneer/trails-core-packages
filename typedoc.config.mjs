@@ -19,11 +19,6 @@ export default {
     entryPointStrategy: "packages",
     entryPoints: documentedPackages,
     skipErrorChecking: true,
-    validation: {
-        notExported: false,
-        invalidLink: true,
-        notDocumented: true
-    },
 
     // 'tsx' is in default, but 'jsx' is not..
     highlightLanguages: [...DEFAULT_HIGHLIGHT_LANGS, "jsx"]

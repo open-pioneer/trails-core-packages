@@ -1,22 +1,19 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentType, createElement } from "react";
+import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
+import { reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
     createManualPromise,
     destroyResource,
     Error,
+    getErrorChain,
     ManualPromise,
     Resource,
     throwAbortError
 } from "@open-pioneer/core";
-import { ErrorId } from "./errors";
-import { ApplicationMetadata, PackageMetadata } from "./metadata";
-import { PackageRepr, createPackages } from "./service-layer/PackageRepr";
-import { ServiceLayer } from "./service-layer/ServiceLayer";
-import { getErrorChain } from "@open-pioneer/core";
-import { ReactIntegration } from "./react-integration/ReactIntegration";
+import { ComponentType, createElement } from "react";
 import { ApiMethods, ApiService } from "./api";
 import {
     createBuiltinPackage,
@@ -24,10 +21,15 @@ import {
     RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
     RUNTIME_AUTO_START
 } from "./builtin-services";
-import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { AppIntl, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
 import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
+import { ErrorId } from "./errors";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
+import { AppIntl, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
+import { ApplicationMetadata, PackageMetadata } from "./metadata";
+import { ReactIntegration } from "./react-integration/ReactIntegration";
+import { ReferenceSpec } from "./service-layer/InterfaceSpec";
+import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
+import { ServiceLayer } from "./service-layer/ServiceLayer";
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -65,9 +67,11 @@ export interface CustomElementOptions {
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
 
     /**
-     * Chakra theming object.
+     * Chakra styled system object.
+     *
+     * Used to configure chakra's theme.
      */
-    theme?: Record<string, unknown>;
+    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**
@@ -274,11 +278,12 @@ class ApplicationInstance {
     private api: ApiMethods | undefined; // Present once started
 
     private state: ApplicationState = "not-started";
-    private container: HTMLDivElement | undefined;
+    private appRoot: HTMLDivElement | undefined;
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
     private reactIntegration: ReactIntegration | undefined;
+
     private stylesWatch: Resource | undefined;
 
     constructor(options: InstanceOptions) {
@@ -322,7 +327,7 @@ class ApplicationInstance {
         this.apiPromise?.reject(createAbortError());
         this.reactIntegration = destroyResource(this.reactIntegration);
         this.options.shadowRoot.replaceChildren();
-        this.container = undefined;
+        this.appRoot = undefined;
         this.lifecycleEvents = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
@@ -350,13 +355,14 @@ class ApplicationInstance {
         this.checkAbort();
 
         // Setup application root node in the shadow dom
-        const container = (this.container = createContainer(i18n.locale));
-        const styles = this.initStyles();
-        shadowRoot.replaceChildren(container, ...styles);
+        const appRoot = (this.appRoot = createAppRoot(i18n.locale));
+        shadowRoot.replaceChildren(appRoot);
+
+        const styles = this.initStylesSignal();
 
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
-            container,
+            container: appRoot,
             properties: config.properties,
             i18n
         });
@@ -370,11 +376,13 @@ class ApplicationInstance {
 
         // Launch react
         this.reactIntegration = ReactIntegration.createForApp({
-            rootNode: container,
-            container: shadowRoot,
-            theme: elementOptions.theme,
+            appRoot: appRoot,
+            rootNode: shadowRoot,
             serviceLayer,
-            packages
+            packages,
+            locale: i18n.locale,
+            config: elementOptions.chakraSystemConfig,
+            styles: styles
         });
         const component = this.options.elementOptions.component ?? emptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -384,23 +392,24 @@ class ApplicationInstance {
         LOG.debug("Application started");
     }
 
-    private initStyles() {
-        // Prevent inheritance of certain css values and normalize to display: block by default.
-        // See https://open-wc.org/guides/knowledge/styling/styles-piercing-shadow-dom/
-        const builtinStyles = ":host { all: initial; display: block; }";
-        const builtinStylesNode = document.createElement("style");
-        applyStyles(builtinStylesNode, { value: builtinStyles });
+    /**
+     * Returns a signal that contains the application's styles.
+     * During development, the signal is updated when the user edits .css files.
+     * In production, the signal is static.
+     */
+    private initStylesSignal(): ReadonlyReactive<string> {
+        const stylesBox = this.options.elementOptions.appMetadata?.styles;
+        if (!stylesBox) {
+            return reactive("");
+        }
 
-        const appStyles = this.options.elementOptions.appMetadata?.styles;
-        const appStylesNode = document.createElement("style");
-        applyStyles(appStylesNode, appStyles);
+        const signal = reactive(stylesBox.value);
         if (import.meta.hot) {
-            this.stylesWatch = appStyles?.on?.("changed", () => {
-                LOG.debug("Application styles changed");
-                applyStyles(appStylesNode, appStyles);
+            this.stylesWatch = stylesBox.on?.("changed", () => {
+                signal.value = stylesBox.value;
             });
         }
-        return [builtinStylesNode, appStylesNode];
+        return signal;
     }
 
     private initServiceLayer(config: {
@@ -474,26 +483,29 @@ class ApplicationInstance {
         const userLocales = getBrowserLocales();
         const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
         const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
-
-        const container = (this.container = createContainer(locale));
-        container.classList.add("pioneer-root-error-screen");
-
         const messages =
             MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
             MESSAGES_BY_LOCALE["en"];
         const intl = createPackageIntl(locale, messages);
+
+        const appRoot = (this.appRoot = createAppRoot(locale));
+        appRoot.classList.add("pioneer-root-error-screen");
+        shadowRoot.replaceChildren(appRoot);
+
+        const styles = this.initStylesSignal();
+
         this.reactIntegration = ReactIntegration.createForErrorScreen({
-            rootNode: container,
-            container: shadowRoot,
-            theme: elementOptions.theme
+            appRoot: appRoot,
+            rootNode: shadowRoot,
+            locale: locale,
+            config: elementOptions.chakraSystemConfig,
+            styles
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
-
-        shadowRoot.replaceChildren(container);
     }
 }
 
-function createContainer(locale: string) {
+function createAppRoot(locale: string) {
     // Setup application root node in the shadow dom
     const container = document.createElement("div");
     container.classList.add("pioneer-root");
@@ -632,21 +644,6 @@ function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig>
     }
 
     return mergedConfig;
-}
-
-// Applies application styles to the given style node.
-// Can be called multiple times in development mode to implement hot reloading.
-function applyStyles(styleNode: HTMLStyleElement, styles: { value: string } | undefined) {
-    let cssValue = styles?.value ?? "";
-    // Remove sourcemaps from inline css.
-    // This currently does not work because a) the 'importer' (the index.html file) does not
-    // match the actual path the source map would exist and b) vite refuses to generate it anyway, probably
-    // because of our virtual modules.
-    // TODO: both should be fixed once we can refer to actual `.css` files
-    // and don't have to embed inline css anymore.
-    cssValue = cssValue.replace(/\/\*# sourceMappingURL=.*$/, "");
-    const cssNode = document.createTextNode(cssValue);
-    styleNode.replaceChildren(cssNode);
 }
 
 function logError(e: unknown) {

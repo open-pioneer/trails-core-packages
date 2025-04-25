@@ -1,23 +1,21 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { useToast } from "@open-pioneer/chakra-integration";
-import { useEvent } from "@open-pioneer/react-utils";
-import { useService } from "open-pioneer:react-hooks";
-import { ReactElement, useEffect, useState } from "react";
-import { InternalNotificationAPI, Notification } from "./NotificationServiceImpl";
-import { WarningTwoIcon } from "@chakra-ui/icons";
+import {
+    Toaster as ChakraToaster,
+    Icon,
+    Portal,
+    Spinner,
+    Stack,
+    Toast,
+    useToastStyles
+} from "@chakra-ui/react";
+import { useIntl, useService } from "open-pioneer:react-hooks";
+import { memo, useEffect, useState } from "react";
+import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo } from "react-icons/fi";
+import { InternalNotificationAPI, ToasterObject } from "./NotificationServiceImpl";
 
 /** Props supported by the {@link Notifier} component. */
-export interface NotifierProps {
-    /**
-     * The position for new notifications.
-     *
-     * @default "top-right"
-     */
-    position?: "top" | "top-left" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
-}
-
-const isDev = import.meta.env.DEV;
+export interface NotifierProps {}
 
 /**
  * Shows notifications sent via the `NotificationService`.
@@ -31,59 +29,95 @@ const isDev = import.meta.env.DEV;
  * export function AppUI() {
  *     return (
  *         <>
- *             <Notifier position="top-right" />
+ *             <Notifier />
  *             <h1>Your application</h1>
  *         </>
  *     );
  * }
  * ```
  */
-export function Notifier(props: NotifierProps): ReactElement {
-    const { position = "top-right" } = props;
-    const toast = useToast();
-    const notifications = useService("notifier.NotificationService") as InternalNotificationAPI;
-    const [ready, setReady] = useState(!isDev);
-
-    const showNotification = useEvent((notification: Notification) => {
-        // use different icons for warning and error
-        const icon =
-            notification.level === "error" ? <WarningTwoIcon h="100%" w="100%" /> : undefined;
-        toast({
-            position,
-            title: notification.title,
-            description: notification.message || null,
-            status: notification.level,
-            isClosable: true,
-            duration: notification.displayDuration ?? null, // Null: does not auto-close
-            icon
-        });
-    });
-    const closeAll = useEvent(() => {
-        toast.closeAll();
-    });
+export function Notifier(_props: NotifierProps) {
+    const notificationService = useService(
+        "notifier.NotificationService"
+    ) as InternalNotificationAPI;
+    const [active, setActive] = useState(false);
 
     useEffect(() => {
-        /*
-         * Delay registering the notification handler a bit during development.
-         * Chakra's toast implementation clears its store when it gets unmounted.
-         * During development, that may also happen during initialization because of React's
-         * StrictMode (https://react.dev/reference/react/StrictMode).
-         *
-         * Unfortunately, that means that toasts that were emitted very early (such as in service constructors)
-         * will be deleted. Waiting for a few milliseconds prevents this issue and has no effect on production.
-         */
-        if (isDev && !ready) {
-            const id = setTimeout(() => setReady(true), 100);
-            return () => clearTimeout(id);
+        const handle = notificationService.registerUI();
+        if (!handle) {
+            return;
         }
 
-        const handle = notifications.registerHandler({
-            showNotification,
-            closeAll
-        });
-        return () => handle.destroy();
-    }, [ready, notifications, showNotification, closeAll]);
+        setActive(true);
+        return () => {
+            setActive(false);
+            handle.destroy();
+        };
+    }, [notificationService]);
 
-    // No actual UI representation right now
-    return <></>;
+    return active && <Toaster toaster={notificationService.toaster} />;
+}
+
+const Toaster = memo(function Toaster(props: { toaster: ToasterObject }) {
+    const intl = useIntl();
+    return (
+        <Portal>
+            <ChakraToaster
+                toaster={props.toaster}
+                insetInline={{ mdDown: "4" }}
+                aria-label={intl.formatMessage({
+                    id: "regionLabel"
+                })}
+            >
+                {(toast) => (
+                    <Toast.Root width={{ md: "sm" }} alignItems="center">
+                        {toast.type === "loading" ? (
+                            <Spinner size="sm" color="blue.solid" />
+                        ) : (
+                            <ToastIndicator type={toast.type ?? ""} />
+                        )}
+                        <Stack gap="1" flex="1" maxWidth="100%">
+                            {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
+                            {toast.description && (
+                                <Toast.Description>{toast.description}</Toast.Description>
+                            )}
+                        </Stack>
+                        {toast.action && (
+                            <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
+                        )}
+                        {toast.meta?.closable && (
+                            <Toast.CloseTrigger
+                                cursor="pointer"
+                                aria-label={intl.formatMessage({
+                                    id: "notification.close"
+                                })}
+                            />
+                        )}
+                    </Toast.Root>
+                )}
+            </ChakraToaster>
+        </Portal>
+    );
+});
+
+const icons: Record<string, React.ElementType> = {
+    info: FiInfo,
+    success: FiCheckCircle,
+    warning: FiAlertCircle,
+    error: FiAlertTriangle
+};
+
+function ToastIndicator(props: { type: string }) {
+    const styles = useToastStyles();
+
+    const Component = icons[props.type];
+    if (!Component) return null;
+
+    return (
+        <Icon css={styles.indicator}>
+            <span>
+                <Component style={{ width: "100%", height: "100%" }} />
+            </span>
+        </Icon>
+    );
 }

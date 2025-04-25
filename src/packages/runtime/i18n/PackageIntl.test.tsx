@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Box, Tag } from "@open-pioneer/chakra-integration";
+import { Box, Tag } from "@chakra-ui/react";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { render, screen } from "@testing-library/react";
 import { ReactNode } from "react";
@@ -17,10 +17,14 @@ describe("formatRichMessage", () => {
                 id: "test"
             },
             {
-                name: <Tag>User</Tag>
+                name: (
+                    <Tag.Root>
+                        <Tag.Label>User</Tag.Label>
+                    </Tag.Root>
+                )
             }
         );
-        render(<Box data-testid="test">{message}</Box>);
+        renderBox(message);
 
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
@@ -29,11 +33,15 @@ describe("formatRichMessage", () => {
             data-testid="test"
           >
             Hello, 
-            <span
-              class="css-1qm7lvz"
+            <div
+              class="chakra-tag__root css-fs7q9r"
             >
-              User
-            </span>
+              <span
+                class="chakra-tag__label css-1v61si9"
+              >
+                User
+              </span>
+            </div>
             !
           </div>
         `);
@@ -51,7 +59,7 @@ describe("formatRichMessage", () => {
                 name: "User"
             }
         );
-        render(<Box data-testid="test">{message}</Box>);
+        renderBox(message);
 
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
@@ -86,7 +94,7 @@ describe("formatRichMessage", () => {
                 param: "value from outside"
             }
         );
-        render(<Box data-testid="test">{message}</Box>);
+        renderBox(message);
 
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
@@ -158,12 +166,10 @@ describe("formatRichMessage", () => {
           <div
             class="css-0"
             data-testid="test"
-            data-theme="light"
           >
             a 
             <div
               class="nested2 css-0"
-              data-theme="light"
             >
               <code>
                 b
@@ -171,7 +177,6 @@ describe("formatRichMessage", () => {
                c 
               <div
                 class="nested1 css-0"
-                data-theme="light"
               >
                  d 
                 <code>

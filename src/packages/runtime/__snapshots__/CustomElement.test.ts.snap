@@ -2,13 +2,21 @@
 
 exports[`element API > should throw an error when trying to use the element's API without mounting it first 1`] = `[Error: runtime:element-not-mounted: Cannot use the application's API because the HTML element has not yet been mounted into the DOM.]`;
 
-exports[`simple rendering > should render use styles 1`] = `
+exports[`simple rendering > should render user styles 1`] = `
 [
-  <style>
-    :host { all: initial; display: block; }
+  <style
+    data-emotion="css-global"
+    data-s=""
+  >
+    
+    @layer base{:host{all:initial;display:block;}}
   </style>,
-  <style>
-    .test { color: red }
+  <style
+    data-emotion="css-global"
+    data-s=""
+  >
+    
+    .test{color:red;}
   </style>,
 ]
 `;

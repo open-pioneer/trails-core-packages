@@ -3,77 +3,110 @@
 exports[`shows notifications as toasts 1`] = `
 <div
   aria-atomic="true"
-  class="chakra-toast__inner css-dixmdy"
-  data-theme="light"
+  aria-describedby="toast:toast:2:description"
+  aria-labelledby="toast:toast:2:title"
+  class="chakra-toast__root css-1bm8y9v"
+  data-align="end"
+  data-first=""
+  data-mounted=""
+  data-part="root"
+  data-placement="top-end"
+  data-scope="toast"
+  data-side="top"
+  data-stack=""
+  data-state="open"
+  data-type="info"
+  id="toast:toast:2"
   role="status"
+  style="position: absolute; pointer-events: auto; --opacity: 1; --remove-delay: 200ms; --duration: 604800000ms; --initial-height: 0px; --offset: 0px; --index: 0; --z-index: 1; --lift-amount: calc(var(--lift) * var(--gap)); --y: calc(var(--lift) * var(--offset)); --x: 0; top: 0px; --sign: -1; --lift: 1; --height: var(--initial-height);"
+  tabindex="0"
 >
   <div
-    class="chakra-alert css-1nbakwd"
-    data-status="info"
-    data-theme="light"
-    id="toast-1"
+    data-ghost="before"
+    style="position: absolute; pointer-events: none;"
+  />
+  <span
+    aria-hidden="true"
+    class="chakra-icon css-1yhex1d"
+    focusable="false"
   >
-    <span
-      class="chakra-alert__icon css-14ogjxt"
-      data-status="info"
-      data-theme="light"
+    <svg
+      fill="none"
+      height="1em"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      style="width: 100%; height: 100%;"
+      viewBox="0 0 24 24"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <svg
-        class="chakra-icon css-qk6lof"
-        data-theme="light"
-        focusable="false"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm.25,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12.25,5ZM14.5,18.5h-4a1,1,0,0,1,0-2h.75a.25.25,0,0,0,.25-.25v-4.5a.25.25,0,0,0-.25-.25H10.5a1,1,0,0,1,0-2h1a2,2,0,0,1,2,2v4.75a.25.25,0,0,0,.25.25h.75a1,1,0,1,1,0,2Z"
-          fill="currentColor"
-        />
-      </svg>
-    </span>
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+      />
+      <line
+        x1="12"
+        x2="12"
+        y1="16"
+        y2="12"
+      />
+      <line
+        x1="12"
+        x2="12.01"
+        y1="8"
+        y2="8"
+      />
+    </svg>
+  </span>
+  <div
+    class="chakra-stack css-403sr0"
+  >
     <div
-      class="css-njbp03"
-      data-theme="light"
+      class="chakra-toast__title css-1nhm9ic"
+      data-part="title"
+      data-scope="toast"
+      id="toast:toast:2:title"
     >
-      <div
-        class="chakra-alert__title css-tidvy5"
-        data-status="info"
-        data-theme="light"
-        id="toast-1-title"
-      >
-        test
-      </div>
-      <div
-        class="chakra-alert__desc css-161kwbg"
-        data-status="info"
-        data-theme="light"
-        id="toast-1-description"
-      >
-        <div
-          data-testid="notification-message"
-        >
-          Message
-        </div>
-      </div>
+      test
     </div>
-    <button
-      aria-label="Close"
-      class="css-1pq15d"
-      data-theme="light"
-      type="button"
+    <div
+      class="chakra-toast__description css-1tl80zq"
+      data-part="description"
+      data-scope="toast"
+      id="toast:toast:2:description"
     >
-      <svg
-        aria-hidden="true"
-        class="chakra-icon css-onkibi"
-        data-theme="light"
-        focusable="false"
-        viewBox="0 0 24 24"
+      <span
+        data-testid="notification-message"
       >
-        <path
-          d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
-          fill="currentColor"
-        />
-      </svg>
-    </button>
+        Message
+      </span>
+    </div>
   </div>
+  <button
+    aria-label="notification.close"
+    class="chakra-toast__closeTrigger css-s29zxt"
+    data-part="close-trigger"
+    data-scope="toast"
+    id="toasttoast:2:close"
+    type="button"
+  >
+    <svg
+      class="css-kqzqgg"
+      viewBox="0 0 24 24"
+    >
+      <path
+        clip-rule="evenodd"
+        d="M18.7071 6.70711C19.0976 6.31658 19.0976 5.68342 18.7071 5.29289C18.3166 4.90237 17.6834 4.90237 17.2929 5.29289L12 10.5858L6.70711 5.29289C6.31658 4.90237 5.68342 4.90237 5.29289 5.29289C4.90237 5.68342 4.90237 6.31658 5.29289 6.70711L10.5858 12L5.29289 17.2929C4.90237 17.6834 4.90237 18.3166 5.29289 18.7071C5.68342 19.0976 6.31658 19.0976 6.70711 18.7071L12 13.4142L17.2929 18.7071C17.6834 19.0976 18.3166 19.0976 18.7071 18.7071C19.0976 18.3166 19.0976 17.6834 18.7071 17.2929L13.4142 12L18.7071 6.70711Z"
+        fill-rule="evenodd"
+      />
+    </svg>
+  </button>
+  <div
+    data-ghost="after"
+    style="position: absolute; left: 0px; bottom: 100%; width: 100%;"
+  />
 </div>
 `;

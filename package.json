@@ -25,6 +25,7 @@
         "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && pnpm changeset tag"
     },
     "devDependencies": {
+        "@chakra-ui/cli": "catalog:",
         "@changesets/cli": "catalog:",
         "@open-pioneer/build-package-cli": "catalog:",
         "@open-pioneer/build-support": "catalog:",
@@ -65,7 +66,9 @@
         "typescript": "catalog:",
         "vite": "catalog:",
         "vite-plugin-eslint": "catalog:",
-        "vitest": "catalog:"
+        "vitest": "catalog:",
+        "tsx": "catalog:",
+        "zx": "catalog:"
     },
     "engines": {
         "node": ">= 20",

@@ -1,62 +1,43 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { expect, it } from "vitest";
-import { createService } from "@open-pioneer/test-utils/services";
-import { NotificationServiceImpl } from "./NotificationServiceImpl";
-import { render, screen, waitForElementToBeRemoved, act, waitFor } from "@testing-library/react";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
+import { createService } from "@open-pioneer/test-utils/services";
+import { act, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { createElement } from "react";
+import { expect, it } from "vitest";
+import { NotificationServiceImpl } from "./NotificationServiceImpl";
 import { Notifier } from "./Notifier";
 
-function findToastInnerElement(messageDiv: HTMLElement) {
-    let currentElement = messageDiv.parentElement;
-    while (currentElement) {
-        if (currentElement.classList.contains("chakra-toast__inner")) {
-            return currentElement;
-        } else {
-            currentElement = currentElement.parentElement;
-        }
-    }
-    return undefined;
-}
-
 it("shows notifications as toasts", async () => {
-    const service = await createService(NotificationServiceImpl, {});
-
-    const services = {
-        "notifier.NotificationService": service
-    };
-
-    render(
-        <PackageContextProvider services={services}>
-            <Notifier />
-        </PackageContextProvider>
-    );
+    const { service, content } = await create();
+    render(content);
+    await screen.findByRole("region"); // Wait for mount
 
     act(() => {
         service.notify({
             title: "test",
-            message: <div data-testid="notification-message">Message</div>
+            // XXX: Cannot use jsx syntax here because it leads to an infinite recursion in zag-js??
+            //      Only happens during testing.
+            message: createElement(
+                "span",
+                {
+                    "data-testid": "notification-message"
+                },
+                "Message"
+            )
         });
     });
 
     const messageDiv = await screen.findByTestId("notification-message", {});
-    const toastElement = findToastInnerElement(messageDiv);
+    const toastElement = findToastRoot(messageDiv);
 
     expect(toastElement).toMatchSnapshot();
 });
 
 it("closes all notifications", async () => {
-    const service = await createService(NotificationServiceImpl, {});
-
-    const services = {
-        "notifier.NotificationService": service
-    };
-
-    render(
-        <PackageContextProvider services={services}>
-            <Notifier />
-        </PackageContextProvider>
-    );
+    const { service, content } = await create();
+    render(content);
+    await screen.findByRole("region"); // Wait for mount
 
     act(() => {
         service.notify({ title: "test1" });
@@ -80,3 +61,28 @@ it("closes all notifications", async () => {
     const messageElementsAfterClear = await screen.queryAllByText("test1");
     expect(messageElementsAfterClear).toHaveLength(0);
 });
+
+async function create() {
+    const service = await createService(NotificationServiceImpl);
+    const services = {
+        "notifier.NotificationService": service
+    };
+    const content = (
+        <PackageContextProvider services={services}>
+            <Notifier />
+        </PackageContextProvider>
+    );
+    return { service, content };
+}
+
+function findToastRoot(messageDiv: HTMLElement) {
+    let currentElement = messageDiv.parentElement;
+    while (currentElement) {
+        if (currentElement.classList.contains("chakra-toast__root")) {
+            return currentElement;
+        } else {
+            currentElement = currentElement.parentElement;
+        }
+    }
+    return undefined;
+}

@@ -50,12 +50,15 @@ describe("simple rendering", function () {
         expect(div.className).toBe("test");
     });
 
-    it("should render use styles", async () => {
+    it("should render user styles", async () => {
         const { shadowRoot } = await renderComponentShadowDOM("simple-elem");
         // filter stuff from chakra for clarity
-        const style = Array.from(shadowRoot.querySelectorAll("style")).filter(
-            (n) => !n.dataset["emotion"]
-        );
+        const style = Array.from(shadowRoot.querySelectorAll("style")).filter((styleNode) => {
+            return (
+                styleNode.innerHTML.includes("all:initial") ||
+                styleNode.innerHTML.includes(".test{")
+            );
+        });
         expect(style).toMatchSnapshot();
     });
 
@@ -695,7 +698,11 @@ it("renders an error screen when the app fails to start", async () => {
 
     const errorScreen = node.shadowRoot?.querySelector("div");
     expect(errorScreen).not.toBe(undefined);
-    expect(errorScreen?.className).toBe("pioneer-root pioneer-root-error-screen");
+
+    const classes = Array.from(errorScreen?.classList ?? []);
+    expect(classes).toContain("pioneer-root");
+    expect(classes).toContain("pioneer-root-error-screen");
+
     const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
         child.textContent?.includes("Error")
     );

@@ -61,21 +61,16 @@ import { CommonComponentProps, useCommonComponentProps } from "@open-pioneer/rea
 
 // Inherit from CommonComponentProps
 export interface InitialExtentProps extends CommonComponentProps {
-    mapId: string;
+    // props ...
 }
 
-export const InitialExtent: FC<InitialExtentProps> = forwardRef(function InitialExtent(
-    props: InitialExtentProps,
-    ref: ForwardedRef<HTMLDivElement>
-) {
-    const { mapId } = props;
-
+export const InitialExtent: FC<InitialExtentProps> = (props: InitialExtentProps) => {
     // Use the hook to compute container props (classNames, data-testid, maybe more in the future)
     const { containerProps } = useCommonComponentProps("initial-extent", props);
 
     // Pass containerProps directly to the container
     return <Box {...containerProps}>{/* ... */}</Box>;
-});
+};
 ```
 
 #### useEvent()

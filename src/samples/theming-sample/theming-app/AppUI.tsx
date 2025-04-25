@@ -3,30 +3,29 @@
 import {
     Box,
     Button,
-    Link,
-    Tooltip,
-    Stack,
-    Radio,
-    Divider,
-    Input,
-    InputGroup,
-    InputLeftAddon,
-    Checkbox,
-    Slider,
-    SliderTrack,
-    SliderFilledTrack,
-    SliderThumb,
-    Textarea,
-    Switch,
-    Heading,
-    Select,
+    Container,
     Flex,
-    Container
-} from "@open-pioneer/chakra-integration";
+    Group,
+    Heading,
+    Input,
+    InputAddon,
+    Link,
+    NativeSelectField,
+    Separator,
+    Stack,
+    Textarea
+} from "@chakra-ui/react";
+import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
+import { Field } from "@open-pioneer/chakra-snippets/field";
+import { NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
+import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
+import { Slider } from "@open-pioneer/chakra-snippets/slider";
+import { Switch } from "@open-pioneer/chakra-snippets/switch";
+import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 
 export function AppUI() {
     return (
-        <Container>
+        <Container centerContent={true}>
             <Heading size={"md"} py={2}>
                 Demo page based on color scheme &quot;trails&quot;
             </Heading>
@@ -43,7 +42,12 @@ export function AppUI() {
                     <Heading size={"md"}>Button</Heading>
                     <Heading size={"xs"}>default with tooltip</Heading>
                     <Stack direction="row" my={2}>
-                        <Tooltip label="Default button" placement="auto" openDelay={500}>
+                        <Tooltip
+                            content="Default button"
+                            lazyMount={true}
+                            unmountOnExit={true}
+                            openDelay={500}
+                        >
                             <Button>default</Button>
                         </Tooltip>
                     </Stack>
@@ -53,45 +57,48 @@ export function AppUI() {
                         <Button variant="solid">solid</Button>
                         <Button variant="outline">outline</Button>
                         <Button variant="ghost">ghost</Button>
-                        <Button variant="link">link</Button>
+                        <Button variant="surface">surface</Button>
+                        <Button variant="plain">plain</Button>
                     </Stack>
 
                     <Heading size={"xs"}>Button states</Heading>
                     <Stack direction="row" my={2}>
-                        <Button isDisabled>isDisabled</Button>
-                        <Button isActive>isActive</Button>
-                        <Button isLoading>isLoading</Button>
-                        <Button isLoading loadingText="loading...">
-                            isLoading with text
+                        <Button disabled>disabled</Button>
+                        <Button loading>loading</Button>
+                        <Button loading loadingText="loading...">
+                            loading with text
                         </Button>
                     </Stack>
 
-                    <Heading size={"xs"}>colorScheme</Heading>
+                    <Heading size={"xs"}>colorPalette</Heading>
                     <Stack direction="row" my={2}>
-                        <Button colorScheme="blue">blue</Button>
-                        <Button colorScheme="red">red</Button>
+                        <Button colorPalette="blue">blue</Button>
+                        <Button colorPalette="red">red</Button>
                     </Stack>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Checkbox</Heading>
-                    <Stack direction="column" my={2} spacing={1}>
+                    <Stack direction="column" my={2} gap={1}>
                         <Checkbox defaultChecked>defaultChecked1</Checkbox>
                         <Checkbox defaultChecked>defaultChecked2</Checkbox>
-                        <Checkbox isDisabled>isDisabled</Checkbox>
-                        <Checkbox isInvalid>isInvalid</Checkbox>
+                        <Checkbox disabled>disabled</Checkbox>
+                        <Checkbox invalid>invalid</Checkbox>
                     </Stack>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Input</Heading>
                     <Stack direction="column" my={2}>
-                        <Input isInvalid={false} placeholder="outline (default)"></Input>
-                        <Input variant={"filled"} placeholder="filled"></Input>
-                        <InputGroup>
-                            <InputLeftAddon />
+                        <Field invalid={false}>
+                            <Input placeholder="outline (default)"></Input>
+                        </Field>
+
+                        <Input variant={"subtle"} placeholder="subtle"></Input>
+                        <Group attached>
+                            <InputAddon></InputAddon>
                             <Input placeholder="input with left addon" />
-                        </InputGroup>
+                        </Group>
                     </Stack>
                 </Box>
                 <Box
@@ -110,52 +117,59 @@ export function AppUI() {
                         </Link>
                     </Stack>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Radio</Heading>
-                    <Stack direction="column" my={2} spacing={1}>
-                        <Radio defaultChecked>defaultChecked</Radio>
-                        <Radio isDisabled>isDisabled</Radio>
-                        <Radio isInvalid>isInvalid</Radio>
-                    </Stack>
+                    <RadioGroup defaultValue={"0"}>
+                        <Stack direction="column" my={2} gap={1}>
+                            <Radio value="0">defaultChecked</Radio>
+                            <Radio disabled value="1">
+                                disabled
+                            </Radio>
+                            <Radio invalid value="2">
+                                invalid
+                            </Radio>
+                        </Stack>
+                    </RadioGroup>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Select</Heading>
                     <Stack direction="column" my={2}>
-                        <Select>
-                            <option value="option1">outline1 (default)</option>
-                            <option value="option2">outline2 (default)</option>
-                        </Select>
-                        <Select variant={"filled"}>
-                            <option value="option1">filled1</option>
-                            <option value="option2">filled2</option>
-                        </Select>
-                        <Select isDisabled>
-                            <option value="option1">isDisabled</option>
-                        </Select>
+                        <NativeSelectRoot variant={"outline"}>
+                            <NativeSelectField>
+                                <option value="option1">outline1 (default)</option>
+                                <option value="option2">outline2 (default)</option>
+                            </NativeSelectField>
+                        </NativeSelectRoot>
+                        <NativeSelectRoot variant={"subtle"}>
+                            <NativeSelectField>
+                                <option value="option1">subtle1</option>
+                                <option value="option2">subtle2</option>
+                            </NativeSelectField>
+                        </NativeSelectRoot>
+                        <NativeSelectRoot disabled>
+                            <NativeSelectField>
+                                <option value="option1">disabled</option>
+                            </NativeSelectField>
+                        </NativeSelectRoot>
                     </Stack>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Slider</Heading>
                     <Stack direction="column" my={2}>
-                        <Slider aria-label="slider-ex-1" defaultValue={30}>
-                            <SliderTrack>
-                                <SliderFilledTrack />
-                            </SliderTrack>
-                            <SliderThumb />
-                        </Slider>
+                        <Slider defaultValue={[30]}></Slider>
                     </Stack>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Switch</Heading>
                     <Stack direction="column" my={2}>
-                        <Switch isChecked />
+                        <Switch checked />
                     </Stack>
 
-                    <Divider my={5} />
+                    <Separator my={5} />
 
                     <Heading size={"md"}>Textarea</Heading>
                     <Stack direction="column" my={2}>

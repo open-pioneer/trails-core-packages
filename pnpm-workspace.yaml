@@ -11,12 +11,11 @@ __versions:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/icons": ^2.2.4
-  "@chakra-ui/react": ^2.10.6
+  "@chakra-ui/react": ^3.15.1
+  "@chakra-ui/cli": ^3.15.1
   "@conterra/reactivity-core": ^0.5.0
-  "@emotion/cache": ^11.13.1
-  "@emotion/react": ^11.13.3
-  "@emotion/styled": ^11.13.0
+  "@emotion/cache": ^11.14.0
+  "@emotion/react": ^11.14.0
   "@formatjs/intl": ^3.1.6
   classnames: ^2.3.2
   framer-motion: ^12.9.1
@@ -24,6 +23,7 @@ catalog:
   react-dom: *react_version
   react-json-view: ^1.21.3
   react-use: ^17.5.1
+  react-icons: ^5.5.0
   react: *react_version
 
   # Devtools
@@ -35,7 +35,7 @@ catalog:
   "@testing-library/dom": ^10.4.0
   "@testing-library/jest-dom": ^6.6.2
   "@testing-library/react": ^16.3.0
-  "@testing-library/user-event": ^14.5.2
+  "@testing-library/user-event": ^14.6.1
   "@types/js-yaml": ^4.0.9
   "@types/node": ^20.14.8
   "@types/react-dom": ^19.1.2
@@ -60,11 +60,13 @@ catalog:
   prettier: ^3.5.3
   rimraf: ^6.0.1
   sass: ^1.87.0
+  tsx: ^4.19.3
   typedoc: ^0.28.3
   typescript: ^5.8.3
   vite: ^6.3.3
   vite-plugin-eslint: ^1.8.1
   vitest: ^3.1.2
+  zx: ^8.5.2
 
 auditConfig:
   ignoreCves: []
@@ -94,11 +96,23 @@ overrides:
   # https://github.com/advisories/GHSA-968p-4wvh-cqc8
   "@babel/runtime": ">=7.26.10"
 
+  # Just to get rid of some duplicate dependencies
+  "source-map@<0.6.1": ">=0.6.1"
+  "stylis@<4.3.5": ">= 4.3.5"
+
+  # Fixes a dependency issue in chakra, can likely be removed with the next ark-ui release.
+  # See https://github.com/chakra-ui/ark/issues/3439
+  "@ark-ui/react>@zag-js/file-utils": "1.8.2"
+
 patchedDependencies:
   # Don't bump major if peerDep has a minor release. see https://github.com/changesets/changesets/pull/1132
   # NOTE: Also in overrides to pin the version.
   "@changesets/assemble-release-plan@6.0.4": "patches/@changesets__assemble-release-plan.patch"
 
+  # - Ensure all portals are mounted under `.pioneer-root` div
+  # - Fix rendering of toasts in shadow root: https://github.com/chakra-ui/ark/issues/3455
+  "@ark-ui/react": "patches/@ark-ui__react.patch"
+  
 peerDependencyRules:
   allowedVersions:
     # No release available for recent react, but they appear to work well enough for sample apps.

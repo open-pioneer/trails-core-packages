@@ -3,18 +3,20 @@
 /**
  * @vitest-environment happy-dom
  */
+import { FormatNumber, SystemConfig, mergeConfigs, useChakraContext } from "@chakra-ui/react";
+import { reactive } from "@conterra/reactivity-core";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
-import { createElement } from "react";
-import { beforeEach, expect, it, afterEach, vi, describe } from "vitest";
-import { Service, ServiceConstructor } from "../Service";
-import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
-import { useTheme } from "@open-pioneer/chakra-integration";
+import { ReactNode, createElement } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PackageIntl, createEmptyPackageIntl } from "../i18n";
+import { Service, ServiceConstructor } from "../Service";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ServiceRepr, createConstructorFactory } from "../service-layer/ServiceRepr";
+import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
@@ -334,26 +336,30 @@ it("should throw error when requesting properties from an unknown package", asyn
     );
 });
 
-it("should apply the configured chakra theme", async () => {
-    const testTheme = {
-        colors: {
-            dummyColor: "#123456"
+it("should apply the configured chakra config", async () => {
+    const testConfig = mergeConfigs(defaultTrailsConfig, {
+        theme: {
+            semanticTokens: {
+                colors: {
+                    dummyColor: { value: "#123456" }
+                }
+            }
         }
-    };
+    });
     const { integration, wrapper } = createIntegration({
         disablePackage: true,
-        theme: testTheme
+        config: testConfig
     });
 
-    function TestComponent() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const theme = useTheme() as any;
+    function TestComponent(): ReactNode {
+        const sys = useChakraContext();
+        const dummyColorToken = sys.tokens.getByName("colors.dummyColor");
         return createElement(
             "div",
             {
                 "data-testid": "test-div"
             },
-            `Color: ${theme.colors.dummyColor}`
+            `Color: ${dummyColorToken?.value}`
         );
     }
 
@@ -365,12 +371,48 @@ it("should apply the configured chakra theme", async () => {
     expect(node.textContent).toBe("Color: #123456");
 });
 
+it("should apply the configured locale (en-US)", async () => {
+    const { integration, wrapper } = createIntegration({
+        disablePackage: true,
+        locale: "en-US"
+    });
+
+    function TestComponent(): ReactNode {
+        return createElement(FormatNumber, {
+            value: 123.456
+        });
+    }
+    act(() => {
+        integration.render(createElement(TestComponent));
+    });
+    expect(wrapper.textContent).toEqual("123.456");
+});
+
+it("should apply the configured locale (de-DE)", async () => {
+    const { integration, wrapper } = createIntegration({
+        disablePackage: true,
+        locale: "de-DE"
+    });
+
+    function TestComponent(): ReactNode {
+        return createElement(FormatNumber, {
+            value: 123.456
+        });
+    }
+    act(() => {
+        integration.render(createElement(TestComponent));
+    });
+    expect(wrapper.textContent).toEqual("123,456");
+});
+
 describe("integration for error screen ", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
-            rootNode: document.createElement("div"),
-            container: document.createElement("div"),
-            theme: undefined
+            appRoot: document.createElement("div"),
+            rootNode: document,
+            config: undefined,
+            locale: "en",
+            styles: reactive("")
         });
 
         expect(integration).toBeInstanceOf(ReactIntegration);
@@ -378,9 +420,11 @@ describe("integration for error screen ", function () {
 
     it("should throw an error when trying to access a service on an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
-            rootNode: document.createElement("div"),
-            container: document.createElement("div"),
-            theme: undefined
+            appRoot: document.createElement("div"),
+            rootNode: document,
+            config: undefined,
+            locale: "en",
+            styles: reactive("")
         });
 
         function TestComponent() {
@@ -416,9 +460,12 @@ function createIntegration(options?: {
     packageUiReferences?: ReferenceSpec[];
     i18n?: PackageIntl;
     services?: ServiceSpec[];
-    theme?: Record<string, unknown>;
+    config?: SystemConfig | undefined;
+    locale?: string;
 }): TestIntegration {
     const wrapper = document.createElement("div");
+    const shadowRoot = wrapper.attachShadow({ mode: "open" });
+
     const packages = new Map<string, PackageRepr>();
     const i18n = options?.i18n ?? createEmptyPackageIntl();
     if (!options?.disablePackage) {
@@ -449,11 +496,13 @@ function createIntegration(options?: {
     serviceLayer.start();
 
     const integration = ReactIntegration.createForApp({
-        container: wrapper,
-        rootNode: wrapper,
-        theme: options?.theme,
+        rootNode: shadowRoot,
+        appRoot: wrapper,
+        config: options?.config,
         packages,
-        serviceLayer
+        serviceLayer,
+        locale: options?.locale ?? "en",
+        styles: reactive("")
     });
     return { integration, wrapper };
 }

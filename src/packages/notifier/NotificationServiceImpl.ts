@@ -1,69 +1,78 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { createToaster, CreateToasterProps, CreateToasterReturn } from "@chakra-ui/react";
 import type {
     NotificationLevel,
     NotificationOptions,
     NotificationService,
+    NotifierProperties,
     SimpleNotificationOptions
 } from "./api";
 import { Resource, createLogger } from "@open-pioneer/core";
-import type { ReactNode } from "react";
+import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
 const LOG = createLogger("notifier:NotificationService");
 
-export interface Notification {
-    title: ReactNode;
-    message: ReactNode;
-    level: NotificationLevel;
-    displayDuration: number | undefined;
-}
+export type ToasterObject = CreateToasterReturn;
 
-/**
- * The notification handler is implemented by the UI in order to receive events.
- * There can only be one handler at a time.
- *
- * Calls to the handler may be buffered to allow for notifications before the UI has become ready.
- */
-export interface NotificationHandler {
-    /** Called by the service to emit the notification. */
-    showNotification(notification: Notification): void;
-
-    /** Removes all active notifications. */
-    closeAll(): void;
+export interface ToastMeta {
+    closable: boolean;
 }
 
 export interface InternalNotificationAPI extends NotificationService {
-    /**
-     * Registers the notification handler.
-     * The returned resource can be used to unregister it again.
-     */
-    registerHandler(handler: NotificationHandler): Resource;
+    // Toasts in here carry `ToastMeta` metadata
+    readonly toaster: ToasterObject;
+    registerUI(): Resource | undefined;
 }
 
-export class NotificationServiceImpl implements InternalNotificationAPI {
-    #handler: NotificationHandler | undefined;
-    #buffered: [keyof NotificationHandler, ...unknown[]][] | undefined;
-    #checkTimeoutId: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+interface References {
+    appCtx: ApplicationContext;
+}
 
-    constructor() {
-        if (import.meta.env.DEV) {
-            this.#checkTimeoutId = setTimeout(() => {
-                this.#checkHandlerRegistration();
-                this.#checkTimeoutId = undefined;
+// 7 days. Needed because there is no "indefinite" timeout for tooltips in current chakra.
+const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
+
+export class NotificationServiceImpl implements InternalNotificationAPI {
+    #uiPresent = false;
+    #uiCheckTimeoutId: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    readonly toaster: ToasterObject;
+
+    constructor({ properties }: ServiceOptions<References>) {
+        const typedProperties = properties as NotifierProperties;
+
+        this.toaster = createToaster({
+            placement: getPlacement(typedProperties.position),
+            pauseOnPageIdle: true
+        });
+
+        if (import.meta.env.DEV && !import.meta.env.VITEST) {
+            this.#uiCheckTimeoutId = setTimeout(() => {
+                this.#checkUiNotification();
+                this.#uiCheckTimeoutId = undefined;
             }, 5000);
         }
     }
 
     destroy() {
-        clearTimeout(this.#checkTimeoutId);
-        this.#checkTimeoutId = undefined;
+        clearTimeout(this.#uiCheckTimeoutId);
+        this.#uiCheckTimeoutId = undefined;
     }
 
     notify(options: NotificationOptions): void {
-        this.#dispatchHandlerMethod("showNotification", {
-            title: options.title ?? undefined,
-            message: options.message ?? undefined,
-            level: options.level ?? "info",
-            displayDuration: options.displayDuration
+        this.toaster.create({
+            type: options.level ?? "info",
+            title: options.title,
+            description: options.message,
+
+            // Chakra currently has no concept of persistent toasts (other than type "loading"),
+            // so we just use a very long timeout instead.
+            // Note: MAX_VALUE or Infinity does not work either (probably too big for some computations made internally).
+            duration: options.displayDuration ?? PERSISTENT_TIMEOUT,
+
+            // Additional data for the toast (can be arbitrary)
+            meta: {
+                closable: true
+            } satisfies ToastMeta
         });
     }
 
@@ -91,36 +100,20 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
     }
 
     closeAll(): void {
-        this.#dispatchHandlerMethod("closeAll");
+        this.toaster.dismiss();
     }
 
-    registerHandler(handler: NotificationHandler): Resource {
+    registerUI(): Resource | undefined {
         // We only support exactly one handler.
-        if (this.#handler) {
+        if (this.#uiPresent) {
             LOG.warn(
-                "A notification handler has already been registered; this new handler will be ignored.\n" +
+                "A notifier UI has already been registered; this new component will be ignored.\n" +
                     "The <Notifier /> component has likely been used twice in your application."
             );
-            return {
-                destroy() {
-                    return undefined;
-                }
-            };
+            return undefined;
         }
 
-        // Dispatch buffered calls (if any).
-        // These happened during the time no handler was registered.
-        this.#handler = handler;
-        const buffered = this.#buffered;
-        this.#buffered = undefined;
-        if (buffered) {
-            for (const [name, ...args] of buffered) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (handler[name] as any)(...args);
-            }
-        }
-
-        // Return a resource to undo the registration
+        this.#uiPresent = true;
         let destroyed = false;
         return {
             destroy: () => {
@@ -129,45 +122,39 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
                 }
 
                 destroyed = true;
-                if (this.#handler === handler) {
-                    this.#handler = undefined;
-                }
+                this.#uiPresent = false;
             }
         };
     }
 
-    /**
-     * Calls a method on the handler (if present) or buffers the method call for later once the handler
-     * has arrived.
-     */
-    #dispatchHandlerMethod<Method extends keyof NotificationHandler>(
-        method: Method,
-        ...args: Parameters<NotificationHandler[Method]>
-    ): void;
-    #dispatchHandlerMethod(method: keyof NotificationHandler, ...args: unknown[]): void {
-        if (this.#handler) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (this.#handler[method] as any)(...args);
-        } else {
-            const buffered = (this.#buffered ??= []);
-            if (buffered.length >= 1024) {
-                LOG.error(
-                    "Internal notification buffer overflow: this event will be dropped to prevent a memory leak.\n" +
-                        "Make sure that the UI is configured to display notifications (use <Notifier />).",
-                    { method, args }
-                );
-                return;
-            }
-            buffered.push([method, ...args]);
-        }
-    }
-
-    #checkHandlerRegistration() {
-        if (!this.#handler) {
+    #checkUiNotification() {
+        if (!this.#uiPresent) {
             LOG.warn(
-                `No notification handler has been registered: notifications will not be visible.\n` +
+                `No notifier UI has been registered: notifications will not be visible.\n` +
                     `Make sure that your app contains the <Notifier /> component.`
             );
         }
+    }
+}
+
+// Map to chakra placement
+function getPlacement(
+    configPosition: NotifierProperties["position"] = "top-right"
+): CreateToasterProps["placement"] {
+    switch (configPosition) {
+        case "top":
+            return "top";
+        case "top-left":
+            return "top-start";
+        case "top-right":
+            return "top-end";
+        case "bottom":
+            return "bottom";
+        case "bottom-left":
+            return "bottom-start";
+        case "bottom-right":
+            return "bottom-end";
+        default:
+            return "top-end";
     }
 }

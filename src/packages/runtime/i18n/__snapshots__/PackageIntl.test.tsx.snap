@@ -91,6 +91,10 @@ exports[`formatRichMessage > assigns unique keys to children and nested children
                   "key": "<no key>",
                   "type": {
                     "$$typeof": Symbol(react.forward_ref),
+                    "__emotion_base": "div",
+                    "__emotion_cva": {},
+                    "__emotion_forwardProp": undefined,
+                    "__emotion_real": [Circular],
                     "render": [Function],
                   },
                 },
@@ -102,6 +106,10 @@ exports[`formatRichMessage > assigns unique keys to children and nested children
           "key": "<no key>",
           "type": {
             "$$typeof": Symbol(react.forward_ref),
+            "__emotion_base": "div",
+            "__emotion_cva": {},
+            "__emotion_forwardProp": undefined,
+            "__emotion_real": [Circular],
             "render": [Function],
           },
         },

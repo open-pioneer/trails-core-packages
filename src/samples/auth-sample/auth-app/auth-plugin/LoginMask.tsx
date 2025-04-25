@@ -1,23 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertTitle,
-    Button,
-    Container,
-    FormControl,
-    FormLabel,
-    Heading,
-    HStack,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Text,
-    VStack
-} from "@open-pioneer/chakra-integration";
+import { Alert, Button, Container, Heading, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
+import { Field } from "@open-pioneer/chakra-snippets/field";
+import { PasswordInput } from "@open-pioneer/chakra-snippets/password-input";
 
 interface LoginMaskProps {
     wasLoggedIn: boolean;
@@ -28,7 +14,6 @@ interface LoginMaskProps {
 export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
     const [showLoggedOutMessage, setShowLoggedOutMessage] = useState(wasLoggedIn);
     const onSubmit = (e: Pick<Event, "preventDefault">) => {
@@ -39,8 +24,8 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
     };
 
     return (
-        <Container p={5}>
-            <VStack as="form" onSubmit={onSubmit} spacing={4}>
+        <Container p={5} maxWidth={"xl"}>
+            <VStack as="form" onSubmit={onSubmit} gap={4}>
                 <Heading as="h1" textAlign="center">
                     Login
                 </Heading>
@@ -50,54 +35,38 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                     Note: credentials are {'"admin"'} / {'"admin"'}
                 </Text>
                 {errorMessage && (
-                    <Alert status="error">
-                        <AlertIcon />
-                        <AlertTitle>{errorMessage}</AlertTitle>
-                    </Alert>
+                    <Alert.Root status="error">
+                        <Alert.Indicator></Alert.Indicator>
+                        <Alert.Content>
+                            <Alert.Title>{errorMessage}</Alert.Title>
+                        </Alert.Content>
+                    </Alert.Root>
                 )}
                 {showLoggedOutMessage && (
-                    <Alert status="info" mb={5}>
-                        <AlertIcon />
-                        <AlertDescription>
-                            Logout successful.
-                            <br />
-                            You can use the form below to log in again.
-                        </AlertDescription>
-                    </Alert>
+                    <Alert.Root status="info" mb={5}>
+                        <Alert.Indicator></Alert.Indicator>
+                        <Alert.Content>
+                            <Alert.Description>
+                                Logout successful.
+                                <br />
+                                You can use the form below to log in again.
+                            </Alert.Description>
+                        </Alert.Content>
+                    </Alert.Root>
                 )}
-                <FormControl>
-                    <FormLabel>User name</FormLabel>
+                <Field label={"User name"}>
                     <Input
                         placeholder="User name"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         autoComplete="username"
                     />
-                </FormControl>
-                <FormControl>
-                    <FormLabel>Password</FormLabel>
-                    <InputGroup>
-                        <Input
-                            pr="4.5rem"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Enter password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            autoComplete="current-password"
-                        />
-                        <InputRightElement width="4.5rem">
-                            <Button
-                                h="1.75rem"
-                                size="sm"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                {showPassword ? "Hide" : "Show"}
-                            </Button>
-                        </InputRightElement>
-                    </InputGroup>
-                </FormControl>
+                </Field>
+                <Field label={"Password"}>
+                    <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
+                </Field>
                 <HStack>
-                    <Button colorScheme={"red"} onClick={doFail}>
+                    <Button colorPalette={"red"} onClick={doFail}>
                         Let it fail!
                     </Button>
                     <Button type="submit">Login</Button>
