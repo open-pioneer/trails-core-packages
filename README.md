@@ -39,7 +39,7 @@ For more details, consult the starter project's [Repository Guide](https://githu
 ## Branches
 
 - [main](https://github.com/open-pioneer/trails-core-packages/): Current development state.
-- [3.x](https://github.com/open-pioneer/trails-core-packages/tree/3.x): Legacy: Contains the 3.x versions based on Chakra v2.
+- [3.x](https://github.com/open-pioneer/trails-core-packages/tree/3.x) (Legacy): Contains the 3.x versions based on Chakra v2.
 
 ## Packages
 
