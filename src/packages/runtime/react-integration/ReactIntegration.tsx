@@ -5,6 +5,7 @@ import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { Error } from "@open-pioneer/core";
 import { ReactNode, StrictMode } from "react";
 import { createRoot, Root } from "react-dom/client";
+import { RootNode } from "../dom";
 import { ErrorId } from "../errors";
 import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
@@ -14,8 +15,9 @@ import { CustomChakraProvider } from "./ChakraProvider";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
 
 export interface ReactIntegrationOptions {
+    rootNode: RootNode;
+    hostNode: HTMLElement;
     appRoot: HTMLDivElement;
-    rootNode: Document | ShadowRoot;
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
 
@@ -25,7 +27,8 @@ export interface ReactIntegrationOptions {
 }
 
 export class ReactIntegration {
-    private rootNode: Document | ShadowRoot;
+    private rootNode: RootNode;
+    private hostNode: HTMLElement;
     private appRoot: HTMLDivElement;
     private reactRoot: Root;
     private packageContext: PackageContextMethods;
@@ -60,6 +63,7 @@ export class ReactIntegration {
         }
     ) {
         this.rootNode = options.rootNode;
+        this.hostNode = options.hostNode;
         this.appRoot = options.appRoot;
         this.reactRoot = createRoot(options.appRoot);
         this.chakraConfig = options.config;
@@ -73,6 +77,7 @@ export class ReactIntegration {
             <StrictMode>
                 <CustomChakraProvider
                     rootNode={this.rootNode}
+                    hostNode={this.hostNode}
                     appRoot={this.appRoot}
                     config={this.chakraConfig}
                     locale={this.locale}
@@ -89,6 +94,10 @@ export class ReactIntegration {
     destroy() {
         this.reactRoot.unmount();
     }
+}
+
+export function EmptyComponent(): ReactNode {
+    return null;
 }
 
 function createPackageContext(

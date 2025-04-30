@@ -52,14 +52,39 @@ describe("simple rendering", function () {
 
     it("should render user styles", async () => {
         const { shadowRoot } = await renderComponentShadowDOM("simple-elem");
-        // filter stuff from chakra for clarity
-        const style = Array.from(shadowRoot.querySelectorAll("style")).filter((styleNode) => {
+
+        const styles = await waitFor(() => {
+            const styles = shadowRoot.querySelectorAll("style");
+            if (styles.length === 0) {
+                throw new Error("No styles found");
+            }
+            return Array.from(styles);
+        });
+
+        const trailsStyles = styles.filter((styleNode) => {
             return (
                 styleNode.innerHTML.includes("all:initial") ||
                 styleNode.innerHTML.includes(".test{")
             );
         });
-        expect(style).toMatchSnapshot();
+        expect(trailsStyles).toMatchInlineSnapshot(`
+          [
+            <style
+              data-emotion="css-global"
+              data-s=""
+            >
+              
+              @layer base{:host{all:initial;display:block;}}
+            </style>,
+            <style
+              data-emotion="css-global"
+              data-s=""
+            >
+              
+              .test{color:red;}
+            </style>,
+          ]
+        `);
     });
 
     it("should clean up its content when removed from the dom", async () => {
@@ -688,7 +713,7 @@ it("renders an error screen when the app fails to start", async () => {
         }
     });
 
-    const { node } = await renderComponent(elem);
+    const { node, shadowRoot } = await renderComponentShadowDOM(elem);
     await waitFor(() => {
         const state = (node as InternalElementType).$inspectElementState?.().state;
         if (state !== "error") {
@@ -696,15 +721,16 @@ it("renders an error screen when the app fails to start", async () => {
         }
     });
 
-    const errorScreen = node.shadowRoot?.querySelector("div");
-    expect(errorScreen).not.toBe(undefined);
+    const errorScreen = shadowRoot.querySelector("div.pioneer-root")!;
+    expect(errorScreen).toBeTruthy();
 
-    const classes = Array.from(errorScreen?.classList ?? []);
-    expect(classes).toContain("pioneer-root");
+    const classes = Array.from(errorScreen.classList);
     expect(classes).toContain("pioneer-root-error-screen");
 
-    const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
-        child.textContent?.includes("Error")
-    );
-    expect(includesErrorText).toBe(true);
+    await waitFor(() => {
+        const includesErrorText = Array.from(errorScreen?.children ?? []).some((child) =>
+            child.textContent?.includes("Error")
+        );
+        expect(includesErrorText).toBe(true);
+    });
 });

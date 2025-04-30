@@ -17,7 +17,8 @@ import { CacheProvider, Global } from "@emotion/react";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { Error } from "@open-pioneer/core";
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
-import { FC, PropsWithChildren, useEffect, useMemo, useRef } from "react";
+import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { APP_ROOT_CLASS, getBuiltinStyles, getStylesRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
 
 /** @internal */
@@ -25,7 +26,14 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     /**
      * Document root node.
      */
-    rootNode: ShadowRoot | Document;
+    rootNode: RootNode;
+
+    /**
+     * Web component root.
+     *
+     * NOTE: undefined for test support only.
+     */
+    hostNode?: HTMLElement;
 
     /**
      * Application container (react's render target).
@@ -48,8 +56,7 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     styles?: ReadonlyReactive<string>;
 }>;
 
-const APP_ROOT = "pioneer-root";
-const APP_ROOT_CSS = `.${APP_ROOT}`;
+const APP_ROOT_CSS = `.${APP_ROOT_CLASS}`;
 
 /**
  * Wraps the entire react application and configures chakra-ui (styling etc.).
@@ -61,6 +68,7 @@ const APP_ROOT_CSS = `.${APP_ROOT}`;
 export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     rootNode,
     appRoot,
+    hostNode,
     children,
     config = defaultTrailsConfig,
     locale = "en-US",
@@ -103,26 +111,39 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
 
     const cache = useEmotionCache(rootNode);
     return (
-        <CacheProvider value={cache}>
-            <EnvironmentProvider value={rootNode}>
-                <LocaleProvider locale={locale}>
-                    <ChakraProvider value={system}>
-                        <GlobalStyles styles={styles} />
-                        {children}
-                    </ChakraProvider>
-                </LocaleProvider>
-            </EnvironmentProvider>
-        </CacheProvider>
+        cache && (
+            <CacheProvider value={cache}>
+                <EnvironmentProvider value={rootNode} portalNode={appRoot}>
+                    <LocaleProvider locale={locale}>
+                        <ChakraProvider value={system}>
+                            <GlobalStyles rootNode={rootNode} hostNode={hostNode} styles={styles} />
+                            {children}
+                        </ChakraProvider>
+                    </LocaleProvider>
+                </EnvironmentProvider>
+            </CacheProvider>
+        )
     );
 };
 
-function GlobalStyles(props: { styles: ReadonlyReactive<string> | undefined }) {
-    const stylesSignal = props.styles;
-    const currentStyles = useReactiveSnapshot(() => stylesSignal?.value, [stylesSignal]);
+function GlobalStyles(props: {
+    rootNode: RootNode;
+    hostNode: HTMLElement | undefined;
+    styles: ReadonlyReactive<string> | undefined;
+}) {
+    const { rootNode, hostNode, styles } = props;
+    const builtinStyles = useMemo(() => {
+        const css = getBuiltinStyles(rootNode, hostNode);
+        return <Global styles={css} />;
+    }, [rootNode, hostNode]);
+    const appStyles = useReactiveSnapshot(() => {
+        const css = styles?.value;
+        return css && <Global styles={css} />;
+    }, [styles]);
     return (
         <>
-            <Global styles="@layer base { :host { all: initial; display: block; } }" />
-            {currentStyles && <Global styles={currentStyles} />}
+            {builtinStyles}
+            {appStyles}
         </>
     );
 }
@@ -152,28 +173,22 @@ function redirectLightCondition(
     };
 }
 
-function useEmotionCache(rootNode: Document | ShadowRoot): EmotionCache {
-    const stylesRoot = useMemo(
-        () => (isShadowRoot(rootNode) ? rootNode : rootNode.head),
-        [rootNode]
-    );
+function useEmotionCache(rootNode: RootNode): EmotionCache | undefined {
+    const stylesRoot = useMemo(() => getStylesRoot(rootNode), [rootNode]);
 
-    const originalStylesRoot = useRef<Node>(stylesRoot);
-    if (stylesRoot !== originalStylesRoot.current) {
-        // Needs some cleanup for the emotion cache below?
-        throw new Error(ErrorId.INTERNAL, "Changes of root node are not supported.");
-    }
-
-    const cacheRef = useRef<EmotionCache>(null);
-    if (!cacheRef.current) {
-        cacheRef.current = createCache({
+    const [cache, setCache] = useState<EmotionCache | undefined>();
+    useEffect(() => {
+        const cache = createCache({
             key: "css",
             container: stylesRoot
         });
-    }
-    return cacheRef.current;
-}
-
-function isShadowRoot(node: Node): node is ShadowRoot {
-    return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && "host" in node;
+        setCache(cache);
+        return () => {
+            setCache(undefined);
+            for (const tag of cache.sheet.tags) {
+                tag.remove();
+            }
+        };
+    }, [stylesRoot]);
+    return cache;
 }
