@@ -409,6 +409,7 @@ describe("integration for error screen ", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
+            hostNode: document.createElement("div"),
             rootNode: document,
             config: undefined,
             locale: "en",
@@ -421,6 +422,7 @@ describe("integration for error screen ", function () {
     it("should throw an error when trying to access a service on an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
+            hostNode: document.createElement("div"),
             rootNode: document,
             config: undefined,
             locale: "en",
@@ -463,6 +465,7 @@ function createIntegration(options?: {
     config?: SystemConfig | undefined;
     locale?: string;
 }): TestIntegration {
+    const host = document.createElement("div");
     const wrapper = document.createElement("div");
     const shadowRoot = wrapper.attachShadow({ mode: "open" });
 
@@ -497,6 +500,7 @@ function createIntegration(options?: {
 
     const integration = ReactIntegration.createForApp({
         rootNode: shadowRoot,
+        hostNode: host,
         appRoot: wrapper,
         config: options?.config,
         packages,

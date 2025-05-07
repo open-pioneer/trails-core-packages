@@ -4,7 +4,7 @@
 import { expect, it } from "vitest";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
 import { render, screen } from "@testing-library/react";
-import { createPackageIntl } from "./i18n";
+import { createPackageIntl } from "../i18n";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 
 it("should successfully create an error screen component", async () => {

@@ -1,11 +1,12 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { ApplicationContext } from "../api";
+import { isShadowRoot, RootNode } from "../dom";
 import { ServiceOptions } from "../Service";
 
 export interface ApplicationContextProperties {
     host: HTMLElement;
-    shadowRoot: ShadowRoot;
+    rootNode: RootNode;
     container: HTMLElement;
     locale: string;
     supportedLocales: string[];
@@ -16,15 +17,15 @@ export interface ApplicationContextProperties {
 
 export class ApplicationContextImpl implements ApplicationContext {
     #host: HTMLElement;
-    #shadowRoot: ShadowRoot;
+    #rootNode: RootNode;
     #container: HTMLElement;
     #locale: string;
     #supportedLocales: readonly string[];
     #changeLocale: (locale: string) => void;
 
-    constructor(options: ServiceOptions, properties: ApplicationContextProperties) {
+    constructor(_options: ServiceOptions, properties: ApplicationContextProperties) {
         this.#host = properties.host;
-        this.#shadowRoot = properties.shadowRoot;
+        this.#rootNode = properties.rootNode;
         this.#container = properties.container;
         this.#locale = properties.locale;
         this.#supportedLocales = Object.freeze(Array.from(properties.supportedLocales));
@@ -35,8 +36,12 @@ export class ApplicationContextImpl implements ApplicationContext {
         return this.#host;
     }
 
-    getShadowRoot(): ShadowRoot {
-        return this.#shadowRoot;
+    getRoot(): RootNode {
+        return this.#rootNode;
+    }
+
+    getShadowRoot(): ShadowRoot | undefined {
+        return isShadowRoot(this.#rootNode) ? this.#rootNode : undefined;
     }
 
     getApplicationContainer(): HTMLElement {
