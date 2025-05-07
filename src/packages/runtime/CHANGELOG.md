@@ -1,5 +1,21 @@
 # @open-pioneer/runtime
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+- 9f074d8: **Breaking:** Rename `theme` option of `createCustomElement()` to `chakraSystemConfig`.
+
+### Patch Changes
+
+- Updated dependencies [9f074d8]
+- Updated dependencies [9f074d8]
+- Updated dependencies [1f4fa84]
+    - @open-pioneer/base-theme@4.0.0
+    - @open-pioneer/reactivity@4.0.0
+    - @open-pioneer/core@4.0.0
+
 ## 3.1.0
 
 ### Minor Changes

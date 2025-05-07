@@ -1,5 +1,15 @@
 # @open-pioneer/react-utils
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+
+### Patch Changes
+
+- @open-pioneer/core@4.0.0
+
 ## 3.1.0
 
 ### Patch Changes
