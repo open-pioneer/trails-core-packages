@@ -1,5 +1,11 @@
 # @open-pioneer/reactivity
 
+## 4.0.0
+
+### Patch Changes
+
+- 1f4fa84: Update @conterra/reactivity-\* to 0.6.0
+
 ## 3.1.0
 
 ### Patch Changes

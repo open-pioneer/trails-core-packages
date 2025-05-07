@@ -1,5 +1,12 @@
 # @open-pioneer/base-theme
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+- 9f074d8: **Breaking**: The export name has changed from `theme` to `config`.
+
 ## 3.1.0
 
 ### Patch Changes
