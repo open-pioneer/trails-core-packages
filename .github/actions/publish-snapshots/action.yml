@@ -21,7 +21,7 @@ runs:
         pnpm changeset version --snapshot ${{ inputs.snapshot-tag }}
 
     # Replaces `workspace:^`` with `workspace:*`
-    - name: Rewrite inter-workspace dependencies
+    - name: Rewrite intra-workspace dependencies
       shell: bash
       run: |
         pnpm tsx ./support/prepare-snapshots.ts
