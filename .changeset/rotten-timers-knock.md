@@ -38,4 +38,5 @@ Applications that use the entire browser viewport may not need this feature, sin
     ```ts
     const ctx: ApplicationContext = ...; // injected
     const root = ctx.getRoot(); // Document | ShadowRoot
+    root.getElementById("...") // always works
     ```
