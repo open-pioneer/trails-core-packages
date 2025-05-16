@@ -1,5 +1,18 @@
 # @open-pioneer/test-utils
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+
+### Patch Changes
+
+- Updated dependencies [9f074d8]
+- Updated dependencies [53c92ba]
+- Updated dependencies [9f074d8]
+    - @open-pioneer/runtime@4.0.0
+
 ## 3.1.0
 
 ### Patch Changes
