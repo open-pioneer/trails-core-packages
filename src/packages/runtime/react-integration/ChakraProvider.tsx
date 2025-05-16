@@ -113,7 +113,11 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     return (
         cache && (
             <CacheProvider value={cache}>
-                <EnvironmentProvider value={rootNode} portalNode={appRoot}>
+                <EnvironmentProvider
+                    value={rootNode}
+                    // Patched property
+                    portalNode={appRoot}
+                >
                     <LocaleProvider locale={locale}>
                         <ChakraProvider value={system}>
                             <GlobalStyles rootNode={rootNode} hostNode={hostNode} styles={styles} />

@@ -47,6 +47,13 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
 
     /**
      * A root node that resolves to the the shadow root or the site's document.
+     *
+     * For example:
+     *
+     * ```ts
+     * const ctx: ApplicationContext = ...;
+     * const node = ctx.getRoot().getElementById("id"); // Correct with or without shadow root.
+     * ```
      */
     getRoot(): Document | ShadowRoot;
 

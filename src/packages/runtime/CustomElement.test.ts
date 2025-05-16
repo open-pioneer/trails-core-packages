@@ -10,15 +10,21 @@ import {
     renderComponent,
     renderComponentShadowDOM
 } from "@open-pioneer/test-utils/web-components";
-import { waitFor } from "@testing-library/dom";
+import { findByTestId, waitFor } from "@testing-library/dom";
 import { createElement } from "react";
 import { expect, it, describe, vi, afterEach } from "vitest";
 import { ApiExtension, ApiMethods, ApplicationContext, ApplicationLifecycleListener } from "./api";
-import { ApplicationElement, createCustomElement, CustomElementOptions } from "./CustomElement";
+import {
+    ApplicationElement,
+    ApplicationElementConstructor,
+    createCustomElement,
+    CustomElementOptions
+} from "./CustomElement";
 import { createBox } from "./metadata";
 import { usePropertiesInternal } from "./react-integration";
 import { ServiceOptions } from "./Service";
 import { expectAsyncError } from "./test-utils/expectError";
+import { Portal } from "@chakra-ui/react";
 
 /** Hidden properties available during development / testing */
 interface InternalElementType extends ApplicationElement {
@@ -189,62 +195,93 @@ it("allows customization of package properties through a callback", async () => 
     expect(span.tagName).toBe("SPAN");
 });
 
-it("provides access to html containers through the application context", async () => {
-    let hostElement: HTMLElement | undefined;
-    let shadowRoot: ShadowRoot | undefined;
-    let container: HTMLElement | undefined;
+describe("application context", () => {
+    it("reports the shadow dom if enabled", async () => {
+        const { element, getNodes } = getNodesHelper(true);
 
-    class TestService {
-        constructor(options: ServiceOptions<{ ctx: ApplicationContext }>) {
-            const ctx = options.references.ctx;
-            hostElement = ctx.getHostElement();
-            shadowRoot = ctx.getShadowRoot();
-            container = ctx.getApplicationContainer();
+        const {
+            node: actualHostElement,
+            shadowRoot: actualShadowRoot,
+            innerContainer: actualContainer
+        } = await renderComponentShadowDOM(element);
+
+        const nodes = getNodes();
+        expect(nodes.hostElement).toBe(actualHostElement);
+        expect(nodes.shadowRoot).toBe(actualShadowRoot);
+        expect(nodes.rootNode).toBe(actualShadowRoot);
+        expect(nodes.container).toBe(actualContainer);
+    });
+
+    it("reports the document if shadow root is disabled", async () => {
+        const { element, getNodes } = getNodesHelper(false);
+
+        const { node: actualHostElement, innerContainer: actualContainer } =
+            await renderComponentWithoutShadowRoot(element);
+
+        const nodes = getNodes();
+        expect(nodes.hostElement).toBe(actualHostElement);
+        expect(nodes.shadowRoot).toBe(undefined);
+        expect(nodes.rootNode).toBe(document);
+        expect(nodes.container).toBe(actualContainer);
+    });
+
+    function getNodesHelper(enableShadowRoot: boolean) {
+        let hostElement: HTMLElement | undefined;
+        let rootNode: Document | ShadowRoot | undefined;
+        let shadowRoot: ShadowRoot | undefined;
+        let container: HTMLElement | undefined;
+
+        class TestService {
+            constructor(options: ServiceOptions<{ ctx: ApplicationContext }>) {
+                const ctx = options.references.ctx;
+                hostElement = ctx.getHostElement();
+                rootNode = ctx.getRoot();
+                shadowRoot = ctx.getShadowRoot();
+                container = ctx.getApplicationContainer();
+            }
         }
-    }
 
-    const elem = createCustomElement({
-        appMetadata: {
-            packages: {
-                test: {
-                    name: "test",
-                    services: {
-                        testService: {
-                            name: "testService",
-                            clazz: TestService,
-                            references: {
-                                ctx: {
-                                    name: "runtime.ApplicationContext"
-                                }
-                            },
-                            provides: [
-                                {
-                                    name: "testInterface"
-                                }
-                            ]
-                        }
-                    },
-                    ui: {
-                        references: [
-                            // Hack to start the service
-                            {
-                                name: "testInterface"
+        const element = createCustomElement({
+            advanced: {
+                enableShadowRoot
+            },
+            appMetadata: {
+                packages: {
+                    test: {
+                        name: "test",
+                        services: {
+                            testService: {
+                                name: "testService",
+                                clazz: TestService,
+                                references: {
+                                    ctx: {
+                                        name: "runtime.ApplicationContext"
+                                    }
+                                },
+                                provides: [
+                                    {
+                                        name: "runtime.AutoStart"
+                                    }
+                                ]
                             }
-                        ]
+                        }
                     }
                 }
             }
-        }
-    });
-    const {
-        node: actualHostElement,
-        shadowRoot: actualShadowRoot,
-        innerContainer: actualContainer
-    } = await renderComponentShadowDOM(elem);
+        });
 
-    expect(hostElement).toBe(actualHostElement);
-    expect(shadowRoot).toBe(actualShadowRoot);
-    expect(container).toBe(actualContainer);
+        return {
+            element,
+            getNodes() {
+                return {
+                    hostElement,
+                    rootNode,
+                    shadowRoot,
+                    container
+                };
+            }
+        };
+    }
 });
 
 describe("element API", () => {
@@ -734,3 +771,64 @@ it("renders an error screen when the app fails to start", async () => {
         expect(includesErrorText).toBe(true);
     });
 });
+
+it("can render without a shadow root", async () => {
+    function AppUI() {
+        const portalContent = createElement(
+            Portal,
+            undefined,
+            createElement(
+                "div",
+                { className: "portal-content", "data-testid": "portal-content" },
+                "Hello from Portal"
+            )
+        );
+
+        return createElement(
+            "div",
+            {
+                "data-testid": "main-content"
+            },
+            "Hello World",
+            portalContent
+        );
+    }
+
+    const elem = createCustomElement({
+        component: AppUI,
+        advanced: {
+            enableShadowRoot: false
+        }
+    });
+    const { innerContainer } = await renderComponentWithoutShadowRoot(elem);
+
+    const mainContent = await findByTestId(innerContainer, "main-content");
+    expect(mainContent.textContent).toBe("Hello World");
+    expect(mainContent.parentElement).toBe(innerContainer);
+
+    // Important: portal content must be a child of the `.pioneer-root`.
+    // This is currently implemented using a patch against ark ui.
+    const portalContent = await findByTestId(innerContainer, "portal-content");
+    expect(portalContent.textContent).toBe("Hello from Portal");
+    expect(portalContent.parentElement).toBe(innerContainer);
+
+    const styles = Array.from(document.head.querySelectorAll("style"));
+    const rule = styles.find((s) => s.innerHTML.includes(".pioneer-root"));
+    expect(rule).toBeTruthy(); // Styles are mounted into the document head
+});
+
+async function renderComponentWithoutShadowRoot(element: ApplicationElementConstructor) {
+    const { node } = await renderComponent(element);
+    const innerContainer = await waitFor(() => {
+        const pioneerRoot = node.querySelector(`.pioneer-root`);
+        if (!pioneerRoot) {
+            throw new Error("Pioneer root node did not mount.");
+        }
+        return pioneerRoot as HTMLElement;
+    });
+
+    return {
+        node,
+        innerContainer
+    };
+}
