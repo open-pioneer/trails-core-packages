@@ -62,16 +62,6 @@ export interface CustomElementOptions {
 }
 
 /**
- * Advanced configuration that alters the behavior of the custom element.
- *
- * See {@link createCustomElement}.
- */
-export interface AdvancedCustomElementOptions {
-    // TODO: Docs
-    enableShadowRoot?: boolean;
-}
-
-/**
  * A context object that is passed to the `resolveProperties` function.
  */
 export interface ConfigContext {
@@ -131,6 +121,30 @@ export interface ApplicationElement extends HTMLElement {
      * For more details, open the documentation of the `@open-pioneer/integration` package.
      */
     when(): Promise<ApiMethods>;
+}
+
+/**
+ * Advanced configuration that alters the behavior of the custom element.
+ *
+ * See {@link createCustomElement}.
+ */
+export interface AdvancedCustomElementOptions {
+    /**
+     * Enables or disables the [shadow root](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot) inside the application's web component.
+     *
+     * Default: `true`.
+     *
+     * By default, trails applications use a shadow root to avoid conflicts (e.g. styles) with other parts of the site where the application may be embedded.
+     *
+     * Applications that use the entire browser viewport may not need this feature, since there may be no "other" parts that may conflict with the app.
+     * In this case, you can disable the shadow root by setting this property to `false`.
+     * In general, UI components used by the app (e.g. from Chakra UI) should work just as well when disabling the shadow root.
+     * If you notice any problems, please file an issue.
+     *
+     * If you are developing UI components that are meant to be used in other applications, you should always use a shadow root to
+     * ensure that your components work in that setting.
+     */
+    enableShadowRoot?: boolean;
 }
 
 /**
