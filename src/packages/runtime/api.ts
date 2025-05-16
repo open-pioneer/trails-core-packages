@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DeclaredService } from "./DeclaredService";
 
+// Imported for typedoc link
+// eslint-disable-next-line unused-imports/no-unused-imports
+import type { ApplicationConfig } from "./CustomElement";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
 
@@ -42,13 +46,40 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
     getHostElement(): HTMLElement;
 
     /**
-     * The current web component's shadow root.
-     * This shadow root is located inside the host element.
+     * A root node that resolves to the the shadow root or the site's document.
+     *
+     * For example:
+     *
+     * ```ts
+     * const ctx: ApplicationContext = ...;
+     * const node = ctx.getRoot().getElementById("id"); // Correct with or without shadow root.
+     * ```
      */
-    getShadowRoot(): ShadowRoot;
+    getRoot(): Document | ShadowRoot;
 
     /**
-     * The node containing the rest of the application _inside_ the current web component's shadow dom.
+     * The current web component's shadow root.
+     * This shadow root is located inside the host element.
+     *
+     * NOTE: This method returns undefined if the application does not use a shadow root.
+     *
+     * See also {@link ApplicationConfig.disableShadowRoot} and {@link getRoot()}.
+     */
+    getShadowRoot(): ShadowRoot | undefined;
+
+    /**
+     * The HTML element containing the rest of the application _inside_ the current web component.
+     *
+     * This element can be used as a root component to find other dom elements within the same application,
+     * for example:
+     *
+     * ```
+     * // Correct:
+     * const node = ctx.getApplicationContainer().querySelector('.my-element');
+     *
+     * // Incorrect because cannot search in shadow roots
+     * const node = document.querySelector('.my-element');
+     * ```
      */
     getApplicationContainer(): HTMLElement;
 

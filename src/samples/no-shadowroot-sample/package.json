@@ -1,0 +1,11 @@
+{
+    "name": "no-shadowroot-sample",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@chakra-ui/react": "catalog:",
+        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/notifier": "workspace:^",
+        "@open-pioneer/react-utils": "workspace:^"
+    }
+}

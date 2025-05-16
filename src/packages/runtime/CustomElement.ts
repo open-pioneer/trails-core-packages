@@ -1,35 +1,17 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
-import { reactive, ReadonlyReactive } from "@conterra/reactivity-core";
-import {
-    createAbortError,
-    createLogger,
-    createManualPromise,
-    destroyResource,
-    Error,
-    getErrorChain,
-    ManualPromise,
-    Resource,
-    throwAbortError
-} from "@open-pioneer/core";
-import { ComponentType, createElement } from "react";
-import { ApiMethods, ApiService } from "./api";
-import {
-    createBuiltinPackage,
-    RUNTIME_API_SERVICE,
-    RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
-    RUNTIME_AUTO_START
-} from "./builtin-services";
-import { ApplicationLifecycleEventService } from "./builtin-services/ApplicationLifecycleEventService";
+import { createLogger, Error } from "@open-pioneer/core";
+import { ComponentType } from "react";
+import { ApiMethods } from "./api";
+import { AppInstance, AppOverrides } from "./app";
 import { ErrorId } from "./errors";
-import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
-import { AppIntl, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "./i18n";
-import { ApplicationMetadata, PackageMetadata } from "./metadata";
-import { ReactIntegration } from "./react-integration/ReactIntegration";
-import { ReferenceSpec } from "./service-layer/InterfaceSpec";
-import { createPackages, PackageRepr } from "./service-layer/PackageRepr";
-import { ServiceLayer } from "./service-layer/ServiceLayer";
+import { ApplicationMetadata } from "./metadata";
+
+// Imported for typedoc link
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { type ApiExtension } from "./api";
+
 const LOG = createLogger("runtime:CustomElement");
 
 /**
@@ -57,6 +39,18 @@ export interface CustomElementOptions {
     config?: ApplicationConfig;
 
     /**
+     * Chakra styled system object.
+     *
+     * Used to configure chakra's theme.
+     */
+    chakraSystemConfig?: ChakraSystemConfig;
+
+    /**
+     * Advanced configuration that alters the behavior of the custom element.
+     */
+    advanced?: AdvancedCustomElementOptions;
+
+    /**
      * Function to provide additional application defined configuration parameters.
      *
      * Compared to {@link config}, this function receives a context object
@@ -65,13 +59,6 @@ export interface CustomElementOptions {
      * Parameters returned by this function take precedence over the ones defined by {@link config}.
      */
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
-
-    /**
-     * Chakra styled system object.
-     *
-     * Used to configure chakra's theme.
-     */
-    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**
@@ -127,8 +114,37 @@ export interface ApplicationProperties {
  * The interface implemented by web components produced via {@link createCustomElement}.
  */
 export interface ApplicationElement extends HTMLElement {
-    /** Resolves to the element's API when the application has started. */
+    /**
+     * Resolves to the element's API when the application has started.
+     *
+     * The API exposed by an application can be defined by implementing an {@link ApiExtension}.
+     * For more details, open the documentation of the `@open-pioneer/integration` package.
+     */
     when(): Promise<ApiMethods>;
+}
+
+/**
+ * Advanced configuration that alters the behavior of the custom element.
+ *
+ * See {@link createCustomElement}.
+ */
+export interface AdvancedCustomElementOptions {
+    /**
+     * Enables or disables the [shadow root](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot) inside the application's web component.
+     *
+     * Default: `true`.
+     *
+     * By default, trails applications use a shadow root to avoid conflicts (e.g. styles) with other parts of the site where the application may be embedded.
+     *
+     * Applications that use the entire browser viewport may not need this feature, since there may be no "other" parts that may conflict with the app.
+     * In this case, you can disable the shadow root by setting this property to `false`.
+     * In general, UI components used by the app (e.g. from Chakra UI) should work just as well when disabling the shadow root.
+     * If you notice any problems, please file an issue.
+     *
+     * If you are developing UI components that are meant to be used in other applications, you should always use a shadow root to
+     * ensure that your components work in that setting.
+     */
+    enableShadowRoot?: boolean;
 }
 
 /**
@@ -154,8 +170,8 @@ export interface ApplicationElementConstructor {
  */
 export function createCustomElement(options: CustomElementOptions): ApplicationElementConstructor {
     class PioneerApplication extends HTMLElement implements ApplicationElement {
-        #shadowRoot: ShadowRoot;
-        #instance: ApplicationInstance | undefined;
+        #shadowRoot: ShadowRoot | undefined;
+        #instance: AppInstance | undefined;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         #deferredRestart: any; // A Timer
@@ -167,9 +183,14 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         constructor() {
             super();
 
-            this.#shadowRoot = this.attachShadow({
-                mode: "open"
-            });
+            const enableShadowRoot = options.advanced?.enableShadowRoot ?? true;
+            if (enableShadowRoot) {
+                this.#shadowRoot = this.attachShadow({
+                    mode: "open"
+                });
+            } else {
+                LOG.debug("Creating component instance without shadow root");
+            }
 
             if (import.meta.env.DEV) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -213,7 +234,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
             return this.#instance.whenAPI();
         }
 
-        #triggerReload(overrides?: ApplicationOverrides) {
+        #triggerReload(overrides?: AppOverrides) {
             // Defer the restart operation a tiny bit so calling code does not get surprised by the application's destruction.
             if (this.#deferredRestart) {
                 clearTimeout(this.#deferredRestart);
@@ -231,10 +252,10 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
             }, 1);
         }
 
-        #createApplicationInstance(overrides?: ApplicationOverrides) {
-            return new ApplicationInstance({
+        #createApplicationInstance(overrides?: AppOverrides) {
+            return new AppInstance({
+                rootNode: this.#shadowRoot ?? document,
                 hostElement: this,
-                shadowRoot: this.#shadowRoot,
                 elementOptions: options,
                 overrides: overrides,
                 restart: this.#triggerReload.bind(this)
@@ -242,428 +263,4 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         }
     }
     return PioneerApplication;
-}
-
-interface InstanceOptions {
-    /** The HTML element that embeds the application. */
-    hostElement: HTMLElement;
-
-    /** The shadow root inside the host element that contains the rest of the application. */
-    shadowRoot: ShadowRoot;
-
-    /** Trails options for the application. */
-    elementOptions: CustomElementOptions;
-
-    /** These have higher priority than the options in `elementOptions`. */
-    overrides: ApplicationOverrides | undefined;
-
-    /**
-     * A callback to restart the application with new options.
-     * Currently only used for reloading with a certain locale.
-     */
-    restart: (overrides?: ApplicationOverrides) => void;
-}
-
-interface ApplicationOverrides {
-    locale?: string;
-}
-
-type ApplicationState = "not-started" | "starting" | "started" | "destroyed" | "error";
-
-class ApplicationInstance {
-    private options: InstanceOptions;
-
-    // Public API
-    private apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
-    private api: ApiMethods | undefined; // Present once started
-
-    private state: ApplicationState = "not-started";
-    private appRoot: HTMLDivElement | undefined;
-    private config: ApplicationConfig | undefined;
-    private serviceLayer: ServiceLayer | undefined;
-    private lifecycleEvents: ApplicationLifecycleEventService | undefined;
-    private reactIntegration: ReactIntegration | undefined;
-
-    private stylesWatch: Resource | undefined;
-
-    constructor(options: InstanceOptions) {
-        this.options = options;
-    }
-
-    start() {
-        if (this.state !== "not-started") {
-            throw new Error(ErrorId.INTERNAL, `Cannot start element in state '${this.state}'`);
-        }
-
-        this.state = "starting";
-        this.startImpl().catch((e) => {
-            if (this.state === "destroyed") return;
-
-            logError(e);
-            this.reset();
-            this.state = "error";
-            this.showErrorScreen(e);
-        });
-    }
-
-    destroy() {
-        if (this.state === "destroyed") {
-            return;
-        }
-
-        // Only call event listener when 'started' was also signalled.
-        if (this.state === "started") {
-            try {
-                this.triggerApplicationLifecycleEvent("before-stop");
-            } catch (e) {
-                void e; // Ignored
-            }
-        }
-        this.state = "destroyed";
-        this.reset();
-    }
-
-    private reset() {
-        this.apiPromise?.reject(createAbortError());
-        this.reactIntegration = destroyResource(this.reactIntegration);
-        this.options.shadowRoot.replaceChildren();
-        this.appRoot = undefined;
-        this.lifecycleEvents = undefined;
-        this.serviceLayer = destroyResource(this.serviceLayer);
-        this.stylesWatch = destroyResource(this.stylesWatch);
-    }
-
-    whenAPI(): Promise<ApiMethods> {
-        if (this.api) {
-            return Promise.resolve(this.api);
-        }
-
-        const apiPromise = (this.apiPromise ??= createManualPromise());
-        return apiPromise.promise;
-    }
-
-    private async startImpl() {
-        const { shadowRoot, hostElement, elementOptions, overrides } = this.options;
-
-        // Resolve custom application config
-        const config = (this.config = await gatherConfig(hostElement, elementOptions, overrides));
-        this.checkAbort();
-        LOG.debug("Application config is", config);
-
-        // Decide on locale and load i18n messages (if any).
-        const i18n = await initI18n(elementOptions.appMetadata, config.locale);
-        this.checkAbort();
-
-        // Setup application root node in the shadow dom
-        const appRoot = (this.appRoot = createAppRoot(i18n.locale));
-        shadowRoot.replaceChildren(appRoot);
-
-        const styles = this.initStylesSignal();
-
-        // Launch the service layer
-        const { serviceLayer, packages } = this.initServiceLayer({
-            container: appRoot,
-            properties: config.properties,
-            i18n
-        });
-        this.lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
-            serviceLayer,
-            RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
-        );
-
-        await this.initAPI(serviceLayer);
-        this.checkAbort();
-
-        // Launch react
-        this.reactIntegration = ReactIntegration.createForApp({
-            appRoot: appRoot,
-            rootNode: shadowRoot,
-            serviceLayer,
-            packages,
-            locale: i18n.locale,
-            config: elementOptions.chakraSystemConfig,
-            styles: styles
-        });
-        const component = this.options.elementOptions.component ?? emptyComponent;
-        this.reactIntegration.render(createElement(component));
-        this.state = "started";
-
-        this.triggerApplicationLifecycleEvent("after-start");
-        LOG.debug("Application started");
-    }
-
-    /**
-     * Returns a signal that contains the application's styles.
-     * During development, the signal is updated when the user edits .css files.
-     * In production, the signal is static.
-     */
-    private initStylesSignal(): ReadonlyReactive<string> {
-        const stylesBox = this.options.elementOptions.appMetadata?.styles;
-        if (!stylesBox) {
-            return reactive("");
-        }
-
-        const signal = reactive(stylesBox.value);
-        if (import.meta.hot) {
-            this.stylesWatch = stylesBox.on?.("changed", () => {
-                signal.value = stylesBox.value;
-            });
-        }
-        return signal;
-    }
-
-    private initServiceLayer(config: {
-        container: HTMLDivElement;
-        properties: ApplicationProperties;
-        i18n: AppIntl;
-    }) {
-        const { hostElement, shadowRoot, elementOptions, restart } = this.options;
-        const { container, properties, i18n } = config;
-        const packageMetadata = elementOptions.appMetadata?.packages ?? {};
-        const builtinPackage = createBuiltinPackage({
-            host: hostElement,
-            shadowRoot: shadowRoot,
-            container: container,
-            locale: i18n.locale,
-            supportedLocales: i18n.supportedMessageLocales,
-            changeLocale(locale) {
-                const supported = i18n.supportedMessageLocales;
-                if (locale != null && !i18n.supportsLocale(locale)) {
-                    throw new Error(
-                        ErrorId.UNSUPPORTED_LOCALE,
-                        `Unsupported locale '${locale}' (supported locales: ${supported.join(
-                            ", "
-                        )}).`
-                    );
-                }
-                restart({ locale });
-            }
-        });
-        const { serviceLayer, packages } = createServiceLayer({
-            packageMetadata,
-            builtinPackage,
-            properties,
-            i18n
-        });
-        this.serviceLayer = serviceLayer;
-
-        if (LOG.isDebug()) {
-            LOG.debug("Launching service layer with packages", Object.fromEntries(packages));
-        }
-        serviceLayer.start();
-        return { serviceLayer, packages };
-    }
-
-    private async initAPI(serviceLayer: ServiceLayer) {
-        const apiService = getInternalService<ApiService>(serviceLayer, RUNTIME_API_SERVICE);
-        try {
-            const api = (this.api = await apiService.getApi());
-            LOG.debug("Application API initialized to", api);
-            this.apiPromise?.resolve(api);
-        } catch (e) {
-            throw new Error(ErrorId.INTERNAL, "Failed to gather the application's API methods.", {
-                cause: e
-            });
-        }
-    }
-
-    private triggerApplicationLifecycleEvent(event: "after-start" | "before-stop") {
-        this.lifecycleEvents?.emitLifecycleEvent(event);
-    }
-
-    private checkAbort() {
-        if (this.state === "destroyed") {
-            throwAbortError();
-        }
-    }
-
-    private showErrorScreen(error: globalThis.Error) {
-        const { shadowRoot, elementOptions } = this.options;
-
-        const userLocales = getBrowserLocales();
-        const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
-        const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
-        const messages =
-            MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
-            MESSAGES_BY_LOCALE["en"];
-        const intl = createPackageIntl(locale, messages);
-
-        const appRoot = (this.appRoot = createAppRoot(locale));
-        appRoot.classList.add("pioneer-root-error-screen");
-        shadowRoot.replaceChildren(appRoot);
-
-        const styles = this.initStylesSignal();
-
-        this.reactIntegration = ReactIntegration.createForErrorScreen({
-            appRoot: appRoot,
-            rootNode: shadowRoot,
-            locale: locale,
-            config: elementOptions.chakraSystemConfig,
-            styles
-        });
-        this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
-    }
-}
-
-function createAppRoot(locale: string) {
-    // Setup application root node in the shadow dom
-    const container = document.createElement("div");
-    container.classList.add("pioneer-root");
-    container.style.minHeight = "100%";
-    container.style.height = "100%";
-    if (locale) {
-        container.lang = locale;
-    }
-    return container;
-}
-
-function createServiceLayer(config: {
-    packageMetadata: Record<string, PackageMetadata> | undefined;
-    properties: ApplicationProperties;
-    builtinPackage: PackageRepr;
-    i18n: AppIntl;
-}) {
-    const { packageMetadata, properties, builtinPackage, i18n } = config;
-
-    let packages: PackageRepr[];
-    try {
-        packages = createPackages(packageMetadata ?? {}, i18n, properties);
-    } catch (e) {
-        throw new Error(ErrorId.INVALID_METADATA, "Failed to parse package metadata.", {
-            cause: e
-        });
-    }
-
-    // Add builtin services defined within this package.
-    {
-        const index = packages.findIndex((pkg) => pkg.name === builtinPackage.name);
-        if (index >= 0) {
-            packages.splice(index, 1);
-        }
-        packages.push(builtinPackage);
-    }
-
-    // Automatically required references (-> forces services to start)
-    const forcedReferences: ReferenceSpec[] = [
-        {
-            interfaceName: RUNTIME_API_SERVICE
-        },
-        {
-            interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
-        },
-        {
-            interfaceName: RUNTIME_AUTO_START,
-            all: true
-        }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
-    return {
-        packages: new Map(packages.map((pkg) => [pkg.name, pkg])),
-        serviceLayer: serviceLayer
-    };
-}
-
-function getInternalService<T = unknown>(serviceLayer: ServiceLayer, interfaceName: string) {
-    const result = serviceLayer.getService(
-        "@open-pioneer/runtime",
-        {
-            interfaceName
-        },
-        { ignoreDeclarationCheck: true }
-    );
-    if (result.type !== "found") {
-        throw new Error(
-            ErrorId.INTERNAL,
-            `Failed to find instance of '${interfaceName}' (result type '${result.type}').` +
-                ` This is a builtin service that must be present exactly once.`
-        );
-    }
-
-    return result.value.getInstanceOrThrow() as T;
-}
-
-/**
- * Gathers application properties by reading them from the options object
- * and by (optionally) invoking the `resolveProperties` hook.
- */
-async function gatherConfig(
-    hostElement: HTMLElement,
-    options: CustomElementOptions,
-    overrides?: ApplicationOverrides
-) {
-    let configs: ApplicationConfig[];
-    try {
-        const staticConfig = options.config ?? {};
-        const dynamicConfig =
-            (await options.resolveConfig?.({
-                hostElement,
-                getAttribute(name) {
-                    return hostElement.getAttribute(name) ?? undefined;
-                }
-            })) ?? {};
-
-        configs = [staticConfig, dynamicConfig];
-    } catch (e) {
-        throw new Error(
-            ErrorId.CONFIG_RESOLUTION_FAILED,
-            "Failed to resolve application properties.",
-            {
-                cause: e
-            }
-        );
-    }
-
-    const merged = mergeConfigs(configs);
-    if (overrides?.locale) {
-        merged.locale = overrides.locale;
-    }
-    return merged;
-}
-
-/**
- * Merges application configurations into a single object.
- * Properties / config parameters at a later position overwrite properties from earlier ones.
- */
-function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig> {
-    // Merge simple values by assigning them in order
-    const mergedConfig: Required<ApplicationConfig> = Object.assign(
-        {
-            locale: undefined,
-            properties: {}
-        } satisfies ApplicationConfig,
-        ...configs
-    );
-
-    // Deep merge for application properties
-    const mergedProperties: ApplicationProperties = (mergedConfig.properties = {});
-    for (const config of configs) {
-        for (const [packageName, packageProperties] of Object.entries(config.properties ?? {})) {
-            const mergedPackageProps = (mergedProperties[packageName] ??= {});
-            Object.assign(mergedPackageProps, packageProperties);
-        }
-    }
-
-    return mergedConfig;
-}
-
-function logError(e: unknown) {
-    if (e instanceof Error) {
-        const chain = getErrorChain(e).reverse();
-        if (chain.length === 1) {
-            console.error(e);
-            return;
-        }
-
-        let n = 1;
-        for (const error of chain) {
-            console.error(`#${n}`, error);
-            ++n;
-        }
-    } else {
-        console.error("Unexpected error", e);
-    }
-}
-
-function emptyComponent() {
-    return null;
 }
