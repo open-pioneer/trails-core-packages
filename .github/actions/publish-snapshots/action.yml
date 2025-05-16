@@ -20,6 +20,12 @@ runs:
         echo "Publishing snapshot from ${{ github.ref_name}} using tag ${{ inputs.snapshot-tag }}"
         pnpm changeset version --snapshot ${{ inputs.snapshot-tag }}
 
+    # Replaces `workspace:^`` with `workspace:*`
+    - name: Rewrite intra-workspace dependencies
+      shell: bash
+      run: |
+        pnpm tsx ./support/prepare-snapshots.ts
+
     # Note: must happen after versioning because the updated package.json files will be copied into dist/
     - name: Build packages
       shell: bash

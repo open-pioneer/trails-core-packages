@@ -91,17 +91,3 @@ index 25e42253b06a366e318329042c63fa6652c57143..b7fec5d563bbac0ac94d686aacbee2e3
    }
  });
  
-diff --git a/dist/components/toast/toaster.js b/dist/components/toast/toaster.js
-index 26aed2b370d34e16191cb318cf4b4ee88fbd9236..fbbd5e1c41e9e8aaed66eceaaf8e4918e8712c94 100644
---- a/dist/components/toast/toaster.js
-+++ b/dist/components/toast/toaster.js
-@@ -29,7 +29,8 @@ const ToastActor = (props) => {
-     parent: props.parent,
-     index: props.index
-   };
--  const service = useMachine(toast.machine, { ...localProps });
-+  const env = useEnvironmentContext();
-+  const service = useMachine(toast.machine, { ...localProps, getRootNode: env?.getRootNode });
-   const api = toast.connect(service, normalizeProps);
-   return /* @__PURE__ */ jsx(ToastProvider, { value: api, children: props.children(props.value) });
- };
