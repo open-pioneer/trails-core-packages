@@ -1,6 +1,6 @@
 {
-    "name": "keycloak-sample",
-    "version": "0.0.5",
+    "name": "no-shadowroot-sample",
+    "version": "0.0.1",
     "private": true,
     "dependencies": {
         "@chakra-ui/react": "catalog:",
