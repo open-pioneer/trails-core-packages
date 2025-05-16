@@ -27,7 +27,8 @@ const sampleSites = [
     "samples/theming-sample",
     "samples/auth-sample",
     "samples/keycloak-sample",
-    "samples/error-sample"
+    "samples/error-sample",
+    "samples/no-shadowroot-sample"
 ];
 
 // https://vitejs.dev/config/

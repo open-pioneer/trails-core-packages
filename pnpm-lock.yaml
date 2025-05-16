@@ -738,6 +738,21 @@ importers:
         specifier: workspace:^
         version: link:../../packages/runtime
 
+  src/samples/no-shadowroot-sample:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.15.1(@emotion/react@11.14.0(@types/react@19.1.2)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@open-pioneer/notifier':
+        specifier: workspace:^
+        version: link:../../packages/notifier
+      '@open-pioneer/react-utils':
+        specifier: workspace:^
+        version: link:../../packages/react-utils
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../packages/runtime
+
   src/samples/notify-sample/notify-app:
     dependencies:
       '@chakra-ui/react':

@@ -46,6 +46,11 @@ export interface CustomElementOptions {
     chakraSystemConfig?: ChakraSystemConfig;
 
     /**
+     * Advanced configuration that alters the behavior of the custom element.
+     */
+    advanced?: AdvancedCustomElementOptions;
+
+    /**
      * Function to provide additional application defined configuration parameters.
      *
      * Compared to {@link config}, this function receives a context object
@@ -54,6 +59,16 @@ export interface CustomElementOptions {
      * Parameters returned by this function take precedence over the ones defined by {@link config}.
      */
     resolveConfig?(ctx: ConfigContext): Promise<ApplicationConfig | undefined>;
+}
+
+/**
+ * Advanced configuration that alters the behavior of the custom element.
+ *
+ * See {@link createCustomElement}.
+ */
+export interface AdvancedCustomElementOptions {
+    // TODO: Docs
+    enableShadowRoot?: boolean;
 }
 
 /**
@@ -88,12 +103,6 @@ export interface ApplicationConfig {
      * Properties specified here will override default properties of the application's packages.
      */
     properties?: ApplicationProperties | undefined;
-
-    /**
-     * TODO: Decide on a name for this property.
-     * Perhaps include a new object (e.g. `environment.shadowRoot` or `component.shadowRoot`).
-     */
-    disableShadowRoot?: boolean;
 }
 
 /**
@@ -160,8 +169,8 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         constructor() {
             super();
 
-            const disableShadowRoot = options.config?.disableShadowRoot ?? false;
-            if (!disableShadowRoot) {
+            const enableShadowRoot = options.advanced?.enableShadowRoot ?? true;
+            if (enableShadowRoot) {
                 this.#shadowRoot = this.attachShadow({
                     mode: "open"
                 });

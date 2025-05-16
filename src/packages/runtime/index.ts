@@ -3,12 +3,13 @@
 export * from "./api";
 export { type PackageIntl, type PackageIntlExtensions, type RichTextValue } from "./i18n";
 export {
+    type AdvancedCustomElementOptions,
+    type ApplicationConfig,
     type ApplicationElement,
     type ApplicationElementConstructor,
     type ApplicationProperties,
-    type ApplicationConfig,
-    type CustomElementOptions,
     type ConfigContext,
+    type CustomElementOptions,
     createCustomElement
 } from "./CustomElement";
 export * from "./Service";
