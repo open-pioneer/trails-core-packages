@@ -14,7 +14,7 @@ import { Notifier } from "@open-pioneer/notifier";
 export function AppUI() {
     return (
         <>
-            <Notifier position="top-right" />
+            <Notifier />
             {/* The rest of your application */}
         </>
     );
@@ -23,10 +23,14 @@ export function AppUI() {
 
 > Note: In most cases the notifier should be located at or near the root of your app's UI.
 
-The following properties are supported by the Notifier:
+The implementation of `<Notifier />` is based on [Chakra's Toast](https://chakra-ui.com/docs/components/toast).
+
+### Configuring the notifier
+
+The notifier can be configured by specifying the following _package properties_:
 
 ```ts
-export interface NotifierProps {
+export interface NotifierProperties {
     /**
      * The position for new notifications.
      *
@@ -36,7 +40,22 @@ export interface NotifierProps {
 }
 ```
 
-The implementation of `<Notifier />` is based on [Chakra's Toast](https://chakra-ui.com/docs/components/toast).
+For example, to show notifications in the top-left corner of your application:
+
+```ts
+// app.ts
+const Element = createCustomElement({
+    // ...
+    config: {
+        properties: {
+            "@open-pioneer/notifier": {
+                position: "top-left"
+            } satisfies NotifierProperties
+        }
+    }
+    // or use resolveConfig()
+});
+```
 
 ### Emitting notifications
 
