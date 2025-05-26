@@ -38,6 +38,18 @@ const semanticTokens = {
         // define custom semantic tokens
         trails_placeholder: { value: "{colors.gray.700}" },
 
+        // .600 has no enough contrast, .700 is too dark
+        // https://github.com/open-pioneer/trails-openlayers-base-packages/issues/450
+        orange: {
+            solid: { value: "#D2460F" }
+        },
+        green: {
+            solid: { value: "{colors.green.700}" }
+        },
+        red: {
+            solid: { value: "{colors.red.700}" }
+        },
+
         // overwrite chakra internal semantic tokens
         //https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/semantic-tokens/colors.ts
         fg: {
