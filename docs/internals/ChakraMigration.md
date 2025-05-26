@@ -45,6 +45,11 @@
 
     Alternatively, you can label the parent element instead.
 
+    NOTE: if you use raw svgs (e.g. directly using the react-icons components) you need to
+
+    - assign a label / alt text yourself OR
+    - set `aria-hidden=true`
+
 - Theming mechanism has changed
 
     - Use mergeConfigs to merge the base theme with your custom theme (instead of extendTheme). Pass theme to chakraConfig in createCustomElement in app.ts
