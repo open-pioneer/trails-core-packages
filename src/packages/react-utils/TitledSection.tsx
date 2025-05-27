@@ -29,13 +29,6 @@ export interface TitledSectionProps {
      * Children are rendered without any modifications.
      */
     children?: ReactNode | undefined;
-
-    /**
-     * Allows to substitute the heading level that is used up from this section.
-     * This should only be used to configure the initial level
-     * or if it is actually intended to adjust the DOM structure.
-     */
-    substituteHeadingLevel?: HeadingLevel | undefined;
 }
 
 /**
