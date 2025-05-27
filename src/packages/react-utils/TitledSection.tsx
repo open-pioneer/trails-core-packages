@@ -3,9 +3,7 @@
 import { Heading, HeadingProps } from "@chakra-ui/react";
 import { FC, ReactNode, RefAttributes, createContext, useContext } from "react";
 
-const DEFAULT_LEVEL = 1;
-
-const LevelContext = createContext(DEFAULT_LEVEL);
+const LevelContext = createContext<number | undefined>(undefined);
 LevelContext.displayName = "LevelContext";
 
 /** Properties of the {@link TitledSection} component. */
@@ -34,7 +32,8 @@ export interface TitledSectionProps {
 /**
  * Automatically manages the level of html headings such as `h1` and `h2`.
  *
- * Use this component's `title` property instead of manual heading tags.
+ * Use this component's `title` property or `<SectionHeading />` components in the children
+ * of this component instead of manual heading tags.
  * Nested sections will automatically use the correct level for their current location.
  *
  * Titles are rendered as [Chakra Headings](https://chakra-ui.com/docs/components/heading) by default.
@@ -58,6 +57,26 @@ export interface TitledSectionProps {
  * When using using a string for the `title` prop, you can specify the `sectionHeadingProps` to
  * customize the properties of the automatically generated heading component.
  *
+ * **Example:** custom section headings as children
+ *
+ * ```jsx
+ * <TitledSection>
+ *    <SectionHeading>Top level heading (H1)</SectionHeading>
+ *
+ *    .. Some Content ..
+ *
+ *    <TitledSection>
+ *        <SectionHeading>Other Heading (H2)</SectionHeading>
+ *
+ *        .. More Content ..
+ *    </TitledSection>
+ *
+ * </TitledSection>
+ * ```
+ *
+ * > NOTE: You should use exactly one `<SectionHeading />` for each `<TitledSection />`.
+ * > The SectionHeading can appear anywhere, for example wrapped in other layout components.
+ *
  * **Example:** custom title rendering
  *
  * You can also use completely custom components for the title.
@@ -76,7 +95,7 @@ export interface TitledSectionProps {
  */
 export function TitledSection(props: TitledSectionProps): ReactNode {
     const { title, sectionHeadingProps, children } = props;
-    const currentLevel = useContext(LevelContext);
+    const currentLevel = useContext(LevelContext) ?? 0;
     const heading =
         typeof title === "string" ? (
             <SectionHeading {...sectionHeadingProps}>{title}</SectionHeading>
@@ -85,10 +104,10 @@ export function TitledSection(props: TitledSectionProps): ReactNode {
         );
 
     return (
-        <>
+        <LevelContext value={currentLevel + 1}>
             {heading}
-            <LevelContext.Provider value={currentLevel + 1}>{children}</LevelContext.Provider>
-        </>
+            {children}
+        </LevelContext>
     );
 }
 
@@ -163,7 +182,8 @@ export interface ConfigureTitledSectionProps {
  *
  */
 export const ConfigureTitledSection: FC<ConfigureTitledSectionProps> = (props) => {
-    return <LevelContext.Provider value={props.level}>{props.children}</LevelContext.Provider>;
+    const level = props.level - 1; // TitledSection increments by 1.
+    return <LevelContext value={level}>{props.children}</LevelContext>;
 };
 
 /** The level of a html heading. */
@@ -172,11 +192,14 @@ export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 /**
  * Returns the current heading level.
  *
- * This hook should be used in the `title` property of a {@link TitledSection}.
+ * This hook should be used in the `title` property of a {@link TitledSection} or in that component's children.
  */
 export function useHeadingLevel(): HeadingLevel {
     const level = useContext(LevelContext);
-    return Math.min(level, 6) as HeadingLevel;
+    if (level == null) {
+        throw new Error("useHeadingLevel() must be used within a <TitledSection />");
+    }
+    return Math.max(1, Math.min(level, 6)) as HeadingLevel;
 }
 
 function getHeadingTag(level: HeadingLevel): `h${HeadingLevel}` {

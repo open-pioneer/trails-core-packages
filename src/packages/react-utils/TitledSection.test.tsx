@@ -133,6 +133,58 @@ it("supports manual react nodes as heading", () => {
     `);
 });
 
+it("supports SectionHeading in children", () => {
+    const content = renderContent(
+        <TitledSection>
+            <SectionHeading>Should be H1</SectionHeading>
+            H1 Content
+            <TitledSection>
+                <SectionHeading>Should be H2</SectionHeading>
+                H2 Content
+                <TitledSection>
+                    <SectionHeading>Should be H3</SectionHeading>
+                    H3 Content
+                </TitledSection>
+            </TitledSection>
+            <TitledSection>
+                <SectionHeading>Should also be H2</SectionHeading>
+                Other H2 Content
+            </TitledSection>
+        </TitledSection>
+    );
+
+    expect(content).toMatchInlineSnapshot(`
+      <div
+        data-testid="content"
+      >
+        <h1
+          class="chakra-heading css-1xpw4tw"
+        >
+          Should be H1
+        </h1>
+        H1 Content
+        <h2
+          class="chakra-heading css-1xpw4tw"
+        >
+          Should be H2
+        </h2>
+        H2 Content
+        <h3
+          class="chakra-heading css-1xpw4tw"
+        >
+          Should be H3
+        </h3>
+        H3 Content
+        <h2
+          class="chakra-heading css-1xpw4tw"
+        >
+          Should also be H2
+        </h2>
+        Other H2 Content
+      </div>
+    `);
+});
+
 it("limits heading level to 6", () => {
     const content = renderContent(
         <TitledSection title="1">
@@ -250,7 +302,11 @@ it("supports 'ref' prop on SectionHeading", async () => {
         return <SectionHeading ref={ref}>Test</SectionHeading>;
     }
 
-    renderContent(<Component />);
+    renderContent(
+        <TitledSection>
+            <Component />
+        </TitledSection>
+    );
     expect(value!.tagName).toBe("H1");
 });
 
