@@ -8,11 +8,12 @@ packages:
 # This is a yaml feature and is not interpreted by pnpm directly.
 __versions:
   - &react_version ^19.1.0
+  - &chakra_version ^3.19.1
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/react": ^3.17.0
-  "@chakra-ui/cli": ^3.17.0
+  "@chakra-ui/react": *chakra_version
+  "@chakra-ui/cli": *chakra_version
   "@conterra/reactivity-core": ^0.6.0
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
