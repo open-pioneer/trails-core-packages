@@ -1,7 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { defineConfig } from "@chakra-ui/react";
-import { radioGroupAnatomy, sliderAnatomy, checkboxAnatomy } from "@chakra-ui/react/anatomy";
+import {
+    radioGroupAnatomy,
+    sliderAnatomy,
+    checkboxAnatomy,
+    selectAnatomy,
+    nativeSelectAnatomy
+} from "@chakra-ui/react/anatomy";
 
 //11 colors as hex values from 50 to 950 (light to dark)
 const colorPalette = {
@@ -235,6 +241,22 @@ const slotRecipes = {
                         boxSize: "5"
                     }
                 }
+            }
+        }
+    },
+    select: {
+        slots: selectAnatomy.keys(),
+        base: {
+            trigger: {
+                cursor: "pointer"
+            }
+        }
+    },
+    nativeSelect: {
+        slots: nativeSelectAnatomy.keys(),
+        base: {
+            field: {
+                cursor: "pointer"
             }
         }
     },
