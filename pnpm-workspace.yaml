@@ -115,7 +115,6 @@ patchedDependencies:
   # See https://github.com/chakra-ui/zag/pull/2461
   "@zag-js/focus-visible@*": "patches/@zag-js__focus-visible.patch"
 
-  
 peerDependencyRules:
   allowedVersions:
     # No release available for recent react, but they appear to work well enough for sample apps.
