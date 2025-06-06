@@ -27,6 +27,12 @@
             "matchCurrentVersion": "!/^0/",
             "groupName": "all non-major dependencies",
             "groupSlug": "all-minor-patch"
+        },
+        {
+            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+            "matchPackageNames": ["esbuild", "typedoc"],
+            "groupName": "all non-major dependencies",
+            "groupSlug": "all-minor-patch"
         }
     ]
 }
