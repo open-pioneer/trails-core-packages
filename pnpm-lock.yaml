@@ -16,8 +16,8 @@ catalogs:
       specifier: 2.27.9
       version: 2.27.9
     '@conterra/reactivity-core':
-      specifier: ^0.6.0
-      version: 0.6.0
+      specifier: ^0.7.0
+      version: 0.7.0
     '@emotion/cache':
       specifier: ^11.14.0
       version: 11.14.0
@@ -336,7 +336,7 @@ importers:
         version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.2)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.6.0
+        version: 0.7.0
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
@@ -365,7 +365,7 @@ importers:
     dependencies:
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.6.0
+        version: 0.7.0
       '@open-pioneer/authentication':
         specifier: workspace:^
         version: link:../authentication
@@ -532,7 +532,7 @@ importers:
     dependencies:
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.6.0
+        version: 0.7.0
       react:
         specifier: 'catalog:'
         version: 19.1.0
@@ -552,7 +552,7 @@ importers:
         version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.2)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.6.0
+        version: 0.7.0
       '@emotion/cache':
         specifier: 'catalog:'
         version: 11.14.0
@@ -957,8 +957,8 @@ packages:
   '@clack/prompts@0.10.1':
     resolution: {integrity: sha512-Q0T02vx8ZM9XSv9/Yde0jTmmBQufZhPJfYAg2XrrrxWWaZgq1rr8nU8Hv710BQ1dhoP8rtY7YUdpGej2Qza/cw==}
 
-  '@conterra/reactivity-core@0.6.0':
-    resolution: {integrity: sha512-TgW5fQsFxd/YiEWHhf5h1qlENJuO2Gi6ySHvIUHm/P2u8sG4EG0y+TNfFjmgFBUY9C9ElH23KFXC03TA0iXABA==}
+  '@conterra/reactivity-core@0.7.0':
+    resolution: {integrity: sha512-RpzIfturgauc6ZtCAk+C28ioXaLI89yBYNSN1T5BMcwn4nvD9OAs5SF9eWkHTkflyp7x4mRRVu+jyzPvOo02HQ==}
 
   '@emnapi/core@1.4.3':
     resolution: {integrity: sha512-4m62DuCE07lw01soJwPiBGC0nAww0Q+RY70VZ+n49yDIO13yyinhbWCeNnaob0lakDtWQzSdtNWzJeOJt2ma+g==}
@@ -1480,8 +1480,8 @@ packages:
     resolution: {integrity: sha512-ead+l3IiuVXwKDf/QJPX6G93cwhXki3yOVEA/VdAO7AhZ5vUuSBxHe6gQKEbB0QacJ4H5VsYxeM1xUgwjjOO/Q==}
     engines: {node: '>=18.12'}
 
-  '@preact/signals-core@1.8.0':
-    resolution: {integrity: sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA==}
+  '@preact/signals-core@1.9.0':
+    resolution: {integrity: sha512-uUgFHJLWxb33rfCtb1g+1e3Rg7Jl5EALhGTHlQ5Y0w37OF+fdidYdYEE6crbpUOYDOjlmelIWf0ulXr1ggfUkg==}
 
   '@rollup/plugin-node-resolve@16.0.1':
     resolution: {integrity: sha512-tk5YCxJWIG81umIvNkSod2qK5KyQW19qcBF/B78n1bjtOON6gzKoVeSzAE8yHCZEDmqkHKkxplExA8KzdJLJpA==}
@@ -4878,9 +4878,9 @@ snapshots:
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
-  '@conterra/reactivity-core@0.6.0':
+  '@conterra/reactivity-core@0.7.0':
     dependencies:
-      '@preact/signals-core': 1.8.0
+      '@preact/signals-core': 1.9.0
 
   '@emnapi/core@1.4.3':
     dependencies:
@@ -5434,7 +5434,7 @@ snapshots:
 
   '@pnpm/util.lex-comparator@3.0.0': {}
 
-  '@preact/signals-core@1.8.0': {}
+  '@preact/signals-core@1.9.0': {}
 
   '@rollup/plugin-node-resolve@16.0.1(rollup@4.40.0)':
     dependencies:
