@@ -1,5 +1,12 @@
 # @open-pioneer/reactivity
 
+## 4.0.0
+
+### Patch Changes
+
+- 434bd04: Bump dependencies.
+- 1f4fa84: Update @conterra/reactivity-\* to 0.7.0
+
 ## 3.1.0
 
 ### Patch Changes

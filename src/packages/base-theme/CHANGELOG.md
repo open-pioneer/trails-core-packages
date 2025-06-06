@@ -1,5 +1,18 @@
 # @open-pioneer/base-theme
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+- 9f074d8: **Breaking**: The export name has changed from `theme` to `config`.
+
+### Patch Changes
+
+- b5f25d8: Use slightly darker `solid` background colors for color palettes `red`, `orange` and `green`.
+  This improves contrast for toasts and other alert-like widgets.
+- 434bd04: Bump dependencies.
+
 ## 3.1.0
 
 ### Patch Changes
