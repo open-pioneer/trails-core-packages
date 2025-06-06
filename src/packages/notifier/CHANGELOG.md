@@ -1,5 +1,50 @@
 # @open-pioneer/notifier
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+- 9f074d8: **Breaking**: The `position` property has moved from the `<Notifier />` component to package properties.
+  In order to change to location of notifications, you need to customize the package properties.
+
+    Before:
+
+    ```jsx
+    // App.jsx
+    <Notifier position="top-right" />
+    ```
+
+    After:
+
+    ```ts
+    // app.ts
+    const Element = createCustomElement({
+        // ...
+        config: {
+            properties: {
+                "@open-pioneer/notifier": {
+                    position: "top-right"
+                } satisfies NotifierProperties
+            }
+        }
+        // or use resolveConfig()
+    });
+    ```
+
+### Patch Changes
+
+- 434bd04: Bump dependencies.
+- Updated dependencies [9f074d8]
+- Updated dependencies [9a2967c]
+- Updated dependencies [434bd04]
+- Updated dependencies [53c92ba]
+- Updated dependencies [9f074d8]
+- Updated dependencies [a5177fc]
+    - @open-pioneer/react-utils@4.0.0
+    - @open-pioneer/runtime@4.0.0
+    - @open-pioneer/core@4.0.0
+
 ## 3.1.0
 
 ### Patch Changes

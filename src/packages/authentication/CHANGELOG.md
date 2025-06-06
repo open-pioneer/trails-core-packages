@@ -1,5 +1,23 @@
 # @open-pioneer/authentication
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+
+### Patch Changes
+
+- 434bd04: Bump dependencies.
+- Updated dependencies [9f074d8]
+- Updated dependencies [434bd04]
+- Updated dependencies [53c92ba]
+- Updated dependencies [9f074d8]
+- Updated dependencies [1f4fa84]
+    - @open-pioneer/runtime@4.0.0
+    - @open-pioneer/core@4.0.0
+    - @open-pioneer/reactivity@4.0.0
+
 ## 3.1.0
 
 ### Patch Changes

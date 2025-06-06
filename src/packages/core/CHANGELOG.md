@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 4.0.0
+
+### Patch Changes
+
+- 434bd04: Bump dependencies.
+
 ## 3.1.0
 
 ### Patch Changes

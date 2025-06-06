@@ -1,5 +1,42 @@
 # @open-pioneer/react-utils
 
+## 4.0.0
+
+### Major Changes
+
+- 9f074d8: Update to Chakra 3.x
+
+### Minor Changes
+
+- a5177fc: Allow using `SectionHeading` in the children of a `TitledSection` instead of the `title` prop.
+  This is more flexible and more readable compared to complex components in the `title` prop.
+
+    For example:
+
+    ```jsx
+    <TitledSection>
+        <SectionHeading>Top level heading (H1)</SectionHeading>
+        .. Some Content ..
+        <TitledSection>
+            <Box backgroundColor="green.500">
+                <SectionHeading>Other Heading (H2)</SectionHeading>
+            </Box>
+            .. More Content ..
+        </TitledSection>
+    </TitledSection>
+    ```
+
+    Note that you should be using exactly one `<SectionHeading />` for each `<TitledSection />`.
+
+### Patch Changes
+
+- 9a2967c: Remove the prop `substituteHeadingLevel` from the `TitledSectionProps` interface.
+  The property was mistakenly documented, but was never implemented.
+  You can use the `<ConfigureTitledSection />` component instead.
+- 434bd04: Bump dependencies.
+- Updated dependencies [434bd04]
+    - @open-pioneer/core@4.0.0
+
 ## 3.1.0
 
 ### Patch Changes
