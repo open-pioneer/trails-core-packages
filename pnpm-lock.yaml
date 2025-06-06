@@ -7,11 +7,11 @@ settings:
 catalogs:
   default:
     '@chakra-ui/cli':
-      specifier: ^3.19.1
+      specifier: ^3.19.2
       version: 3.19.2
     '@chakra-ui/react':
-      specifier: ^3.19.1
-      version: 3.19.1
+      specifier: ^3.19.2
+      version: 3.19.2
     '@changesets/cli':
       specifier: 2.27.9
       version: 2.27.9
@@ -28,22 +28,22 @@ catalogs:
       specifier: ^3.1.6
       version: 3.1.6
     '@open-pioneer/build-package-cli':
-      specifier: ^3.0.1
-      version: 3.0.1
+      specifier: ^3.0.2
+      version: 3.0.2
     '@open-pioneer/build-support':
-      specifier: ^3.0.1
-      version: 3.0.1
+      specifier: ^3.0.2
+      version: 3.0.2
     '@open-pioneer/check-pnpm-duplicates':
       specifier: ^0.2.2
       version: 0.2.2
     '@open-pioneer/vite-plugin-pioneer':
-      specifier: ^4.0.1
-      version: 4.0.1
+      specifier: ^4.0.2
+      version: 4.0.2
     '@testing-library/dom':
       specifier: ^10.4.0
       version: 10.4.0
     '@testing-library/jest-dom':
-      specifier: ^6.6.2
+      specifier: ^6.6.3
       version: 6.6.3
     '@testing-library/react':
       specifier: ^16.3.0
@@ -55,34 +55,34 @@ catalogs:
       specifier: ^4.0.9
       version: 4.0.9
     '@types/node':
-      specifier: ^20.14.8
+      specifier: ^20.19.0
       version: 20.19.0
     '@types/react':
-      specifier: ^19.1.2
+      specifier: ^19.1.6
       version: 19.1.6
     '@types/react-dom':
-      specifier: ^19.1.2
+      specifier: ^19.1.6
       version: 19.1.6
     '@typescript-eslint/eslint-plugin':
-      specifier: ^8.31.0
+      specifier: ^8.33.1
       version: 8.33.1
     '@typescript-eslint/parser':
-      specifier: ^8.31.0
+      specifier: ^8.33.1
       version: 8.33.1
     '@vitejs/plugin-react-swc':
-      specifier: ^3.9.0
+      specifier: ^3.10.1
       version: 3.10.1
     classnames:
-      specifier: ^2.3.2
+      specifier: ^2.5.1
       version: 2.5.1
     eslint:
       specifier: ^8.57.1
       version: 8.57.1
     eslint-config-prettier:
-      specifier: ^10.0.2
+      specifier: ^10.1.5
       version: 10.1.5
     eslint-import-resolver-typescript:
-      specifier: ^4.3.4
+      specifier: ^4.4.3
       version: 4.4.3
     eslint-plugin-header:
       specifier: ^3.1.1
@@ -106,16 +106,16 @@ catalogs:
       specifier: ^4.7.8
       version: 4.7.8
     happy-dom:
-      specifier: ^17.4.4
+      specifier: ^17.6.3
       version: 17.6.3
     husky:
-      specifier: ^9.1.6
+      specifier: ^9.1.7
       version: 9.1.7
     js-yaml:
       specifier: ^4.1.0
       version: 4.1.0
     keycloak-js:
-      specifier: ^26.0.2
+      specifier: ^26.2.0
       version: 26.2.0
     lint-staged:
       specifier: ^16.1.0
@@ -136,16 +136,16 @@ catalogs:
       specifier: ^1.21.3
       version: 1.21.3
     react-use:
-      specifier: ^17.5.1
+      specifier: ^17.6.0
       version: 17.6.0
     rimraf:
       specifier: ^6.0.1
       version: 6.0.1
     sass:
-      specifier: ^1.87.0
+      specifier: ^1.89.1
       version: 1.89.1
     tsx:
-      specifier: ^4.19.3
+      specifier: ^4.19.4
       version: 4.19.4
     typedoc:
       specifier: ^0.28.5
@@ -154,16 +154,16 @@ catalogs:
       specifier: ^5.8.3
       version: 5.8.3
     vite:
-      specifier: ^6.3.4
+      specifier: ^6.3.5
       version: 6.3.5
     vite-plugin-eslint:
       specifier: ^1.8.1
       version: 1.8.1
     vitest:
-      specifier: ^3.1.2
+      specifier: ^3.2.2
       version: 3.2.2
     zx:
-      specifier: ^8.5.2
+      specifier: ^8.5.5
       version: 8.5.5
 
 overrides:
@@ -198,16 +198,16 @@ importers:
     devDependencies:
       '@chakra-ui/cli':
         specifier: 'catalog:'
-        version: 3.19.2(@chakra-ui/react@3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 3.19.2(@chakra-ui/react@3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       '@changesets/cli':
         specifier: 'catalog:'
         version: 2.27.9
       '@open-pioneer/build-package-cli':
         specifier: 'catalog:'
-        version: 3.0.1(sass@1.89.1)(typescript@5.8.3)
+        version: 3.0.2(sass@1.89.1)(typescript@5.8.3)
       '@open-pioneer/build-support':
         specifier: 'catalog:'
-        version: 3.0.1
+        version: 3.0.2
       '@open-pioneer/check-pnpm-duplicates':
         specifier: 'catalog:'
         version: 0.2.2
@@ -216,7 +216,7 @@ importers:
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: 'catalog:'
-        version: 4.0.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.89.1)(vite@6.3.5(@types/node@20.19.0)(sass@1.89.1)(tsx@4.19.4)(yaml@2.8.0))
+        version: 4.0.2(@open-pioneer/runtime@src+packages+runtime)(sass@1.89.1)(vite@6.3.5(@types/node@20.19.0)(sass@1.89.1)(tsx@4.19.4)(yaml@2.8.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.0
@@ -333,7 +333,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
         version: 0.7.0
@@ -391,7 +391,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       core-packages:
         specifier: workspace:^
@@ -402,7 +402,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
@@ -480,7 +480,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
@@ -509,7 +509,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../core
@@ -549,7 +549,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
         version: 0.7.0
@@ -616,7 +616,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../../../packages/core
@@ -631,7 +631,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/authentication':
         specifier: workspace:^
         version: link:../../../packages/authentication
@@ -652,7 +652,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/chakra-snippets':
         specifier: workspace:^
         version: link:../../../packages/chakra-snippets
@@ -676,7 +676,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime
@@ -700,7 +700,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/chakra-snippets':
         specifier: workspace:^
         version: link:../../../packages/chakra-snippets
@@ -709,7 +709,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime
@@ -723,7 +723,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/authentication':
         specifier: workspace:^
         version: link:../../packages/authentication
@@ -744,7 +744,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/notifier':
         specifier: workspace:^
         version: link:../../packages/notifier
@@ -759,7 +759,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/chakra-snippets':
         specifier: workspace:^
         version: link:../../../packages/chakra-snippets
@@ -777,7 +777,7 @@ importers:
     dependencies:
       '@chakra-ui/react':
         specifier: 'catalog:'
-        version: 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../../../packages/core
@@ -830,8 +830,16 @@ packages:
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/code-frame@7.27.1':
+    resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/generator@7.27.0':
     resolution: {integrity: sha512-VybsKvpiN1gU1sdMZIp7FcqphVVKEwcuj02x73uvcHE0PTihx1nlBcowYWhDwjpoAXRv43+gDzyggGnn1XZhVw==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/generator@7.27.5':
+    resolution: {integrity: sha512-ZGhA37l0e/g2s1Cnzdix0O3aLYm66eF8aufiVteOgnwxgnRP8GoyMj7VWsgWnQbVKXyge7hqrFh2K2TQM6t1Hw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-environment-visitor@7.24.7':
@@ -858,12 +866,25 @@ packages:
     resolution: {integrity: sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-string-parser@7.27.1':
+    resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/helper-validator-identifier@7.25.9':
     resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-validator-identifier@7.27.1':
+    resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/parser@7.27.0':
     resolution: {integrity: sha512-iaepho73/2Pz7w2eMS0Q5f83+0RKI7i4xmiYeBmDzfRVbQtTOG7Ts0S4HzJVsTMGI9keU8rNfuZr8DKfSt7Yyg==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  '@babel/parser@7.27.5':
+    resolution: {integrity: sha512-OsQd175SxWkGlzbny8J3K8TnnDD0N3lrIUtB92xwyRpzaenGZhxDvxN/JgU00U3CDZNj9tPuDJ5H0WS4Nt3vKg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -875,6 +896,10 @@ packages:
     resolution: {integrity: sha512-2ncevenBqXI6qRMukPlXwHKHchC7RyMuu4xv5JBXRfOGVcTy1mXCD12qrp7Jsoxll1EV3+9sE4GugBVRjT2jFA==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/template@7.27.2':
+    resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/traverse@7.24.8':
     resolution: {integrity: sha512-t0P1xxAPzEDcEPmjprAQq19NWum4K0EQPjMwZQZbHt+GiZqvjCHjj755Weq1YRPVzBI+3zSfvScfpnuIecVFJQ==}
     engines: {node: '>=6.9.0'}
@@ -883,14 +908,18 @@ packages:
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/types@7.27.6':
+    resolution: {integrity: sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==}
+    engines: {node: '>=6.9.0'}
+
   '@chakra-ui/cli@3.19.2':
     resolution: {integrity: sha512-zliAi7g5zakioVhnu5wm9xZ/6N3jR4oaynKzMNapII+dFupYsTMDNyZVXVO1YGAT9FYQySgW6oMca/AhqcrS4Q==}
     hasBin: true
     peerDependencies:
       '@chakra-ui/react': '>=3.0.0-next.0'
 
-  '@chakra-ui/react@3.19.1':
-    resolution: {integrity: sha512-NxmJUIxy9Uqs2/2WbMBQjU2TdK2AdCO1AfoMz/kI3ia4ig1FJ5NzXRGSEnTGrdOfrqL8GJp4ztbPfc4yspqWsQ==}
+  '@chakra-ui/react@3.19.2':
+    resolution: {integrity: sha512-ZQfYXQ20ftR1U8kdwDxqx4qk8+8y9RcReb2heptAFD6IBnTg2dOylfjS7Qj2WF7mkPHnWd0W1/FUWDjJD1OgVQ==}
     peerDependencies:
       '@emotion/react': '>=11'
       react: '>=18'
@@ -1278,17 +1307,17 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@open-pioneer/build-common@3.0.1':
-    resolution: {integrity: sha512-oV6goxyIIUAoaZ4F+R1NkbeLzeCBhf4w6tMA6Sv7BaiZuHHckvLn7mUFAFJCjrRvh0VJGVp0eGxq3QVetsiLWA==}
+  '@open-pioneer/build-common@3.0.2':
+    resolution: {integrity: sha512-rwrAAxUgnekVTz/sMJKgqykTxtrNKYaB56X2DpOoaQWolVJzXF0ZCwLDKK5svHlTiwbFk+RlH401MkN2kG6syA==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/build-package-cli@3.0.1':
-    resolution: {integrity: sha512-IIXahe1rnl7cI+QCjjxj4LVQQi9KEz+tUGIZEfzm/DGfg19tb3Q3enStbmDhIgCqna/4/i9wD2ZPnXBO1zJ42w==}
+  '@open-pioneer/build-package-cli@3.0.2':
+    resolution: {integrity: sha512-bsECoAhtUBd87wsEgXil9NFw/iaF/Ej+VIYkXw4AoqchEgDt5RMRuONXmcZ637ZvbcZ5rW+0qoBbEsFQoe7GKA==}
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/build-package@4.0.1':
-    resolution: {integrity: sha512-Cu2cdRZ8EbXga81iNP52ZMX8LqhDyj8uLeZOfEdsaBw7b5OIetDyDIv5wzCUT2gssMrUnvqC3s5Z8Pq6FI6uiw==}
+  '@open-pioneer/build-package@4.0.2':
+    resolution: {integrity: sha512-56YD4mPPIAucGPhnowie+CcXg3ZSB+exQiWZV7617r3BqGtig89oEcfi7EDHn6jCVDFKPXR6s7v1tLxZHBQk/g==}
     engines: {node: '>= 20'}
     peerDependencies:
       sass: '*'
@@ -1299,8 +1328,8 @@ packages:
       typescript:
         optional: true
 
-  '@open-pioneer/build-support@3.0.1':
-    resolution: {integrity: sha512-jSx6BceXby0qqmbkGEytnjHDia2LVs2wsPi9dqJhaxPUBtvmGHdBxm3vHHEWuK7C1tTERAjU8uTPP5Js0+ORbw==}
+  '@open-pioneer/build-support@3.0.2':
+    resolution: {integrity: sha512-5CAJ4U1tLVGA1JnV5O20YsESfp1OxsaihbeCd2KOvw4wM3tSpY/aaGxBuJLkb7VDMTC4XS0Pqnphc1hkxe9qJg==}
     engines: {node: '>= 20'}
 
   '@open-pioneer/check-pnpm-duplicates@0.2.2':
@@ -1308,8 +1337,8 @@ packages:
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/vite-plugin-pioneer@4.0.1':
-    resolution: {integrity: sha512-Z6KzPzZ2PzyPIWitPbLqY7cPJ8OPXGJsl5EAYf9vo6IMP7dYNCBRqF8mc227es3gZQMpschNlJZVQuKwB1sNuA==}
+  '@open-pioneer/vite-plugin-pioneer@4.0.2':
+    resolution: {integrity: sha512-zIN/RPoFlAW7EUACFhNgPuzGIjwjOwPg1Sc1V/p/fKRgd2HNEyWgiXqjKBuKLuKyQLTZWbjvfbeBxDtAqHmPYA==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -2452,10 +2481,6 @@ packages:
 
   commander@12.1.0:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
-    engines: {node: '>=18'}
-
-  commander@13.1.0:
-    resolution: {integrity: sha512-/rFeCpNJQbhSZjGVwO9RFV3xPqbnERS8MmIQzCtD/zl6gpJuV/bMLuN92oG3F7d8oDEHHRrujSXNUr8fpjntKw==}
     engines: {node: '>=18'}
 
   commander@14.0.0:
@@ -4541,11 +4566,11 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod-validation-error@3.4.0:
-    resolution: {integrity: sha512-ZOPR9SVY6Pb2qqO5XHt+MkkTRxGXb4EVtnjc9JpXUOtUB1T9Ru7mZOT361AN3MsetVe7R0a1KZshJDZdgp9miQ==}
+  zod-validation-error@3.4.1:
+    resolution: {integrity: sha512-1KP64yqDPQ3rupxNv7oXhf7KdhHHgaqbKuspVoiN93TT0xrBjql+Svjkdjq/Qh/7GSMmgQs3AfvBT0heE35thw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      zod: ^3.18.0
+      zod: ^3.24.4
 
   zod@3.25.55:
     resolution: {integrity: sha512-219huNnkSLQnLsQ3uaRjXsxMrVm5C9W3OOpEVt2k5tvMKuA8nBSu38e0B//a+he9Iq2dvmk2VyYVlHqiHa4YBA==}
@@ -4629,10 +4654,24 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
+  '@babel/code-frame@7.27.1':
+    dependencies:
+      '@babel/helper-validator-identifier': 7.27.1
+      js-tokens: 4.0.0
+      picocolors: 1.1.1
+
   '@babel/generator@7.27.0':
     dependencies:
       '@babel/parser': 7.27.0
       '@babel/types': 7.27.0
+      '@jridgewell/gen-mapping': 0.3.8
+      '@jridgewell/trace-mapping': 0.3.25
+      jsesc: 3.0.2
+
+  '@babel/generator@7.27.5':
+    dependencies:
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
       jsesc: 3.0.2
@@ -4663,11 +4702,19 @@ snapshots:
 
   '@babel/helper-string-parser@7.25.9': {}
 
+  '@babel/helper-string-parser@7.27.1': {}
+
   '@babel/helper-validator-identifier@7.25.9': {}
+
+  '@babel/helper-validator-identifier@7.27.1': {}
 
   '@babel/parser@7.27.0':
     dependencies:
       '@babel/types': 7.27.0
+
+  '@babel/parser@7.27.5':
+    dependencies:
+      '@babel/types': 7.27.6
 
   '@babel/runtime@7.27.0':
     dependencies:
@@ -4678,6 +4725,12 @@ snapshots:
       '@babel/code-frame': 7.26.2
       '@babel/parser': 7.27.0
       '@babel/types': 7.27.0
+
+  '@babel/template@7.27.2':
+    dependencies:
+      '@babel/code-frame': 7.27.1
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
 
   '@babel/traverse@7.24.8':
     dependencies:
@@ -4699,9 +4752,14 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@chakra-ui/cli@3.19.2(@chakra-ui/react@3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
+  '@babel/types@7.27.6':
     dependencies:
-      '@chakra-ui/react': 3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@babel/helper-string-parser': 7.27.1
+      '@babel/helper-validator-identifier': 7.27.1
+
+  '@chakra-ui/cli@3.19.2(@chakra-ui/react@3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
+    dependencies:
+      '@chakra-ui/react': 3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@clack/prompts': 0.10.1
       '@pandacss/is-valid-prop': 0.53.6
       '@types/cli-table': 0.3.4
@@ -4724,7 +4782,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@chakra-ui/react@3.19.1(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@chakra-ui/react@3.19.2(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@ark-ui/react': 5.9.1(patch_hash=73520cc7043e500f2e585a6f7e518e491b316131b48305e0e1f3dba06b1fc16c)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@emotion/is-prop-valid': 1.3.1
@@ -5213,26 +5271,26 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  '@open-pioneer/build-common@3.0.1':
+  '@open-pioneer/build-common@3.0.2':
     dependencies:
       semver: 7.7.2
       zod: 3.25.55
-      zod-validation-error: 3.4.0(zod@3.25.55)
+      zod-validation-error: 3.4.1(zod@3.25.55)
 
-  '@open-pioneer/build-package-cli@3.0.1(sass@1.89.1)(typescript@5.8.3)':
+  '@open-pioneer/build-package-cli@3.0.2(sass@1.89.1)(typescript@5.8.3)':
     dependencies:
-      '@open-pioneer/build-package': 4.0.1(sass@1.89.1)(typescript@5.8.3)
+      '@open-pioneer/build-package': 4.0.2(sass@1.89.1)(typescript@5.8.3)
       chalk: 5.4.1
-      commander: 13.1.0
+      commander: 14.0.0
     transitivePeerDependencies:
       - sass
       - supports-color
       - typescript
 
-  '@open-pioneer/build-package@4.0.1(sass@1.89.1)(typescript@5.8.3)':
+  '@open-pioneer/build-package@4.0.2(sass@1.89.1)(typescript@5.8.3)':
     dependencies:
-      '@open-pioneer/build-common': 3.0.1
-      '@open-pioneer/build-support': 3.0.1
+      '@open-pioneer/build-common': 3.0.2
+      '@open-pioneer/build-support': 3.0.2
       '@rollup/plugin-node-resolve': 16.0.1(rollup@4.41.1)
       chalk: 5.4.1
       debug: 4.4.1
@@ -5252,7 +5310,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@open-pioneer/build-support@3.0.1': {}
+  '@open-pioneer/build-support@3.0.2': {}
 
   '@open-pioneer/check-pnpm-duplicates@0.2.2':
     dependencies:
@@ -5265,12 +5323,12 @@ snapshots:
       commander: 14.0.0
       js-yaml: 4.1.0
 
-  '@open-pioneer/vite-plugin-pioneer@4.0.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.89.1)(vite@6.3.5(@types/node@20.19.0)(sass@1.89.1)(tsx@4.19.4)(yaml@2.8.0))':
+  '@open-pioneer/vite-plugin-pioneer@4.0.2(@open-pioneer/runtime@src+packages+runtime)(sass@1.89.1)(vite@6.3.5(@types/node@20.19.0)(sass@1.89.1)(tsx@4.19.4)(yaml@2.8.0))':
     dependencies:
-      '@babel/generator': 7.27.0
-      '@babel/template': 7.27.0
-      '@babel/types': 7.27.0
-      '@open-pioneer/build-common': 3.0.1
+      '@babel/generator': 7.27.5
+      '@babel/template': 7.27.2
+      '@babel/types': 7.27.6
+      '@open-pioneer/build-common': 3.0.2
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.1
       js-yaml: 4.1.0
@@ -5278,7 +5336,7 @@ snapshots:
       vite: 6.3.5(@types/node@20.19.0)(sass@1.89.1)(tsx@4.19.4)(yaml@2.8.0)
       vitefu: 1.0.6(vite@6.3.5(@types/node@20.19.0)(sass@1.89.1)(tsx@4.19.4)(yaml@2.8.0))
       zod: 3.25.55
-      zod-validation-error: 3.4.0(zod@3.25.55)
+      zod-validation-error: 3.4.1(zod@3.25.55)
     transitivePeerDependencies:
       - supports-color
 
@@ -6669,8 +6727,6 @@ snapshots:
   colors@1.0.3: {}
 
   commander@12.1.0: {}
-
-  commander@13.1.0: {}
 
   commander@14.0.0: {}
 
@@ -9006,7 +9062,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-validation-error@3.4.0(zod@3.25.55):
+  zod-validation-error@3.4.1(zod@3.25.55):
     dependencies:
       zod: 3.25.55
 
