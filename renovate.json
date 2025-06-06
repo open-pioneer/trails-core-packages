@@ -17,6 +17,11 @@
     "prHourlyLimit": 0,
     "packageRules": [
         {
+            "matchPackageNames": ["@changesets/*"],
+            "enabled": false,
+            "description": "Pin changeset packages to current version"
+        },
+        {
             "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
             "matchCurrentVersion": "!/^0/",
             "groupName": "all non-major dependencies",
