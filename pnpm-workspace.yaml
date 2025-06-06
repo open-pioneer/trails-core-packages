@@ -4,16 +4,10 @@ packages:
   - "!**/dist/**"
   - .
 
-# Shared version expressions (yaml anchors).
-# This is a yaml feature and is not interpreted by pnpm directly.
-__versions:
-  - &react_version ^19.1.0
-  - &chakra_version ^3.19.1
-
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/react": *chakra_version
-  "@chakra-ui/cli": *chakra_version
+  "@chakra-ui/react": ^3.19.1
+  "@chakra-ui/cli": ^3.19.1
   "@conterra/reactivity-core": ^0.7.0
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
@@ -21,11 +15,11 @@ catalog:
   classnames: ^2.3.2
   framer-motion: ^12.9.1
   keycloak-js: ^26.0.2
-  react-dom: *react_version
+  react-dom: ^19.1.0
   react-json-view: ^1.21.3
   react-use: ^17.5.1
   react-icons: ^5.5.0
-  react: *react_version
+  react: ^19.1.0
 
   # Devtools
   "@changesets/cli": 2.27.9
