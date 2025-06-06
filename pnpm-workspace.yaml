@@ -14,7 +14,7 @@ __versions:
 catalog:
   "@chakra-ui/react": *chakra_version
   "@chakra-ui/cli": *chakra_version
-  "@conterra/reactivity-core": ^0.6.0
+  "@conterra/reactivity-core": ^0.7.0
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
   "@formatjs/intl": ^3.1.6
