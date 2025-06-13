@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 4.0.1
+
+### Patch Changes
+
+- adf277b: Update dependencies
+
 ## 4.0.0
 
 ### Patch Changes
