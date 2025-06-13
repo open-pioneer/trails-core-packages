@@ -1,5 +1,13 @@
 # @open-pioneer/test-utils
 
+## 4.0.1
+
+### Patch Changes
+
+- adf277b: Update dependencies
+- Updated dependencies [adf277b]
+    - @open-pioneer/runtime@4.0.1
+
 ## 4.0.0
 
 ### Major Changes

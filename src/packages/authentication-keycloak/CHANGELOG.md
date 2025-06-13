@@ -1,5 +1,16 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.0.1
+
+### Patch Changes
+
+- adf277b: Update dependencies
+- Updated dependencies [adf277b]
+    - @open-pioneer/authentication@4.0.1
+    - @open-pioneer/core@4.0.1
+    - @open-pioneer/notifier@4.0.1
+    - @open-pioneer/runtime@4.0.1
+
 ## 4.0.0
 
 ### Patch Changes
