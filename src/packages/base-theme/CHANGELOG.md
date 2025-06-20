@@ -1,5 +1,11 @@
 # @open-pioneer/base-theme
 
+## 4.0.1
+
+### Patch Changes
+
+- adf277b: Update dependencies
+
 ## 4.0.0
 
 ### Major Changes

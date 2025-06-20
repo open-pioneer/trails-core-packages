@@ -1,5 +1,14 @@
 # @open-pioneer/http
 
+## 4.0.1
+
+### Patch Changes
+
+- adf277b: Update dependencies
+- Updated dependencies [adf277b]
+    - @open-pioneer/core@4.0.1
+    - @open-pioneer/runtime@4.0.1
+
 ## 4.0.0
 
 ### Patch Changes
