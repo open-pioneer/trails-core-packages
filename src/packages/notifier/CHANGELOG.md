@@ -1,5 +1,15 @@
 # @open-pioneer/notifier
 
+## 4.0.1
+
+### Patch Changes
+
+- adf277b: Update dependencies
+- Updated dependencies [adf277b]
+    - @open-pioneer/core@4.0.1
+    - @open-pioneer/react-utils@4.0.1
+    - @open-pioneer/runtime@4.0.1
+
 ## 4.0.0
 
 ### Major Changes
