@@ -6,8 +6,8 @@ packages:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/react": ^3.19.2
-  "@chakra-ui/cli": ^3.19.2
+  "@chakra-ui/react": ^3.21.1
+  "@chakra-ui/cli": ^3.21.1
   "@conterra/reactivity-core": ^0.7.0
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
