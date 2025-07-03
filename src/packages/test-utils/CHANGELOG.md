@@ -1,5 +1,15 @@
 # @open-pioneer/test-utils
 
+## 4.0.1
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [adf277b]
+    - @open-pioneer/runtime@4.0.1
+
 ## 4.0.0
 
 ### Major Changes
@@ -31,7 +41,6 @@
 ### Major Changes
 
 - 9477e54: Update dependencies
-
     - React 19
     - Vite 6
     - FormatJS 3
