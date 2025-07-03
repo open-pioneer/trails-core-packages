@@ -98,7 +98,6 @@ overrides:
 ignorePatchFailures: false
 patchedDependencies:
   # - Ensure all portals are mounted under `.pioneer-root` div
-  # - Fix rendering of toasts in shadow root: https://github.com/chakra-ui/ark/issues/3455
   "@ark-ui/react@*": "patches/@ark-ui__react.patch"
 
 peerDependencyRules:
