@@ -1,5 +1,17 @@
 # @open-pioneer/runtime
 
+## 4.0.1
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [adf277b]
+    - @open-pioneer/base-theme@4.0.1
+    - @open-pioneer/core@4.0.1
+    - @open-pioneer/reactivity@4.0.1
+
 ## 4.0.0
 
 ### Major Changes
@@ -10,7 +22,6 @@
     By default, trails applications use a shadow root to avoid conflicts (e.g. styles) with other parts of the site where the application may be embedded.
 
     Applications that use the entire browser viewport may not need this feature, since there may be no "other" parts that may conflict with the app. In this case, you can disable the shadow root by setting this property to `false`.
-
     - New option `advanced.enableShadowRoot`:
 
         ```ts
@@ -129,7 +140,6 @@
 ### Major Changes
 
 - 9477e54: Update dependencies
-
     - React 19
     - Vite 6
     - FormatJS 3
@@ -353,7 +363,6 @@
   The old TypeScript integration had unexpected edge cases, see the linked issue.
 
     NOTE: The changes below have no impact on runtime behavior, but they may trigger TypeScript errors in your code.
-
     - To register a service's type with TypeScript, one previously used a block such as this:
 
         ```ts
