@@ -17,10 +17,13 @@ runs:
         run: |
           echo "src-repo: ${{ inputs.src-repo }}"
           echo "target-repository: open-pioneer/trails-pr-previews"
+
       - name: Configure Git User
+        shell: bash
         run: |
           git config --global user.name "Open Pioneer Automation"
           git config --global user.email "contact@openpioneer.dev"
+          
       - name: Deploy PR Preview
         uses: rossjrw/pr-preview-action@v1
         with:
