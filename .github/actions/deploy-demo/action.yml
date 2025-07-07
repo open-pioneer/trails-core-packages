@@ -36,6 +36,6 @@ runs:
         repository-name: open-pioneer/trails-demo
         folder: ${{ inputs.src-dir }}
         target-folder: ${{ env.TARGET_PATH }}
-        git-config-name: "github-actions[bot]"
-        git-config-email: "41898282+github-actions[bot]@users.noreply.github.com"
+        git-config-name: "Open Pioneer Automation"
+        git-config-email: "contact@openpioneer.dev"
         token: ${{ inputs.token }}

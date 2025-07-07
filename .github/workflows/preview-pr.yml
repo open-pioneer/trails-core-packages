@@ -61,9 +61,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Deploy PR Preview
-        uses: rossjrw/pr-preview-action@v1
+        uses: ./.github/actions/deploy-pr-preview
         with:
-          source-dir: ./site/www/
-          umbrella-dir: "core-packages/pr-previews"
-          deploy-repository: open-pioneer/trails-pr-previews
+          src-repo: "core-packages"
           token: ${{ secrets.DEMO_DEPLOY_TOKEN }}
