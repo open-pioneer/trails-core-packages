@@ -17,7 +17,6 @@
 ### Major Changes
 
 - 9477e54: Update dependencies
-
     - React 19
     - Vite 6
     - FormatJS 3
