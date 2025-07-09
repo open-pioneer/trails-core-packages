@@ -21,8 +21,7 @@ const element = createCustomElement({
                     }
                 }
             } satisfies KeycloakProperties
-        },
-        locale: FORCED_LANG
+        }
     }
 });
 ```
