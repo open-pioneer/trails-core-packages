@@ -93,6 +93,16 @@ export interface LoginEffect {
 }
 
 /**
+ * Options that can be passed to the {@link AuthService.logout} method.
+ */
+export interface LogoutOptions {
+    /**
+     * Custom options that will be passed directly to the currently active {@link AuthPlugin}.
+     */
+    pluginOptions?: unknown;
+}
+
+/**
  * Manages the current user's authentication state.
  *
  * The current state (such as session info) can be retrieved and watched for changes.
@@ -125,7 +135,7 @@ export interface AuthService extends DeclaredService<"authentication.AuthService
     /**
      * Terminates the current session (if any).
      */
-    logout(): void;
+    logout(options?: LogoutOptions): void;
 }
 
 /**
@@ -155,6 +165,10 @@ export interface AuthPlugin extends DeclaredService<"authentication.AuthPlugin">
      *
      * Should result in a new state (including a `changed` event) if the user
      * was authenticated.
+     *
+     * @param options Custom options that may be supported by the plugin.
+     * The optional `pluginOptions` in {@link AuthService.logout} will be passed to this parameter.
+     * This parameter is not typed at this point (but should be in the plugin's actual implementation).
      */
-    logout(): Promise<void> | void;
+    logout(options?: unknown): Promise<void> | void;
 }
