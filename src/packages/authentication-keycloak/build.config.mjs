@@ -10,8 +10,6 @@ export default defineBuildConfig({
             provides: [
                 // The generic interface, used by the AuthService
                 "authentication.AuthPlugin",
-
-                // Concrete interface for this plugin (note: no additional API yet).
                 "authentication-keycloak.KeycloakAuthPlugin"
             ],
             references: {
