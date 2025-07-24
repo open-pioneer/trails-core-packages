@@ -2,7 +2,7 @@
 "@open-pioneer/authentication-keycloak": minor
 ---
 
-Make `RefreshOptions` optional with sensible default values.
+Make `RefreshOptions` optional with sensible default values. The default values have been changed to:
 
 - `autoRefresh`: true
 - `interval` (for token lifetime checks): 10 seconds
