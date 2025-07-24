@@ -46,13 +46,20 @@ export function AppUI() {
 To configure the `authentication-keycloak` package, adjust these properties.
 For more details on the configuration properties, visit the [API Reference](https://www.keycloak.org/docs/latest/securing_apps/index.html#api-reference).
 
-| Property            |        Type         |                                                                                                           Description |                                             Default |
-| ------------------- | :-----------------: | --------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------: |
-| refreshOptions      |   RefreshOptions    |                            Configure token refresh behavior and manage access token lifecycle in client applications. | `{autoRefresh: true, interval: 6000, timeLeft: 70}` |
-| keycloakInitOptions | KeycloakInitOptions |                                               Configure Keycloak's behavior during client application initialization. |         `{onLoad: "check-sso", pkceMethod: "S256"}` |
-| keycloakConfig      |   KeycloakConfig    | The configuration settings required to establish a connection between the client application and the Keycloak server. |                                                     |
+| Property              | Type                  |                                                                                                           Description |                                              Default |
+| --------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------: | ---------------------------------------------------: |
+| keycloakConfig        | KeycloakConfig        | The configuration settings required to establish a connection between the client application and the Keycloak server. |                                                      |
+| refreshOptions        | RefreshOptions        |                            Configure token refresh behavior and manage access token lifecycle in client applications. | `{autoRefresh: true, interval: 10000, timeLeft: 60}` |
+| keycloakInitOptions   | KeycloakInitOptions   |                                               Configure Keycloak's behavior during client application initialization. |          `{onLoad: "check-sso", pkceMethod: "S256"}` |
+| keycloakLoginOptions  | KeycloakLoginOptions  |                                                                 Configure Keycloak login options (e.g. redirect URI). |                                                      |
+| keycloakLogoutOptions | KeycloakLogoutOptions |                                                                Configure Keycloak logout options (e.g. redirect URI). |                                                      |
 
 ```ts
+interface KeycloakConfig {
+    url: string;
+    realm: string;
+    clientId: string;
+}
 interface RefreshOptions {
     autoRefresh: boolean;
     interval: number;
@@ -62,11 +69,6 @@ interface KeycloakInitOptions {
     onLoad: string;
     pkceMethod: string;
     scope: string;
-}
-interface KeycloakConfig {
-    url: string;
-    realm: string;
-    clientId: string;
 }
 ```
 
@@ -86,21 +88,31 @@ const element = createCustomElement({
         properties: {
             "@open-pioneer/authentication-keycloak": {
                 keycloakOptions: {
+                    keycloakConfig: {
+                        url: "http://keycloak-server/base_path",
+                        realm: "myrealm",
+                        clientId: "myapp"
+                    },
+                    // optional
                     refreshOptions: {
                         autoRefresh: true,
-                        interval: 6000,
-                        timeLeft: 70
+                        interval: 10000,
+                        timeLeft: 60
                     },
+                    // optional
                     keycloakInitOptions: {
                         onLoad: "check-sso",
                         pkceMethod: "S256"
                         // additional configuration, for example:
                         // scope: "openid address phone"
                     },
-                    keycloakConfig: {
-                        url: "http://keycloak-server/base_path",
-                        realm: "myrealm",
-                        clientId: "myapp"
+                    // optional
+                    keycloakLoginOptions: {
+                        // ...
+                    },
+                    // optional
+                    keycloakLogoutOptions: {
+                        redirectUri: "https://example.com" // where to redirect after logout
                     }
                 }
             } satisfies KeycloakProperties // for auto completion / validation
