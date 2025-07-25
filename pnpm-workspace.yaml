@@ -6,14 +6,14 @@ packages:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/react": ^3.21.1
-  "@chakra-ui/cli": ^3.21.1
+  "@chakra-ui/react": ^3.22.0
+  "@chakra-ui/cli": ^3.22.0
   "@conterra/reactivity-core": ^0.7.0
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
   "@formatjs/intl": ^3.1.6
   classnames: ^2.5.1
-  framer-motion: ^12.23.0
+  framer-motion: ^12.23.9
   keycloak-js: ^26.2.0
   react-dom: ^19.1.0
   react-json-view: ^1.21.3
@@ -23,8 +23,8 @@ catalog:
 
   # Devtools
   "@changesets/cli": 2.29.5
-  "@open-pioneer/build-package-cli": ^3.0.2
-  "@open-pioneer/build-support": ^3.0.2
+  "@open-pioneer/build-package-cli": ^3.0.3
+  "@open-pioneer/build-support": ^3.0.3
   "@open-pioneer/check-pnpm-duplicates": ^0.2.2
   "@open-pioneer/vite-plugin-pioneer": ^4.0.2
   "@testing-library/dom": ^10.4.0
@@ -32,14 +32,14 @@ catalog:
   "@testing-library/react": ^16.3.0
   "@testing-library/user-event": ^14.6.1
   "@types/js-yaml": ^4.0.9
-  "@types/node": ^20.19.4
+  "@types/node": ^20.19.9
   "@types/react-dom": ^19.1.6
   "@types/react": ^19.1.8
-  "@typescript-eslint/eslint-plugin": ^8.35.1
-  "@typescript-eslint/parser": ^8.35.1
-  "@vitejs/plugin-react-swc": ^3.10.2
+  "@typescript-eslint/eslint-plugin": ^8.38.0
+  "@typescript-eslint/parser": ^8.38.0
+  "@vitejs/plugin-react-swc": ^3.11.0
   eslint: ^8.57.1
-  eslint-config-prettier: ^10.1.5
+  eslint-config-prettier: ^10.1.8
   eslint-import-resolver-typescript: ^4.4.4
   eslint-plugin-header: ^3.1.1
   eslint-plugin-import: ^2.32.0
@@ -61,7 +61,7 @@ catalog:
   vite: ^6.3.5
   vite-plugin-eslint: ^1.8.1
   vitest: ^3.2.4
-  zx: ^8.6.1
+  zx: ^8.7.1
 
 auditConfig:
   ignoreCves: []
