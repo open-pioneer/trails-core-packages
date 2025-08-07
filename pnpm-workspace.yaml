@@ -91,6 +91,9 @@ overrides:
   "brace-expansion@>=1.0.0 <=1.1.11": "^1.1.12"
   "brace-expansion@>=2.0.0 <=2.0.1": "^2.0.2"
 
+  # https://github.com/advisories/GHSA-52f5-9888-hmc6
+  "tmp@<=0.2.3": "^0.2.4"
+
   # Just to get rid of some duplicate dependencies
   "source-map@<0.6.1": ">=0.6.1"
   "stylis@<4.3.5": ">= 4.3.5"
