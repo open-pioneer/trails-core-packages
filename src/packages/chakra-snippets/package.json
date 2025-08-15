@@ -22,7 +22,6 @@
         "@chakra-ui/react": "catalog:",
         "@open-pioneer/core": "workspace:^",
         "@open-pioneer/runtime": "workspace:^",
-        "next-themes": "^0.4.6",
         "react": "catalog:",
         "react-icons": "catalog:"
     },
