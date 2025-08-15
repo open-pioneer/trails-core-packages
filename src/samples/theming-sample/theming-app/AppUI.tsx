@@ -166,7 +166,7 @@ export function AppUI() {
 
                     <Heading size={"md"}>Switch</Heading>
                     <Stack direction="column" my={2}>
-                        <Switch checked />
+                        <Switch defaultChecked/>
                     </Stack>
 
                     <Separator my={5} />
