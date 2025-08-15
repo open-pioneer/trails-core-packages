@@ -29,7 +29,6 @@ describe("formatRichMessage", () => {
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
           <div
-            class="css-0"
             data-testid="test"
           >
             Hello, 
@@ -64,7 +63,6 @@ describe("formatRichMessage", () => {
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
           <div
-            class="css-0"
             data-testid="test"
           >
             Hello, 
@@ -99,16 +97,15 @@ describe("formatRichMessage", () => {
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
           <div
-            class="css-0"
             data-testid="test"
           >
             Hello, 
             <div
-              class="from-custom-1 css-0"
+              class="from-custom-1"
             >
               Content of custom tag 
               <div
-                class="from-custom-2 css-0"
+                class="from-custom-2"
               >
                 and nested tag with value from outside
               </div>
@@ -164,19 +161,18 @@ describe("formatRichMessage", () => {
         const element = await screen.findByTestId("test");
         expect(element).toMatchInlineSnapshot(`
           <div
-            class="css-0"
             data-testid="test"
           >
             a 
             <div
-              class="nested2 css-0"
+              class="nested2"
             >
               <code>
                 b
               </code>
                c 
               <div
-                class="nested1 css-0"
+                class="nested1"
               >
                  d 
                 <code>
