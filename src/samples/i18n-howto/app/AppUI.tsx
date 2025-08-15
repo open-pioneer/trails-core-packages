@@ -148,7 +148,7 @@ function NumberFormatExample() {
             </Heading>
             <NumberInputRoot
                 onValueChange={(valueChangeDetails) => {
-                    setValue(valueChangeDetails.value);
+                    setValue(String(valueChangeDetails.valueAsNumber));
                 }}
                 value={value}
                 step={0.25}
