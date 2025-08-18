@@ -1,5 +1,35 @@
 # @open-pioneer/authentication
 
+## 4.1.0
+
+### Minor Changes
+
+- f67fd7e: New `options` parameter for the `logout` method of `AuthService`.
+
+    This will allow you to pass custom options that may be supported by the active authentication plugin.
+
+    ```ts
+    const authService = ...; // injected
+    authService.logout({
+        // Interpretation of this parameter highly depends on the active authentication plugin.
+        pluginOptions: {
+            redirectUri: "https://example.com"
+        }
+    })
+    ```
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [3881d08]
+- Updated dependencies [2da02e7]
+- Updated dependencies [adf277b]
+    - @open-pioneer/core@4.1.0
+    - @open-pioneer/reactivity@4.1.0
+    - @open-pioneer/runtime@4.1.0
+
 ## 4.0.0
 
 ### Major Changes

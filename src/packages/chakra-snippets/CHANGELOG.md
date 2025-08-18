@@ -1,5 +1,20 @@
 # @open-pioneer/chakra-snippets
 
+## 4.1.0
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- 3881d08: - Update Chakra UI from 3.22.0 to 3.24.2
+    - Update to latest Chakra snippets
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [3881d08]
+- Updated dependencies [2da02e7]
+- Updated dependencies [adf277b]
+    - @open-pioneer/core@4.1.0
+    - @open-pioneer/runtime@4.1.0
+
 ## 4.0.0
 
 ### Major Changes
