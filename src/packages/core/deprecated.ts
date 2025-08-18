@@ -21,6 +21,12 @@ export interface DeprecatedOptions {
      * The version or date in which the entity was deprecated.
      */
     since: string;
+
+    /**
+     * Available alternatives, if any.
+     * Should be a succinct message like `use xyz instead`.
+     */
+    alternative?: string;
 }
 
 /**
@@ -41,7 +47,8 @@ export interface DeprecatedOptions {
  * const printDeprecation = deprecated({
  *     name: "someFunctionName",
  *     packageName: "some-package",
- *     since: "v1.2.3"
+ *     since: "v1.2.3",
+ *     alternative: "use xyz instead"
  * });
  *
  * // Later, when the deprecated function is actually being used:
@@ -68,8 +75,9 @@ export function deprecated(options: DeprecatedOptions): () => void {
 }
 
 function buildDeprecationWarning(options: DeprecatedOptions): string {
-    const { packageName, name, since } = options;
+    const { packageName, name, since, alternative } = options;
     const packageInfo = packageName ? ` in ${packageName}` : "";
-    const message = `⚠️ DEPRECATED: ${name}${packageInfo} (since ${since}) - Please update your code as this may be removed in future versions.`;
+    const alternativeInfo = alternative ? `, ${alternative}` : "";
+    const message = `⚠️ DEPRECATED: ${name}${packageInfo} (since ${since}${alternativeInfo}) - Please update your code as this may be removed in future versions.`;
     return message;
 }

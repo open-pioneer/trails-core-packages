@@ -88,7 +88,8 @@ Then, when the deprecated functionality is being used, simply call that helper f
 const printDeprecation = deprecated({
     name: "someFunctionName",
     packageName: "some-package",
-    since: "v1.2.3"
+    since: "v1.2.3",
+    alternative: "use xyz instead"
 });
 
 // Later, when the deprecated function is actually being used:

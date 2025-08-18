@@ -14,7 +14,8 @@ it("prints a message when deprecated functionality is used", () => {
     const helper = deprecated({
         name: "SomeClass",
         packageName: "some-package",
-        since: "v1.2.3"
+        since: "v1.2.3",
+        alternative: "use Foo instead"
     });
     expect(logSpy).not.toHaveBeenCalled();
 
@@ -26,7 +27,7 @@ it("prints a message when deprecated functionality is used", () => {
 
     const message = logSpy.mock.calls[0]![0];
     expect(message).toMatchInlineSnapshot(
-        `"⚠️ DEPRECATED: SomeClass in some-package (since v1.2.3) - Please update your code as this may be removed in future versions."`
+        `"⚠️ DEPRECATED: SomeClass in some-package (since v1.2.3, use Foo instead) - Please update your code as this may be removed in future versions."`
     );
 });
 
