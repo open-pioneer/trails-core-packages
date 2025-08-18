@@ -1,5 +1,74 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.1.0
+
+### Minor Changes
+
+- f67fd7e: Support configuration of keycloak's login options and logout options.
+
+    For example, to redirect to a different site after logout:
+
+    ```ts
+    // app.ts
+    const element = createCustomElement({
+        component: AppUI,
+        appMetadata,
+        config: {
+            properties: {
+                "@open-pioneer/authentication-keycloak": {
+                    keycloakOptions: {
+                        // ...
+                        keycloakLogoutOptions: {
+                            redirectUri: "https://example.com"
+                        }
+                    }
+                } satisfies KeycloakProperties
+            }
+        }
+    });
+    ```
+
+    The plugin also supports options for the `logout` method to supply dynamic logout options:
+
+    ```ts
+    // via auth service
+    const authService = ...;
+    authService.logout({
+        // These are passed directly the keycloak plugin (if it is being used).
+        pluginOptions: {
+            redirectUri: "https://example.com",
+        }
+    })
+
+    // via direct reference to the plugin ("authentication-keycloak.KeycloakAuthPlugin")
+    const keycloakAuthPlugin = ...;
+    keycloakAuthPlugin.logout({
+        redirectUri: "https://example.com",
+    });
+    ```
+
+- f67fd7e: Make `RefreshOptions` optional with sensible default values. The default values have been changed to:
+    - `autoRefresh`: true
+    - `interval` (for token lifetime checks): 10 seconds
+    - `timeLeft`: 60 seconds (minimum required lifetime during token validity checks)
+
+    These values are used when they are not explicitly configured using package properties.
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [3881d08]
+- Updated dependencies [f67fd7e]
+- Updated dependencies [2da02e7]
+- Updated dependencies [adf277b]
+- Updated dependencies [3c6191a]
+    - @open-pioneer/authentication@4.1.0
+    - @open-pioneer/core@4.1.0
+    - @open-pioneer/notifier@4.1.0
+    - @open-pioneer/runtime@4.1.0
+
 ## 4.0.0
 
 ### Patch Changes

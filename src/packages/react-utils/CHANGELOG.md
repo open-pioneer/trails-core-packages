@@ -1,5 +1,16 @@
 # @open-pioneer/react-utils
 
+## 4.1.0
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [2da02e7]
+- Updated dependencies [adf277b]
+    - @open-pioneer/core@4.1.0
+
 ## 4.0.0
 
 ### Major Changes

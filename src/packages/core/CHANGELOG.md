@@ -1,5 +1,16 @@
 # @open-pioneer/core
 
+## 4.1.0
+
+### Minor Changes
+
+- 2da02e7: Implement a helper for printing deprecation messages.
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+
 ## 4.0.0
 
 ### Patch Changes
