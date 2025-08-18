@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-const LOG_LEVEL = validateLogLevel(__LOG_LEVEL__);
+const LOG_LEVEL = typeof __LOG_LEVEL__ !== "undefined" ? validateLogLevel(__LOG_LEVEL__) : "INFO";
 
 /**
  * Creates and returns a new logger instance for an application wide standardized logging.

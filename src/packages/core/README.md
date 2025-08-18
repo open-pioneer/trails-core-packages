@@ -41,8 +41,9 @@ All object needing some cleanup action to be called should use the `destroy` met
 
 ### Logger
 
-The 'Logger' class provides a logger for standardized application wide logging.
-The log level is configured globally in the file `vite.config.js`.
+The `Logger` class provides a logger for standardized application wide logging.
+The log level is configured globally in the file `vite.config.ts`: to change the application's log level,
+define the `__LOG_LEVEL__` constant to a custom value.
 
 To create a logger instance, call the `createLogger` method.
 It takes a prefix (string) to prepend to each message.
@@ -72,6 +73,29 @@ Or as a shared logger at module scope:
 ```ts
 import { createLogger } from "@open-pioneer/core";
 const LOG = createLogger("example-package");
+```
+
+### Deprecations
+
+The `deprecated` function can be used to print warnings when a deprecated entity is used.
+Deprecations are printed (once) during development, and not at all in production.
+You can disable deprecations via the global configuration in `vite.config.ts`: set `__PRINT_DEPRECATIONS__` to `false` to hide deprecation messages even during development.
+
+To emit a deprecation warning, create a helper function through the `deprecated` function.
+Then, when the deprecated functionality is being used, simply call that helper function:
+
+```ts
+const printDeprecation = deprecated({
+    name: "someFunctionName",
+    packageName: "some-package",
+    since: "v1.2.3"
+});
+
+// Later, when the deprecated function is actually being used:
+function someFunctionName() {
+    printDeprecation(); // prints warning on first call
+    // ...
+}
 ```
 
 ## License

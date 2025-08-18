@@ -83,7 +83,8 @@ export default defineConfig(({ mode }) => {
         // define global constants
         // See also: https://vitejs.dev/config/shared-options.html#define
         define: {
-            __LOG_LEVEL__: JSON.stringify(logLevel)
+            __LOG_LEVEL__: JSON.stringify(logLevel),
+            __PRINT_DEPRECATIONS__: true
         },
 
         // https://vitest.dev/config/
