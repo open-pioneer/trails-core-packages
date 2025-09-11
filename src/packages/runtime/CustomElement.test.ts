@@ -28,7 +28,6 @@ import { Portal } from "@chakra-ui/react";
 
 /** Hidden properties available during development / testing */
 interface InternalElementType extends ApplicationElement {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     $inspectElementState?(): any;
 }
 

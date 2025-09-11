@@ -10,7 +10,6 @@ import { useIntl, useProperties, useService, useServices } from "open-pioneer:re
 
 it("should allow injection of service from the test", async () => {
     function Component() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const service = useService("testService") as any;
         return <div>Message: {service.getMessage()}</div>;
     }
@@ -37,7 +36,6 @@ it("should allow injection of service from the test", async () => {
 
 it("should allow injection of service with qualifier from the test", async () => {
     function Component() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const service = useService("testService", { qualifier: "foo" }) as any;
         return <div>Message: {service.getMessage()}</div>;
     }
@@ -66,7 +64,6 @@ it("should allow injection of service with qualifier from the test", async () =>
 
 it("should allow injection of all service implementations from the test", async () => {
     function Component() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const services = useServices("testService") as any[];
         const messages = services.map((service, index) => (
             <li key={index}>{service.getMessage()}</li>

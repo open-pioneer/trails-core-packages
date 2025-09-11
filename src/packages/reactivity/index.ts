@@ -179,5 +179,6 @@ function shallowEqual(a: DependencyList, b: DependencyList): boolean {
     if (a === b) {
         return true;
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return a.length === (b?.length ?? 0) && a.every((v, i) => v === b![i]);
 }

@@ -272,6 +272,7 @@ function setPath(object: Record<string, unknown>, path: string[], value: unknown
 
     let current = object;
     for (let i = 0, n = path.length - 1; i < n; ++i) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const p = path[i]!;
 
         const next = current[p];
@@ -284,6 +285,7 @@ function setPath(object: Record<string, unknown>, path: string[], value: unknown
         current = next;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const prop = path[path.length - 1]!;
     current[prop] = value;
 }

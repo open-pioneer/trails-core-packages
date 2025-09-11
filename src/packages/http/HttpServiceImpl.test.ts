@@ -260,7 +260,6 @@ async function setup(options?: {
         return typeof response === "function" ? await response(req) : response;
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.spyOn(window, "fetch" as any, "get").mockReturnValue(fetchImpl as any);
     vi.spyOn(window.location, "href", "get").mockReturnValue(
         options?.location ?? "https://example.com:3000/"
