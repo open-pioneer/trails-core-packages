@@ -1,5 +1,16 @@
 # @open-pioneer/integration
 
+## 4.1.0
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+- Updated dependencies [b7a854d]
+- Updated dependencies [3881d08]
+- Updated dependencies [adf277b]
+    - @open-pioneer/runtime@4.1.0
+
 ## 4.0.0
 
 ### Patch Changes
