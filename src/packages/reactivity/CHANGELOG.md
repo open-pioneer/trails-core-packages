@@ -1,5 +1,12 @@
 # @open-pioneer/reactivity
 
+## 4.1.0
+
+### Patch Changes
+
+- b7a854d: Update dependencies
+- adf277b: Update dependencies
+
 ## 4.0.0
 
 ### Patch Changes
