@@ -1,5 +1,11 @@
 # @open-pioneer/reactivity
 
+## 4.1.1
+
+### Patch Changes
+
+- 81308c0: Update to eslint 9
+
 ## 4.1.0
 
 ### Patch Changes
