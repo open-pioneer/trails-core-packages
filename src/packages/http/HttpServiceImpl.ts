@@ -20,6 +20,7 @@ export class HttpServiceImpl implements HttpService {
     constructor(options: ServiceOptions<References>) {
         this.#interceptors = options.references.interceptors.map(
             (interceptor, index): [string, Interceptor] => {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 const id = options.referencesMeta.interceptors[index]!.serviceId;
                 return [id, interceptor];
             }
@@ -92,7 +93,6 @@ function resolveOptions(init: HttpServiceRequestInit | undefined): ResolvedReque
         headers
     };
     for (const key in options) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (removeAttribute[key as keyof typeof removeAttribute]) {
             delete options[key as keyof typeof options];
         }

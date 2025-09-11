@@ -38,13 +38,18 @@ export function getKeycloakConfig(
     properties: Partial<KeycloakProperties>
 ): ResolvedKeycloakOptions {
     const { keycloakOptions } = properties;
+    if (!keycloakOptions) {
+        throw new Error(
+            `KeycloakOptions not found: The Keycloak configuration options are required by the plugin to perform login and logout operations`
+        );
+    }
     const {
         refreshOptions,
         keycloakInitOptions,
         keycloakConfig,
         keycloakLoginOptions,
         keycloakLogoutOptions
-    } = keycloakOptions!;
+    } = keycloakOptions;
     return {
         config: getConfig(keycloakConfig),
         refreshOptions: getRefreshOptions(refreshOptions),
