@@ -118,6 +118,9 @@ onlyBuiltDependencies:
   - "@swc/core"
   - esbuild
 
+ignoredBuiltDependencies:
+  - unrs-resolver
+
 # Don't automatically link to workspace packages (use e.g. "workspace:^" instead).
 linkWorkspacePackages: false
 autoInstallPeers: true
