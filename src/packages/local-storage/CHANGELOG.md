@@ -1,5 +1,14 @@
 # @open-pioneer/local-storage
 
+## 4.2.0
+
+### Patch Changes
+
+- 81308c0: Update to eslint 9
+- Updated dependencies [81308c0]
+    - @open-pioneer/runtime@4.2.0
+    - @open-pioneer/core@4.2.0
+
 ## 4.1.0
 
 ### Patch Changes
