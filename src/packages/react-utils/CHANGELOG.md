@@ -1,5 +1,11 @@
 # @open-pioneer/react-utils
 
+## 4.2.0
+
+### Patch Changes
+
+- @open-pioneer/core@4.2.0
+
 ## 4.1.0
 
 ### Patch Changes
