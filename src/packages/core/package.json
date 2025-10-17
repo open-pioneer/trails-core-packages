@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/core",
-    "version": "4.1.0",
+    "version": "4.2.0",
     "description": "Contains basic utility functions and classes used by the @open-pioneer project.",
     "license": "Apache-2.0",
     "main": "index.ts",
