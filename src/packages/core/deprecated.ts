@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-const PRINT_DEPRECATIONS =
-    typeof __PRINT_DEPRECATIONS__ !== "undefined" ? __PRINT_DEPRECATIONS__ : true;
+let enabled = typeof __PRINT_DEPRECATIONS__ !== "undefined" ? __PRINT_DEPRECATIONS__ : true;
 
 /**
  * Options supported by {@link deprecated}.
@@ -27,6 +26,17 @@ export interface DeprecatedOptions {
      * Should be a succinct message like `use xyz instead`.
      */
     alternative?: string;
+}
+
+/**
+ * To dynamically enable/disable deprecations at runtime.
+ *
+ * Currently only used for other tests in this project.
+ *
+ * @internal
+ */
+export function setDeprecationWarningsEnabled(newEnabled: boolean) {
+    enabled = newEnabled;
 }
 
 /**
@@ -59,13 +69,13 @@ export interface DeprecatedOptions {
  * ```
  */
 export function deprecated(options: DeprecatedOptions): () => void {
-    if (!PRINT_DEPRECATIONS || !import.meta.env.DEV) {
+    if (!enabled || !import.meta.env.DEV) {
         return () => {}; // do nothing
     }
 
     let called = false;
     return function deprecationHelper() {
-        if (called) {
+        if (!enabled || called) {
             return;
         }
 

@@ -4,8 +4,10 @@
     "private": true,
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/runtime": "workspace:^",
+        "@conterra/reactivity-core": "catalog:",
+        "@open-pioneer/core": "workspace:^",
         "@open-pioneer/integration": "workspace:^",
-        "@open-pioneer/core": "workspace:^"
+        "@open-pioneer/reactivity": "workspace:^",
+        "@open-pioneer/runtime": "workspace:^"
     }
 }

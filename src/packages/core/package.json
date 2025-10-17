@@ -16,6 +16,9 @@
     "scripts": {
         "build": "build-pioneer-package"
     },
+    "dependencies": {
+        "@conterra/reactivity-events": "catalog:"
+    },
     "devDependencies": {
         "core-packages": "workspace:^"
     },

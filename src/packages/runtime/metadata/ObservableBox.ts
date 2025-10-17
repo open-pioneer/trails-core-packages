@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { EventEmitter, Resource } from "@open-pioneer/core";
+import { reactive, Reactive } from "@conterra/reactivity-core";
 
 export interface ObservableBox<T> {
-    /** The current value. */
+    /** The current value. Reactive. */
     readonly value: T;
 
     /**
@@ -11,15 +11,7 @@ export interface ObservableBox<T> {
      *
      * Note that this function is only present during development to facilitate hot reloading.
      */
-    setValue?(value: T): void;
-
-    /**
-     * Register a listener callback that will be invoked
-     * when the value changes.
-     *
-     * Note that this function is only present during development to facilitate hot reloading.
-     */
-    on?(event: "changed", listener: () => void): Resource;
+    setValue?(newValue: T): void;
 }
 
 /**
@@ -36,16 +28,18 @@ export function createBox<T>(value: T): ObservableBox<T> {
     }
 }
 
-class BoxImpl<T> extends EventEmitter<{ changed: void }> implements Required<ObservableBox<T>> {
-    value: T;
+class BoxImpl<T> implements Required<ObservableBox<T>> {
+    #signal: Reactive<T>;
 
     constructor(value: T) {
-        super();
-        this.value = value;
+        this.#signal = reactive(value);
     }
 
-    setValue(value: T): void {
-        this.value = value;
-        this.emit("changed");
+    get value(): T {
+        return this.#signal.value;
+    }
+
+    setValue(newValue: T): void {
+        this.#signal.value = newValue;
     }
 }

@@ -18,6 +18,9 @@ catalogs:
     '@conterra/reactivity-core':
       specifier: ^0.8.0
       version: 0.8.0
+    '@conterra/reactivity-events':
+      specifier: ^0.8.0
+      version: 0.8.0
     '@emotion/cache':
       specifier: ^11.14.0
       version: 11.14.0
@@ -430,6 +433,10 @@ importers:
     publishDirectory: dist
 
   src/packages/core:
+    dependencies:
+      '@conterra/reactivity-events':
+        specifier: 'catalog:'
+        version: 0.8.0
     devDependencies:
       core-packages:
         specifier: workspace:^
@@ -625,12 +632,18 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.27.1(@emotion/react@11.14.0(@types/react@19.2.2)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.8.0
       '@open-pioneer/core':
         specifier: workspace:^
         version: link:../../../packages/core
       '@open-pioneer/integration':
         specifier: workspace:^
         version: link:../../../packages/integration
+      '@open-pioneer/reactivity':
+        specifier: workspace:^
+        version: link:../../../packages/reactivity
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime
@@ -967,6 +980,9 @@ packages:
 
   '@conterra/reactivity-core@0.8.0':
     resolution: {integrity: sha512-y9Icg79uEo7YCaCsCVDWVoV4TCGPSVwHxK0lyCEXEdPtioXbi/fqWLfwYGPkO+TcD4OuK+KdVC51JgvgdwJPsA==}
+
+  '@conterra/reactivity-events@0.8.0':
+    resolution: {integrity: sha512-XSKi87fo7GTHUM+khf8j7LmJuyKxn0FGn6oPliMBZTJxRkh1sVXniqubMiJVQ2PsAYNThEkpK+N0BCHwCxsVrQ==}
 
   '@emnapi/core@1.4.3':
     resolution: {integrity: sha512-4m62DuCE07lw01soJwPiBGC0nAww0Q+RY70VZ+n49yDIO13yyinhbWCeNnaob0lakDtWQzSdtNWzJeOJt2ma+g==}
@@ -4962,6 +4978,10 @@ snapshots:
   '@conterra/reactivity-core@0.8.0':
     dependencies:
       '@preact/signals-core': 1.12.0
+
+  '@conterra/reactivity-events@0.8.0':
+    dependencies:
+      '@conterra/reactivity-core': 0.8.0
 
   '@emnapi/core@1.4.3':
     dependencies:

@@ -3,8 +3,8 @@
 import { useService } from "open-pioneer:react-hooks";
 import { TextService } from "./TextService";
 import { Button, Container, VStack, Text, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { ExternalEventService } from "@open-pioneer/integration";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 
 export function DemoUI() {
     const eventService = useService<ExternalEventService>("integration.ExternalEventService");
@@ -15,14 +15,7 @@ export function DemoUI() {
     };
 
     const textService = useService<unknown>("api-app.TextService") as TextService;
-    const [text, setText] = useState("");
-    useEffect(() => {
-        setText(textService.getText());
-        const handle = textService.on("text-changed", (event) => {
-            setText(event.newText);
-        });
-        return () => handle.destroy();
-    }, [textService]);
+    const text = useReactiveSnapshot(() => textService.getText(), [textService]);
 
     return (
         <Container maxWidth="xl">

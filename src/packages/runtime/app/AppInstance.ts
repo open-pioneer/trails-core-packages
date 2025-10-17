@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { reactive, ReadonlyReactive } from "@conterra/reactivity-core";
+import { effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
@@ -202,10 +202,13 @@ export class AppInstance {
 
         const signal = reactive(stylesBox.value);
         if (import.meta.hot) {
-            this.stylesWatch = stylesBox.on?.("changed", () => {
-                LOG.debug("Application styles changed");
-                signal.value = stylesBox.value;
-            });
+            this.stylesWatch = effect(
+                () => {
+                    signal.value = stylesBox.value;
+                    LOG.debug("Application styles changed");
+                },
+                { dispatch: "sync" }
+            );
         }
         return signal;
     }

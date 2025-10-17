@@ -1,26 +1,15 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { EventEmitter } from "@open-pioneer/core";
+import { reactive } from "@conterra/reactivity-core";
 
-export interface UpdatedText {
-    newText: string;
-    oldText: string;
-}
-
-export interface TextEvents {
-    "text-changed": UpdatedText;
-}
-
-export class TextService extends EventEmitter<TextEvents> {
-    private text = "not yet set";
+export class TextService {
+    private text = reactive("not yet set");
 
     setText(text: string) {
-        const oldText = this.text;
-        this.text = text;
-        this.emit("text-changed", { newText: this.text, oldText: oldText });
+        this.text.value = text;
     }
 
-    getText() {
-        return this.text;
+    getText(): string {
+        return this.text.value;
     }
 }

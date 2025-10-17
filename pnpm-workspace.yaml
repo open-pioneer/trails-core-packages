@@ -9,6 +9,7 @@ catalog:
   "@chakra-ui/cli": ^3.27.1
   "@chakra-ui/react": ^3.27.1
   "@conterra/reactivity-core": ^0.8.0
+  "@conterra/reactivity-events": ^0.8.0
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
   "@formatjs/intl": ^3.1.8

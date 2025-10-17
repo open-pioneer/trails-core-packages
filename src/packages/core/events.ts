@@ -1,6 +1,14 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { deprecated } from "./deprecated";
 import { Resource } from "./resources";
+import {
+    emit,
+    emitter,
+    on,
+    EventEmitter as ReactivityEmitter,
+    SubscribeOptions
+} from "@conterra/reactivity-events";
 
 const state = Symbol("EventEmitterState");
 
@@ -9,6 +17,16 @@ export type EventNames<Events extends {}> = keyof Events & string;
 type ArgType<T> = [T] extends [void] ? [] : [event: T];
 
 type EventType<Events extends {}, Name extends keyof Events> = ArgType<Events[Name]>;
+
+const deprecatedHelper = deprecated({
+    name: "EventEmitter",
+    packageName: "@open-pioneer/core",
+    since: "v4.2.0",
+    alternative: "use @conterra/reactivity-events instead"
+});
+
+const SYNC_OPT = { dispatch: "sync" } as const satisfies SubscribeOptions;
+const ONCE_OPT = { dispatch: "sync", once: true } as const satisfies SubscribeOptions;
 
 /**
  * A support class that implements emitting and listening for events.
@@ -35,9 +53,15 @@ type EventType<Events extends {}, Name extends keyof Events> = ArgType<Events[Na
  * });
  * emitter.emit("mouse-clicked", new MouseEvent(...));
  * ```
+ *
+ * @deprecated Use the package [@conterra/reactivity-events](https://www.npmjs.com/package/@conterra/reactivity-events) instead.
  */
 export class EventEmitter<Events extends {}> {
     private [state] = new EventEmitterState();
+
+    constructor() {
+        deprecatedHelper();
+    }
 
     /**
      * Registers the given listener function as an event handler for `eventName`.
@@ -49,9 +73,8 @@ export class EventEmitter<Events extends {}> {
         eventName: Name,
         listener: (...args: EventType<Events, Name>) => void
     ): Resource {
-        return this[state].on(eventName, {
-            listener: listener as InternalListener
-        });
+        const e = this[state].getEmitter(eventName, true);
+        return on(e, listener as InternalListener, SYNC_OPT);
     }
 
     /**
@@ -64,10 +87,8 @@ export class EventEmitter<Events extends {}> {
         eventName: Name,
         listener: (...args: EventType<Events, Name>) => void
     ): Resource {
-        return this[state].on(eventName, {
-            listener: listener as InternalListener,
-            once: true
-        });
+        const e = this[state].getEmitter(eventName, true);
+        return on(e, listener as InternalListener, ONCE_OPT);
     }
 
     /**
@@ -77,62 +98,33 @@ export class EventEmitter<Events extends {}> {
      * After `emit()` has completed, all listeners will already have been invoked.
      */
     emit<Name extends EventNames<Events>>(eventName: Name, ...args: EventType<Events, Name>): void {
-        this[state].emit(eventName, args[0]);
+        const e = this[state].getEmitter(eventName);
+        if (e) {
+            emit(e, args[0]);
+        }
     }
 }
 
 /**
  * Read-only version of the {@link EventEmitter} interface that only allows listening for events.
+ *
+ * @deprecated Use the package [@conterra/reactivity-events](https://www.npmjs.com/package/@conterra/reactivity-events) instead.
  */
 export type EventSource<Events extends {}> = Pick<EventEmitter<Events>, "on" | "once">;
 
 type InternalListener = (event: unknown) => void;
 
-interface EventHandler {
-    once?: boolean;
-    removed?: boolean;
-    listener: InternalListener;
-}
-
 class EventEmitterState {
-    private handlers = new Map<string, Set<EventHandler>>();
+    private emitters = new Map<string, ReactivityEmitter<unknown>>();
 
-    on(name: string, handler: EventHandler): Resource {
-        let handlers = this.handlers.get(name);
-        if (!handlers) {
-            handlers = new Set();
-            this.handlers.set(name, handlers);
+    getEmitter(name: string): ReactivityEmitter<unknown> | undefined;
+    getEmitter(name: string, init: true): ReactivityEmitter<unknown>;
+    getEmitter(name: string, init = false) {
+        let e = this.emitters.get(name);
+        if (!e && init) {
+            e = emitter();
+            this.emitters.set(name, e);
         }
-        handlers.add(handler);
-        return {
-            destroy() {
-                handler.removed = true;
-                handlers?.delete(handler);
-                handlers = undefined;
-            }
-        };
-    }
-
-    emit(name: string, event: unknown) {
-        const handlers = this.handlers.get(name);
-        if (!handlers) {
-            return;
-        }
-
-        // Copy to allow (de-) registration of handlers during emit.
-        // This is convenient for correctness but may been further optimization
-        // if events are emitted frequently.
-        const copy = [...handlers];
-        for (const handler of copy) {
-            if (handler.removed) {
-                continue;
-            }
-
-            if (handler.once) {
-                handler.removed = true;
-                handlers.delete(handler);
-            }
-            handler.listener(event);
-        }
+        return e;
     }
 }

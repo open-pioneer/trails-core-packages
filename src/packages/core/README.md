@@ -2,10 +2,6 @@
 
 This package contains basic utility functions and classes used in Open Pioneer Trails applications.
 
-## Events
-
-The package exports the `EventEmitter` class that supports emitting and subscribing to user defined events.
-
 ## Usage
 
 ### Errors
@@ -98,6 +94,12 @@ function someFunctionName() {
     // ...
 }
 ```
+
+### Events
+
+> Note: the `EventEmitter` class is deprecated since v4.2.0. Use [@conterra/reactivity-events](https://www.npmjs.com/package/@conterra/reactivity-events) instead.
+
+The package exports the `EventEmitter` class that supports emitting and subscribing to user defined events.
 
 ## License
 
