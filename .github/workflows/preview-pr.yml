@@ -61,7 +61,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Deploy PR Preview
-        uses: ./.github/actions/deploy-pr-preview
+        uses: open-pioneer/trails-repo-automation/.github/actions/deploy-pr-preview@main
         with:
           src-repo: "core-packages"
           token: ${{ secrets.DEMO_DEPLOY_TOKEN }}
