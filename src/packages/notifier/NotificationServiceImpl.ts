@@ -59,20 +59,25 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
     }
 
     notify(options: NotificationOptions): void {
-        this.toaster.create({
-            type: options.level ?? "info",
-            title: options.title,
-            description: options.message,
+        // Slightly delay the create call.
+        // `toaster.create` currently calls `React.flushSync` somewhere deep inside zag-js.
+        // This causes warnings when calling `notify()` in a useEffect().
+        queueMicrotask(() => {
+            this.toaster.create({
+                type: options.level ?? "info",
+                title: options.title,
+                description: options.message,
 
-            // Chakra currently has no concept of persistent toasts (other than type "loading"),
-            // so we just use a very long timeout instead.
-            // Note: MAX_VALUE or Infinity does not work either (probably too big for some computations made internally).
-            duration: options.displayDuration ?? PERSISTENT_TIMEOUT,
+                // Chakra currently has no concept of persistent toasts (other than type "loading"),
+                // so we just use a very long timeout instead.
+                // Note: MAX_VALUE or Infinity does not work either (probably too big for some computations made internally).
+                duration: options.displayDuration ?? PERSISTENT_TIMEOUT,
 
-            // Additional data for the toast (can be arbitrary)
-            meta: {
-                closable: true
-            } satisfies ToastMeta
+                // Additional data for the toast (can be arbitrary)
+                meta: {
+                    closable: true
+                } satisfies ToastMeta
+            });
         });
     }
 
