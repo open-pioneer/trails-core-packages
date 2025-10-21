@@ -14,4 +14,4 @@
 "@open-pioneer/test-utils": minor
 ---
 
-Update chakra-ui to 3.27.1
+Update chakra-ui to 3.28.0
