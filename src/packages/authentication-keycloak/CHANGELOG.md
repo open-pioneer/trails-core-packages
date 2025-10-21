@@ -1,5 +1,15 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies [6416dd9]
+    - @open-pioneer/notifier@4.2.1
+    - @open-pioneer/authentication@4.2.1
+    - @open-pioneer/core@4.2.1
+    - @open-pioneer/runtime@4.2.1
+
 ## 4.2.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @open-pioneer/chakra-snippets
 
+## 4.2.1
+
+### Patch Changes
+
+- @open-pioneer/core@4.2.1
+- @open-pioneer/runtime@4.2.1
+
 ## 4.2.0
 
 ### Minor Changes

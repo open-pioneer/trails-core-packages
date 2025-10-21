@@ -1,5 +1,15 @@
 # @open-pioneer/notifier
 
+## 4.2.1
+
+### Patch Changes
+
+- 6416dd9: Very slightly defer toast creation (using `queueMicrotask()`).
+  This prevents a React warning when calling `NotificationService.notify(..)` from within a `useEffect()`.
+    - @open-pioneer/core@4.2.1
+    - @open-pioneer/react-utils@4.2.1
+    - @open-pioneer/runtime@4.2.1
+
 ## 4.2.0
 
 ### Minor Changes
