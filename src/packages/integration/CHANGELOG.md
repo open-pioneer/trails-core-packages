@@ -1,5 +1,18 @@
 # @open-pioneer/integration
 
+## 4.2.0
+
+### Minor Changes
+
+- 1b95a62: Update chakra-ui to 3.28.0
+
+### Patch Changes
+
+- 81308c0: Update to eslint 9
+- Updated dependencies [81308c0]
+- Updated dependencies [1b95a62]
+    - @open-pioneer/runtime@4.2.0
+
 ## 4.1.0
 
 ### Patch Changes

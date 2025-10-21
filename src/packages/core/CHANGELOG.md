@@ -1,5 +1,13 @@
 # @open-pioneer/core
 
+## 4.2.0
+
+### Minor Changes
+
+- 0bcda89: Deprecate the `EventEmitter` class.
+  Use [@conterra/reactivity-events](https://www.npmjs.com/package/@conterra/reactivity-events) for events instead.
+- 1b95a62: Update chakra-ui to 3.28.0
+
 ## 4.1.0
 
 ### Minor Changes
