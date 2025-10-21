@@ -24,14 +24,14 @@ class Service {
 }
 
 it("creates a new service instance", async () => {
-    const service = await createService(Service);
+    const service = createService(Service);
     expect(service).toBeInstanceOf(Service);
     expect(service.$opts.references).toEqual({});
     expect(service.$opts.properties).toEqual({});
 });
 
 it("creates a new service instance with the defined references", async () => {
-    const service = await createService(Service, {
+    const service = createService(Service, {
         references: {
             other: {
                 bar() {
@@ -45,7 +45,7 @@ it("creates a new service instance with the defined references", async () => {
 });
 
 it("creates a new service instance with the defined properties", async () => {
-    const service = await createService(Service, {
+    const service = createService(Service, {
         properties: {
             foo: "123"
         }
@@ -54,7 +54,7 @@ it("creates a new service instance with the defined properties", async () => {
 });
 
 it("creates a new service and provides metadata about references", async () => {
-    const service = await createService(Service, {
+    const service = createService(Service, {
         references: {
             other: {
                 bar() {
@@ -87,7 +87,7 @@ it("creates a new service and provides metadata about references", async () => {
 });
 
 it("creates a new service with access to intl", async () => {
-    const service = await createService(Service, {
+    const service = createService(Service, {
         locale: "de",
         messages: {
             "foo.bar": "Hello!"

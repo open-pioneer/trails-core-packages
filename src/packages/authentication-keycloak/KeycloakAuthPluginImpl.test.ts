@@ -235,7 +235,7 @@ async function setup(options: SetupOptions = {}) {
             this._notifications.push(options);
         }
     } satisfies MockedNotifier;
-    const keycloakAuthPlugin = await createService(KeycloakAuthPluginImpl, {
+    const keycloakAuthPlugin = createService(KeycloakAuthPluginImpl, {
         properties: {
             keycloakOptions: {
                 refreshOptions: {

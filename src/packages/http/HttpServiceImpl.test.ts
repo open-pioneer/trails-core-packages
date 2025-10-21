@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 it("should invoke fetch", async () => {
-    const { service, getRequestCount, getLastRequest } = await setup();
+    const { service, getRequestCount, getLastRequest } = setup();
     const response = await service.fetch("https://example.com/foo?bar=baz");
 
     expect(getRequestCount()).toBe(1);
@@ -26,13 +26,13 @@ it("should invoke fetch", async () => {
 });
 
 it("transports request errors", async () => {
-    const { service } = await setup({ fetchResponse: errorResponse(404) });
+    const { service } = setup({ fetchResponse: errorResponse(404) });
     const response = await service.fetch("https://example.com");
     expect(response.status).toBe(404);
 });
 
 it("performs requests relative to the current origin", async () => {
-    const { service, getLastRequest } = await setup({
+    const { service, getLastRequest } = setup({
         location: "https://example.com/some/path"
     });
     await service.fetch("/foo?bar=baz");
@@ -41,7 +41,7 @@ it("performs requests relative to the current origin", async () => {
 });
 
 it("performs requests relative to the current location", async () => {
-    const { service, getLastRequest } = await setup({
+    const { service, getLastRequest } = setup({
         location: "https://example.com/some/path/index.html"
     });
     await service.fetch("./foo?bar=baz");
@@ -53,7 +53,7 @@ it("performs requests relative to the current location", async () => {
 
 it("supports cancellation", async () => {
     const abortController = new AbortController();
-    const { service } = await setup({
+    const { service } = setup({
         async fetchResponse(req) {
             await waitForAbort(req.signal);
             throwAbortError();
@@ -80,7 +80,7 @@ describe("before request interceptors", () => {
                 }
             }
         ];
-        const { service } = await setup({ interceptors });
+        const { service } = setup({ interceptors });
         await service.fetch("https://example.com");
         expect(events).toMatchInlineSnapshot(`
           [
@@ -103,7 +103,7 @@ describe("before request interceptors", () => {
                 params.target = new URL("https://foo.bar/other-path");
             }
         };
-        const { service, getLastRequest } = await setup({ interceptors: [interceptor] });
+        const { service, getLastRequest } = setup({ interceptors: [interceptor] });
         const promise = service.fetch("https://example.com/bar");
         vi.advanceTimersByTime(timeout);
         await promise;
@@ -116,7 +116,7 @@ describe("before request interceptors", () => {
                 params.target.searchParams.append("token", "foo");
             }
         };
-        const { service, getLastRequest } = await setup({ interceptors: [interceptor] });
+        const { service, getLastRequest } = setup({ interceptors: [interceptor] });
         await service.fetch("https://example.com/bar");
         expect(getLastRequest()?.url).toMatchInlineSnapshot('"https://example.com/bar?token=foo"');
     });
@@ -127,7 +127,7 @@ describe("before request interceptors", () => {
                 params.target = new URL("https://foo.bar/other-path");
             }
         };
-        const { service, getLastRequest } = await setup({ interceptors: [interceptor] });
+        const { service, getLastRequest } = setup({ interceptors: [interceptor] });
         await service.fetch("https://example.com/bar");
         expect(getLastRequest()?.url).toMatchInlineSnapshot('"https://foo.bar/other-path"');
     });
@@ -138,7 +138,7 @@ describe("before request interceptors", () => {
                 params.options.headers.set("X-CUSTOM-TOKEN", "1234");
             }
         };
-        const { service, getLastRequest } = await setup({ interceptors: [interceptor] });
+        const { service, getLastRequest } = setup({ interceptors: [interceptor] });
         await service.fetch("https://example.com/bar");
 
         const lastRequest = getLastRequest();
@@ -152,7 +152,7 @@ describe("before request interceptors", () => {
                 params.options.method = "PUT";
             }
         };
-        const { service, getLastRequest } = await setup({ interceptors: [interceptor] });
+        const { service, getLastRequest } = setup({ interceptors: [interceptor] });
         await service.fetch("https://example.com/");
 
         const lastRequest = getLastRequest();
@@ -163,7 +163,7 @@ describe("before request interceptors", () => {
     it("supports per-request context properties", async () => {
         const symbol = Symbol("some_symbol");
         const props: Record<string | symbol, unknown> = {};
-        const { service } = await setup({
+        const { service } = setup({
             interceptors: [
                 {
                     beforeRequest({ context }) {
@@ -199,7 +199,7 @@ describe("before request interceptors", () => {
                 context.value = typeof existing === "number" ? existing + 1 : 0;
             }
         };
-        const { service } = await setup({
+        const { service } = setup({
             interceptors: [interceptor, interceptor, interceptor, interceptor]
         });
         await service.fetch("https://example.com");
@@ -231,7 +231,7 @@ describe("before request interceptors", () => {
             }
         };
 
-        const { service, getRequests } = await setup({ interceptors: [interceptor] });
+        const { service, getRequests } = setup({ interceptors: [interceptor] });
         await service.fetch("https://example.com/first");
 
         expect(calls).toBe(2);
@@ -244,7 +244,7 @@ describe("before request interceptors", () => {
     });
 });
 
-async function setup(options?: {
+function setup(options?: {
     fetchResponse?: Response | ((req: Request) => Response | Promise<Response>);
     location?: string;
     interceptors?: Interceptor[];
@@ -265,7 +265,7 @@ async function setup(options?: {
         options?.location ?? "https://example.com:3000/"
     );
 
-    const service = await createService(HttpServiceImpl, {
+    const service = createService(HttpServiceImpl, {
         references: {
             interceptors: options?.interceptors ?? []
         }

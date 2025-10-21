@@ -96,7 +96,7 @@ import { createService } from "@open-pioneer/test-utils/services";
 import { MyService } from "./MyService"; // User defined service
 
 it("creates a new service instance with the defined references", async () => {
-    const service = await createService(MyService, {
+    const service = createService(MyService, {
         references: {
             // Will be injected into the constructor.
             // TypeScript checks are intentionally relaxed a bit.

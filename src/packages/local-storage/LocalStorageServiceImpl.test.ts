@@ -20,7 +20,7 @@ afterEach(() => {
 });
 
 it("Supports local storage by default", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     expect(storageService.isSupported).toBe(true);
 });
 
@@ -28,7 +28,7 @@ it("Detects missing local storage", async () => {
     vi.spyOn(window, "localStorage", "get").mockReturnValue(undefined as any);
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
-    const storageService = await setup();
+    const storageService = setup();
     expect(storageService.isSupported).toBe(false);
     expect(warnSpy).toMatchInlineSnapshot(`
       [MockFunction warn] {
@@ -58,7 +58,7 @@ it("Reports errors if local storage does not work", async () => {
         throw new Error("Some problem!");
     });
 
-    const _storageService = await setup();
+    const _storageService = setup();
     expect(warnSpy).toMatchInlineSnapshot(`
       [MockFunction warn] {
         "calls": [
@@ -78,7 +78,7 @@ it("Reports errors if local storage does not work", async () => {
 });
 
 it("Persists data to local storage", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     storageService.set("foo", "bar");
     storageService.set("answer", 42);
     storageService.set("null", null);
@@ -115,7 +115,7 @@ it("Restores previous data on next run", async () => {
         })
     );
 
-    const storageService = await setup();
+    const storageService = setup();
     expect(storageService.get("answer")).toBe(42);
     expect(storageService.get("object")).toEqual({
         baz: "qux"
@@ -127,7 +127,7 @@ it("Overwrites invalid data on load", async () => {
 
     MOCKED_STORAGE.set(DEFAULT_STORAGE_ID, "garbage");
 
-    const _storageService = await setup();
+    const _storageService = setup();
     expect(getStorageData()).toMatchInlineSnapshot("{}");
 
     expect(warnSpy).toHaveBeenCalledOnce();
@@ -139,7 +139,7 @@ it("Overwrites invalid data on load", async () => {
 });
 
 it("Returns previously set values in get()", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     storageService.set("foo", "bar");
     expect(storageService.get("foo")).toBe("bar");
 });
@@ -149,7 +149,7 @@ it("Clones values to avoid accidental side effects", async () => {
         bar: 2
     };
 
-    const storageService = await setup();
+    const storageService = setup();
     storageService.set("foo", foo);
     foo.bar += 1;
 
@@ -159,12 +159,12 @@ it("Clones values to avoid accidental side effects", async () => {
 });
 
 it("Returns undefined for missing values", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     expect(storageService.get("foo")).toBeUndefined();
 });
 
 it("Allows removing a key", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     storageService.set("foo", "bar");
     expect(storageService.get("foo")).toBe("bar");
 
@@ -173,7 +173,7 @@ it("Allows removing a key", async () => {
 });
 
 it("Supports removing all keys", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     storageService.set("foo", "bar");
     storageService.set("answer", 42);
     storageService.removeAll();
@@ -182,7 +182,7 @@ it("Supports removing all keys", async () => {
 });
 
 it("Throws for invalid values", async () => {
-    const storageService = await setup();
+    const storageService = setup();
     expect(() => storageService.set("foo", () => 1)).toThrowErrorMatchingInlineSnapshot(
         `[Error: local-storage:invalid-value: The value is not supported by local storage.]`
     );
@@ -197,7 +197,7 @@ it("Throws for invalid values", async () => {
 it("Detects missing storage id", async () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
-    const storageService = await setup({
+    const storageService = setup({
         storageId: undefined
     });
     expect(storageService.isSupported).toBe(true);
@@ -220,7 +220,7 @@ it("Detects missing storage id", async () => {
 
 describe("nested namespaces", () => {
     it("supports creating a nested namespace", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const namespace = storageService.getNamespace("toc");
         namespace.set("foo", "bar");
 
@@ -234,7 +234,7 @@ describe("nested namespaces", () => {
     });
 
     it("supports removing keys", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const namespace = storageService.getNamespace("toc");
         namespace.set("foo", "bar");
         namespace.set("bar", "baz");
@@ -250,7 +250,7 @@ describe("nested namespaces", () => {
     });
 
     it("clearing a namespace only removes the nested properties", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         storageService.set("outer", 1);
 
         const namespace = storageService.getNamespace("nested");
@@ -266,7 +266,7 @@ describe("nested namespaces", () => {
     });
 
     it("supports deeply nested namespaces", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const namespace = storageService.getNamespace("a").getNamespace("b").getNamespace("c");
         namespace.set("foo", "bar");
         expect(getStorageData()).toMatchInlineSnapshot(`
@@ -283,7 +283,7 @@ describe("nested namespaces", () => {
     });
 
     it("returns the same values from namespace objects referencing the same key", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const ns1 = storageService.getNamespace("ns");
         const ns2 = storageService.getNamespace("ns");
 
@@ -293,7 +293,7 @@ describe("nested namespaces", () => {
     });
 
     it("throws if getNamespace() is called for a non-object value", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         storageService.set("a", "invalid");
         expect(() => storageService.getNamespace("a")).toThrowErrorMatchingInlineSnapshot(
             `[Error: local-storage:invalid-path: Cannot use 'a' as a namespace because it is not associated with an object.]`
@@ -301,7 +301,7 @@ describe("nested namespaces", () => {
     });
 
     it("throws if a parent is not an object (set)", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const namespace = storageService.getNamespace("a");
         storageService.set("a", 123);
         expect(() => namespace.set("foo", 456)).toThrowErrorMatchingInlineSnapshot(
@@ -310,7 +310,7 @@ describe("nested namespaces", () => {
     });
 
     it("throws if a parent is not an object (get)", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const namespace = storageService.getNamespace("a");
         storageService.set("a", 123);
         expect(() => namespace.get("foo")).toThrowErrorMatchingInlineSnapshot(
@@ -319,7 +319,7 @@ describe("nested namespaces", () => {
     });
 
     it("returns the namespace's object value on get", async () => {
-        const storageService = await setup();
+        const storageService = setup();
         const packageNamespace = storageService.getNamespace("my-package-name");
         packageNamespace.set("foo", "bar");
 
@@ -328,9 +328,9 @@ describe("nested namespaces", () => {
     });
 });
 
-async function setup(options?: { storageId?: string }) {
+function setup(options?: { storageId?: string }) {
     const storageId = options && "storageId" in options ? options.storageId : DEFAULT_STORAGE_ID;
-    const storageService = await createService(LocalStorageServiceImpl, {
+    const storageService = createService(LocalStorageServiceImpl, {
         properties: {
             storageId
         }

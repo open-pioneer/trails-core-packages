@@ -9,7 +9,7 @@ it("merges methods from multiple providers to a combined method map", async func
     let fooCalled = 0;
     let barCalled = 0;
 
-    const service = await createService(ApiServiceImpl, {
+    const service = createService(ApiServiceImpl, {
         references: {
             providers: [
                 {
@@ -50,7 +50,7 @@ it("merges methods from multiple providers to a combined method map", async func
 });
 
 it("reports an error if a method is defined multiple times", async function () {
-    const service = await createService(ApiServiceImpl, {
+    const service = createService(ApiServiceImpl, {
         references: {
             providers: [
                 {

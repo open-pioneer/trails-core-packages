@@ -9,7 +9,7 @@ import { NotificationServiceImpl } from "./NotificationServiceImpl";
 import { Notifier } from "./Notifier";
 
 it("shows notifications as toasts", async () => {
-    const { service, content } = await create();
+    const { service, content } = create();
     render(content);
     await screen.findByRole("region"); // Wait for mount
 
@@ -35,7 +35,7 @@ it("shows notifications as toasts", async () => {
 });
 
 it("closes all notifications", async () => {
-    const { service, content } = await create();
+    const { service, content } = create();
     render(content);
     await screen.findByRole("region"); // Wait for mount
 
@@ -58,12 +58,12 @@ it("closes all notifications", async () => {
         service.closeAll();
     });
     await waitForElementToBeRemoved(messageElements);
-    const messageElementsAfterClear = await screen.queryAllByText("test1");
+    const messageElementsAfterClear = screen.queryAllByText("test1");
     expect(messageElementsAfterClear).toHaveLength(0);
 });
 
-async function create() {
-    const service = await createService(NotificationServiceImpl);
+function create() {
+    const service = createService(NotificationServiceImpl);
     const services = {
         "notifier.NotificationService": service
     };

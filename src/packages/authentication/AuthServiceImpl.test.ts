@@ -12,7 +12,7 @@ import { reactive, syncWatch } from "@conterra/reactivity-core";
 
 it("forwards the authentication plugin's state changes", async () => {
     const plugin = new TestPlugin();
-    const authService = await createService(AuthServiceImpl, {
+    const authService = createService(AuthServiceImpl, {
         references: {
             plugin: plugin
         }
@@ -67,7 +67,7 @@ it("forwards the authentication plugin's state changes", async () => {
 it("creates a promise that resolves once the plugin is no longer pending", async () => {
     const plugin = new TestPlugin();
     plugin.$setAuthState({ kind: "pending" });
-    const authService = await createService(AuthServiceImpl, {
+    const authService = createService(AuthServiceImpl, {
         references: {
             plugin: plugin
         }
@@ -94,7 +94,7 @@ it("creates a promise that resolves once the plugin is no longer pending", async
 
 it("returns the authentication plugins fallback", async () => {
     const plugin = new TestPlugin();
-    const authService = await createService(AuthServiceImpl, {
+    const authService = createService(AuthServiceImpl, {
         references: {
             plugin: plugin
         }
@@ -107,14 +107,14 @@ it("returns the authentication plugins fallback", async () => {
 
 it("calls the plugin's logout method", async () => {
     const plugin = new TestPlugin();
-    const authService = await createService(AuthServiceImpl, {
+    const authService = createService(AuthServiceImpl, {
         references: {
             plugin: plugin
         }
     });
 
     expect(plugin.$logoutCalled).toBe(0);
-    await authService.logout();
+    authService.logout();
     expect(plugin.$logoutCalled).toBe(1);
 });
 

@@ -70,10 +70,10 @@ type PartialServiceReferences<References> = {
  * @param options options passed to the service constructor
  * @returns a new instance of the given service class
  */
-export async function createService<References extends {}, Interface extends {}>(
+export function createService<References extends {}, Interface extends {}>(
     clazz: ServiceConstructor<References, Interface>,
     options?: CreateServiceOptions<References>
-): Promise<Service<Interface>> {
+): Service<Interface> {
     const references = options?.references ?? {};
     const referencesMeta = Object.fromEntries(
         Object.entries(references).map(([referenceName, reference]) => [

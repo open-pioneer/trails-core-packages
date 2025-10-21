@@ -16,7 +16,7 @@ it("emits events on the application's host element", async () => {
     div.addEventListener(eventName, (e) => {
         events.push([e.type, (e as any).detail]);
     });
-    const eventService = await createService(ExternalEventServiceImpl, {
+    const eventService = createService(ExternalEventServiceImpl, {
         references: {
             ctx: {
                 getHostElement() {
@@ -49,7 +49,7 @@ it("emits custom instances of Events", async () => {
     div.addEventListener("custom-event", (e) => {
         events.push(e);
     });
-    const eventService = await createService(ExternalEventServiceImpl, {
+    const eventService = createService(ExternalEventServiceImpl, {
         references: {
             ctx: {
                 getHostElement() {
