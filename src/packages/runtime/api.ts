@@ -1,10 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { DeclaredService } from "./DeclaredService";
-
-// Imported for typedoc link
-// eslint-disable-next-line unused-imports/no-unused-imports
 import type { ApplicationConfig } from "./CustomElement";
+import { DeclaredService } from "./DeclaredService";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;

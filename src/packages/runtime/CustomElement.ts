@@ -3,14 +3,10 @@
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
 import { ComponentType } from "react";
-import { ApiMethods } from "./api";
+import { ApiMethods, type ApiExtension } from "./api";
 import { AppInstance, AppOverrides } from "./app";
 import { ErrorId } from "./errors";
 import { ApplicationMetadata } from "./metadata";
-
-// Imported for typedoc link
-// eslint-disable-next-line unused-imports/no-unused-imports
-import { type ApiExtension } from "./api";
 
 const LOG = createLogger("runtime:CustomElement");
 

@@ -1,16 +1,10 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { useService } from "open-pioneer:react-hooks";
-import { ComponentType, FC, ReactNode, useEffect, useMemo } from "react";
-import {
-    // For typedoc link
-    // eslint-disable-next-line unused-imports/no-unused-imports
-    AuthPlugin,
-    AuthService
-} from "./api";
-import { useAuthState } from "./useAuthState";
 import { Box } from "@chakra-ui/react";
-import { useIntl } from "open-pioneer:react-hooks";
+import { useIntl, useService } from "open-pioneer:react-hooks";
+import { ComponentType, FC, ReactNode, useEffect, useMemo } from "react";
+import { AuthPlugin, AuthService } from "./api";
+import { useAuthState } from "./useAuthState";
 
 /**
  * Properties for the ForceAuth component.
@@ -52,7 +46,7 @@ export interface ForceAuthProps {
 
     /**
      * This component is rendered as fallback if an error occurs during authentication (e.g authentication backend is not available).
-     * The actual error that occured is accesible from within the fallback component via {@link ErrorFallbackProps}
+     * The actual error that occurred is accessible from within the fallback component via {@link ErrorFallbackProps}
      *
      * Example:
      *
