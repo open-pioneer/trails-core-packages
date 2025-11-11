@@ -33,6 +33,15 @@ const tokens: TokenDefinition = {
             900: { value: "#091920" },
             950: { value: "#050505" }
         }
+    },
+    cursor: {
+        button: { value: "pointer" },
+        checkbox: { value: "pointer" },
+        radio: { value: "pointer" },
+        option: { value: "pointer" },
+        slider: { value: "pointer" },
+        switch: { value: "pointer" },
+        menuitem: { value: "pointer" }
     }
 };
 
@@ -150,10 +159,14 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
     checkbox: {
         slots: checkboxAnatomy.keys(),
         base: {
+            // Apply approach of the checkmark recipe to the root
+            // See also:
+            // - https://github.com/chakra-ui/chakra-ui/blob/449061296e8cba93acb3479dc3ab205a7f288a83/packages/react/src/theme/recipes/checkmark.ts#L14C1-L14C24
+            // - https://github.com/chakra-ui/chakra-ui/blob/449061296e8cba93acb3479dc3ab205a7f288a83/packages/react/src/theme/recipes/checkmark.ts#L23C1-L26C7
             root: {
-                cursor: "pointer",
+                cursor: "checkbox",
                 _disabled: {
-                    cursor: "not-allowed"
+                    cursor: "disabled"
                 }
             },
             control: {
@@ -208,7 +221,8 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         slots: radioGroupAnatomy.keys(),
         base: {
             item: {
-                cursor: "pointer"
+                cursor: "radio"
+                // "disabled" state seems to be handled by chakra's recipe already
             },
             itemControl: {
                 // only change the border color for invalid state
@@ -219,8 +233,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
                     "&:is([data-state=checked], [data-state=indeterminate])": {
                         borderColor: "red"
                     }
-                },
-                cursor: "pointer"
+                }
             }
         },
         variants: {
@@ -257,7 +270,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         slots: selectAnatomy.keys(),
         base: {
             trigger: {
-                cursor: "pointer"
+                cursor: "option"
             }
         }
     },
@@ -265,7 +278,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         slots: nativeSelectAnatomy.keys(),
         base: {
             field: {
-                cursor: "pointer"
+                cursor: "option"
             }
         }
     },
@@ -273,10 +286,15 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         slots: sliderAnatomy.keys(),
         base: {
             control: {
-                cursor: "pointer"
+                // Should be in base recipe, but isn't?
+                cursor: "slider"
             },
             thumb: {
                 _hover: {
+                    bg: "colorPalette.solid"
+                },
+                _dragging: {
+                    // same as _hover: when the cursor is very fast, hover style may not be applied
                     bg: "colorPalette.solid"
                 }
             }

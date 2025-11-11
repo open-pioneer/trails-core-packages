@@ -6,8 +6,8 @@ packages:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/cli": ^3.28.0
-  "@chakra-ui/react": ^3.28.0
+  "@chakra-ui/cli": ^3.29.0
+  "@chakra-ui/react": ^3.29.0
   "@conterra/reactivity-core": ^0.8.0
   "@conterra/reactivity-events": ^0.8.0
   "@emotion/cache": ^11.14.0
@@ -90,7 +90,7 @@ overrides:
   "stylis@<4.3.5": ">= 4.3.5"
 
   # Ensure patched packages have the expected version (patch was tested with this version):
-  "@ark-ui/react": "5.26.2"
+  "@ark-ui/react": "5.27.1"
 
 ignorePatchFailures: false
 patchedDependencies:

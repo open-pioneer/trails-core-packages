@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/chakra-snippets": "workspace:^"
+        "@open-pioneer/chakra-snippets": "workspace:^",
+        "@open-pioneer/react-utils": "workspace:^"
     }
 }
