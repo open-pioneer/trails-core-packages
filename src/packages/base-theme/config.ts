@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { defineConfig } from "@chakra-ui/react";
+import { defineConfig, SystemConfig } from "@chakra-ui/react";
 import {
     radioGroupAnatomy,
     sliderAnatomy,
@@ -9,25 +9,34 @@ import {
     nativeSelectAnatomy
 } from "@chakra-ui/react/anatomy";
 
-//11 colors as hex values from 50 to 950 (light to dark)
-const colorPalette = {
-    //trails = default color scheme
-    trails: {
-        50: { value: "#eaf2f5" },
-        100: { value: "#d5e5ec" },
-        200: { value: "#abcbd9" },
-        300: { value: "#81b1c5" },
-        400: { value: "#5797b2" },
-        500: { value: "#2d7d9f" },
-        600: { value: "#24647f" },
-        700: { value: "#1b4b5f" },
-        800: { value: "#123240" },
-        900: { value: "#091920" },
-        950: { value: "#050505" }
+// Not exported by chakra
+type ThemingConfig = NonNullable<SystemConfig["theme"]>;
+type TokenDefinition = NonNullable<ThemingConfig["tokens"]>;
+type SemanticTokenDefinition = NonNullable<ThemingConfig["semanticTokens"]>;
+type RecipeDefinition = NonNullable<ThemingConfig["recipes"]>[string];
+type SlotRecipeConfig = NonNullable<ThemingConfig["slotRecipes"]>[string];
+
+const tokens: TokenDefinition = {
+    colors: {
+        //11 colors as hex values from 50 to 950 (light to dark)
+        // trails = default color scheme
+        trails: {
+            50: { value: "#eaf2f5" },
+            100: { value: "#d5e5ec" },
+            200: { value: "#abcbd9" },
+            300: { value: "#81b1c5" },
+            400: { value: "#5797b2" },
+            500: { value: "#2d7d9f" },
+            600: { value: "#24647f" },
+            700: { value: "#1b4b5f" },
+            800: { value: "#123240" },
+            900: { value: "#091920" },
+            950: { value: "#050505" }
+        }
     }
 };
 
-const semanticTokens = {
+const semanticTokens: SemanticTokenDefinition = {
     colors: {
         // define semantic tokens to allow usage of `colorPalette` property in components
         // see: https://chakra-ui.com/docs/theming/customization/colors#color-palette
@@ -81,7 +90,7 @@ const semanticTokens = {
 
 // Change style of components
 // see https://chakra-ui.com/docs/theming/customization/recipes#recipes
-const recipes = {
+const recipes: Record<string, RecipeDefinition> = {
     separator: {
         base: {
             borderColor: "colorPalette.solid"
@@ -137,7 +146,7 @@ const recipes = {
 
 // Change style of multipart components
 // see https://chakra-ui.com/docs/theming/customization/recipes#slot-recipes
-const slotRecipes = {
+const slotRecipes: Record<string, SlotRecipeConfig> = {
     checkbox: {
         slots: checkboxAnatomy.keys(),
         base: {
@@ -325,11 +334,9 @@ export const config = defineConfig({
         }
     },
     theme: {
-        tokens: {
-            colors: colorPalette
-        },
-        semanticTokens: semanticTokens,
-        recipes: recipes,
-        slotRecipes: slotRecipes
+        tokens,
+        semanticTokens,
+        recipes,
+        slotRecipes
     }
 });
