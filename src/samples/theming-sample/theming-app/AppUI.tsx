@@ -1,8 +1,10 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import {
+    Accordion,
     Box,
     Button,
+    Combobox,
     Container,
     createListCollection,
     Flex,
@@ -15,7 +17,9 @@ import {
     Portal,
     Select,
     Separator,
+    Span,
     Stack,
+    Tag,
     Textarea
 } from "@chakra-ui/react";
 import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
@@ -26,7 +30,7 @@ import { Slider } from "@open-pioneer/chakra-snippets/slider";
 import { Switch } from "@open-pioneer/chakra-snippets/switch";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import { SectionHeading, TitledSection } from "@open-pioneer/react-utils";
-import { Children, cloneElement, isValidElement, ReactNode } from "react";
+import { Children, cloneElement, isValidElement, ReactNode, useState } from "react";
 
 export function AppUI() {
     return (
@@ -40,12 +44,15 @@ export function AppUI() {
                         <ButtonSection />
                         <CheckboxSection />
                         <InputSection />
+                        <TagSection />
+                        <AccordionSection />
                     </Pane>
                     <Pane>
                         <LinkSection />
                         <RadioSection />
                         <SelectSection />
                         <NativeSelectSection />
+                        <ComboboxSection />
                         <SliderSection />
                         <SwitchSection />
                         <TextAreaSection />
@@ -145,6 +152,7 @@ function CheckboxSection() {
             <Checkbox defaultChecked>defaultChecked2</Checkbox>
             <Checkbox disabled>disabled</Checkbox>
             <Checkbox invalid>invalid</Checkbox>
+            <Checkbox readOnly={true}>readOnly</Checkbox>
         </Section>
     );
 }
@@ -157,10 +165,56 @@ function InputSection() {
             </Field>
 
             <Input variant={"subtle"} placeholder="subtle"></Input>
+            <Input readOnly={true} value={"readOnly-Text"}></Input>
             <Group attached>
                 <InputAddon></InputAddon>
                 <Input placeholder="input with left addon" />
             </Group>
+        </Section>
+    );
+}
+
+function TagSection() {
+    return (
+        <Section heading="Tag">
+            <Tag.Root>
+                <Tag.Label>Simple Tag</Tag.Label>
+            </Tag.Root>
+            <Tag.Root>
+                <Tag.Label>Closable Tag</Tag.Label>
+                <Tag.EndElement>
+                    <Tag.CloseTrigger />
+                </Tag.EndElement>
+            </Tag.Root>
+        </Section>
+    );
+}
+
+function AccordionSection() {
+    const [value, setValue] = useState(["second-item"]);
+    const items = [
+        { value: "first-item", title: "First Item", text: "Some value 1..." },
+        { value: "second-item", title: "Second Item", text: "Some value 2..." },
+        { value: "third-item", title: "Third Item", text: "Some value 3..." }
+    ];
+    return (
+        <Section heading="Accordion">
+            <Accordion.Root
+                collapsible
+                value={value}
+                onValueChange={(e) => setValue(e.value)}
+                height={150}
+            >
+                {items.map((item, index) => (
+                    <Accordion.Item key={index} value={item.value}>
+                        <Accordion.ItemTrigger>
+                            <Span flex="1">{item.title}</Span>
+                            <Accordion.ItemIndicator />
+                        </Accordion.ItemTrigger>
+                        <Accordion.ItemContent>{item.text}</Accordion.ItemContent>
+                    </Accordion.Item>
+                ))}
+            </Accordion.Root>
         </Section>
     );
 }
@@ -279,10 +333,50 @@ function NativeSelectSection() {
     );
 }
 
+function ComboboxSection() {
+    const frameworks = createListCollection({
+        items: [
+            { label: "React.js", value: "react" },
+            { label: "Vue.js", value: "vue" },
+            { label: "Angular", value: "angular" },
+            { label: "Svelte", value: "svelte" }
+        ]
+    });
+    return (
+        <Section heading="Combobox">
+            <Combobox.Root readOnly={true} collection={frameworks}>
+                <Combobox.Label />
+
+                <Combobox.Control>
+                    <Combobox.Input />
+                    <Combobox.IndicatorGroup>
+                        <Combobox.ClearTrigger />
+                        <Combobox.Trigger />
+                    </Combobox.IndicatorGroup>
+                </Combobox.Control>
+
+                <Combobox.Positioner>
+                    <Combobox.Content>
+                        <Combobox.Empty />
+                        {frameworks.items.map((item) => (
+                            <Combobox.Item item={item} key={item.value}>
+                                {item.label}
+                                <Combobox.ItemIndicator />
+                            </Combobox.Item>
+                        ))}
+                    </Combobox.Content>
+                </Combobox.Positioner>
+            </Combobox.Root>
+        </Section>
+    );
+}
+
 function SliderSection() {
     return (
         <Section heading="Slider">
             <Slider defaultValue={[30]} w="200px"></Slider>
+            <Slider readOnly={true} defaultValue={[30]} w="200px"></Slider>
+            <Slider disabled={true} defaultValue={[30]} w="200px"></Slider>
         </Section>
     );
 }
@@ -291,6 +385,8 @@ function SwitchSection() {
     return (
         <Section heading="Switch">
             <Switch defaultChecked />
+            <Switch readOnly={true} /> {/*todo*/}
+            <Switch disabled={true} />
         </Section>
     );
 }

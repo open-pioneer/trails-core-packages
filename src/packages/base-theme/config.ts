@@ -6,7 +6,11 @@ import {
     sliderAnatomy,
     checkboxAnatomy,
     selectAnatomy,
-    nativeSelectAnatomy
+    nativeSelectAnatomy,
+    switchAnatomy,
+    tagAnatomy,
+    accordionAnatomy,
+    comboboxAnatomy
 } from "@chakra-ui/react/anatomy";
 
 // Not exported by chakra
@@ -122,6 +126,13 @@ const recipes: Record<string, RecipeDefinition> = {
             }
         }
     },
+    input: {
+        base: {
+            _readOnly: {
+                cursor: "default"
+            }
+        }
+    },
     inputAddon: {
         variants: {
             variant: {
@@ -167,6 +178,9 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
                 cursor: "checkbox",
                 _disabled: {
                     cursor: "disabled"
+                },
+                _readOnly: {
+                    cursor: "default"
                 }
             },
             control: {
@@ -178,6 +192,9 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
                     "&:is([data-state=checked], [data-state=indeterminate])": {
                         borderColor: "red"
                     }
+                },
+                _readOnly: {
+                    cursor: "default"
                 }
             }
         },
@@ -270,7 +287,8 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         slots: selectAnatomy.keys(),
         base: {
             trigger: {
-                cursor: "option"
+                cursor: "option",
+                _readOnly: { cursor: "default" }
             }
         }
     },
@@ -287,7 +305,14 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         base: {
             control: {
                 // Should be in base recipe, but isn't?
-                cursor: "slider"
+                cursor: "slider",
+                _readOnly: {
+                    // todo: does not work?
+                    cursor: "default"
+                },
+                _disabled: {
+                    cursor: "not-allowed"
+                }
             },
             thumb: {
                 _hover: {
@@ -319,6 +344,56 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
                         "--slider-thumb-size": "sizes.4",
                         "--slider-track-size": "sizes.1"
                     }
+                }
+            }
+        }
+    },
+    switch: {
+        slots: switchAnatomy.keys(),
+        base: {
+            control: {
+                _readOnly: {
+                    cursor: "default"
+                }
+            }
+        }
+    },
+    tag: {
+        slots: tagAnatomy.keys(),
+        base: {
+            closeTrigger: {
+                cursor: "pointer",
+                _disabled: {
+                    cursor: "not-allowed"
+                }
+            }
+        }
+    },
+    accordion: {
+        slots: accordionAnatomy.keys(),
+        base: {
+            itemTrigger: { cursor: "pointer" }
+        }
+    },
+    combobox: {
+        slots: comboboxAnatomy.keys(),
+        base: {
+            trigger: {
+                cursor: "pointer",
+                _readOnly: {
+                    cursor: "auto"
+                },
+                _disabled: {
+                    cursor: "not-allowed" // todo does not work
+                }
+            },
+            clearTrigger: {
+                cursor: "pointer",
+                _readOnly: {
+                    cursor: "default"
+                },
+                _disabled: {
+                    cursor: "not-allowed" // todo does not work
                 }
             }
         }
