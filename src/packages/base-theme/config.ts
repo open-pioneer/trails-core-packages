@@ -306,12 +306,12 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
             control: {
                 // Should be in base recipe, but isn't?
                 cursor: "slider",
-                _readOnly: {
-                    // todo: does not work?
+                // does not work because chakra does not transport the data-readonly attribute
+                /* _readOnly: {
                     cursor: "default"
-                },
+                },*/
                 _disabled: {
-                    cursor: "not-allowed"
+                    cursor: "disabled"
                 }
             },
             thumb: {
@@ -364,7 +364,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
             closeTrigger: {
                 cursor: "pointer",
                 _disabled: {
-                    cursor: "not-allowed"
+                    cursor: "disabled"
                 }
             }
         }
@@ -380,20 +380,14 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
         base: {
             trigger: {
                 cursor: "pointer",
-                _readOnly: {
-                    cursor: "auto"
-                },
                 _disabled: {
-                    cursor: "not-allowed" // todo does not work
+                    cursor: "disabled"
                 }
             },
             clearTrigger: {
                 cursor: "pointer",
-                _readOnly: {
-                    cursor: "default"
-                },
                 _disabled: {
-                    cursor: "not-allowed" // todo does not work
+                    cursor: "disabled"
                 }
             }
         }

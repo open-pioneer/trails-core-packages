@@ -344,7 +344,7 @@ function ComboboxSection() {
     });
     return (
         <Section heading="Combobox">
-            <Combobox.Root readOnly={true} collection={frameworks}>
+            <Combobox.Root collection={frameworks}>
                 <Combobox.Label />
 
                 <Combobox.Control>
@@ -375,7 +375,6 @@ function SliderSection() {
     return (
         <Section heading="Slider">
             <Slider defaultValue={[30]} w="200px"></Slider>
-            <Slider readOnly={true} defaultValue={[30]} w="200px"></Slider>
             <Slider disabled={true} defaultValue={[30]} w="200px"></Slider>
         </Section>
     );
