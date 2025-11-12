@@ -1,33 +1,55 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { defineConfig } from "@chakra-ui/react";
+import { defineConfig, SystemConfig } from "@chakra-ui/react";
 import {
     radioGroupAnatomy,
     sliderAnatomy,
     checkboxAnatomy,
     selectAnatomy,
-    nativeSelectAnatomy
+    nativeSelectAnatomy,
+    switchAnatomy,
+    tagAnatomy,
+    accordionAnatomy,
+    comboboxAnatomy
 } from "@chakra-ui/react/anatomy";
 
-//11 colors as hex values from 50 to 950 (light to dark)
-const colorPalette = {
-    //trails = default color scheme
-    trails: {
-        50: { value: "#eaf2f5" },
-        100: { value: "#d5e5ec" },
-        200: { value: "#abcbd9" },
-        300: { value: "#81b1c5" },
-        400: { value: "#5797b2" },
-        500: { value: "#2d7d9f" },
-        600: { value: "#24647f" },
-        700: { value: "#1b4b5f" },
-        800: { value: "#123240" },
-        900: { value: "#091920" },
-        950: { value: "#050505" }
+// Not exported by chakra
+type ThemingConfig = NonNullable<SystemConfig["theme"]>;
+type TokenDefinition = NonNullable<ThemingConfig["tokens"]>;
+type SemanticTokenDefinition = NonNullable<ThemingConfig["semanticTokens"]>;
+type RecipeDefinition = NonNullable<ThemingConfig["recipes"]>[string];
+type SlotRecipeConfig = NonNullable<ThemingConfig["slotRecipes"]>[string];
+
+const tokens: TokenDefinition = {
+    colors: {
+        //11 colors as hex values from 50 to 950 (light to dark)
+        // trails = default color scheme
+        trails: {
+            50: { value: "#eaf2f5" },
+            100: { value: "#d5e5ec" },
+            200: { value: "#abcbd9" },
+            300: { value: "#81b1c5" },
+            400: { value: "#5797b2" },
+            500: { value: "#2d7d9f" },
+            600: { value: "#24647f" },
+            700: { value: "#1b4b5f" },
+            800: { value: "#123240" },
+            900: { value: "#091920" },
+            950: { value: "#050505" }
+        }
+    },
+    cursor: {
+        button: { value: "pointer" },
+        checkbox: { value: "pointer" },
+        radio: { value: "pointer" },
+        option: { value: "pointer" },
+        slider: { value: "pointer" },
+        switch: { value: "pointer" },
+        menuitem: { value: "pointer" }
     }
 };
 
-const semanticTokens = {
+const semanticTokens: SemanticTokenDefinition = {
     colors: {
         // define semantic tokens to allow usage of `colorPalette` property in components
         // see: https://chakra-ui.com/docs/theming/customization/colors#color-palette
@@ -81,7 +103,7 @@ const semanticTokens = {
 
 // Change style of components
 // see https://chakra-ui.com/docs/theming/customization/recipes#recipes
-const recipes = {
+const recipes: Record<string, RecipeDefinition> = {
     separator: {
         base: {
             borderColor: "colorPalette.solid"
@@ -101,6 +123,13 @@ const recipes = {
                 outline: {
                     borderColor: "colorPalette.solid"
                 }
+            }
+        }
+    },
+    input: {
+        base: {
+            _readOnly: {
+                cursor: "default"
             }
         }
     },
@@ -137,14 +166,21 @@ const recipes = {
 
 // Change style of multipart components
 // see https://chakra-ui.com/docs/theming/customization/recipes#slot-recipes
-const slotRecipes = {
+const slotRecipes: Record<string, SlotRecipeConfig> = {
     checkbox: {
         slots: checkboxAnatomy.keys(),
         base: {
+            // Apply approach of the checkmark recipe to the root
+            // See also:
+            // - https://github.com/chakra-ui/chakra-ui/blob/449061296e8cba93acb3479dc3ab205a7f288a83/packages/react/src/theme/recipes/checkmark.ts#L14C1-L14C24
+            // - https://github.com/chakra-ui/chakra-ui/blob/449061296e8cba93acb3479dc3ab205a7f288a83/packages/react/src/theme/recipes/checkmark.ts#L23C1-L26C7
             root: {
-                cursor: "pointer",
+                cursor: "checkbox",
                 _disabled: {
-                    cursor: "not-allowed"
+                    cursor: "disabled"
+                },
+                _readOnly: {
+                    cursor: "default"
                 }
             },
             control: {
@@ -156,6 +192,9 @@ const slotRecipes = {
                     "&:is([data-state=checked], [data-state=indeterminate])": {
                         borderColor: "red"
                     }
+                },
+                _readOnly: {
+                    cursor: "default"
                 }
             }
         },
@@ -199,7 +238,8 @@ const slotRecipes = {
         slots: radioGroupAnatomy.keys(),
         base: {
             item: {
-                cursor: "pointer"
+                cursor: "radio"
+                // "disabled" state seems to be handled by chakra's recipe already
             },
             itemControl: {
                 // only change the border color for invalid state
@@ -210,8 +250,7 @@ const slotRecipes = {
                     "&:is([data-state=checked], [data-state=indeterminate])": {
                         borderColor: "red"
                     }
-                },
-                cursor: "pointer"
+                }
             }
         },
         variants: {
@@ -248,7 +287,8 @@ const slotRecipes = {
         slots: selectAnatomy.keys(),
         base: {
             trigger: {
-                cursor: "pointer"
+                cursor: "option",
+                _readOnly: { cursor: "default" }
             }
         }
     },
@@ -256,7 +296,7 @@ const slotRecipes = {
         slots: nativeSelectAnatomy.keys(),
         base: {
             field: {
-                cursor: "pointer"
+                cursor: "option"
             }
         }
     },
@@ -264,10 +304,22 @@ const slotRecipes = {
         slots: sliderAnatomy.keys(),
         base: {
             control: {
-                cursor: "pointer"
+                // Should be in base recipe, but isn't?
+                cursor: "slider",
+                // does not work because chakra does not transport the data-readonly attribute
+                /* _readOnly: {
+                    cursor: "default"
+                },*/
+                _disabled: {
+                    cursor: "disabled"
+                }
             },
             thumb: {
                 _hover: {
+                    bg: "colorPalette.solid"
+                },
+                _dragging: {
+                    // same as _hover: when the cursor is very fast, hover style may not be applied
                     bg: "colorPalette.solid"
                 }
             }
@@ -292,6 +344,50 @@ const slotRecipes = {
                         "--slider-thumb-size": "sizes.4",
                         "--slider-track-size": "sizes.1"
                     }
+                }
+            }
+        }
+    },
+    switch: {
+        slots: switchAnatomy.keys(),
+        base: {
+            control: {
+                _readOnly: {
+                    cursor: "default"
+                }
+            }
+        }
+    },
+    tag: {
+        slots: tagAnatomy.keys(),
+        base: {
+            closeTrigger: {
+                cursor: "pointer",
+                _disabled: {
+                    cursor: "disabled"
+                }
+            }
+        }
+    },
+    accordion: {
+        slots: accordionAnatomy.keys(),
+        base: {
+            itemTrigger: { cursor: "pointer" }
+        }
+    },
+    combobox: {
+        slots: comboboxAnatomy.keys(),
+        base: {
+            trigger: {
+                cursor: "pointer",
+                _disabled: {
+                    cursor: "disabled"
+                }
+            },
+            clearTrigger: {
+                cursor: "pointer",
+                _disabled: {
+                    cursor: "disabled"
                 }
             }
         }
@@ -325,11 +421,9 @@ export const config = defineConfig({
         }
     },
     theme: {
-        tokens: {
-            colors: colorPalette
-        },
-        semanticTokens: semanticTokens,
-        recipes: recipes,
-        slotRecipes: slotRecipes
+        tokens,
+        semanticTokens,
+        recipes,
+        slotRecipes
     }
 });

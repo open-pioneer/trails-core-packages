@@ -25,13 +25,21 @@ export function SelectComponent() {
                     <option value="item2">Item 2</option>
                     <option value="item3">Item 3</option>
                 </NativeSelect.Field>
+                <NativeSelect.Indicator />
             </NativeSelect.Root>
 
             <Select.Root collection={frameworks} size="sm" width="320px" mb={4}>
                 <Select.Label>New select component</Select.Label>
-                <Select.Trigger>
-                    <Select.ValueText placeholder="Select an item" />
-                </Select.Trigger>
+                <Select.Control>
+                    <Select.Trigger>
+                        <Select.ValueText placeholder="Select an item" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                        <Select.Indicator />
+                        <Select.ClearTrigger />
+                    </Select.IndicatorGroup>
+                </Select.Control>
+
                 <Portal>
                     <Select.Positioner>
                         <Select.Content>
