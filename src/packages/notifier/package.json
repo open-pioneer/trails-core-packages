@@ -1,7 +1,7 @@
 {
     "name": "@open-pioneer/notifier",
     "description": "Provides support for application-wide notifications.",
-    "version": "4.2.0",
+    "version": "4.3.0",
     "license": "Apache-2.0",
     "main": "index.ts",
     "repository": {

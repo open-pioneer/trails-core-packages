@@ -1,5 +1,18 @@
 # @open-pioneer/authentication
 
+## 4.3.0
+
+### Minor Changes
+
+- eb54023: Update chakra to 3.29.0
+
+### Patch Changes
+
+- Updated dependencies [eb54023]
+    - @open-pioneer/core@4.3.0
+    - @open-pioneer/reactivity@4.3.0
+    - @open-pioneer/runtime@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes

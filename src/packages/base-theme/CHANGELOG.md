@@ -1,5 +1,15 @@
 # @open-pioneer/base-theme
 
+## 4.3.0
+
+### Minor Changes
+
+- eb54023: Update chakra to 3.29.0
+
+### Patch Changes
+
+- eb54023: Make sure that interactive elements (checkboxes, sliders, options, ...) use the 'pointer' cursor.
+
 ## 4.2.0
 
 ### Minor Changes
