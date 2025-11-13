@@ -1,59 +1,58 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { afterEach, beforeEach, it, vi, expect, MockInstance } from "vitest";
+import { afterEach, beforeEach, it, vi, expect, onTestFinished } from "vitest";
 import { KeycloakAuthPluginImpl } from "./KeycloakAuthPluginImpl";
 import { createService } from "@open-pioneer/test-utils/services";
 import { NotificationService, NotificationOptions } from "@open-pioneer/notifier";
 import { KeycloakLoginOptions, KeycloakLogoutOptions } from "keycloak-js";
 
 //https://vitest.dev/api/vi.html#vi-mock
-const hoisted = vi.hoisted(() => {
+const MOCKS = vi.hoisted(() => {
     return {
-        keycloakMock: {
-            init: vi.fn(),
-            updateToken: vi.fn(),
-            login: vi.fn(),
-            logout: vi.fn()
-        }
+        init: vi.fn(),
+        updateToken: vi.fn(),
+        login: vi.fn(),
+        logout: vi.fn()
     };
 });
 
 //The call to vi.mock is hoisted
 vi.mock("keycloak-js", () => ({
-    default: vi.fn().mockReturnValue(hoisted.keycloakMock)
-}));
+    default: class KeycloakMock {
+        constructor() {}
 
-let restoreMocks: MockInstance[] = [];
+        init = MOCKS.init;
+        updateToken = MOCKS.updateToken;
+        login = MOCKS.login;
+        logout = MOCKS.logout;
+    }
+}));
 
 beforeEach(() => {
     vi.useFakeTimers();
-    restoreMocks = [];
 });
 
 afterEach(() => {
     vi.clearAllMocks();
-    for (const mock of restoreMocks) {
-        mock.mockRestore();
-    }
+    vi.restoreAllMocks();
 });
 
 it("expect state to be 'authenticated'", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(true);
+    MOCKS.init.mockResolvedValue(true);
     const { keycloakAuthPlugin } = await setup();
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "authenticated");
 });
 
 it("expect state to be 'not-authenticated'", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(false);
+    MOCKS.init.mockResolvedValue(false);
     const { keycloakAuthPlugin } = await setup();
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "not-authenticated");
 });
 
 it("expect keycloak init to reject'", async () => {
-    hoisted.keycloakMock.init.mockRejectedValue(new Error("Error"));
+    MOCKS.init.mockRejectedValue(new Error("Error"));
 
-    const logSpy = vi.spyOn(global.console, "error").mockImplementation(() => undefined);
-    restoreMocks.push(logSpy);
+    const logSpy = mockConsoleError();
 
     const { notifier } = await setup();
     await vi.waitUntil(() => logSpy.mock.calls.length > 0); // wait until error is logged
@@ -85,12 +84,11 @@ it("expect keycloak init to reject'", async () => {
 });
 
 it("should reject by updating the token", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(true);
-    hoisted.keycloakMock.updateToken.mockRejectedValue(new Error("Error"));
+    MOCKS.init.mockResolvedValue(true);
+    MOCKS.updateToken.mockRejectedValue(new Error("Error"));
     const { keycloakAuthPlugin } = await setup();
 
-    const logSpy = vi.spyOn(global.console, "error").mockImplementation(() => undefined);
-    restoreMocks.push(logSpy);
+    const logSpy = mockConsoleError();
 
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "authenticated");
     vi.advanceTimersToNextTimer();
@@ -103,16 +101,8 @@ it("should reject by updating the token", async () => {
             "[ERROR] authentication-keycloak:KeycloakAuthPlugin: Failed to refresh token",
             [Error: Error],
           ],
-          [
-            "[ERROR] authentication-keycloak:KeycloakAuthPlugin: Failed to refresh token",
-            [Error: Error],
-          ],
         ],
         "results": [
-          {
-            "type": "return",
-            "value": undefined,
-          },
           {
             "type": "return",
             "value": undefined,
@@ -123,21 +113,20 @@ it("should reject by updating the token", async () => {
 });
 
 it("should update the token in interval", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(true);
-    hoisted.keycloakMock.updateToken.mockResolvedValue(true);
+    MOCKS.init.mockResolvedValue(true);
+    MOCKS.updateToken.mockResolvedValue(true);
     const refreshSpy = vi.spyOn(KeycloakAuthPluginImpl.prototype as any, "__refresh");
     const { keycloakAuthPlugin } = await setup();
-    restoreMocks.push(refreshSpy);
 
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "authenticated");
     await vi.waitFor(() => expect(refreshSpy).toHaveBeenCalledTimes(1));
 
     vi.advanceTimersToNextTimer();
-    expect(hoisted.keycloakMock.updateToken).toHaveBeenCalledTimes(1);
+    expect(MOCKS.updateToken).toHaveBeenCalledTimes(1);
 });
 
 it("should call login with correct options", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(false);
+    MOCKS.init.mockResolvedValue(false);
 
     const loginOptions = {
         redirectUri: "https://example.com/callback"
@@ -152,11 +141,11 @@ it("should call login with correct options", async () => {
         throw new Error("Unexpected login behavior kind");
     }
 
-    expect(hoisted.keycloakMock.login).toHaveBeenCalledWith(loginOptions);
+    expect(MOCKS.login).toHaveBeenCalledWith(loginOptions);
 });
 
 it("should call login with default options when no custom options provided", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(false);
+    MOCKS.init.mockResolvedValue(false);
 
     const { keycloakAuthPlugin } = await setup();
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "not-authenticated");
@@ -168,13 +157,13 @@ it("should call login with default options when no custom options provided", asy
         throw new Error("Unexpected login behavior kind");
     }
 
-    expect(hoisted.keycloakMock.login).toHaveBeenCalledWith({
+    expect(MOCKS.login).toHaveBeenCalledWith({
         redirectUri: undefined
     });
 });
 
 it("should call logout with correct options", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(true);
+    MOCKS.init.mockResolvedValue(true);
     const logoutOptions = {
         redirectUri: "https://example.com/logout"
     };
@@ -184,24 +173,24 @@ it("should call logout with correct options", async () => {
 
     keycloakAuthPlugin.logout();
 
-    expect(hoisted.keycloakMock.logout).toHaveBeenCalledWith(logoutOptions);
+    expect(MOCKS.logout).toHaveBeenCalledWith(logoutOptions);
 });
 
 it("should call logout with default options when no custom options provided", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(true);
+    MOCKS.init.mockResolvedValue(true);
 
     const { keycloakAuthPlugin } = await setup();
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "authenticated");
 
     keycloakAuthPlugin.logout();
 
-    expect(hoisted.keycloakMock.logout).toHaveBeenCalledWith({
+    expect(MOCKS.logout).toHaveBeenCalledWith({
         redirectUri: undefined
     });
 });
 
 it("should call logout with merged options when additional options are provided", async () => {
-    hoisted.keycloakMock.init.mockResolvedValue(true);
+    MOCKS.init.mockResolvedValue(true);
 
     const { keycloakAuthPlugin } = await setup({
         logoutOptions: {
@@ -214,7 +203,7 @@ it("should call logout with merged options when additional options are provided"
         logoutMethod: "POST"
     });
 
-    expect(hoisted.keycloakMock.logout).toHaveBeenCalledWith({
+    expect(MOCKS.logout).toHaveBeenCalledWith({
         redirectUri: "https://example.com/logout",
         logoutMethod: "POST"
     });
@@ -263,4 +252,12 @@ async function setup(options: SetupOptions = {}) {
     });
 
     return { notifier, keycloakAuthPlugin };
+}
+
+function mockConsoleError() {
+    const logSpy = vi.spyOn(global.console, "error").mockImplementation(() => undefined);
+    onTestFinished(() => {
+        logSpy.mockRestore();
+    });
+    return logSpy;
 }
