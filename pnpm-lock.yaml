@@ -64,7 +64,7 @@ catalogs:
       specifier: ^20.19.25
       version: 20.19.25
     '@types/react':
-      specifier: ^19.2.3
+      specifier: ^19.2.4
       version: 19.2.4
     '@types/react-dom':
       specifier: ^19.2.3
