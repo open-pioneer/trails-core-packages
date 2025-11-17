@@ -1,0 +1,13 @@
+{
+    "name": "reactivity-app",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@chakra-ui/react": "catalog:",
+        "@conterra/reactivity-core": "catalog:",
+        "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/reactivity": "workspace:^",
+        "react": "catalog:"
+    }
+}

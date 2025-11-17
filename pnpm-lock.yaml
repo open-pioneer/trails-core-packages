@@ -543,6 +543,9 @@ importers:
       '@conterra/reactivity-core':
         specifier: 'catalog:'
         version: 0.8.1
+      '@preact/signals-core':
+        specifier: '*'
+        version: 1.12.1
       react:
         specifier: 'catalog:'
         version: 19.2.0
@@ -800,6 +803,27 @@ importers:
       '@open-pioneer/notifier':
         specifier: workspace:^
         version: link:../../../packages/notifier
+      '@open-pioneer/runtime':
+        specifier: workspace:^
+        version: link:../../../packages/runtime
+      react:
+        specifier: 'catalog:'
+        version: 19.2.0
+
+  src/samples/reactivity-sample/reactivity-app:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.4)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.8.1
+      '@open-pioneer/core':
+        specifier: workspace:^
+        version: link:../../../packages/core
+      '@open-pioneer/reactivity':
+        specifier: workspace:^
+        version: link:../../../packages/reactivity
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:../../../packages/runtime

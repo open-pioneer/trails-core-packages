@@ -18,7 +18,8 @@
     },
     "dependencies": {
         "react": "catalog:",
-        "@conterra/reactivity-core": "catalog:"
+        "@conterra/reactivity-core": "catalog:",
+        "@preact/signals-core": "*"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:^",

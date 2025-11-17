@@ -10,6 +10,8 @@ import {
     useSyncExternalStore
 } from "react";
 
+export { autoReactive } from "./autoReactive";
+
 /**
  * Creates a new signal with the initial value `undefined`.
  *
