@@ -77,6 +77,9 @@ overrides:
   # https://github.com/advisories/GHSA-52f5-9888-hmc6
   "tmp@<=0.2.3": "^0.2.4"
 
+  # https://github.com/advisories/GHSA-mh29-5h37-fv8m
+  "js-yaml@<3.14.2": "^3.14.2"
+
   # We don't actually use the babel plugin.
   # The babel runtime is also not used as a production dependency.
   # See e.g. https://github.com/emotion-js/emotion/issues/2371
