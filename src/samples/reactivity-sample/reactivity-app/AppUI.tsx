@@ -23,7 +23,7 @@ export function AppUI() {
 
 const Sample = autoReactive(function SampleImpl() {
     const [count, setCount] = useState(0);
-    useState();
+    useState(); // XXX: Causes problems in dev mode when adding or removing hooks (HMR)
     return (
         <>
             <Text>
