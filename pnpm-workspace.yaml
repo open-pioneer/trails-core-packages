@@ -94,13 +94,14 @@ overrides:
   # Just to get rid of some duplicate dependencies
   "source-map@<0.6.1": ">=0.6.1"
   "stylis@<4.3.5": ">= 4.3.5"
+  "csstype@<3.2.3": ">=3.2.3"
 
   # Ensure patched packages have the expected version (patch was tested with this version):
   "@ark-ui/react": "5.27.1"
 
 ignorePatchFailures: false
 patchedDependencies:
-  # - Ensure all portals are mounted under `.pioneer-root` div
+  # Ensure all portals are mounted under `.pioneer-root` div
   "@ark-ui/react@*": "patches/@ark-ui__react.patch"
 
 peerDependencyRules:
