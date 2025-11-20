@@ -1,5 +1,20 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.3.0
+
+### Minor Changes
+
+- eb54023: Update chakra to 3.29.0
+
+### Patch Changes
+
+- Updated dependencies [6416dd9]
+- Updated dependencies [eb54023]
+    - @open-pioneer/notifier@4.3.0
+    - @open-pioneer/authentication@4.3.0
+    - @open-pioneer/core@4.3.0
+    - @open-pioneer/runtime@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes

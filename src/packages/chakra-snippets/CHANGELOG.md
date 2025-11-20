@@ -1,5 +1,28 @@
 # @open-pioneer/chakra-snippets
 
+## 4.3.0
+
+### Minor Changes
+
+- 0c278f6: Update snippets.
+
+    New snippets:
+    - `carousel`
+    - `combobox`
+    - `tags-input`
+
+    Updated snippets:
+    - `toggle-tip`: Now accepts `contentProps` prop, `portalRef` can refer to `null`
+    - `tooltip`: `portalRef` can refer to `null`
+
+- eb54023: Update chakra to 3.29.0
+
+### Patch Changes
+
+- Updated dependencies [eb54023]
+    - @open-pioneer/core@4.3.0
+    - @open-pioneer/runtime@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes
