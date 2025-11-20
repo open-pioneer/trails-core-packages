@@ -1,5 +1,16 @@
 # @open-pioneer/test-utils
 
+## 4.3.0
+
+### Minor Changes
+
+- eb54023: Update chakra to 3.29.0
+
+### Patch Changes
+
+- Updated dependencies [eb54023]
+    - @open-pioneer/runtime@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes
