@@ -409,6 +409,9 @@ importers:
 
   src/packages/chakra-snippets:
     dependencies:
+      '@ark-ui/react':
+        specifier: 5.27.1
+        version: 5.27.1(patch_hash=6c7ccdc3ae257d66f6007fd0e7de6405701490cd678ce8c7f1570d5a4bef79eb)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)

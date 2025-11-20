@@ -24,6 +24,11 @@
         "declarationMap": true
     },
     "include": ["src"],
-    "exclude": ["**/dist/**", "**/node_modules/**"],
+    "exclude": [
+        "**/dist/**",
+        "**/node_modules/**",
+        // Can contain type errors:
+        "src/packages/chakra-snippets/unedited"
+    ],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

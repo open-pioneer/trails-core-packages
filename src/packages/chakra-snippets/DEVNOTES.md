@@ -19,3 +19,8 @@ We also save the original versions of the snippets in the `unedited` directory.
 
 3. If a snippet has been changed in a breaking way, consider maintaining multiple versions of that snippet
    for backwards compatibility. For example, `PasswordInput` and `PasswordInputV2`.
+
+4. Chakra's CLI may manipulate `package.json` files or pnpm files.
+   These changes can very likely be reverted. 
+   But you need to check whether snippets need any new dependencies.
+   (NOTE: `next-themes` is not required as a dependency. We don't use that theming mechanism.)
