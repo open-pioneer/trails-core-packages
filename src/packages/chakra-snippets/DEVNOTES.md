@@ -16,6 +16,13 @@ We also save the original versions of the snippets in the `unedited` directory.
     - Also include it in the `typedoc.json`.
     - Make sure to keep the README in sync
 
+    Example command to get all entry points (bash):
+
+    ```bash
+    # Execute in package directory
+    $ ls -1 *.tsx
+    ```
+
 3. If a snippet has been changed in a breaking way, consider maintaining multiple versions of that snippet
    for backwards compatibility. For example, `PasswordInput` and `PasswordInputV2`.
 
