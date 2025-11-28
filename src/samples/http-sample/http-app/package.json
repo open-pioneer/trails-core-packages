@@ -3,9 +3,9 @@
     "version": "0.0.20",
     "private": true,
     "dependencies": {
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/http": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/http": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
         "react-json-view": "catalog:"
     }
 }

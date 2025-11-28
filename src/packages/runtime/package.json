@@ -22,15 +22,15 @@
         "@chakra-ui/react": "catalog:",
         "@emotion/cache": "catalog:",
         "@emotion/react": "catalog:",
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/base-theme": "workspace:^",
-        "@open-pioneer/reactivity": "workspace:^",
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/base-theme": "workspace:*",
+        "@open-pioneer/reactivity": "workspace:*",
         "react": "catalog:",
         "react-dom": "catalog:"
     },
     "devDependencies": {
-        "@open-pioneer/test-utils": "workspace:^",
-        "core-packages": "workspace:^"
+        "@open-pioneer/test-utils": "workspace:*",
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

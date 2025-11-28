@@ -18,16 +18,16 @@
     },
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:",
         "react-use": "catalog:",
         "@conterra/reactivity-core": "catalog:",
-        "@open-pioneer/reactivity": "workspace:^"
+        "@open-pioneer/reactivity": "workspace:*"
     },
     "devDependencies": {
-        "@open-pioneer/test-utils": "workspace:^",
-        "core-packages": "workspace:^"
+        "@open-pioneer/test-utils": "workspace:*",
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

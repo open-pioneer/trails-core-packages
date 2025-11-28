@@ -16,7 +16,7 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/runtime": "workspace:*",
         "@testing-library/react": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
@@ -24,7 +24,7 @@
         "@formatjs/intl": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^"
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

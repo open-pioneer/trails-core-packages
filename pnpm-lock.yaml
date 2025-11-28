@@ -349,13 +349,13 @@ importers:
         specifier: 'catalog:'
         version: 0.8.1
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/reactivity':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../reactivity
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
       react:
         specifier: 'catalog:'
@@ -365,10 +365,10 @@ importers:
         version: 17.6.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -378,23 +378,23 @@ importers:
         specifier: 'catalog:'
         version: 0.8.1
       '@open-pioneer/authentication':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../authentication
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/notifier':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../notifier
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
       keycloak-js:
         specifier: 'catalog:'
         version: 26.2.1
     devDependencies:
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -405,7 +405,7 @@ importers:
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
     devDependencies:
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -418,10 +418,10 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
       react:
         specifier: 'catalog:'
@@ -431,7 +431,7 @@ importers:
         version: 5.5.0(react@19.2.0)
     devDependencies:
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -442,55 +442,55 @@ importers:
         version: 0.8.1
     devDependencies:
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
   src/packages/http:
     dependencies:
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
   src/packages/integration:
     dependencies:
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
   src/packages/local-storage:
     dependencies:
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -500,13 +500,13 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/react-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../react-utils
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
       react:
         specifier: 'catalog:'
@@ -516,10 +516,10 @@ importers:
         version: 5.5.0(react@19.2.0)
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -529,7 +529,7 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       classnames:
         specifier: 'catalog:'
@@ -539,10 +539,10 @@ importers:
         version: 19.2.0
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -556,10 +556,10 @@ importers:
         version: 19.2.0
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -581,13 +581,13 @@ importers:
         specifier: 'catalog:'
         version: 3.1.8(typescript@5.9.3)
       '@open-pioneer/base-theme':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../base-theme
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@open-pioneer/reactivity':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../reactivity
       react:
         specifier: 'catalog:'
@@ -597,10 +597,10 @@ importers:
         version: 19.2.0(react@19.2.0)
     devDependencies:
       '@open-pioneer/test-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../test-utils
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -610,7 +610,7 @@ importers:
         specifier: 'catalog:'
         version: 3.1.8(typescript@5.9.3)
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../runtime
       '@testing-library/dom':
         specifier: 'catalog:'
@@ -626,7 +626,7 @@ importers:
         version: 19.2.0(react@19.2.0)
     devDependencies:
       core-packages:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../..
     publishDirectory: dist
 
@@ -639,16 +639,16 @@ importers:
         specifier: 'catalog:'
         version: 0.8.1
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/core
       '@open-pioneer/integration':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/integration
       '@open-pioneer/reactivity':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/reactivity
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
 
   src/samples/auth-sample/auth-app:
@@ -657,16 +657,16 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/authentication':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/authentication
       '@open-pioneer/chakra-snippets':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/chakra-snippets
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/core
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       react:
         specifier: 'catalog:'
@@ -678,10 +678,10 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/chakra-snippets':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/chakra-snippets
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       react-icons:
         specifier: 'catalog:'
@@ -690,7 +690,7 @@ importers:
   src/samples/error-sample/error-app:
     dependencies:
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       react:
         specifier: 'catalog:'
@@ -702,19 +702,19 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
 
   src/samples/http-sample/http-app:
     dependencies:
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/core
       '@open-pioneer/http':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/http
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       react-json-view:
         specifier: 'catalog:'
@@ -726,7 +726,7 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/chakra-snippets':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/chakra-snippets
 
   src/samples/i18n-sample/i18n-app:
@@ -735,7 +735,7 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       i18n-sample-package:
         specifier: workspace:*
@@ -749,19 +749,19 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/authentication':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/authentication
       '@open-pioneer/authentication-keycloak':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/authentication-keycloak
       '@open-pioneer/http':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/http
       '@open-pioneer/notifier':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/notifier
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/runtime
 
   src/samples/no-shadowroot-sample:
@@ -770,13 +770,13 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/notifier':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/notifier
       '@open-pioneer/react-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-utils
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/runtime
 
   src/samples/notify-sample/notify-app:
@@ -785,13 +785,13 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/chakra-snippets':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/chakra-snippets
       '@open-pioneer/notifier':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/notifier
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       react:
         specifier: 'catalog:'
@@ -803,13 +803,13 @@ importers:
         specifier: 'catalog:'
         version: 3.29.0(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@open-pioneer/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/core
       '@open-pioneer/notifier':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/notifier
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       react:
         specifier: 'catalog:'
@@ -818,10 +818,10 @@ importers:
   src/samples/styling-sample/styling-app:
     dependencies:
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
       styling-sample-components:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../styling-sample-components
 
   src/samples/styling-sample/styling-sample-components: {}
@@ -829,13 +829,13 @@ importers:
   src/samples/theming-sample/theming-app:
     dependencies:
       '@open-pioneer/chakra-snippets':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/chakra-snippets
       '@open-pioneer/react-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/react-utils
       '@open-pioneer/runtime':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../../packages/runtime
 
 packages:

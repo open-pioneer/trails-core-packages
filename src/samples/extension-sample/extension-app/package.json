@@ -5,6 +5,6 @@
     "main": "index",
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/runtime": "workspace:^"
+        "@open-pioneer/runtime": "workspace:*"
     }
 }

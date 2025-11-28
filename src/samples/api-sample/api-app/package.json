@@ -5,9 +5,9 @@
     "dependencies": {
         "@chakra-ui/react": "catalog:",
         "@conterra/reactivity-core": "catalog:",
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/integration": "workspace:^",
-        "@open-pioneer/reactivity": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^"
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/integration": "workspace:*",
+        "@open-pioneer/reactivity": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*"
     }
 }

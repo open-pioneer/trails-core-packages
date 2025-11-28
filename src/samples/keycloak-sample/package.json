@@ -4,10 +4,10 @@
     "private": true,
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/authentication": "workspace:^",
-        "@open-pioneer/http": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/authentication-keycloak": "workspace:^",
-        "@open-pioneer/notifier": "workspace:^"
+        "@open-pioneer/authentication": "workspace:*",
+        "@open-pioneer/http": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
+        "@open-pioneer/authentication-keycloak": "workspace:*",
+        "@open-pioneer/notifier": "workspace:*"
     }
 }
