@@ -21,8 +21,8 @@
         "@conterra/reactivity-core": "catalog:"
     },
     "devDependencies": {
-        "@open-pioneer/test-utils": "workspace:^",
-        "core-packages": "workspace:^"
+        "@open-pioneer/test-utils": "workspace:*",
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

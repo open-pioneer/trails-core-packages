@@ -18,13 +18,13 @@
     },
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/core": "workspace:^",
+        "@open-pioneer/core": "workspace:*",
         "classnames": "catalog:",
         "react": "catalog:"
     },
     "devDependencies": {
-        "@open-pioneer/test-utils": "workspace:^",
-        "core-packages": "workspace:^"
+        "@open-pioneer/test-utils": "workspace:*",
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

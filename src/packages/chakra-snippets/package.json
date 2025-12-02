@@ -21,13 +21,13 @@
     "dependencies": {
         "@chakra-ui/react": "catalog:",
         "@ark-ui/react": "catalog:",
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:",
         "react-icons": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^"
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

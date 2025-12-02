@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "@open-pioneer/runtime": "workspace:^",
+        "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:"
     }
 }

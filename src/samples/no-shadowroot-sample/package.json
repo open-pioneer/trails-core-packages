@@ -4,8 +4,8 @@
     "private": true,
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/notifier": "workspace:^",
-        "@open-pioneer/react-utils": "workspace:^"
+        "@open-pioneer/runtime": "workspace:*",
+        "@open-pioneer/notifier": "workspace:*",
+        "@open-pioneer/react-utils": "workspace:*"
     }
 }

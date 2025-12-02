@@ -20,7 +20,7 @@
         "@chakra-ui/react": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^"
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

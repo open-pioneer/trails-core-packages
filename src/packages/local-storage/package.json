@@ -17,12 +17,12 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^"
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*"
     },
     "devDependencies": {
-        "@open-pioneer/test-utils": "workspace:^",
-        "core-packages": "workspace:^"
+        "@open-pioneer/test-utils": "workspace:*",
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

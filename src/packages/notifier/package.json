@@ -18,15 +18,15 @@
     },
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/react-utils": "workspace:^",
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
+        "@open-pioneer/react-utils": "workspace:*",
         "react-icons": "catalog:",
         "react": "catalog:"
     },
     "devDependencies": {
-        "@open-pioneer/test-utils": "workspace:^",
-        "core-packages": "workspace:^"
+        "@open-pioneer/test-utils": "workspace:*",
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

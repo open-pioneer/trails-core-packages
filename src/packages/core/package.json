@@ -20,7 +20,7 @@
         "@conterra/reactivity-events": "catalog:"
     },
     "devDependencies": {
-        "core-packages": "workspace:^"
+        "core-packages": "workspace:*"
     },
     "publishConfig": {
         "directory": "dist",

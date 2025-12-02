@@ -4,10 +4,10 @@
     "private": true,
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/authentication": "workspace:^",
-        "@open-pioneer/core": "workspace:^",
-        "@open-pioneer/runtime": "workspace:^",
-        "@open-pioneer/chakra-snippets": "workspace:^",
+        "@open-pioneer/authentication": "workspace:*",
+        "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
+        "@open-pioneer/chakra-snippets": "workspace:*",
         "react": "catalog:"
     }
 }
