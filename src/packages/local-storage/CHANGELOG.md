@@ -1,5 +1,14 @@
 # @open-pioneer/local-storage
 
+## 4.3.1
+
+### Patch Changes
+
+- 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
+- Updated dependencies [554d58e]
+    - @open-pioneer/runtime@4.3.1
+    - @open-pioneer/core@4.3.1
+
 ## 4.3.0
 
 ### Minor Changes
