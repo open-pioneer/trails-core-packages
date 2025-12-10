@@ -13,7 +13,7 @@ exports[`should successfully create an error screen component 1`] = `
       Application start failed
     </h2>
     <div
-      class="chakra-alert__root css-1n3jb2e"
+      class="chakra-alert__root css-8z562q"
     >
       <span
         class="css-1ffmir3"
