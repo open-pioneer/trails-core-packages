@@ -190,8 +190,6 @@ overrides:
   csstype@<3.2.3: '>=3.2.3'
   '@ark-ui/react': 5.29.1
 
-pnpmfileChecksum: sha256-FAQ+ylJChk4moYBCl+iwvCnDgmyWSUpwlv3NBRm9xrs=
-
 patchedDependencies:
   '@ark-ui/react@*':
     hash: 6c7ccdc3ae257d66f6007fd0e7de6405701490cd678ce8c7f1570d5a4bef79eb
