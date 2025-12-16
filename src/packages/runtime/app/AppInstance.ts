@@ -73,6 +73,7 @@ export class AppInstance {
     private container: HTMLElement | ShadowRoot; // parent of .pioneer-root
     private appRoot: HTMLDivElement | undefined; // .pioneer-root
     private config: ApplicationConfig | undefined;
+    private i18n: AppIntl | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
     private reactIntegration: ReactIntegration | undefined;
@@ -124,6 +125,7 @@ export class AppInstance {
         this.container.replaceChildren();
         this.appRoot = undefined;
         this.lifecycleEvents = undefined;
+        this.i18n = destroyResource(this.i18n);
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
     }
@@ -147,7 +149,7 @@ export class AppInstance {
         LOG.debug("Application config is", config);
 
         // Decide on locale and load i18n messages (if any).
-        const i18n = await initI18n(elementOptions.appMetadata, config.locale);
+        const i18n = (this.i18n = await initI18n(elementOptions.appMetadata, config.locale));
         this.checkAbort();
 
         // Setup application root node in the shadow dom

@@ -455,7 +455,7 @@ function createService(options: Partial<ServiceReprOptions>) {
 function createPackage(options: Partial<PackageReprOptions>) {
     return new PackageRepr({
         name: "test-package",
-        intl: createEmptyPackageIntl(),
+        intl: { value: createEmptyPackageIntl() },
         ...options
     });
 }

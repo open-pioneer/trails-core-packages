@@ -105,6 +105,6 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
     return new PackageRepr({
         name: RUNTIME_PACKAGE_NAME,
         services: [apiService, appContext, lifecycleEventService, numberParserService],
-        intl: i18n
+        intl: { value: i18n }
     });
 }

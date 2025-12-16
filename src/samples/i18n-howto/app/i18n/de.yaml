@@ -1,7 +1,7 @@
 # at least one empty yaml file must exist for each supported language
 # (might be empty if all messages are defined in the packages used by this app)
 messages:
-  heading: I18n HowTo
+  heading: I18n HowTo Updated
   text: Wie lässt sich I18n in Open Pioneer Trails Apps nutzen?
   interpolation:
     heading: Beispiel für Interpolation (dynamische Werte)

@@ -32,8 +32,13 @@ export interface ApplicationMetadata {
      * Loads messages for the given locale.
      * @returns A record of packageName -> (messageId, messageTemplate) entries.
      */
-    loadMessages?: (locale: string) => Promise<Record<string, Record<string, string>>>;
+    loadMessages?: ObservableBox<MessageLoader>;
 }
+
+export type MessageLoader = (locale: string) => Promise<MessagesRecord>;
+
+/** Package name -> Message ID -> Message text (FormatJS Syntax) */
+export type MessagesRecord = Record<string, Record<string, string>>;
 
 /**
  * Describes a package to the runtime.

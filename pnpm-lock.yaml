@@ -42,9 +42,6 @@ catalogs:
     '@open-pioneer/check-pnpm-duplicates':
       specifier: ^0.2.4
       version: 0.2.4
-    '@open-pioneer/vite-plugin-pioneer':
-      specifier: ^5.0.1
-      version: 5.0.1
     '@testing-library/dom':
       specifier: ^10.4.1
       version: 10.4.1
@@ -189,6 +186,7 @@ overrides:
   stylis@<4.3.5: '>= 4.3.5'
   csstype@<3.2.3: '>=3.2.3'
   '@ark-ui/react': 5.29.1
+  '@open-pioneer/vite-plugin-pioneer': file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-1.tgz
 
 patchedDependencies:
   '@ark-ui/react@*':
@@ -221,8 +219,8 @@ importers:
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
-        specifier: 'catalog:'
-        version: 5.0.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-1.tgz
+        version: file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-1.tgz(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1405,6 +1403,10 @@ packages:
     resolution: {integrity: sha512-YcLgVRW/Dn+FllZWWOap8bZC018/ehfp6Deslil4nFIfhhwIzuzIoQXgIFj11eSU2UBziQ5TQrNYEnj37skqbw==}
     engines: {node: '>= 20'}
 
+  '@open-pioneer/build-common@3.1.1':
+    resolution: {integrity: sha512-2+bq/zAAJHQMnEV82sslFIYFFQjWMpeivrTqKM2LCcWgDs4uhDS4wtqgEh2QDazTi/44xUPnNImckgX7PIlZ9Q==}
+    engines: {node: '>= 20'}
+
   '@open-pioneer/build-package-cli@3.0.4':
     resolution: {integrity: sha512-elJHTUyIDXOO0AE/aSduDY+QUdNcRTS795V3Vi/N6Sgt8MrfYktnIPB/er21Hc7MlqpwxcuucTAGk1DRb3LOLA==}
     engines: {node: '>= 20'}
@@ -1431,8 +1433,9 @@ packages:
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/vite-plugin-pioneer@5.0.1':
-    resolution: {integrity: sha512-znhyx+o7RwcX2GJ3DhTnr8U84FBpLF8xSXAF4wTQ05wF/0B+M/dhel7NDRj1+/yxcSr96aW8WJid54a3uAGHzg==}
+  '@open-pioneer/vite-plugin-pioneer@file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-1.tgz':
+    resolution: {integrity: sha512-EXHUKI0AOLSb34dMOcckc0yI/bJaB5EHKp2udd3MsIyR6A/C1QqkeOACuapsMSzGJrkgFQ8dhWb6sPsSQtk3yw==, tarball: file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-1.tgz}
+    version: 5.0.2
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -4110,6 +4113,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.3:
+    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -4647,11 +4655,17 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
+  zod-validation-error@5.0.0:
+    resolution: {integrity: sha512-hmk+pkyKq7Q71PiWVSDUc3VfpzpvcRHZ3QPw9yEMVvmtCekaMeOHnbr3WbxfrgEnQTv6haGP4cmv0Ojmihzsxw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      zod: ^3.25.0 || ^4.0.0
+
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.1.12:
-    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
+  zod@4.1.13:
+    resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
 
   zx@8.8.5:
     resolution: {integrity: sha512-SNgDF5L0gfN7FwVOdEFguY3orU5AkfFZm9B5YSHog/UDHv+lvmd82ZAsOenOkQixigwH2+yyH198AwNdKhj+RA==}
@@ -5435,9 +5449,15 @@ snapshots:
 
   '@open-pioneer/build-common@3.1.0':
     dependencies:
-      semver: 7.7.2
-      zod: 4.1.12
-      zod-validation-error: 4.0.1(zod@4.1.12)
+      semver: 7.7.3
+      zod: 4.1.13
+      zod-validation-error: 4.0.1(zod@4.1.13)
+
+  '@open-pioneer/build-common@3.1.1':
+    dependencies:
+      semver: 7.7.3
+      zod: 4.1.13
+      zod-validation-error: 5.0.0(zod@4.1.13)
 
   '@open-pioneer/build-package-cli@3.0.4(sass@1.94.2)(typescript@5.9.3)':
     dependencies:
@@ -5485,20 +5505,20 @@ snapshots:
       commander: 14.0.2
       js-yaml: 4.1.1
 
-  '@open-pioneer/vite-plugin-pioneer@5.0.1(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))':
+  '@open-pioneer/vite-plugin-pioneer@file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-1.tgz(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/template': 7.27.2
       '@babel/types': 7.28.5
-      '@open-pioneer/build-common': 3.1.0
+      '@open-pioneer/build-common': 3.1.1
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.3
       js-yaml: 4.1.1
       sass: 1.94.2
       vite: 7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1)
       vitefu: 1.1.1(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))
-      zod: 4.1.12
-      zod-validation-error: 4.0.1(zod@4.1.12)
+      zod: 4.1.13
+      zod-validation-error: 5.0.0(zod@4.1.13)
     transitivePeerDependencies:
       - supports-color
 
@@ -5579,7 +5599,7 @@ snapshots:
     dependencies:
       '@pnpm/crypto.hash': 1000.2.0
       '@pnpm/types': 1000.8.0
-      semver: 7.7.2
+      semver: 7.7.3
 
   '@pnpm/error@1000.0.5':
     dependencies:
@@ -5620,7 +5640,7 @@ snapshots:
       '@pnpm/types': 1000.8.0
       comver-to-semver: 1.0.0
       ramda: '@pnpm/ramda@0.28.1'
-      semver: 7.7.2
+      semver: 7.7.3
 
   '@pnpm/lockfile.types@1002.0.1':
     dependencies:
@@ -8595,6 +8615,8 @@ snapshots:
 
   semver@7.7.2: {}
 
+  semver@7.7.3: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -9159,13 +9181,17 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-validation-error@4.0.1(zod@4.1.12):
+  zod-validation-error@4.0.1(zod@4.1.13):
     dependencies:
-      zod: 4.1.12
+      zod: 4.1.13
+
+  zod-validation-error@5.0.0(zod@4.1.13):
+    dependencies:
+      zod: 4.1.13
 
   zod@3.25.76: {}
 
-  zod@4.1.12: {}
+  zod@4.1.13: {}
 
   zx@8.8.5: {}
 
