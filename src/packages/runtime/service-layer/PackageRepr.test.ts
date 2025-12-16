@@ -76,7 +76,7 @@ it("parses package metadata into internal package representations", function () 
     expect(serviceA).toBeDefined();
     expect(serviceA.id).toStrictEqual("a::A");
     expect(serviceA.state).toStrictEqual("not-constructed");
-    expect(serviceA.intl.locale).toEqual("zh-CN");
+    expect(serviceA.intl.value.locale).toEqual("zh-CN");
     expect(serviceA.instance).toBeUndefined();
     expect(serviceA.dependencies).toStrictEqual([
         {

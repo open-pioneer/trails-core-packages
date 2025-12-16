@@ -1,11 +1,15 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { watchValue } from "@conterra/reactivity-core";
+import { createLogger, destroyResource, Error, Resource } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
+import { PackageIntl } from "../i18n";
 import { ServiceMetadata } from "../metadata";
 import { Service, ServiceConstructor, ServiceOptions } from "../Service";
-import { Error } from "@open-pioneer/core";
+import { ReadonlyValue } from "../utils/ReadonlyValue";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
-import { PackageIntl } from "../i18n";
+
+const LOG = createLogger("runtime:ServiceRepr");
 
 export type ServiceState = "not-constructed" | "constructing" | "constructed" | "destroyed";
 
@@ -28,10 +32,14 @@ export interface ServiceReprOptions {
     name: string;
     packageName: string;
     factory: ServiceFactory;
-    intl: PackageIntl;
+    intl: ReadonlyValue<PackageIntl>;
     dependencies?: ServiceDependency[];
     interfaces?: InterfaceSpec[];
     properties?: Record<string, unknown>;
+}
+
+interface HmrState extends Resource {
+    onIntlUsed(): void;
 }
 
 /**
@@ -42,7 +50,7 @@ export class ServiceRepr {
     static create(
         packageName: string,
         data: ServiceMetadata,
-        intl: PackageIntl,
+        intl: ReadonlyValue<PackageIntl>,
         properties?: Record<string, unknown>
     ): ServiceRepr {
         const clazz = data.clazz;
@@ -86,7 +94,7 @@ export class ServiceRepr {
     readonly packageName: string;
 
     /** Locale-dependant i18n messages. */
-    readonly intl: PackageIntl;
+    readonly intl: ReadonlyValue<PackageIntl>;
 
     /** Service properties made available via the service's constructor. */
     readonly properties: Readonly<Record<string, unknown>>;
@@ -108,6 +116,9 @@ export class ServiceRepr {
 
     /** Service instance, once constructed. */
     private _instance: Service | undefined = undefined;
+
+    /** Used in dev mode only. */
+    private _hmrState: HmrState | undefined = undefined;
 
     constructor(options: ServiceReprOptions) {
         const {
@@ -190,11 +201,52 @@ export class ServiceRepr {
                 "Inconsistent state: service is not being constructed."
             );
         }
+
+        const id = this.id;
+        const intl = this.intl;
+
+        let hmrState: HmrState | undefined;
+        if (import.meta.hot) {
+            let intlWatch: Resource | undefined = undefined;
+            hmrState = this._hmrState = {
+                destroy() {
+                    intlWatch = destroyResource(intlWatch);
+                },
+
+                onIntlUsed() {
+                    if (intlWatch) {
+                        return;
+                    }
+
+                    intlWatch = watchValue(
+                        () => intl.value,
+                        (_newIntl, _, context) => {
+                            LOG.warn(
+                                `Service ${id} has used 'intl' but intl has changed.` +
+                                    ` Hot reloading of intl changes is not implemented yet for services.` +
+                                    ` Triggering full reload.`
+                            );
+                            context.destroy();
+
+                            // TODO: Figure out a cleaner way to force vite to reload the application
+                            // https://github.com/open-pioneer/trails-core-packages/issues/164
+                            window.location.reload();
+                        }
+                    );
+                }
+            };
+        }
+
         try {
             this._instance = createService(this.factory, {
                 ...options,
                 properties: this.properties,
-                intl: this.intl
+                get intl() {
+                    if (import.meta.hot) {
+                        hmrState?.onIntlUsed();
+                    }
+                    return intl.value;
+                }
             });
             this._state = "constructed";
             this._useCount = 1;
@@ -212,6 +264,7 @@ export class ServiceRepr {
         if (this._instance) {
             try {
                 this._instance.destroy?.();
+                this._hmrState = destroyResource(this._hmrState);
             } catch (e) {
                 throw new Error(
                     ErrorId.SERVICE_DESTRUCTION_FAILED,

@@ -480,7 +480,7 @@ function createIntegration(options?: {
                     packageName,
                     interfaces: spec.interfaces,
                     factory: createConstructorFactory(spec.clazz),
-                    intl: intl
+                    intl: { value: intl }
                 });
             }) ?? [];
         packages.set(

@@ -447,7 +447,7 @@ function createService(options: Partial<ServiceReprOptions>) {
         name: "test-service",
         packageName: "test-package",
         factory: createConstructorFactory(class {}),
-        intl: createEmptyPackageIntl(),
+        intl: { value: createEmptyPackageIntl() },
         ...options
     });
 }

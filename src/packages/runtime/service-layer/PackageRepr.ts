@@ -34,7 +34,7 @@ export class PackageRepr {
                         "Invalid metadata: service name mismatch."
                     );
                 }
-                return ServiceRepr.create(data.name, serviceData, intl.value, finalProperties);
+                return ServiceRepr.create(data.name, serviceData, intl, finalProperties);
             }
         );
         const uiReferences = data.ui?.references?.map((ref) => parseReferenceSpec(ref)) ?? [];
