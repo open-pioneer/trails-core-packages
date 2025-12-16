@@ -42,6 +42,9 @@ catalogs:
     '@open-pioneer/check-pnpm-duplicates':
       specifier: ^0.2.4
       version: 0.2.4
+    '@open-pioneer/vite-plugin-pioneer':
+      specifier: 5.1.0-dev-hmr.20251216141841
+      version: 5.1.0-dev-hmr.20251216141841
     '@testing-library/dom':
       specifier: ^10.4.1
       version: 10.4.1
@@ -186,7 +189,6 @@ overrides:
   stylis@<4.3.5: '>= 4.3.5'
   csstype@<3.2.3: '>=3.2.3'
   '@ark-ui/react': 5.29.1
-  '@open-pioneer/vite-plugin-pioneer': file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-2.tgz
 
 patchedDependencies:
   '@ark-ui/react@*':
@@ -219,8 +221,8 @@ importers:
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
-        specifier: file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-2.tgz
-        version: file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-2.tgz(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 'catalog:'
+        version: 5.1.0-dev-hmr.20251216141841(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1433,9 +1435,8 @@ packages:
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/vite-plugin-pioneer@file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-2.tgz':
-    resolution: {integrity: sha512-NaETmjG5uv4Jky/Sz82lmMAePVKhZXN7RiaU/+h7NEz8E0qIqXNLCtBHhAZtbK0T10NUKSCiW70lOns8ZEhgfw==, tarball: file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-2.tgz}
-    version: 5.0.2
+  '@open-pioneer/vite-plugin-pioneer@5.1.0-dev-hmr.20251216141841':
+    resolution: {integrity: sha512-8Spr9cAjqmTjpnRI6/CM3zP06cynBQqDU1vc4OT8ZbETkPRNElfwjngEDcOjMz/OeHJIFeOg0daT0hlYEO7Dsw==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -5505,7 +5506,7 @@ snapshots:
       commander: 14.0.2
       js-yaml: 4.1.1
 
-  '@open-pioneer/vite-plugin-pioneer@file:patches/open-pioneer-vite-plugin-pioneer-i18n-hmr-2.tgz(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))':
+  '@open-pioneer/vite-plugin-pioneer@5.1.0-dev-hmr.20251216141841(@open-pioneer/runtime@src+packages+runtime)(sass@1.94.2)(vite@7.2.4(@types/node@20.19.25)(sass@1.94.2)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/template': 7.27.2
