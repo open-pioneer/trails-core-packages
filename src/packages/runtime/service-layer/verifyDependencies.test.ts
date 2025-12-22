@@ -406,7 +406,7 @@ function mockServices(data: ServiceData[]): ServiceRepr[] {
             name,
             packageName,
             factory: createConstructorFactory(clazz),
-            intl: createEmptyPackageIntl(),
+            intl: { value: createEmptyPackageIntl() },
             dependencies,
             interfaces
         });

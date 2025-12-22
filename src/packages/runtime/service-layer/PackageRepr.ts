@@ -3,14 +3,15 @@
 import { Error } from "@open-pioneer/core";
 import { ApplicationProperties } from "../CustomElement";
 import { ErrorId } from "../errors";
-import { PackageIntl, AppIntl } from "../i18n";
+import { AppIntl, PackageIntl } from "../i18n";
 import { PackageMetadata, PropertyMetadata } from "../metadata";
+import { ReadonlyValue } from "../utils/ReadonlyValue";
 import { parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { ServiceRepr } from "./ServiceRepr";
 
 export interface PackageReprOptions {
     name: string;
-    intl: PackageIntl;
+    intl: ReadonlyValue<PackageIntl>;
     services?: ServiceRepr[];
     uiReferences?: ReferenceSpec[];
     properties?: Record<string, unknown>;
@@ -19,7 +20,7 @@ export interface PackageReprOptions {
 export class PackageRepr {
     static create(
         data: PackageMetadata,
-        i18n: PackageIntl,
+        intl: ReadonlyValue<PackageIntl>,
         customProperties?: Record<string, unknown>
     ): PackageRepr {
         const name = data.name;
@@ -33,7 +34,7 @@ export class PackageRepr {
                         "Invalid metadata: service name mismatch."
                     );
                 }
-                return ServiceRepr.create(data.name, serviceData, i18n, finalProperties);
+                return ServiceRepr.create(data.name, serviceData, intl, finalProperties);
             }
         );
         const uiReferences = data.ui?.references?.map((ref) => parseReferenceSpec(ref)) ?? [];
@@ -42,7 +43,7 @@ export class PackageRepr {
             services,
             uiReferences,
             properties: finalProperties,
-            intl: i18n
+            intl: intl
         });
     }
 
@@ -59,7 +60,7 @@ export class PackageRepr {
     readonly properties: Readonly<Record<string, unknown>>;
 
     /** Locale-dependant i18n messages. */
-    readonly intl: PackageIntl;
+    readonly intl: ReadonlyValue<PackageIntl>;
 
     constructor(options: PackageReprOptions) {
         const name = options.name;

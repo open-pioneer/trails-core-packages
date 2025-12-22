@@ -447,7 +447,7 @@ function createService(options: Partial<ServiceReprOptions>) {
         name: "test-service",
         packageName: "test-package",
         factory: createConstructorFactory(class {}),
-        intl: createEmptyPackageIntl(),
+        intl: { value: createEmptyPackageIntl() },
         ...options
     });
 }
@@ -455,7 +455,7 @@ function createService(options: Partial<ServiceReprOptions>) {
 function createPackage(options: Partial<PackageReprOptions>) {
     return new PackageRepr({
         name: "test-package",
-        intl: createEmptyPackageIntl(),
+        intl: { value: createEmptyPackageIntl() },
         ...options
     });
 }
