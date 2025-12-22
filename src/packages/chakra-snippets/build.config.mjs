@@ -30,6 +30,7 @@ export default defineBuildConfig({
         "radio.tsx",
         "rating.tsx",
         "slider.tsx",
+        "splitter.tsx",
         "status.tsx",
         "stepper-input.tsx",
         "switch.tsx",

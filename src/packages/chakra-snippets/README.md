@@ -46,6 +46,7 @@ If you notice a problem with one of the snippets, or if snippets are missing, fe
 - `radio.tsx`
 - `rating.tsx`
 - `slider.tsx`
+- `splitter.tsx`
 - `status.tsx`
 - `stepper-input.tsx`
 - `switch.tsx`
