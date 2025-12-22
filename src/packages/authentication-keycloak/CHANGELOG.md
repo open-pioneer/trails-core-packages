@@ -1,5 +1,20 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.4.0
+
+### Patch Changes
+
+- 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
+- Updated dependencies [554d58e]
+- Updated dependencies [1cc3415]
+- Updated dependencies [1872a6d]
+- Updated dependencies [84068f2]
+- Updated dependencies [2f6f69e]
+    - @open-pioneer/authentication@4.4.0
+    - @open-pioneer/notifier@4.4.0
+    - @open-pioneer/runtime@4.4.0
+    - @open-pioneer/core@4.4.0
+
 ## 4.3.0
 
 ### Minor Changes
