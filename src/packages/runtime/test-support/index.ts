@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Imported from @open-pioneer/test-utils
+export { APP_ROOT_CLASS } from "../dom";
 export { createPackageIntl } from "../i18n";
 export {
     CustomChakraProvider,
