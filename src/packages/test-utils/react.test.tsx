@@ -158,3 +158,17 @@ it("should allow injection of i18n messages from the test", async () => {
     expect(div.textContent).toBe("Message: Hello World!");
     expect(div.tagName).toBe("DIV");
 });
+
+it("should apply .pioneer-root class on the body (needed for the chakra theme to be applied correctly)", async () => {
+    function Component() {
+        return "hi";
+    }
+
+    render(
+        <PackageContextProvider>
+            <Component />
+        </PackageContextProvider>
+    );
+
+    expect(document.body.classList.contains("pioneer-root")).toBe(true);
+});
