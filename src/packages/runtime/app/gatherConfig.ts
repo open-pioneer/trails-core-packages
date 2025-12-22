@@ -1,9 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { Error } from "@open-pioneer/core";
-import { ApplicationConfig, ApplicationProperties, CustomElementOptions } from "../CustomElement";
+import {
+    ApplicationConfig,
+    ApplicationOverrides,
+    ApplicationProperties,
+    CustomElementOptions
+} from "../CustomElement";
 import { ErrorId } from "../errors";
-import { AppOverrides } from "./AppInstance";
 
 /**
  * Gathers application properties by reading them from the options object
@@ -12,7 +16,7 @@ import { AppOverrides } from "./AppInstance";
 export async function gatherConfig(
     hostElement: HTMLElement,
     options: CustomElementOptions,
-    overrides?: AppOverrides
+    overrides?: ApplicationOverrides
 ) {
     let configs: ApplicationConfig[];
     try {
@@ -22,7 +26,8 @@ export async function gatherConfig(
                 hostElement,
                 getAttribute(name) {
                     return hostElement.getAttribute(name) ?? undefined;
-                }
+                },
+                overrides
             })) ?? {};
 
         configs = [staticConfig, dynamicConfig];
