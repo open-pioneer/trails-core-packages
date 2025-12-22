@@ -12,7 +12,7 @@ catalog:
   "@conterra/reactivity-events": ^0.8.1
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
-  "@formatjs/intl": ^3.1.8
+  "@formatjs/intl": ^4.0.2
   classnames: ^2.5.1
   framer-motion: ^12.23.24
   keycloak-js: ^26.2.1
