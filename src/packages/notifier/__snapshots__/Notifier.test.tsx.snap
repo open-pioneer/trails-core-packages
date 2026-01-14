@@ -3,8 +3,8 @@
 exports[`shows notifications as toasts 1`] = `
 <div
   aria-atomic="true"
-  aria-describedby="toast:toast:2:description"
-  aria-labelledby="toast:toast:2:title"
+  aria-describedby="toast:toast:3:description"
+  aria-labelledby="toast:toast:3:title"
   class="chakra-toast__root css-1bm8y9v"
   data-align="end"
   data-first=""
@@ -16,7 +16,7 @@ exports[`shows notifications as toasts 1`] = `
   data-stack=""
   data-state="open"
   data-type="info"
-  id="toast:toast:2"
+  id="toast:toast:3"
   role="status"
   style="position: absolute; pointer-events: auto; --opacity: 1; --remove-delay: 200ms; --duration: 604800000ms; --initial-height: 0px; --offset: 0px; --index: 0; --z-index: 1; --lift-amount: calc(var(--lift) * var(--gap)); --y: calc(var(--lift) * var(--offset)); --x: 0; top: 0px; --sign: -1; --lift: 1; --height: var(--initial-height);"
   tabindex="0"
@@ -62,7 +62,7 @@ exports[`shows notifications as toasts 1`] = `
       class="chakra-toast__title css-1nhm9ic"
       data-part="title"
       data-scope="toast"
-      id="toast:toast:2:title"
+      id="toast:toast:3:title"
     >
       test
     </div>
@@ -70,7 +70,7 @@ exports[`shows notifications as toasts 1`] = `
       class="chakra-toast__description css-1tl80zq"
       data-part="description"
       data-scope="toast"
-      id="toast:toast:2:description"
+      id="toast:toast:3:description"
     >
       <span
         data-testid="notification-message"
@@ -84,7 +84,7 @@ exports[`shows notifications as toasts 1`] = `
     class="chakra-toast__closeTrigger css-s29zxt"
     data-part="close-trigger"
     data-scope="toast"
-    id="toasttoast:2:close"
+    id="toasttoast:3:close"
     type="button"
   >
     <svg
