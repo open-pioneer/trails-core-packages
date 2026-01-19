@@ -195,6 +195,9 @@ patchedDependencies:
   '@ark-ui/react@*':
     hash: 6c7ccdc3ae257d66f6007fd0e7de6405701490cd678ce8c7f1570d5a4bef79eb
     path: patches/@ark-ui__react.patch
+  '@open-pioneer/vite-plugin-pioneer':
+    hash: fd5482de73584b711f613e03ad2eaa9fc5f7f298d88a69d084852f6554eee2f2
+    path: patches/@open-pioneer__vite-plugin-pioneer.patch
   '@zag-js/toast':
     hash: 5abc5d0928ab6ee9ce1741a23aedaa5c0e20d69ff6e137f4a9184f6c352b4faf
     path: patches/@zag-js__toast.patch
@@ -226,7 +229,7 @@ importers:
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: 'catalog:'
-        version: 5.1.0(@open-pioneer/runtime@src+packages+runtime)(rollup@4.53.5)(sass@1.97.2)(vite@7.3.1(@types/node@20.19.28)(sass@1.97.2)(tsx@4.21.0)(yaml@2.8.1))
+        version: 5.1.0(patch_hash=fd5482de73584b711f613e03ad2eaa9fc5f7f298d88a69d084852f6554eee2f2)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.53.5)(sass@1.97.2)(vite@7.3.1(@types/node@20.19.28)(sass@1.97.2)(tsx@4.21.0)(yaml@2.8.1))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -5852,7 +5855,7 @@ snapshots:
       commander: 14.0.2
       js-yaml: 4.1.1
 
-  '@open-pioneer/vite-plugin-pioneer@5.1.0(@open-pioneer/runtime@src+packages+runtime)(rollup@4.53.5)(sass@1.97.2)(vite@7.3.1(@types/node@20.19.28)(sass@1.97.2)(tsx@4.21.0)(yaml@2.8.1))':
+  '@open-pioneer/vite-plugin-pioneer@5.1.0(patch_hash=fd5482de73584b711f613e03ad2eaa9fc5f7f298d88a69d084852f6554eee2f2)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.53.5)(sass@1.97.2)(vite@7.3.1(@types/node@20.19.28)(sass@1.97.2)(tsx@4.21.0)(yaml@2.8.1))':
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/template': 7.27.2

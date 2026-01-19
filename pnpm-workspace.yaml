@@ -112,6 +112,11 @@ overrides:
 allowUnusedPatches: true
 ignorePatchFailures: false
 patchedDependencies:
+  # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
+  # This is ONLY needed in the core packages repository because we're developing the runtime package here.
+  # NOTE: This should be an option.
+  "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
+
   # Ensure all portals are mounted under `.pioneer-root` div
   "@ark-ui/react@*": "patches/@ark-ui__react.patch"
 
