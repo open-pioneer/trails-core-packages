@@ -63,14 +63,15 @@ const Toaster = memo(function Toaster(props: { toaster: ToasterObject }) {
     return (
         <Portal>
             <ChakraToaster
-                toaster={props.toaster}
+                className="notifier-toast-group"
                 insetInline={{ mdDown: "4" }}
                 aria-label={intl.formatMessage({
                     id: "regionLabel"
                 })}
+                toaster={props.toaster}
             >
                 {(toast) => (
-                    <Toast.Root width={{ md: "sm" }} alignItems="center">
+                    <Toast.Root className="notifier-toast" width={{ md: "sm" }} alignItems="center">
                         {toast.type === "loading" ? (
                             <Spinner size="sm" color="blue.solid" />
                         ) : (

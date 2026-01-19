@@ -6,6 +6,7 @@ import type {
     NotificationOptions,
     NotificationService,
     NotifierProperties,
+    OffsetsObject,
     SimpleNotificationOptions
 } from "./api";
 import { Resource, createLogger } from "@open-pioneer/core";
@@ -42,6 +43,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 
         this.toaster = createToaster({
             placement: getPlacement(typedProperties.position),
+            offsets: getOffsets(typedProperties.offsets),
             pauseOnPageIdle: true
         });
 
@@ -162,4 +164,19 @@ function getPlacement(
         default:
             return "top-end";
     }
+}
+
+function getOffsets(offsetsConfig: NotifierProperties["offsets"]): OffsetsObject | undefined {
+    if (!offsetsConfig) {
+        return undefined;
+    }
+    if (typeof offsetsConfig === "string") {
+        return {
+            left: offsetsConfig,
+            top: offsetsConfig,
+            right: offsetsConfig,
+            bottom: offsetsConfig
+        };
+    }
+    return offsetsConfig;
 }

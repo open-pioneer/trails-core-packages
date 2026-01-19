@@ -11,7 +11,13 @@ const Element = createCustomElement({
     config: {
         properties: {
             "@open-pioneer/notifier": {
-                position: "top-right"
+                position: "top-right",
+                offsets: {
+                    "left": "1rem",
+                    "top": "3rem",
+                    "right": "1rem",
+                    "bottom": "1rem"
+                }
             } satisfies NotifierProperties
         }
     }
