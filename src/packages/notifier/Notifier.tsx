@@ -1,21 +1,31 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import {
+    BoxProps,
     Toaster as ChakraToaster,
     Icon,
     Portal,
     Spinner,
     Stack,
     Toast,
+    ToasterProps,
     useToastStyles
 } from "@chakra-ui/react";
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { memo, useEffect, useState } from "react";
-import { LuTriangleAlert, LuInfo, LuCircleCheck, LuCircleAlert } from "react-icons/lu";
+import { LuCircleAlert, LuCircleCheck, LuInfo, LuTriangleAlert } from "react-icons/lu";
 import { InternalNotificationAPI, ToasterObject } from "./NotificationServiceImpl";
 
 /** Props supported by the {@link Notifier} component. */
-export interface NotifierProps {}
+export interface NotifierProps {
+    /**
+     * Props to be added to the notifier's root container.
+     *
+     * NOTE: Chakra's toaster currently hard codes many style properties using element styles.
+     * These styles cannot be easily overwritten, unless one uses `!important`.
+     **/
+    rootProps?: BoxProps;
+}
 
 /**
  * Shows notifications sent via the `NotificationService`.
@@ -36,7 +46,7 @@ export interface NotifierProps {}
  * }
  * ```
  */
-export function Notifier(_props: NotifierProps) {
+export function Notifier(props: NotifierProps) {
     const notificationService = useService(
         "notifier.NotificationService"
     ) as InternalNotificationAPI;
@@ -55,20 +65,23 @@ export function Notifier(_props: NotifierProps) {
         };
     }, [notificationService]);
 
-    return active && <Toaster toaster={notificationService.toaster} />;
+    return active && <Toaster rootProps={props.rootProps} toaster={notificationService.toaster} />;
 }
 
-const Toaster = memo(function Toaster(props: { toaster: ToasterObject }) {
+const Toaster = memo(function Toaster(props: { rootProps?: BoxProps; toaster: ToasterObject }) {
+    const { rootProps, toaster } = props;
     const intl = useIntl();
+
     return (
         <Portal>
             <ChakraToaster
-                className="notifier-toast-group"
                 insetInline={{ mdDown: "4" }}
                 aria-label={intl.formatMessage({
                     id: "regionLabel"
                 })}
-                toaster={props.toaster}
+                className="notifier-toast-group"
+                {...(rootProps as ToasterProps | undefined)}
+                toaster={toaster}
             >
                 {(toast) => (
                     <Toast.Root className="notifier-toast" width={{ md: "sm" }} alignItems="center">

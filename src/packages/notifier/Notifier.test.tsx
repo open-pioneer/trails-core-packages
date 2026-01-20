@@ -6,7 +6,7 @@ import { act, render, screen, waitFor, waitForElementToBeRemoved } from "@testin
 import { createElement } from "react";
 import { expect, it } from "vitest";
 import { NotificationServiceImpl } from "./NotificationServiceImpl";
-import { Notifier } from "./Notifier";
+import { Notifier, NotifierProps } from "./Notifier";
 
 it("shows notifications as toasts", async () => {
     const { service, content } = create();
@@ -62,14 +62,29 @@ it("closes all notifications", async () => {
     expect(messageElementsAfterClear).toHaveLength(0);
 });
 
-function create() {
+it("supports custom props on <Notifier/>", async () => {
+    const { content } = create({
+        rootProps: {
+            fontSize: "123px"
+        }
+    });
+    render(content);
+
+    const rootDiv = await screen.findByRole("region"); // Wait for mount
+    expect(rootDiv.tagName).toBe("DIV");
+    expect(rootDiv).toHaveStyle({
+        "font-size": "123px"
+    });
+});
+
+function create(props?: NotifierProps) {
     const service = createService(NotificationServiceImpl);
     const services = {
         "notifier.NotificationService": service
     };
     const content = (
         <PackageContextProvider services={services}>
-            <Notifier />
+            <Notifier {...props} />
         </PackageContextProvider>
     );
     return { service, content };
