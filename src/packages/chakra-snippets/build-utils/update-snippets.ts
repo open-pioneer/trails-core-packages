@@ -4,7 +4,7 @@ import { unlinkSync } from "fs";
 import { resolve } from "path";
 
 const os = process.platform; //returns win32 even on win 64bit
-if(os === "win32"){
+if (os === "win32") {
     usePowerShell();
 }
 
@@ -23,19 +23,23 @@ const unwantedSnippets = new Set([
     "progress-circle.tsx",
     "progress.tsx",
     "provider.tsx",
+    "rich-text-editor-context.tsx",
+    "rich-text-editor-control.tsx",
+    "rich-text-editor-menu.tsx",
+    "rich-text-editor.tsx",
     "segmented-control.tsx",
     "select.tsx",
     "skeleton.tsx",
     "stat.tsx",
     "steps.tsx",
     "timeline.tsx",
-    "toaster.tsx",
+    "toaster.tsx"
 ]);
 
 const targetDir = "./unedited";
 
 // Download _all snippets_, overwrite existing ones.
-await $`pnpm chakra snippet add --all --tsx --force --outdir ${targetDir}`
+await $`pnpm chakra snippet add --all --tsx --force --outdir ${targetDir}`;
 
 // Delete files we don't want
 const newSnippets = await findSnippets();
@@ -49,7 +53,7 @@ for (const snippet of newSnippets) {
 // NOTE: Paths relative to target dir
 async function findSnippets(): Promise<string[]> {
     const snippets = await glob("./**/*.tsx", {
-        cwd: targetDir,
+        cwd: targetDir
     });
     return snippets;
 }
