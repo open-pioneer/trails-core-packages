@@ -1,13 +1,16 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { syncWatch } from "@conterra/reactivity-core";
 import {
     ManualPromise,
     Resource,
     createAbortError,
+    createLogger,
     createManualPromise,
-    destroyResource,
-    createLogger
+    destroyResource
 } from "@open-pioneer/core";
+import type { Service, ServiceOptions } from "@open-pioneer/runtime";
+import { sourceId } from "open-pioneer:source-info";
 import type {
     AuthPlugin,
     AuthService,
@@ -16,10 +19,8 @@ import type {
     LogoutOptions,
     SessionInfo
 } from "./api";
-import type { Service, ServiceOptions } from "@open-pioneer/runtime";
-import { syncWatch } from "@conterra/reactivity-core";
 
-const LOG = createLogger("authentication:AuthService");
+const LOG = createLogger(sourceId);
 
 export class AuthServiceImpl implements AuthService, Service {
     #plugin: AuthPlugin;

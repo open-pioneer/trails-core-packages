@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createLogger } from "@open-pioneer/core";
-import { Error } from "@open-pioneer/core";
+import { createLogger, Error } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ServiceOptions } from "../Service";
 import { ApplicationLifecycleListener } from "../api";
 import { ErrorId } from "../errors";
 
-const LOG = createLogger("runtime:ApplicationLifecycleEventService");
+const LOG = createLogger(sourceId);
 
 interface References {
     listeners: ApplicationLifecycleListener[];

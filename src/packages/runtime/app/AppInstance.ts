@@ -11,6 +11,7 @@ import {
     Resource,
     throwAbortError
 } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { createElement } from "react";
 import { ApiMethods, ApiService } from "../api";
 import {
@@ -38,7 +39,7 @@ import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { gatherConfig } from "./gatherConfig";
 import { logError } from "./logErrors";
 
-const LOG = createLogger("runtime:AppInstance");
+const LOG = createLogger(sourceId);
 
 export interface AppOptions {
     /** The root node that contains the application. */

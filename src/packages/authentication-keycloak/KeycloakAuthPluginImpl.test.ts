@@ -60,7 +60,7 @@ it("expect keycloak init to reject'", async () => {
       [MockFunction error] {
         "calls": [
           [
-            "[ERROR] authentication-keycloak:KeycloakAuthPlugin: Failed to check if user is authenticated",
+            "[ERROR] @open-pioneer/authentication-keycloak/KeycloakAuthPluginImpl: Failed to check if user is authenticated",
             [Error: Failed to initialize keycloak session],
           ],
         ],
@@ -98,7 +98,7 @@ it("should reject by updating the token", async () => {
       [MockFunction error] {
         "calls": [
           [
-            "[ERROR] authentication-keycloak:KeycloakAuthPlugin: Failed to refresh token",
+            "[ERROR] @open-pioneer/authentication-keycloak/KeycloakAuthPluginImpl: Failed to refresh token",
             [Error: Error],
           ],
         ],
