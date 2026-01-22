@@ -171,6 +171,7 @@ function getOffsets(offsetsConfig: NotifierProperties["offsets"]): OffsetsObject
     if (!offsetsConfig) {
         return undefined;
     }
+
     if (typeof offsetsConfig === "string") {
         return {
             left: offsetsConfig,
@@ -179,5 +180,19 @@ function getOffsets(offsetsConfig: NotifierProperties["offsets"]): OffsetsObject
             bottom: offsetsConfig
         };
     }
+
+    if (typeof offsetsConfig !== "object") {
+        throw new Error("Unexpected 'offsets' property value: must be a string or an object.");
+    }
+    checkProp(offsetsConfig, "left");
+    checkProp(offsetsConfig, "top");
+    checkProp(offsetsConfig, "right");
+    checkProp(offsetsConfig, "bottom");
     return offsetsConfig;
+}
+
+function checkProp(obj: Partial<OffsetsObject>, prop: keyof OffsetsObject) {
+    if (!obj[prop]) {
+        throw new Error(`Offset '${prop}' is required.`);
+    }
 }
