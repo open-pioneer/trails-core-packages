@@ -1,5 +1,29 @@
 # @open-pioneer/notifier
 
+## 4.4.0
+
+### Minor Changes
+
+- b28d6bc: Update to chakra 3.31.0
+- d7ec65c: Add a `rootProps` property to the `<Notifier />` component.
+  These are properties that will be applied to the notifier's root div.
+- d7ec65c: Allow configuration of the gap between the first notification and the screen edge(s) via the new `offsets` package property.
+
+### Patch Changes
+
+- f9aaf46: Bump various dependencies
+- 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
+- Updated dependencies [f9aaf46]
+- Updated dependencies [7087ea7]
+- Updated dependencies [b28d6bc]
+- Updated dependencies [554d58e]
+- Updated dependencies [1cc3415]
+- Updated dependencies [1872a6d]
+- Updated dependencies [84068f2]
+    - @open-pioneer/core@4.4.0
+    - @open-pioneer/react-utils@4.4.0
+    - @open-pioneer/runtime@4.4.0
+
 ## 4.3.0
 
 ### Minor Changes
