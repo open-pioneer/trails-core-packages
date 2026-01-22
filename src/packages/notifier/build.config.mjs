@@ -17,6 +17,7 @@ export default defineBuildConfig({
         strict: true
     },
     properties: {
-        position: "top-right"
+        position: "top-right",
+        offsets: null
     }
 });

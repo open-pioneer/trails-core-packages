@@ -37,6 +37,15 @@ export interface NotifierProperties {
      * @default "top-right"
      */
     position?: "top" | "top-left" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
+
+    /**
+     * Offset from the edge of the screen.
+     *
+     * The default value is inherited from Chakra (currently `"1rem"`).
+     *
+     * See also https://chakra-ui.com/docs/components/toast#offset.
+     */
+    offsets?: string | OffsetsObject | null;
 }
 ```
 
