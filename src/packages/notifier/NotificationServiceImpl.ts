@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createToaster, CreateToasterProps, CreateToasterReturn } from "@chakra-ui/react";
+import { createLogger, Resource } from "@open-pioneer/core";
+import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
+import { sourceId } from "open-pioneer:source-info";
 import type {
     NotificationLevel,
     NotificationOptions,
@@ -9,9 +12,7 @@ import type {
     OffsetsObject,
     SimpleNotificationOptions
 } from "./api";
-import { Resource, createLogger } from "@open-pioneer/core";
-import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
-const LOG = createLogger("notifier:NotificationService");
+const LOG = createLogger(sourceId);
 
 export type ToasterObject = CreateToasterReturn;
 

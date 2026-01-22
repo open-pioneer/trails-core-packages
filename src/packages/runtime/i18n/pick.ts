@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createLogger, Error } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
-const LOG = createLogger("runtime:i18n");
+const LOG = createLogger(sourceId);
 
 export interface LocalePickResult {
     /**

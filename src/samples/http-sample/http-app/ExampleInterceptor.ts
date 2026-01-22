@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Interceptor, BeforeRequestParams } from "@open-pioneer/http";
 import { createLogger } from "@open-pioneer/core";
+import { BeforeRequestParams, Interceptor } from "@open-pioneer/http";
+import { sourceId } from "open-pioneer:source-info";
 
-const LOG = createLogger("http-app:ExampleInterceptor");
+const LOG = createLogger(sourceId);
 
 export class ExampleInterceptor implements Interceptor {
     async beforeRequest?(params: BeforeRequestParams) {

@@ -34,7 +34,7 @@ it("Detects missing local storage", async () => {
       [MockFunction warn] {
         "calls": [
           [
-            "[WARN] local-storage: Local storage is not supported by this browser.",
+            "[WARN] @open-pioneer/local-storage/LocalStorageServiceImpl: Local storage is not supported by this browser.",
           ],
         ],
         "results": [
@@ -63,7 +63,7 @@ it("Reports errors if local storage does not work", async () => {
       [MockFunction warn] {
         "calls": [
           [
-            "[WARN] local-storage: Local storage is not supported by this browser.",
+            "[WARN] @open-pioneer/local-storage/LocalStorageServiceImpl: Local storage is not supported by this browser.",
             [Error: Some problem!],
           ],
         ],
@@ -133,7 +133,7 @@ it("Overwrites invalid data on load", async () => {
     expect(warnSpy).toHaveBeenCalledOnce();
     const args = warnSpy.mock.calls[0]! as unknown[];
     expect(args[0]).toMatchInlineSnapshot(
-        '"[WARN] local-storage: Invalid persisted data, reverting to default."'
+        `"[WARN] @open-pioneer/local-storage/LocalStorageServiceImpl: Invalid persisted data, reverting to default."`
     );
     expect(String(args[1])).toMatch(/unexpected token/i);
 });
@@ -205,7 +205,7 @@ it("Detects missing storage id", async () => {
       [MockFunction warn] {
         "calls": [
           [
-            "[WARN] local-storage: The 'storageId' property of the 'local-storage' package should be set to a valid string to avoid collisions with other applications. Defaulting to 'trails-state'.",
+            "[WARN] @open-pioneer/local-storage/LocalStorageServiceImpl: The 'storageId' property of the 'local-storage' package should be set to a valid string to avoid collisions with other applications. Defaulting to 'trails-state'.",
           ],
         ],
         "results": [

@@ -71,6 +71,14 @@ import { createLogger } from "@open-pioneer/core";
 const LOG = createLogger("example-package");
 ```
 
+With recent version of the trails vite plugin, you can also use this convenient way to create a logger:
+
+```ts
+import { sourceId } from "open-pioneer:source-info";
+// sourceId is an automatic identifier based on the current file.
+const LOG = createLogger(sourceId);
+```
+
 ### Deprecations
 
 The `deprecated` function can be used to print warnings when a deprecated entity is used.

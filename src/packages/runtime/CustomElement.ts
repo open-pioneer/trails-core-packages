@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
 import { ApiMethods, type ApiExtension } from "./api";
 import { AppInstance } from "./app";
 import { ErrorId } from "./errors";
 import { ApplicationMetadata } from "./metadata";
 
-const LOG = createLogger("runtime:CustomElement");
+const LOG = createLogger(sourceId);
 
 /**
  * Options for the {@link createCustomElement} function.
