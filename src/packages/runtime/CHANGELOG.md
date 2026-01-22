@@ -1,5 +1,25 @@
 # @open-pioneer/runtime
 
+## 4.4.0
+
+### Minor Changes
+
+- b28d6bc: Update to chakra 3.31.0
+- 1cc3415: Update dependency formatjs to v4 (package migrated to ESM).
+- 1872a6d: Expose `overrides` in `resolveConfig()` hook when the application restarts.
+
+### Patch Changes
+
+- f9aaf46: Bump various dependencies
+- 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
+- 84068f2: Hide emotion warnings for certain css selectors (see [Issue](https://github.com/open-pioneer/trails-core-packages/issues/169)).
+- Updated dependencies [f9aaf46]
+- Updated dependencies [b28d6bc]
+- Updated dependencies [554d58e]
+    - @open-pioneer/base-theme@4.4.0
+    - @open-pioneer/core@4.4.0
+    - @open-pioneer/reactivity@4.4.0
+
 ## 4.3.0
 
 ### Minor Changes
