@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { useEvent } from "@open-pioneer/react-utils";
 import { ApplicationContext } from "@open-pioneer/runtime";
 import { useService } from "open-pioneer:react-hooks";
 import { KeyboardEvent, useId, useMemo } from "react";
-import { InternalMenuState, RovingMenuState } from "./RovingMenuState";
+import { useEvent } from "../useEvent";
 import { type RovingMenuRoot } from "./RovingMenuRoot";
+import { InternalMenuState, RovingMenuState } from "./RovingMenuState";
 
 /**
  * Properties supported when creating a new menu via {@link useRovingMenu}.
