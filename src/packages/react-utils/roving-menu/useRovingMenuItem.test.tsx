@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ApplicationContext } from "@open-pioneer/runtime";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { renderHook } from "@testing-library/react";
 import { ReactNode } from "react";
@@ -38,19 +37,5 @@ it("supports usage when not surrounded by a menu parent", async () => {
 });
 
 function TestWrapper(props: { children?: ReactNode }) {
-    const appCtx = {
-        getApplicationContainer() {
-            return document.body;
-        }
-    } satisfies Partial<ApplicationContext>;
-
-    return (
-        <PackageContextProvider
-            services={{
-                "runtime.ApplicationContext": appCtx
-            }}
-        >
-            {props.children}
-        </PackageContextProvider>
-    );
+    return <PackageContextProvider>{props.children}</PackageContextProvider>;
 }

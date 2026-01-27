@@ -21,7 +21,6 @@
         "@conterra/reactivity-core": "catalog:",
         "@open-pioneer/core": "workspace:*",
         "@open-pioneer/reactivity": "workspace:*",
-        "@open-pioneer/runtime": "workspace:*",
         "classnames": "catalog:",
         "react": "catalog:"
     },

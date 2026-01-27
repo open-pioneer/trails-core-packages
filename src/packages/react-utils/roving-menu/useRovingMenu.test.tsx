@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ApplicationContext } from "@open-pioneer/runtime";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ReactNode } from "react";
@@ -179,13 +178,10 @@ it("switches active items if the active item is unmounted", async () => {
     `);
 
     await rerender(<SimpleList values={["b", "c"]} />);
-    const updatedItems = Array.from(list.querySelectorAll("li"));
-    expect(updatedItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
-      [
-        0,
-        -1,
-      ]
-    `);
+    await waitFor(() => {
+        const updatedItems = Array.from(list.querySelectorAll("li"));
+        expect(updatedItems.map((item) => item.tabIndex)).toEqual([0, -1]);
+    });
 });
 
 function SimpleList(props?: { orientation?: "horizontal" | "vertical"; values?: string[] }) {
@@ -210,19 +206,5 @@ function SimpleMenuItem(props: { value: string }) {
 }
 
 function TestWrapper(props: { children?: ReactNode }) {
-    const appCtx = {
-        getApplicationContainer() {
-            return document.body;
-        }
-    } satisfies Partial<ApplicationContext>;
-
-    return (
-        <PackageContextProvider
-            services={{
-                "runtime.ApplicationContext": appCtx
-            }}
-        >
-            {props.children}
-        </PackageContextProvider>
-    );
+    return <PackageContextProvider>{props.children}</PackageContextProvider>;
 }

@@ -1,11 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ApplicationContext } from "@open-pioneer/runtime";
-import { useService } from "open-pioneer:react-hooks";
-import { KeyboardEvent, useId, useMemo } from "react";
+import { KeyboardEvent, RefObject, useId, useMemo, useRef } from "react";
 import { useEvent } from "../useEvent";
 import { type RovingMenuRoot } from "./RovingMenuRoot";
-import { InternalMenuState, RovingMenuState } from "./RovingMenuState";
+import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
 
 /**
  * Properties supported when creating a new menu via {@link useRovingMenu}.
@@ -33,8 +31,10 @@ export interface RovingMenuResult {
      * Note that other properties may be added in a future release.
      */
     menuProps: {
-        id: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ref: RefObject<any>;
         role: string;
+        [MENU_ID_ATTR]: string;
         "aria-orientation": "horizontal" | "vertical";
         onKeyDown: (event: KeyboardEvent) => void;
     };
@@ -58,15 +58,13 @@ export interface RovingMenuResult {
  */
 export function useRovingMenu(props: RovingMenuProps = {}): RovingMenuResult {
     const { orientation = "horizontal" } = props;
-    //TODO: can we avoid this lookup? and simple e.g. go up the parents?
-    const ctx = useService<ApplicationContext>("runtime.ApplicationContext");
-
     const menuId = useId();
+    const menuRef = useRef<HTMLElement>(null);
 
     // Shared state between items and root
     const state = useMemo(
-        () => new InternalMenuState(menuId, orientation, ctx.getApplicationContainer()),
-        [ctx, orientation, menuId]
+        () => new InternalMenuState(menuId, orientation, menuRef),
+        [menuRef, orientation, menuId]
     );
 
     // Key handler on the menu
@@ -81,9 +79,10 @@ export function useRovingMenu(props: RovingMenuProps = {}): RovingMenuResult {
     const result = useMemo(
         (): RovingMenuResult => ({
             menuProps: {
-                id: menuId,
+                ref: menuRef,
                 role: "toolbar",
                 "aria-orientation": orientation,
+                [MENU_ID_ATTR]: menuId,
                 onKeyDown: onKeyDown
             },
             menuState: state as unknown as RovingMenuState

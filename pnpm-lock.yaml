@@ -542,9 +542,6 @@ importers:
       '@open-pioneer/reactivity':
         specifier: workspace:*
         version: link:../reactivity
-      '@open-pioneer/runtime':
-        specifier: workspace:*
-        version: link:../runtime
       classnames:
         specifier: 'catalog:'
         version: 2.5.1

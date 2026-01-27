@@ -3,9 +3,12 @@
 import { reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
-import { createContext, KeyboardEvent } from "react";
+import { createContext, KeyboardEvent, RefObject } from "react";
 
 const LOG = createLogger(sourceId);
+
+// Mostly for debugging parent/child links. Not used for lookups.
+export const MENU_ID_ATTR = "data-roving-menu-id";
 
 // Children of the menu have this attribute to signal which menu they belong to.
 export const MENU_OWNER_ATTR = "data-roving-menu-parent";
@@ -53,14 +56,18 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
  * @internal
  */
 export class InternalMenuState {
-    #appContainer: HTMLElement;
+    #menuRef: RefObject<HTMLElement | null>;
     #current = reactive<string | undefined>();
 
     readonly menuId: string;
     readonly orientation: "horizontal" | "vertical";
 
-    constructor(menuId: string, orientation: "horizontal" | "vertical", appContainer: HTMLElement) {
-        this.#appContainer = appContainer;
+    constructor(
+        menuId: string,
+        orientation: "horizontal" | "vertical",
+        menuRef: RefObject<HTMLElement | null>
+    ) {
+        this.#menuRef = menuRef;
         this.menuId = menuId;
         this.orientation = orientation;
     }
@@ -82,7 +89,7 @@ export class InternalMenuState {
             return;
         }
 
-        const items = getFocusableItems(this.#appContainer, this.menuId);
+        const items = getFocusableItems(this.#menuRef, this.menuId);
         const target = getFocusTarget(items, this.current, direction);
         if (!target) {
             LOG.warn("Failed to identify focus target for keyboard navigation");
@@ -112,7 +119,7 @@ export class InternalMenuState {
      */
     onItemUnmount(value: string): void {
         if (this.isActive(value)) {
-            const items = getFocusableItems(this.#appContainer, this.menuId, true);
+            const items = getFocusableItems(this.#menuRef, this.menuId, true);
             const target = items[0];
             target && this.#navigateToItem(target);
         }
@@ -225,9 +232,12 @@ function getFocusTarget(
     return items.at(nextIndex);
 }
 
-function getFocusableItems(appRoot: HTMLElement, menuId: string, unmount = false): HTMLElement[] {
-    const escapedId = CSS.escape(menuId);
-    const owner = appRoot.querySelector(`#${escapedId}`);
+function getFocusableItems(
+    menuRef: RefObject<HTMLElement | null>,
+    menuId: string,
+    unmount = false
+): HTMLElement[] {
+    const owner = menuRef.current;
     if (!owner) {
         if (unmount) {
             // List may no longer be in the DOM
@@ -237,6 +247,7 @@ function getFocusableItems(appRoot: HTMLElement, menuId: string, unmount = false
         }
     }
 
+    const escapedId = CSS.escape(menuId);
     const children = owner.querySelectorAll(`[${MENU_OWNER_ATTR}=${escapedId}]:not([disabled])`);
     return Array.from(children) as HTMLElement[];
 }
