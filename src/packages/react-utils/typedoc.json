@@ -1,5 +1,7 @@
 {
     // core-packages is a dev dependency (link to the project root)
     "extends": ["core-packages/typedoc.base.json"],
-    "entryPoints": ["./index.ts"]
+    "entryPoints": ["./index.ts"],
+    "groupOrder": ["Headings", "Roving menu", "Common component props", "*"],
+    "sort": ["static-first", "visibility", "alphabetical-ignoring-documents"]
 }
