@@ -243,7 +243,9 @@ function getFocusableItems(
             // List may no longer be in the DOM
             return [];
         } else {
-            throw new Error("Menu not found in DOM. Was the 'id' attribute set correctly?");
+            throw new Error(
+                "Menu parent not found in DOM. Was the 'ref' prop applied correctly to the container?"
+            );
         }
     }
 
