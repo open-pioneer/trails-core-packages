@@ -12,6 +12,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { RovingMenuRoot, useRovingMenu, useRovingMenuItem } from "@open-pioneer/react-utils";
+import { ReactNode } from "react";
 
 export function AppUI() {
     return (
@@ -58,7 +59,7 @@ export function AppUI() {
     );
 }
 
-function MenuSection(props: { title: string; description: string; children: React.ReactNode }) {
+function MenuSection(props: { title: string; description: string; children: ReactNode }) {
     const { title, description, children } = props;
     return (
         <Box borderWidth="1px" borderRadius="lg" p={5}>
