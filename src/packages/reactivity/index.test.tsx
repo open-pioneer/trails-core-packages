@@ -3,7 +3,13 @@
 import { Reactive, batch, computed, isReactive, reactive } from "@conterra/reactivity-core";
 import { act, render, renderHook, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { useComputed, useReactive, useReactiveSnapshot, useReactiveValue } from "./index";
+import {
+    DISPATCH_SYNC,
+    useComputed,
+    useReactive,
+    useReactiveSnapshot,
+    useReactiveValue
+} from "./index";
 import { Model } from "./examples/Model";
 import { YourComponent } from "./examples/YourComponent";
 
@@ -162,7 +168,11 @@ describe("useReactiveSnapshot", () => {
                 a.value = 1000;
                 b.value = 3000;
             });
-            waitForUpdate();
+            // No change yet
+            expect(calls).toBe(1);
+            expect(hook.result.current.a).toBe(1);
+            expect(hook.result.current.b).toBe(2);
+            await waitForUpdate();
         });
 
         expect(calls).toBe(2);
@@ -174,6 +184,32 @@ describe("useReactiveSnapshot", () => {
             "sum": 4000,
           }
         `);
+    });
+
+    // See https://github.com/open-pioneer/trails-core-packages/issues/125
+    it("watches reactive values (sync)", async () => {
+        const a = reactive(1);
+
+        let calls = 0;
+        const hook = renderHook(() =>
+            useReactiveSnapshot(
+                () => {
+                    calls += 1;
+                    return a.value;
+                },
+                [],
+                DISPATCH_SYNC
+            )
+        );
+
+        expect(calls).toBe(1);
+        expect(hook.result.current).toMatchInlineSnapshot(`1`);
+
+        act(() => {
+            a.value = 2;
+            expect(calls).toBe(2); // called immediately
+        });
+        expect(hook.result.current).toMatchInlineSnapshot(`2`);
     });
 
     it("updates when react values change", () => {
