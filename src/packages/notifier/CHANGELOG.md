@@ -1,5 +1,14 @@
 # @open-pioneer/notifier
 
+## 4.5.0
+
+### Patch Changes
+
+- Updated dependencies [604a589]
+    - @open-pioneer/react-utils@4.5.0
+    - @open-pioneer/core@4.5.0
+    - @open-pioneer/runtime@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes

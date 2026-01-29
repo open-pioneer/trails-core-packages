@@ -1,5 +1,14 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.5.0
+
+### Patch Changes
+
+- @open-pioneer/notifier@4.5.0
+- @open-pioneer/authentication@4.5.0
+- @open-pioneer/core@4.5.0
+- @open-pioneer/runtime@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes

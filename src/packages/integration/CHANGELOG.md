@@ -1,5 +1,11 @@
 # @open-pioneer/integration
 
+## 4.5.0
+
+### Patch Changes
+
+- @open-pioneer/runtime@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes
