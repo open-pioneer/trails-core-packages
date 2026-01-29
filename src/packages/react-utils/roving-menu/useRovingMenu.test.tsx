@@ -184,13 +184,38 @@ it("switches active items if the active item is unmounted", async () => {
     });
 });
 
-function SimpleList(props?: { orientation?: "horizontal" | "vertical"; values?: string[] }) {
+it("is useable when the first menu item is disabled", async () => {
+    await render(<SimpleList disabledValues={["a"]} />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+    const initialItems = Array.from(list.querySelectorAll("li"));
+
+    // Second button gets the focus because the first one is disabled
+    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
+      [
+        -1,
+        0,
+        -1,
+      ]
+    `);
+});
+
+function SimpleList(props?: {
+    orientation?: "horizontal" | "vertical";
+    values?: string[];
+    disabledValues?: string[];
+}) {
     const { menuProps, menuState } = useRovingMenu({
         orientation: props?.orientation ?? "vertical"
     });
 
     const values = props?.values ?? ["a", "b", "c"];
-    const items = values.map((v) => <SimpleMenuItem key={v} value={v} />);
+    const disabledValues = props?.disabledValues ?? [];
+    const items = values.map((v) => (
+        <SimpleMenuItem key={v} value={v} disabled={disabledValues.includes(v)} />
+    ));
 
     return (
         <RovingMenuRoot menuState={menuState}>
@@ -199,9 +224,9 @@ function SimpleList(props?: { orientation?: "horizontal" | "vertical"; values?: 
     );
 }
 
-function SimpleMenuItem(props: { value: string }) {
-    const value = props.value;
-    const { itemProps } = useRovingMenuItem({ value });
+function SimpleMenuItem(props: { value: string; disabled: boolean }) {
+    const { value, disabled } = props;
+    const { itemProps } = useRovingMenuItem({ value, disabled });
     return <li {...itemProps}>Item {value}</li>;
 }
 

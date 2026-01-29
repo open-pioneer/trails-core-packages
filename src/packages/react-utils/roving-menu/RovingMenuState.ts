@@ -121,18 +121,12 @@ export class InternalMenuState {
         if (this.isActive(value)) {
             const items = getFocusableItems(this.#menuRef, this.menuId, true);
             const target = items[0];
-            target && this.#navigateToItem(target);
+            if (target) {
+                this.#navigateToItem(target);
+            } else {
+                this.#activateItem(undefined);
+            }
         }
-    }
-
-    /**
-     * Called by items when they become disabled.
-     *
-     * This will move the active value to another item to ensure that one item is focusable.
-     */
-    onItemDisabled(value: string): void {
-        // improvement: don't reset to first but to a close item instead
-        this.onItemUnmount(value); // happens to do what we want :)
     }
 
     /**
@@ -156,7 +150,7 @@ export class InternalMenuState {
         this.#activateItem(value);
     }
 
-    #activateItem(value: string): void {
+    #activateItem(value: string | undefined): void {
         this.#current.value = value;
     }
 }
