@@ -6,7 +6,11 @@ import { FC, ReactNode, RefAttributes, createContext, useContext } from "react";
 const LevelContext = createContext<number | undefined>(undefined);
 LevelContext.displayName = "LevelContext";
 
-/** Properties of the {@link TitledSection} component. */
+/**
+ * Properties of the {@link TitledSection} component.
+ *
+ * @group Headings
+ **/
 export interface TitledSectionProps {
     /**
      * The title component.
@@ -92,6 +96,9 @@ export interface TitledSectionProps {
  *     Content
  * </TitledSection>
  * ```
+ *
+ * @group Headings
+ * @expandType TitledSectionProps
  */
 export function TitledSection(props: TitledSectionProps): ReactNode {
     const { title, sectionHeadingProps, children } = props;
@@ -115,6 +122,8 @@ export function TitledSection(props: TitledSectionProps): ReactNode {
  * Properties supported by the {@link SectionHeading} component.
  *
  * All chakra properties are forwarded to the [Heading](https://chakra-ui.com/docs/components/heading) component.
+ *
+ * @group Headings
  */
 export interface SectionHeadingProps extends HeadingProps, RefAttributes<HTMLHeadingElement> {
     children?: ReactNode | undefined;
@@ -127,6 +136,9 @@ export interface SectionHeadingProps extends HeadingProps, RefAttributes<HTMLHea
  * Headings are rendered as [Chakra Headings](https://chakra-ui.com/docs/components/heading).
  *
  * Heading levels are managed by nesting {@link TitledSection}.
+ *
+ * @group Headings
+ * @expandType SectionHeadingProps
  */
 export function SectionHeading(props: SectionHeadingProps): ReactNode {
     const { children, ref, ...rest } = props;
@@ -141,6 +153,8 @@ export function SectionHeading(props: SectionHeadingProps): ReactNode {
 
 /**
  * Properties for the {@link ConfigureTitledSection} component.
+ *
+ * @group Headings
  */
 export interface ConfigureTitledSectionProps {
     level: HeadingLevel;
@@ -180,19 +194,26 @@ export interface ConfigureTitledSectionProps {
  *
  * The headings used by `Widget` will start with `h5`.
  *
+ * @group Headings
+ * @expandType ConfigureTitledSectionProps
  */
 export const ConfigureTitledSection: FC<ConfigureTitledSectionProps> = (props) => {
     const level = props.level - 1; // TitledSection increments by 1.
     return <LevelContext value={level}>{props.children}</LevelContext>;
 };
 
-/** The level of a html heading. */
+/**
+ * The level of a html heading.
+ * @group Headings
+ **/
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 /**
  * Returns the current heading level.
  *
  * This hook should be used in the `title` property of a {@link TitledSection} or in that component's children.
+ *
+ * @group Headings
  */
 export function useHeadingLevel(): HeadingLevel {
     const level = useContext(LevelContext);

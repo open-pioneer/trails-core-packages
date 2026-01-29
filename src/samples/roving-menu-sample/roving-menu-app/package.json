@@ -1,0 +1,11 @@
+{
+    "name": "roving-menu-app",
+    "version": "0.0.10",
+    "private": true,
+    "dependencies": {
+        "@chakra-ui/react": "catalog:",
+        "@open-pioneer/react-utils": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
+        "react": "catalog:"
+    }
+}

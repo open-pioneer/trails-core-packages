@@ -5,6 +5,8 @@ import { HTMLAttributes } from "react";
 
 /**
  * Common properties supported by all public react components.
+ *
+ * @group Common component props
  */
 export interface CommonComponentProps {
     /**
@@ -30,6 +32,9 @@ export interface CommonComponentProps {
  *     return <Box {...containerProps}>Content</Box>;
  * }
  * ```
+ *
+ * @group Common component props
+ * @expandType CommonComponentProps
  */
 export function useCommonComponentProps(
     componentClassName: string,
