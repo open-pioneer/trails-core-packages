@@ -12,7 +12,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { RovingMenuRoot, useRovingMenu, useRovingMenuItem } from "@open-pioneer/react-utils";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 export function AppUI() {
     return (
@@ -44,13 +44,13 @@ export function AppUI() {
                 </VStack>
                 <MenuSection
                     title="Horizontal Menu"
-                    description="Use Left/Right arrow keys or Home/End keys to navigate between buttons."
+                    description="Use Left/Right arrow keys or Home/End keys to navigate between buttons. The third button is always disabled."
                 >
                     <HorizontalMenu />
                 </MenuSection>
                 <MenuSection
                     title="Vertical Menu"
-                    description="Use Up/Down arrow keys or Home/End keys to navigate between buttons."
+                    description="Use Up/Down arrow keys or Home/End keys to navigate between buttons. The last button disables on trigger."
                 >
                     <VerticalMenu />
                 </MenuSection>
@@ -82,7 +82,7 @@ function HorizontalMenu() {
             <RovingMenuRoot menuState={menuState}>
                 <MenuItem value="1" />
                 <MenuItem value="2" />
-                <MenuItem value="3" />
+                <MenuItem value="3" disabled />
                 <MenuItem value="4" />
             </RovingMenuRoot>
         </HStack>
@@ -100,20 +100,36 @@ function VerticalMenu() {
                 <MenuItem value="A" />
                 <MenuItem value="B" />
                 <MenuItem value="C" />
-                <MenuItem value="D" />
+                <MenuItem value="D" disableOnClick />
             </RovingMenuRoot>
         </VStack>
     );
 }
 
-function MenuItem(props: { value: string }) {
-    const { value } = props;
+function MenuItem(props: { value: string; disabled?: boolean; disableOnClick?: boolean }) {
+    const { value, disableOnClick, disabled: disabledProp } = props;
+    const [disabledState, setDisabledState] = useState(false);
     const { itemProps } = useRovingMenuItem({
-        value
+        value,
+        disabled: disabledState
     });
 
+    const disabled = disabledProp ?? disabledState;
     return (
-        <Button {...itemProps} onClick={() => console.log(`Button ${value} triggered.`)}>
+        <Button
+            aria-disabled={disabled}
+            {...itemProps}
+            onClick={() => {
+                if (disabled) {
+                    return;
+                }
+                console.log(`Button ${value} triggered.`);
+                if (disableOnClick) {
+                    console.log(`Disabling button ${value}.`);
+                    setDisabledState(true);
+                }
+            }}
+        >
             {value}
         </Button>
     );

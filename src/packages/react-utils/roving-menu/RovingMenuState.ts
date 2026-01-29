@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
+import { RootNode } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
 import { createContext, KeyboardEvent, RefObject } from "react";
 
@@ -89,7 +90,7 @@ export class InternalMenuState {
             return;
         }
 
-        const items = getFocusableItems(this.#menuRef, this.menuId);
+        const items = getMenuItems(this.#menuRef, this.menuId);
         const target = getFocusTarget(items, this.current, direction);
         if (!target) {
             LOG.warn("Failed to identify focus target for keyboard navigation");
@@ -118,14 +119,37 @@ export class InternalMenuState {
      * This will move the active value to another item to ensure that one item is focusable.
      */
     onItemUnmount(value: string): void {
-        if (this.isActive(value)) {
-            const items = getFocusableItems(this.#menuRef, this.menuId, true);
-            const target = items[0];
-            if (target) {
-                this.#navigateToItem(target);
-            } else {
-                this.#activateItem(undefined);
+        if (!this.isActive(value)) {
+            return;
+        }
+
+        const items = getMenuItems(this.#menuRef, this.menuId, true, false);
+        const disabledIndex = findItemIndex(items, value);
+
+        let target;
+        let focus;
+        if (disabledIndex === -1) {
+            target = getFocusTarget(items, -1, "home");
+        } else {
+            // Attempt to move focus to something sensible
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const disabledItem = items[disabledIndex]!;
+
+            // NOTE: focus change requires not using 'disabled' but 'aria-disabled' instead
+            focus = hasFocus(disabledItem);
+            target =
+                getFocusTarget(items, disabledIndex, "forward", false) ??
+                getFocusTarget(items, disabledIndex, "backward", false);
+        }
+
+        if (target) {
+            this.#navigateToItem(target);
+            if (focus) {
+                LOG.debug("Restoring focus within menu to", target);
+                requestAnimationFrame(() => target.focus());
             }
+        } else {
+            this.#activateItem(undefined);
         }
     }
 
@@ -195,41 +219,78 @@ function getNavDirection(
 
 function getFocusTarget(
     items: HTMLElement[],
-    current: string | undefined,
-    direction: NavDirection
+    current: string | number | undefined,
+    direction: NavDirection,
+    wrap = true
 ): HTMLElement | undefined {
-    const currentIndex = items.findIndex((item) => getItemValue(item) === current);
-    if (currentIndex === -1) {
-        // Some keyboard event from an unknown child?
-        return items.at(0);
+    let currentIndex = -1;
+    if (typeof current === "number") {
+        currentIndex = current;
+    } else if (typeof current === "string") {
+        currentIndex = findItemIndex(items, current);
     }
 
-    if (direction === "home") {
-        return items.at(0);
+    if (currentIndex === -1 || direction === "home") {
+        return items.find((item) => !isDisabled(item));
     }
     if (direction === "end") {
-        return items.at(-1);
+        return items.findLast((item) => !isDisabled(item));
     }
 
-    let nextIndex;
     if (direction === "forward") {
-        nextIndex = currentIndex + 1;
-        if (nextIndex >= items.length) {
-            nextIndex = 0;
+        for (let nextIndex = currentIndex + 1; ; ) {
+            if (nextIndex >= items.length) {
+                if (!wrap) {
+                    break;
+                }
+
+                nextIndex = 0;
+            }
+            if (nextIndex === currentIndex) {
+                break;
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const item = items[nextIndex]!;
+            if (!isDisabled(item)) {
+                return item;
+            }
+
+            nextIndex += 1;
         }
     } else {
-        nextIndex = currentIndex - 1;
-        if (nextIndex < 0) {
-            nextIndex = items.length - 1;
+        for (let nextIndex = currentIndex - 1; ; ) {
+            if (nextIndex < 0) {
+                if (!wrap) {
+                    break;
+                }
+                nextIndex = items.length - 1;
+            }
+            if (nextIndex === currentIndex) {
+                break;
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const item = items[nextIndex]!;
+            if (!isDisabled(item)) {
+                return item;
+            }
+
+            nextIndex -= 1;
         }
     }
-    return items.at(nextIndex);
+    return undefined;
 }
 
-function getFocusableItems(
+function findItemIndex(items: HTMLElement[], value: string) {
+    return items.findIndex((item) => getItemValue(item) === value);
+}
+
+function getMenuItems(
     menuRef: RefObject<HTMLElement | null>,
     menuId: string,
-    unmount = false
+    unmount = false,
+    excludeDisabled = true
 ): HTMLElement[] {
     const owner = menuRef.current;
     if (!owner) {
@@ -244,10 +305,23 @@ function getFocusableItems(
     }
 
     const escapedId = CSS.escape(menuId);
-    const children = owner.querySelectorAll(`[${MENU_OWNER_ATTR}=${escapedId}]:not([disabled])`);
+    let selector = `[${MENU_OWNER_ATTR}=${escapedId}]`;
+    if (excludeDisabled) {
+        selector += ":not([disabled],[aria-disabled='true'])";
+    }
+    const children = owner.querySelectorAll(selector);
     return Array.from(children) as HTMLElement[];
 }
 
 function getItemValue(item: HTMLElement | undefined): string | undefined {
     return item?.dataset[MENU_VALUE_JS] ?? undefined;
+}
+
+function isDisabled(item: HTMLElement): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return !!(item as any).disabled || item.ariaDisabled === "true";
+}
+
+function hasFocus(item: HTMLElement): boolean {
+    return (item.getRootNode() as RootNode).activeElement === item;
 }
