@@ -533,9 +533,15 @@ importers:
       '@chakra-ui/react':
         specifier: 'catalog:'
         version: 3.31.0(@emotion/react@11.14.0(@types/react@19.2.8)(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.8.1
       '@open-pioneer/core':
         specifier: workspace:*
         version: link:../core
+      '@open-pioneer/reactivity':
+        specifier: workspace:*
+        version: link:../reactivity
       classnames:
         specifier: 'catalog:'
         version: 2.5.1
@@ -813,6 +819,21 @@ importers:
       '@open-pioneer/notifier':
         specifier: workspace:*
         version: link:../../../packages/notifier
+      '@open-pioneer/runtime':
+        specifier: workspace:*
+        version: link:../../../packages/runtime
+      react:
+        specifier: 'catalog:'
+        version: 19.2.3
+
+  src/samples/roving-menu-sample/roving-menu-app:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 'catalog:'
+        version: 3.31.0(@emotion/react@11.14.0(@types/react@19.2.8)(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@open-pioneer/react-utils':
+        specifier: workspace:*
+        version: link:../../../packages/react-utils
       '@open-pioneer/runtime':
         specifier: workspace:*
         version: link:../../../packages/runtime

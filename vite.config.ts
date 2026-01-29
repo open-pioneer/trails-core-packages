@@ -4,26 +4,17 @@
 /// <reference types="vitest" />
 import { pioneer } from "@open-pioneer/vite-plugin-pioneer";
 import react from "@vitejs/plugin-react-swc";
-import { resolve } from "node:path";
+import glob from "fast-glob";
+import { dirname, resolve } from "node:path";
 import { defineConfig } from "vite";
 import eslint from "vite-plugin-eslint";
 
-const sampleSites = [
-    "samples/api-sample",
-    "samples/chakra-sample",
-    "samples/extension-sample",
-    "samples/http-sample",
-    "samples/i18n-howto",
-    "samples/i18n-sample",
-    "samples/properties-sample",
-    "samples/styling-sample",
-    "samples/notify-sample",
-    "samples/theming-sample",
-    "samples/auth-sample",
-    "samples/keycloak-sample",
-    "samples/error-sample",
-    "samples/no-shadowroot-sample"
-];
+// Find sites under src/samples with an index.html and build them all.
+const sampleSites = glob
+    .sync("samples/*/index.html", {
+        cwd: "src"
+    })
+    .map((indexHtml) => dirname(indexHtml));
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {

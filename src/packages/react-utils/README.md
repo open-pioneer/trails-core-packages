@@ -43,6 +43,69 @@ Example:
 In the preceding example the topmost heading(s) in `TheRestOfYourApplication` start at level 2, and nested headings use increasing levels as usual.
 For more details, see the API documentation.
 
+### Roving menu
+
+The roving menu is a render-less component that can be used to implement an accessible menu with keyboard navigation.
+It implements focus management and supports navigation using the arrow keys and home/end buttons.
+
+To create a roving menu, use the `useRovingMenu` hook in combination with the `RovingMenuRoot`.
+You must apply the `menuProps` to some container element (a `div`, a list, etc.) and the `menuState` to the `<RovingMenuRoot />`, which acts as a context provider.
+
+For example:
+
+```tsx
+import { useRovingMenu, RovingMenuRoot } from "@open-pioneer/react-utils";
+
+function HorizontalMenu() {
+    const { menuProps, menuState } = useRovingMenu({
+        orientation: "horizontal"
+    });
+
+    return (
+        <HStack {...menuProps} justify="center" gap={5} padding={2}>
+            <RovingMenuRoot menuState={menuState}>
+                <MenuItem value="1" />
+                <MenuItem value="2" />
+                <MenuItem value="3" />
+                <MenuItem value="4" />
+            </RovingMenuRoot>
+        </HStack>
+    );
+}
+```
+
+To implement a menu item, use the `useRovingMenuItem` hook.
+You must provide a unique value for the item (unique within the menu).
+You must also make certain to apply the resulting `itemProps` to the menu item component (which can be any focusable DOM element).
+These props implement keyboard navigation and focus handling.
+
+For example:
+
+```tsx
+function MenuItem(props: { value: string }) {
+    const { value } = props;
+    const { itemProps } = useRovingMenuItem({
+        value
+    });
+
+    return (
+        <Button {...itemProps} onClick={() => console.log(`Button ${value} triggered.`)}>
+            {value}
+        </Button>
+    );
+}
+```
+
+#### Disabled menu items
+
+Use the `disabled` prop of `useRovingMenuItem` to indicate that your menu item is currently disabled.
+Disabled items will lose focus and will be skipped during keyboard navigation.
+
+#### Limitations
+
+- Items must be focusable HTML elements, such as buttons.
+  Composed components are not supported at this time.
+
 ### Hooks
 
 #### useCommonComponentProps()
