@@ -1,5 +1,17 @@
 # @open-pioneer/react-utils
 
+## 4.5.0
+
+### Minor Changes
+
+- 604a589: Provide an implementation of the roving tab index pattern for menus.
+  This roving menu can be used to implement accessible menus with support for keyboard navigation.
+
+### Patch Changes
+
+- @open-pioneer/core@4.5.0
+- @open-pioneer/reactivity@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes

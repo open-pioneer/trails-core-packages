@@ -1,5 +1,13 @@
 # @open-pioneer/authentication
 
+## 4.5.0
+
+### Patch Changes
+
+- @open-pioneer/core@4.5.0
+- @open-pioneer/reactivity@4.5.0
+- @open-pioneer/runtime@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes
