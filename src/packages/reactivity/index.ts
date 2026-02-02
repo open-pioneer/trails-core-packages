@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import {
-    ReadonlyReactive,
+    DispatchType,
     Reactive,
+    ReadonlyReactive,
     computed,
     reactive,
-    watch,
-    DispatchType
+    watchValue
 } from "@conterra/reactivity-core";
 import {
     DependencyList,
@@ -127,7 +127,7 @@ export function useReactiveValue<T>(
     }, [reactive]);
     const subscribe = useCallback(
         (cb: () => void) => {
-            const handle = watch(() => [reactive.value], cb, {
+            const handle = watchValue(() => reactive.value, cb, {
                 dispatch: options?.dispatch ?? "async"
             });
             return () => handle.destroy();
