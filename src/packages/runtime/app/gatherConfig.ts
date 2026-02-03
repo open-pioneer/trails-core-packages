@@ -17,7 +17,7 @@ export async function gatherConfig(
     hostElement: HTMLElement,
     options: CustomElementOptions,
     overrides?: ApplicationOverrides
-) {
+): Promise<Required<ApplicationConfig>> {
     let configs: ApplicationConfig[];
     try {
         const staticConfig = options.config ?? {};
@@ -57,6 +57,7 @@ function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig>
     const mergedConfig: Required<ApplicationConfig> = Object.assign(
         {
             locale: undefined,
+            chakraSystemConfig: undefined,
             properties: {}
         } satisfies ApplicationConfig,
         ...configs

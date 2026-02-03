@@ -173,6 +173,7 @@ export class AppInstance {
         this.checkAbort();
 
         // Launch react
+        const chakraSystemConfig = config.chakraSystemConfig ?? elementOptions.chakraSystemConfig;
         this.reactIntegration = ReactIntegration.createForApp({
             rootNode: root,
             hostNode: hostElement,
@@ -180,7 +181,7 @@ export class AppInstance {
             serviceLayer,
             packages,
             locale: i18n.locale,
-            config: elementOptions.chakraSystemConfig,
+            config: chakraSystemConfig,
             styles
         });
         const component = this.options.elementOptions.component ?? EmptyComponent;

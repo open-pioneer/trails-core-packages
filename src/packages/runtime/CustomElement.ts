@@ -107,6 +107,15 @@ export interface ApplicationConfig {
      * Properties specified here will override default properties of the application's packages.
      */
     properties?: ApplicationProperties | undefined;
+
+    /**
+     * Chakra styled system object.
+     *
+     * Used to configure chakra's theme.
+     *
+     * NOTE: This setting has priority over {@link CustomElementOptions.chakraSystemConfig}.
+     */
+    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**
