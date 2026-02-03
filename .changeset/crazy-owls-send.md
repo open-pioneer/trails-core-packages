@@ -2,4 +2,4 @@
 "@open-pioneer/notifier": patch
 ---
 
-Width calculation for Notifier was wrong.
+Fix rendering of long strings in notifier UI.
