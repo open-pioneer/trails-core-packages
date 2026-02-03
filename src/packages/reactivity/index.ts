@@ -96,7 +96,7 @@ export function useComputed<T>(compute: () => T, deps: DependencyList): Readonly
 /**
  * Advanced options for `useReactiveSnapshot`.
  *
- * Note that objects should either be memorized (`useMemo` etc.) or constants (see {@link DISPATCH_SYNC})).
+ * Note that objects should either be memoized (`useMemo` etc.) or constants (see {@link DISPATCH_SYNC})).
  */
 export interface ReactiveHookOptions {
     dispatch?: DispatchType;
@@ -114,7 +114,7 @@ export const DISPATCH_SYNC: ReactiveHookOptions = Object.freeze({ dispatch: "syn
  *
  * > NOTE: The return value of this hook should be considered read-only.
  *
- * > NOTE: The `options` parameter (if used) should be memorized or constant.
+ * > NOTE: The `options` parameter (if used) should be memoized or constant.
  *
  * @see {@link useComputed()}
  */
@@ -148,7 +148,7 @@ export function useReactiveValue<T>(
  *
  * > NOTE: The return value of this hook should be considered read-only.
  *
- * > NOTE: The `options` parameter (if used) should be memorized or constant.
+ * > NOTE: The `options` parameter (if used) should be memoized or constant.
  *
  * @example
  *
