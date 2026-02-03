@@ -56,7 +56,7 @@ exports[`shows notifications as toasts 1`] = `
     </svg>
   </span>
   <div
-    class="chakra-stack css-403sr0"
+    class="chakra-stack css-80mob8"
   >
     <div
       class="chakra-toast__title css-1nhm9ic"
