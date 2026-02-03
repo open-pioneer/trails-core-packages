@@ -90,6 +90,7 @@ const Toaster = memo(function Toaster(props: { rootProps?: BoxProps; toaster: To
                         ) : (
                             <ToastIndicator type={toast.type ?? ""} />
                         )}
+                        {/* Adjust max width down from 100% (should match internal gaps). Otherwise, the container may grow too large for its parent. */}
                         <Stack gap="1" flex="1" maxWidth={"calc( 100% - {sizes.5} - {spacing.2} )"}>
                             {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
                             {toast.description && (
