@@ -146,7 +146,7 @@ Example:
 ```jsx
 import { useEvent } from "@open-pioneer/react-utils";
 
-function someReactComponent(props) {
+function SomeReactComponent(props) {
     // NOTE: logMessage() must not be called during rendering!
     const logMessage = useEvent((message: string) => {
         console.log(message, props.someProperty);
