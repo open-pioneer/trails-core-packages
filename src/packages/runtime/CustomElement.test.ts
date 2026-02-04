@@ -4,6 +4,7 @@
 /**
  * @vitest-environment happy-dom
  */
+import { mergeConfigs, Portal, useChakraContext } from "@chakra-ui/react";
 import { isAbortError } from "@open-pioneer/core";
 import {
     defineComponent,
@@ -12,7 +13,7 @@ import {
 } from "@open-pioneer/test-utils/web-components";
 import { findByTestId, waitFor } from "@testing-library/dom";
 import { createElement } from "react";
-import { expect, it, describe, vi, afterEach } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiExtension, ApiMethods, ApplicationContext, ApplicationLifecycleListener } from "./api";
 import {
     ApplicationElement,
@@ -25,7 +26,7 @@ import { createBox } from "./metadata";
 import { usePropertiesInternal } from "./react-integration";
 import { ServiceOptions } from "./Service";
 import { expectAsyncError } from "./test-utils/expectError";
-import { Portal } from "@chakra-ui/react";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 
 /** Hidden properties available during development / testing */
 interface InternalElementType extends ApplicationElement {
@@ -843,6 +844,82 @@ it("can render without a shadow root", async () => {
     const styles = Array.from(document.head.querySelectorAll("style"));
     const rule = styles.find((s) => s.innerHTML.includes(".pioneer-root"));
     expect(rule).toBeTruthy(); // Styles are mounted into the document head
+});
+
+describe("theming", () => {
+    function TestComponent() {
+        const sys = useChakraContext();
+        const dummyColorToken = sys.tokens.getByName("colors.dummyColor");
+        return createElement(
+            "div",
+            {
+                "data-testid": "test-div"
+            },
+            `Color: ${dummyColorToken?.value}`
+        );
+    }
+
+    const testConfig = mergeConfigs(defaultTrailsConfig, {
+        theme: {
+            semanticTokens: {
+                colors: {
+                    dummyColor: { value: "#123456" }
+                }
+            }
+        }
+    });
+
+    it("applies a custom theme", async () => {
+        const elem = createCustomElement({
+            component: TestComponent,
+            chakraSystemConfig: testConfig
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #123456"`);
+    });
+
+    it("applies a custom theme via resolveConfig()", async () => {
+        const elem = createCustomElement({
+            component: TestComponent,
+            async resolveConfig(_ctx) {
+                return {
+                    chakraSystemConfig: testConfig
+                };
+            }
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #123456"`);
+    });
+
+    it("prioritizes config/resolveConfig over direct element configuration", async () => {
+        const testConfig2 = mergeConfigs(defaultTrailsConfig, {
+            theme: {
+                semanticTokens: {
+                    colors: {
+                        dummyColor: { value: "#654321" }
+                    }
+                }
+            }
+        });
+
+        const elem = createCustomElement({
+            component: TestComponent,
+            chakraSystemConfig: testConfig,
+            async resolveConfig(_ctx) {
+                return {
+                    chakraSystemConfig: testConfig2
+                };
+            }
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #654321"`);
+    });
 });
 
 async function renderComponentWithoutShadowRoot(element: ApplicationElementConstructor) {
