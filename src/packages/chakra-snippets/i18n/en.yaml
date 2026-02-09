@@ -4,3 +4,8 @@ messages:
     copied: copied
   close-button:
     ariaLabel: Close
+  carousel:
+    next: Next
+    prev: Previous
+  password-input:
+    triggerAriaLabel: Toggle password visibility

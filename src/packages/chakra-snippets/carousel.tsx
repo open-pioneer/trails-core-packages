@@ -2,6 +2,7 @@
 
 import { Carousel } from "@chakra-ui/react"
 import { Box, IconButton, Image } from "@chakra-ui/react"
+import { useIntl } from "open-pioneer:react-hooks"
 import * as React from "react"
 import { LuPause, LuPlay } from "react-icons/lu"
 
@@ -41,10 +42,12 @@ export const CarouselControls = React.forwardRef<
   HTMLDivElement,
   Carousel.ControlProps
 >(function CarouselControls(props, ref) {
+  // PATCH: translate aria labels
+  const intl = useIntl();
   return (
     <Carousel.Control ref={ref} {...props}>
-      <Carousel.PrevTrigger aria-label="Previous" />
-      <Carousel.NextTrigger aria-label="Next" />
+      <Carousel.PrevTrigger aria-label={intl.formatMessage({ id: "carousel.prev"})} />
+      <Carousel.NextTrigger aria-label={intl.formatMessage({ id: "carousel.next"})} />
     </Carousel.Control>
   )
 })
