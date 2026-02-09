@@ -8,7 +8,6 @@ exports[`shows notifications as toasts 1`] = `
   class="notifier-toast chakra-toast__root css-1bm8y9v"
   data-align="end"
   data-first=""
-  data-mounted=""
   data-part="root"
   data-placement="top-end"
   data-scope="toast"
@@ -18,7 +17,7 @@ exports[`shows notifications as toasts 1`] = `
   data-type="info"
   id="toast:toast:3"
   role="status"
-  style="position: absolute; pointer-events: auto; --opacity: 1; --remove-delay: 200ms; --duration: 604800000ms; --initial-height: 0px; --offset: 0px; --index: 0; --z-index: 1; --lift-amount: calc(var(--lift) * var(--gap)); --y: calc(var(--lift) * var(--offset)); --x: 0; top: 0px; --sign: -1; --lift: 1; --height: var(--initial-height);"
+  style="position: absolute; pointer-events: auto; --opacity: 0; --remove-delay: 200ms; --duration: 604800000ms; --initial-height: 0px; --offset: 0px; --index: 0; --z-index: 1; --lift-amount: calc(var(--lift) * var(--gap)); --y: -100%; --x: 0; top: 0px; --sign: -1; --lift: 1;"
   tabindex="0"
 >
   <div
