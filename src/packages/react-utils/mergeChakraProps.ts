@@ -14,7 +14,7 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
  * If multiple `css` objects are defined, their values are combined into an array.
  * This way, multiple css rules may match and will not override each other.
  */
-export function mergeChakraProps<T extends Record<string, unknown>>(
+export function mergeChakraProps<T extends {}>(
     ...args: T[]
 ): Omit<UnionToIntersection<T>, "css"> & { css?: SystemStyleObject | SystemStyleObject[] } {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +23,8 @@ export function mergeChakraProps<T extends Record<string, unknown>>(
     // mergeProps handles plain html attributes only; merge chakra css on our own.
     let mergedCss: SystemStyleObject | SystemStyleObject[] | undefined;
     for (const props of args) {
-        const localCss = props.css as SystemStyleObject | SystemStyleObject[] | undefined;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const localCss = (props as any).css as SystemStyleObject | SystemStyleObject[] | undefined;
         if (!localCss || typeof localCss !== "object") {
             continue;
         }
