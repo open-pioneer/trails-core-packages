@@ -52,8 +52,10 @@ const COPY_PROP_RE = /^(data|aria)-/;
 /**
  * @group Common component props
  */
-export interface CommonComponentContainerProps extends HTMLAttributes<HTMLElement> {
+export interface CommonComponentContainerProps
+    extends Pick<HTMLAttributes<HTMLElement>, "className" | "role">, AriaAttributes {
     css?: SystemStyleObject | SystemStyleObject[];
+    [key: `data-${string}`]: unknown;
 }
 
 /**
