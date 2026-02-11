@@ -33,7 +33,11 @@ export {
 } from "./TitledSection";
 
 // Common component props
-export { type CommonComponentProps, useCommonComponentProps } from "./useCommonComponentProps";
+export {
+    type CommonComponentProps,
+    type CommonComponentContainerProps,
+    useCommonComponentProps
+} from "./useCommonComponentProps";
 
 // Roving menu
 export { RovingMenuRoot, type RovingMenuRootProps } from "./roving-menu/RovingMenuRoot";
@@ -48,3 +52,6 @@ export {
     type RovingMenuItemResult
 } from "./roving-menu/useRovingMenuItem";
 export { type RovingMenuState } from "./roving-menu/RovingMenuState";
+
+// Generic helpers
+export { mergeChakraProps } from "./mergeChakraProps";
