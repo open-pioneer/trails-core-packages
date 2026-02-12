@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
-import { RootNode } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
 import { createContext, KeyboardEvent, RefObject } from "react";
 
@@ -58,6 +57,8 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
  */
 export class InternalMenuState {
     #menuRef: RefObject<HTMLElement | null>;
+
+    // Value of the currently active item
     #current = reactive<string | undefined>();
 
     readonly menuId: string;
@@ -73,12 +74,17 @@ export class InternalMenuState {
         this.orientation = orientation;
     }
 
-    get current(): string | undefined {
+    get #currentValue(): string | undefined {
         return this.#current.value;
     }
 
+    /**
+     * Returns true if the menu item with the given value is currently active.
+     *
+     * The active menu item can receive the focus via keyboard navigation (tab).
+     */
     isActive(value: string): boolean {
-        return this.current === value;
+        return this.#currentValue === value;
     }
 
     /**
@@ -91,9 +97,11 @@ export class InternalMenuState {
         }
 
         const items = getMenuItems(this.#menuRef, this.menuId);
-        const target = getFocusTarget(items, this.current, direction);
+        const target = getFocusTarget(items, this.#currentValue, direction);
         if (!target) {
-            LOG.warn("Failed to identify focus target for keyboard navigation");
+            if (items.length > 1) {
+                LOG.warn("Failed to identify focus target for keyboard navigation");
+            }
             return;
         }
 
@@ -108,49 +116,23 @@ export class InternalMenuState {
      * This will activate the first item to ensure that at least one item is focusable.
      */
     onItemMount(value: string): void {
-        if (!this.current) {
+        if (!this.#currentValue) {
             this.#activateItem(value);
         }
     }
 
     /**
      * Called by items when they unmount.
+     * Also used to handle the case when an item becomes disabled while focused.
      *
      * This will move the active value to another item to ensure that one item is focusable.
      */
-    onItemUnmount(value: string): void {
+    onItemUnmount(value: string, hadFocus: boolean): void {
         if (!this.isActive(value)) {
             return;
         }
 
-        const items = getMenuItems(this.#menuRef, this.menuId, true, false);
-        const disabledIndex = findItemIndex(items, value);
-
-        let target;
-        let focus;
-        if (disabledIndex === -1) {
-            target = getFocusTarget(items, -1, "home");
-        } else {
-            // Attempt to move focus to something sensible
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const disabledItem = items[disabledIndex]!;
-
-            // NOTE: focus change requires not using 'disabled' but 'aria-disabled' instead
-            focus = hasFocus(disabledItem);
-            target =
-                getFocusTarget(items, disabledIndex, "forward", false) ??
-                getFocusTarget(items, disabledIndex, "backward", false);
-        }
-
-        if (target) {
-            this.#navigateToItem(target);
-            if (focus) {
-                LOG.debug("Restoring focus within menu to", target);
-                requestAnimationFrame(() => target.focus());
-            }
-        } else {
-            this.#activateItem(undefined);
-        }
+        this.#navigateToNextFocusableItem(value, hadFocus);
     }
 
     /**
@@ -164,13 +146,37 @@ export class InternalMenuState {
         this.#activateItem(value);
     }
 
+    #navigateToNextFocusableItem(disabledValue: string, hadFocus: boolean): void {
+        const items = getMenuItems(this.#menuRef, this.menuId, true, false);
+        const disabledIndex = findItemIndex(items, disabledValue);
+
+        let target;
+        if (disabledIndex === -1) {
+            target = getFocusTarget(items, -1, "home");
+        } else {
+            // Attempt to move focus to something sensible
+            target =
+                getFocusTarget(items, disabledIndex, "forward", false) ??
+                getFocusTarget(items, disabledIndex, "backward", false);
+        }
+
+        if (target) {
+            this.#navigateToItem(target);
+            if (hadFocus) {
+                LOG.debug("Restoring focus within menu to", target);
+                requestAnimationFrame(() => target.focus());
+            }
+            return;
+        }
+        this.#activateItem(undefined);
+    }
+
     #navigateToItem(target: HTMLElement) {
         const value = getItemValue(target);
         if (!value) {
             LOG.warn("Menu item without a value", value);
             return;
         }
-
         this.#activateItem(value);
     }
 
@@ -223,6 +229,10 @@ function getFocusTarget(
     direction: NavDirection,
     wrap = true
 ): HTMLElement | undefined {
+    if (items.length === 0) {
+        return undefined;
+    }
+
     let currentIndex = -1;
     if (typeof current === "number") {
         currentIndex = current;
@@ -231,10 +241,14 @@ function getFocusTarget(
     }
 
     if (currentIndex === -1 || direction === "home") {
-        return items.find((item) => !isDisabled(item));
+        const index = items.findIndex((item) => !isDisabled(item));
+        const el = items[index];
+        return el;
     }
     if (direction === "end") {
-        return items.findLast((item) => !isDisabled(item));
+        const index = items.findLastIndex((item) => !isDisabled(item));
+        const el = items[index];
+        return el;
     }
 
     if (direction === "forward") {
@@ -243,7 +257,6 @@ function getFocusTarget(
                 if (!wrap) {
                     break;
                 }
-
                 nextIndex = 0;
             }
             if (nextIndex === currentIndex) {
@@ -255,7 +268,6 @@ function getFocusTarget(
             if (!isDisabled(item)) {
                 return item;
             }
-
             nextIndex += 1;
         }
     } else {
@@ -275,7 +287,6 @@ function getFocusTarget(
             if (!isDisabled(item)) {
                 return item;
             }
-
             nextIndex -= 1;
         }
     }
@@ -320,8 +331,4 @@ function getItemValue(item: HTMLElement | undefined): string | undefined {
 function isDisabled(item: HTMLElement): boolean {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return !!(item as any).disabled || item.ariaDisabled === "true";
-}
-
-function hasFocus(item: HTMLElement): boolean {
-    return (item.getRootNode() as RootNode).activeElement === item;
 }

@@ -44,13 +44,13 @@ export function AppUI() {
                 </VStack>
                 <MenuSection
                     title="Horizontal Menu"
-                    description="Use Left/Right arrow keys or Home/End keys to navigate between buttons. The third button is always disabled."
+                    description="Use Left/Right arrow keys or Home/End keys to navigate between buttons. Button '3' is always disabled."
                 >
                     <HorizontalMenu />
                 </MenuSection>
                 <MenuSection
                     title="Vertical Menu"
-                    description="Use Up/Down arrow keys or Home/End keys to navigate between buttons. The last button disables on trigger."
+                    description="Use Up/Down arrow keys or Home/End keys to navigate between buttons. Button 'B' unmounts itself on click. Button 'C' hides itself. Button 'D' disables itself."
                 >
                     <VerticalMenu />
                 </MenuSection>
@@ -98,26 +98,41 @@ function VerticalMenu() {
         <VStack {...menuProps} justify="center" gap={5} padding={2}>
             <RovingMenuRoot menuState={menuState}>
                 <MenuItem value="A" />
-                <MenuItem value="B" />
-                <MenuItem value="C" />
+                <UnmountingMenuItem value="B" />
+                <MenuItem value="C" hideOnClick />
                 <MenuItem value="D" disableOnClick />
             </RovingMenuRoot>
         </VStack>
     );
 }
 
-function MenuItem(props: { value: string; disabled?: boolean; disableOnClick?: boolean }) {
-    const { value, disableOnClick, disabled: disabledProp } = props;
+function UnmountingMenuItem(props: { value: string }) {
+    const { value } = props;
+    const [mounted, setMounted] = useState(true);
+    return mounted && <MenuItem value={value} onClick={() => setMounted(false)} />;
+}
+
+function MenuItem(props: {
+    value: string;
+    disabled?: boolean;
+    disableOnClick?: boolean;
+    hideOnClick?: boolean;
+    onClick?: () => void;
+}) {
+    const { value, disableOnClick, hideOnClick, disabled: disabledProp, onClick } = props;
     const [disabledState, setDisabledState] = useState(false);
+    const [hiddenState, setHiddenState] = useState(false);
+
+    const disabled = disabledProp || disabledState || hiddenState;
     const { itemProps } = useRovingMenuItem({
         value,
-        disabled: disabledState
+        disabled: disabled
     });
 
-    const disabled = disabledProp ?? disabledState;
     return (
         <Button
             aria-disabled={disabled}
+            display={hiddenState ? "none" : "block"}
             {...itemProps}
             onClick={() => {
                 if (disabled) {
@@ -128,6 +143,12 @@ function MenuItem(props: { value: string; disabled?: boolean; disableOnClick?: b
                     console.log(`Disabling button ${value}.`);
                     setDisabledState(true);
                 }
+                if (hideOnClick) {
+                    console.log(`Hiding button ${value}.`);
+                    setHiddenState(true);
+                }
+
+                onClick?.();
             }}
         >
             {value}

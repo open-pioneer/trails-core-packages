@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
-import { FocusEventHandler, useContext, useEffect, useMemo } from "react";
+import { FocusEventHandler, useContext, useLayoutEffect, useMemo, useRef } from "react";
 import {
     getInternalState,
     InternalMenuState,
@@ -59,6 +59,7 @@ export interface RovingMenuItemResult {
         [MENU_VALUE_ATTR]: string;
         tabIndex: number;
         onFocus: FocusEventHandler;
+        onBlur: FocusEventHandler;
     };
 }
 
@@ -75,16 +76,18 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
     const { value, disabled = false, required = true } = props;
     const state = useMenuState(required);
 
-    useEffect(() => {
+    const hasFocus = useRef(false);
+
+    useLayoutEffect(() => {
         if (!state || disabled) {
             return;
         }
-
         state.onItemMount(value);
-        return () => state.onItemUnmount(value);
+        return () => state.onItemUnmount(value, hasFocus.current);
     }, [state, value, disabled]);
 
-    const isActive = useReactiveSnapshot(() => state?.isActive(value), [state, value]);
+    const isActiveValue = useReactiveSnapshot(() => state?.isActive(value), [state, value]);
+    const isActive = !disabled && isActiveValue;
     const result = useMemo((): RovingMenuItemResult | undefined => {
         if (!state) {
             return undefined;
@@ -96,7 +99,11 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
                 [MENU_VALUE_ATTR]: value,
                 tabIndex: isActive ? 0 : -1,
                 onFocus: (_event) => {
+                    hasFocus.current = true;
                     state?.onItemFocus(value);
+                },
+                onBlur: (_event) => {
+                    hasFocus.current = false;
                 }
             }
         };
