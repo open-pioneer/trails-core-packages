@@ -53,14 +53,6 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
 interface CurrentMenuItem {
     // The item's value
     id: string;
-
-    // Whether the item has focus or not.
-    // This is used to determine whether focus should be restored to the item when navigating within the menu, or if it should be allowed to move freely.
-    hasFocus: boolean;
-
-    // The index of this menu items in the list of items, as the item becomes active or focused.
-    // This is used to restore the focus if the item becomes unmounted while focused and is not longer available in the dom.
-    index: number;
 }
 
 /**
@@ -115,7 +107,7 @@ export class InternalMenuState {
         }
 
         event.preventDefault();
-        this.#navigateToItem(target.el, target.index);
+        this.#navigateToItem(target.el);
         target.el.focus();
     }
 
@@ -127,9 +119,6 @@ export class InternalMenuState {
     onItemMount(value: string): void {
         if (!this.#current.value) {
             this.#activateItem(value);
-        } else {
-            // Update the index of the current value to allow restoring focus to the correct position if it becomes unavailable.
-            this.#updateCurrentValueIndex();
         }
     }
 
@@ -139,13 +128,12 @@ export class InternalMenuState {
      *
      * This will move the active value to another item to ensure that one item is focusable.
      */
-    onItemUnmount(value: string): void {
+    onItemUnmount(value: string, hadFocus: boolean): void {
         if (!this.isActive(value)) {
-            // Update the index of the current value to allow restoring focus to the correct position if it becomes unavailable, in case the unmounted item is before the current item in the dom.
-            this.#updateCurrentValueIndex();
             return;
         }
-        this.#navigateToNextFocusableItem();
+
+        this.#navigateToNextFocusableItem(value, hadFocus);
     }
 
     /**
@@ -156,7 +144,7 @@ export class InternalMenuState {
      * with the menu's state.
      */
     onItemFocus(value: string): void {
-        this.#activateItem(value, undefined, true);
+        this.#activateItem(value);
     }
 
     /**
@@ -167,41 +155,27 @@ export class InternalMenuState {
      */
     onItemBlur(value: string): void {
         if (this.isActive(value)) {
-            this.#activateItem(value, undefined, false);
+            this.#activateItem(value);
         }
     }
 
-    #updateCurrentValueIndex(): void {
-        const current = this.#current.value;
-        if (!current) {
-            return;
-        }
-
-        const items = getMenuItems(this.#menuRef, this.menuId, true);
-        const index = findItemIndex(items, current.id);
-        if (index === -1) {
-            // Current item is no longer in the dom.
-            // This can happen when an item becomes disabled while focused and is removed from the tab order using aria-disabled or similar.
-            this.#activateItem(undefined);
-        } else {
-            // Update the index of the current value to allow restoring focus to the correct position if it becomes unavailable.
-            // do not update the value, the index is internal state change, which should not be reactive
-            current.index = index;
-        }
-    }
-
-    #navigateToNextFocusableItem(): void {
-        const current = this.#current.value;
-        if (!current) {
-            return;
-        }
-
-        const { id: currentValue, hasFocus: currentHasFocus, index: currentIndex } = current;
+    #navigateToNextFocusableItem(disabledValue: string, hadFocus: boolean): void {
         const items = getMenuItems(this.#menuRef, this.menuId, true, false);
-        const target = findTargetToActivate(currentValue, currentIndex, items);
+        const disabledIndex = findItemIndex(items, disabledValue);
+
+        let target;
+        if (disabledIndex === -1) {
+            target = getFocusTarget(items, -1, "home");
+        } else {
+            // Attempt to move focus to something sensible
+            target =
+                getFocusTarget(items, disabledIndex, "forward", false) ??
+                getFocusTarget(items, disabledIndex, "backward", false);
+        }
+
         if (target) {
-            this.#navigateToItem(target.el, target.index);
-            if (currentHasFocus) {
+            this.#navigateToItem(target.el);
+            if (hadFocus) {
                 LOG.debug("Restoring focus within menu to", target);
                 requestAnimationFrame(() => target.el.focus());
             }
@@ -210,50 +184,21 @@ export class InternalMenuState {
         this.#activateItem(undefined);
     }
 
-    #navigateToItem(target: HTMLElement, index: number) {
+    #navigateToItem(target: HTMLElement) {
         const value = getItemValue(target);
         if (!value) {
             LOG.warn("Menu item without a value", value);
             return;
         }
-        this.#activateItem(value, index);
+        this.#activateItem(value);
     }
 
-    #activateItem(
-        value: string | undefined,
-        // undefined -> do not update, -1 -> try to correct index, >-1 use index
-        index?: number | undefined,
-        // undefined -> do not update, true -> has focus, false -> does not have focus
-        hasFocus?: boolean | undefined
-    ): void {
+    #activateItem(value: string | undefined): void {
         if (value == null) {
             this.#current.value = undefined;
             return;
         }
-
-        const current = this.#current.value;
-
-        // Re-activating the same item.
-        if (current?.id === value) {
-            if (hasFocus != null) {
-                current.hasFocus = hasFocus;
-            }
-            if (index != null) {
-                if (index > -1) {
-                    current.index = index;
-                } else {
-                    this.#updateCurrentValueIndex();
-                }
-            }
-            return;
-        }
-
-        // Moving to a different item.
-        index = index ?? -1;
-        this.#current.value = { id: value, hasFocus: hasFocus ?? false, index };
-        if (index === -1) {
-            this.#updateCurrentValueIndex();
-        }
+        this.#current.value = { id: value };
     }
 }
 
@@ -293,24 +238,6 @@ function getNavDirection(
         case "End":
             return "end";
     }
-}
-
-function findTargetToActivate(currentValue: string, disabledIndex: number, items: HTMLElement[]) {
-    if (disabledIndex === -1) {
-        return getFocusTarget(items, -1, "home");
-    }
-    // check if el on old index is a new element (e.g. first focused item is unmounted
-    const el = items[disabledIndex];
-    // use same postion if other value and not disabled
-    if (el && getItemValue(el) !== currentValue && !isDisabled(el)) {
-        return { el, index: disabledIndex };
-    }
-    // Attempt to move focus to something sensible
-    // NOTE: focus change requires not using 'disabled' but 'aria-disabled' instead
-    return (
-        getFocusTarget(items, disabledIndex, "forward", false) ??
-        getFocusTarget(items, disabledIndex, "backward", false)
-    );
 }
 
 function getFocusTarget(
