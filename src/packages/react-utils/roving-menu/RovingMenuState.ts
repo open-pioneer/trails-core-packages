@@ -102,7 +102,9 @@ export class InternalMenuState {
         const items = getMenuItems(this.#menuRef, this.menuId);
         const target = getFocusTarget(items, this.#currentValue, direction);
         if (!target) {
-            LOG.warn("Failed to identify focus target for keyboard navigation");
+            if (items.length > 1) {
+                LOG.warn("Failed to identify focus target for keyboard navigation");
+            }
             return;
         }
 
