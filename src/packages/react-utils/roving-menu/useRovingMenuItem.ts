@@ -59,6 +59,7 @@ export interface RovingMenuItemResult {
         [MENU_VALUE_ATTR]: string;
         tabIndex: number;
         onFocus: FocusEventHandler;
+        onBlur: FocusEventHandler;
     };
 }
 
@@ -76,10 +77,13 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
     const state = useMenuState(required);
 
     useEffect(() => {
-        if (!state || disabled) {
+        if (!state) {
             return;
         }
-
+        if (disabled) {
+            state.onItemUnmount(value);
+            return;
+        }
         state.onItemMount(value);
         return () => state.onItemUnmount(value);
     }, [state, value, disabled]);
@@ -97,6 +101,9 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
                 tabIndex: isActive ? 0 : -1,
                 onFocus: (_event) => {
                     state?.onItemFocus(value);
+                },
+                onBlur: (_event) => {
+                    state?.onItemBlur(value);
                 }
             }
         };

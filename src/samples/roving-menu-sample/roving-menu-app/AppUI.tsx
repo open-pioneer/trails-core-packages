@@ -98,7 +98,7 @@ function VerticalMenu() {
         <VStack {...menuProps} justify="center" gap={5} padding={2}>
             <RovingMenuRoot menuState={menuState}>
                 <MenuItem value="A" />
-                <MenuItem value="B" />
+                <MenuItem value="B" hideOnClick />
                 <MenuItem value="C" />
                 <MenuItem value="D" disableOnClick />
             </RovingMenuRoot>
@@ -106,16 +106,22 @@ function VerticalMenu() {
     );
 }
 
-function MenuItem(props: { value: string; disabled?: boolean; disableOnClick?: boolean }) {
-    const { value, disableOnClick, disabled: disabledProp } = props;
+function MenuItem(props: {
+    value: string;
+    disabled?: boolean;
+    disableOnClick?: boolean;
+    hideOnClick?: boolean;
+}) {
+    const { value, disableOnClick, hideOnClick, disabled: disabledProp } = props;
     const [disabledState, setDisabledState] = useState(false);
+    const [hiddenState, setHiddenState] = useState(false);
     const { itemProps } = useRovingMenuItem({
         value,
-        disabled: disabledState
+        disabled: disabledState || hiddenState
     });
 
     const disabled = disabledProp ?? disabledState;
-    return (
+    return hiddenState ? undefined : (
         <Button
             aria-disabled={disabled}
             {...itemProps}
@@ -127,6 +133,10 @@ function MenuItem(props: { value: string; disabled?: boolean; disableOnClick?: b
                 if (disableOnClick) {
                     console.log(`Disabling button ${value}.`);
                     setDisabledState(true);
+                }
+                if (hideOnClick) {
+                    console.log(`Hiding button ${value}.`);
+                    setHiddenState(true);
                 }
             }}
         >

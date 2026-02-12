@@ -184,6 +184,53 @@ it("switches active items if the active item is unmounted", async () => {
     });
 });
 
+it("switches active items if the active item is disabled", async () => {
+    const { rerender } = await render(<SimpleList />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+
+    const initialItems = Array.from(list.querySelectorAll("li"));
+    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
+      [
+        0,
+        -1,
+        -1,
+      ]
+    `);
+
+    await rerender(<SimpleList disabledValues={["a"]} />);
+    await waitFor(() => {
+        const updatedItems = Array.from(list.querySelectorAll("li"));
+        expect(updatedItems.map((item) => item.tabIndex)).toEqual([-1, 0, -1]);
+    });
+});
+
+it("switches active items if the active item is hidden/unmounted", async () => {
+    const { rerender } = await render(<SimpleList />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+
+    const initialItems = Array.from(list.querySelectorAll("li"));
+    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
+      [
+        0,
+        -1,
+        -1,
+      ]
+    `);
+
+    await rerender(<SimpleList hiddenValues={["a"]} />);
+    await waitFor(() => {
+        const updatedItems = Array.from(list.querySelectorAll("li"));
+        // a is hidden, b becomes the active item
+        expect(updatedItems.map((item) => item.tabIndex)).toEqual([0, -1]);
+    });
+});
+
 it("is useable when the first menu item is disabled", async () => {
     await render(<SimpleList disabledValues={["a"]} />, {
         wrapper: TestWrapper
@@ -206,6 +253,7 @@ function SimpleList(props?: {
     orientation?: "horizontal" | "vertical";
     values?: string[];
     disabledValues?: string[];
+    hiddenValues?: string[];
 }) {
     const { menuProps, menuState } = useRovingMenu({
         orientation: props?.orientation ?? "vertical"
@@ -213,8 +261,14 @@ function SimpleList(props?: {
 
     const values = props?.values ?? ["a", "b", "c"];
     const disabledValues = props?.disabledValues ?? [];
+    const hiddenValues = props?.hiddenValues ?? [];
     const items = values.map((v) => (
-        <SimpleMenuItem key={v} value={v} disabled={disabledValues.includes(v)} />
+        <SimpleMenuItem
+            key={v}
+            value={v}
+            disabled={disabledValues.includes(v)}
+            hidden={hiddenValues.includes(v)}
+        />
     ));
 
     return (
@@ -224,10 +278,10 @@ function SimpleList(props?: {
     );
 }
 
-function SimpleMenuItem(props: { value: string; disabled: boolean }) {
-    const { value, disabled } = props;
-    const { itemProps } = useRovingMenuItem({ value, disabled });
-    return <li {...itemProps}>Item {value}</li>;
+function SimpleMenuItem(props: { value: string; disabled: boolean; hidden?: boolean }) {
+    const { value, disabled, hidden } = props;
+    const { itemProps } = useRovingMenuItem({ value, disabled: disabled || hidden });
+    return hidden ? null : <li {...itemProps}>Item {value}</li>;
 }
 
 function TestWrapper(props: { children?: ReactNode }) {

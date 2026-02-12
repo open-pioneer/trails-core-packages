@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
-import { RootNode } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
 import { createContext, KeyboardEvent, RefObject } from "react";
 
@@ -58,7 +57,7 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
  */
 export class InternalMenuState {
     #menuRef: RefObject<HTMLElement | null>;
-    #current = reactive<string | undefined>();
+    #current = reactive<{ id: string; hasFocus: boolean } | undefined>();
 
     readonly menuId: string;
     readonly orientation: "horizontal" | "vertical";
@@ -74,11 +73,15 @@ export class InternalMenuState {
     }
 
     get current(): string | undefined {
-        return this.#current.value;
+        return this.#current.value?.id;
     }
 
     isActive(value: string): boolean {
         return this.current === value;
+    }
+
+    hasFocus(value: string): boolean {
+        return this.isActive(value) && this.#current.value?.hasFocus === true;
     }
 
     /**
@@ -115,6 +118,7 @@ export class InternalMenuState {
 
     /**
      * Called by items when they unmount.
+     * Also used to handle the case when an item becomes disabled while focused.
      *
      * This will move the active value to another item to ensure that one item is focusable.
      */
@@ -122,35 +126,7 @@ export class InternalMenuState {
         if (!this.isActive(value)) {
             return;
         }
-
-        const items = getMenuItems(this.#menuRef, this.menuId, true, false);
-        const disabledIndex = findItemIndex(items, value);
-
-        let target;
-        let focus;
-        if (disabledIndex === -1) {
-            target = getFocusTarget(items, -1, "home");
-        } else {
-            // Attempt to move focus to something sensible
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const disabledItem = items[disabledIndex]!;
-
-            // NOTE: focus change requires not using 'disabled' but 'aria-disabled' instead
-            focus = hasFocus(disabledItem);
-            target =
-                getFocusTarget(items, disabledIndex, "forward", false) ??
-                getFocusTarget(items, disabledIndex, "backward", false);
-        }
-
-        if (target) {
-            this.#navigateToItem(target);
-            if (focus) {
-                LOG.debug("Restoring focus within menu to", target);
-                requestAnimationFrame(() => target.focus());
-            }
-        } else {
-            this.#activateItem(undefined);
-        }
+        this.#navigateToNextFocusableItem();
     }
 
     /**
@@ -161,7 +137,49 @@ export class InternalMenuState {
      * with the menu's state.
      */
     onItemFocus(value: string): void {
-        this.#activateItem(value);
+        this.#activateItem(value, true);
+    }
+
+    /** Called by items when they lose focus.
+     * This will deactivate the item, but only if it is currently active. This allows the menu to stay in sync if an item becomes disabled while focused, but won't interfere with normal focus changes within the menu.
+     */
+    onItemBlur(value: string): void {
+        if (this.isActive(value)) {
+            this.#activateItem(value, false);
+        }
+    }
+
+    #navigateToNextFocusableItem(): void {
+        const { id: currentValue, hasFocus: currentHasFocus } = this.#current.value ?? {
+            id: undefined,
+            hasFocus: false
+        };
+        if (!currentValue) {
+            return;
+        }
+        const items = getMenuItems(this.#menuRef, this.menuId, true, false);
+        const disabledIndex = findItemIndex(items, currentValue);
+
+        let target;
+
+        if (disabledIndex === -1) {
+            target = getFocusTarget(items, -1, "home");
+        } else {
+            // Attempt to move focus to something sensible
+            // NOTE: focus change requires not using 'disabled' but 'aria-disabled' instead
+            target =
+                getFocusTarget(items, disabledIndex, "forward", false) ??
+                getFocusTarget(items, disabledIndex, "backward", false);
+        }
+        if (target) {
+            this.#navigateToItem(target);
+            if (currentHasFocus) {
+                LOG.debug("Restoring focus within menu to", target);
+                requestAnimationFrame(() => target.focus());
+            }
+        } else {
+            this.#activateItem(undefined);
+        }
     }
 
     #navigateToItem(target: HTMLElement) {
@@ -170,12 +188,11 @@ export class InternalMenuState {
             LOG.warn("Menu item without a value", value);
             return;
         }
-
         this.#activateItem(value);
     }
 
-    #activateItem(value: string | undefined): void {
-        this.#current.value = value;
+    #activateItem(value: string | undefined, focus = false): void {
+        this.#current.value = value === undefined ? undefined : { id: value, hasFocus: focus };
     }
 }
 
@@ -320,8 +337,4 @@ function getItemValue(item: HTMLElement | undefined): string | undefined {
 function isDisabled(item: HTMLElement): boolean {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return !!(item as any).disabled || item.ariaDisabled === "true";
-}
-
-function hasFocus(item: HTMLElement): boolean {
-    return (item.getRootNode() as RootNode).activeElement === item;
 }
