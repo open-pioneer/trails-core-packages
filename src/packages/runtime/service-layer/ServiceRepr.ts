@@ -2,7 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ErrorId } from "../errors";
 import { ServiceMetadata } from "../metadata";
-import { Service, ServiceConstructor, ServiceOptions } from "../Service";
+import {
+    Service,
+    ServiceConstructor,
+    ServiceOptions,
+    IS_SERVICE_FACTORY,
+    ServiceFactory,
+    MarkedServiceFactoryConstructor
+} from "../Service";
 import { Error } from "@open-pioneer/core";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { PackageIntl } from "../i18n";
@@ -11,23 +18,15 @@ export type ServiceState = "not-constructed" | "constructing" | "constructed" | 
 
 export type ServiceDependency = ReferenceSpec & { referenceName: string };
 
-export interface ConstructorFactory {
-    type: "class";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    clazz: ServiceConstructor<any>;
+export interface ServiceInstanceFactory {
+    create(options: ServiceOptions): Service;
+    destroy(srv: Service): void;
 }
-
-export interface FunctionFactory {
-    type: "function";
-    create: (options: ServiceOptions) => Service;
-}
-
-export type ServiceFactory = ConstructorFactory | FunctionFactory;
 
 export interface ServiceReprOptions {
     name: string;
     packageName: string;
-    factory: ServiceFactory;
+    factory: ServiceInstanceFactory;
     intl: PackageIntl;
     dependencies?: ServiceDependency[];
     interfaces?: InterfaceSpec[];
@@ -61,10 +60,7 @@ export class ServiceRepr {
                 qualifier: i.qualifier
             };
         });
-        const factory: ConstructorFactory = {
-            type: "class",
-            clazz
-        };
+        const factory = createConstructorFactory(clazz);
         return new ServiceRepr({
             name,
             packageName,
@@ -101,7 +97,7 @@ export class ServiceRepr {
     private _useCount = 0;
 
     /** Service factory to construct an instance. */
-    private factory: ServiceFactory;
+    private factory: ServiceInstanceFactory;
 
     /** Current state of this service. "constructed" -> instance is available. */
     private _state: ServiceState = "not-constructed";
@@ -191,7 +187,7 @@ export class ServiceRepr {
             );
         }
         try {
-            this._instance = createService(this.factory, {
+            this._instance = this.factory.create({
                 ...options,
                 properties: this.properties,
                 intl: this.intl
@@ -211,7 +207,7 @@ export class ServiceRepr {
     destroy() {
         if (this._instance) {
             try {
-                this._instance.destroy?.();
+                this.factory.destroy(this._instance);
             } catch (e) {
                 throw new Error(
                     ErrorId.SERVICE_DESTRUCTION_FAILED,
@@ -242,28 +238,89 @@ export class ServiceRepr {
 }
 
 export function createConstructorFactory<T extends {}>(
-    clazz: ServiceConstructor<T>
-): ConstructorFactory {
-    return { type: "class", clazz };
+    clazz: ServiceConstructor<T> | MarkedServiceFactoryConstructor<T>
+): ServiceInstanceFactory {
+    // check if factory is a service factory constructor (has the IS_SERVICE_FACTORY symbol)
+    if (IS_SERVICE_FACTORY in clazz) {
+        return createFactoryForServiceFactory(clazz);
+    }
+    // Is a regular service constructor
+    return {
+        create(options: ServiceOptions<T>) {
+            return new clazz(options);
+        },
+        destroy(instance: Service<T>) {
+            instance.destroy?.();
+        }
+    };
+}
+
+export function createFactoryForServiceFactory<T extends {}>(
+    facClazz: MarkedServiceFactoryConstructor<T>
+): ServiceInstanceFactory {
+    return new ServiceFactoryInstanceFactory(facClazz);
+}
+
+class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFactory {
+    private _fac: ServiceFactory | undefined = undefined;
+
+    constructor(private _facClazz: MarkedServiceFactoryConstructor<T>) {}
+
+    create(options: ServiceOptions<T>) {
+        const fac = new this._facClazz(options);
+        try {
+            const instance = fac.createService();
+            this._fac = fac;
+            return instance;
+        } catch (e) {
+            try {
+                fac.destroy?.();
+            } catch (_destroyError) {
+                // ignore errors from destroy,
+                // as the main error is more relevant
+                // and the factory might be in an inconsistent state already
+            }
+            throw e;
+        }
+    }
+
+    destroy(srv: Service) {
+        let _srvError: unknown;
+        try {
+            srv.destroy?.();
+        } catch (e) {
+            _srvError = e;
+        }
+        if (this._fac) {
+            try {
+                this._fac.destroy?.();
+            } catch (e) {
+                if (!_srvError) {
+                    throw e;
+                }
+            } finally {
+                this._fac = undefined;
+            }
+        }
+        if (_srvError) {
+            throw _srvError;
+        }
+    }
 }
 
 export function createFunctionFactory(
     create: (options: ServiceOptions) => Service
-): FunctionFactory {
-    return { type: "function", create };
+): ServiceInstanceFactory {
+    return {
+        create,
+        destroy(srv) {
+            srv.destroy?.();
+        }
+    };
 }
 
 const SERVICE_NAME_REGEX = /^[a-z0-9_-]+$/i;
 
 function isValidServiceName(name: string) {
     return SERVICE_NAME_REGEX.test(name);
-}
-
-function createService(factory: ServiceFactory, options: ServiceOptions) {
-    switch (factory.type) {
-        case "class":
-            return new factory.clazz(options);
-        case "function":
-            return factory.create(options);
-    }
 }
