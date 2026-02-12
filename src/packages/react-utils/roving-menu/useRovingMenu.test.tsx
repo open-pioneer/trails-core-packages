@@ -184,6 +184,26 @@ it("switches active items if the active item is unmounted", async () => {
     });
 });
 
+it("switches active items if the last active item is unmounted", async () => {
+    const { rerender } = await render(<SimpleList />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+
+    const initialItems = Array.from(list.querySelectorAll("li"));
+    initialItems[2]?.focus();
+    await waitFor(() => {
+        expect(initialItems.map((item) => item.tabIndex)).toStrictEqual([-1, -1, 0]);
+    });
+
+    await rerender(<SimpleList values={["a", "b"]} />);
+    await waitFor(() => {
+        const updatedItems = Array.from(list.querySelectorAll("li"));
+        expect(updatedItems.map((item) => item.tabIndex)).toEqual([-1, 0]);
+    });
+});
+
 it("switches active items if the active item is disabled", async () => {
     const { rerender } = await render(<SimpleList />, {
         wrapper: TestWrapper

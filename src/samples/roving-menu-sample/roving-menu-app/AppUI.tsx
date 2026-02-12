@@ -50,7 +50,7 @@ export function AppUI() {
                 </MenuSection>
                 <MenuSection
                     title="Vertical Menu"
-                    description="Use Up/Down arrow keys or Home/End keys to navigate between buttons. The last button disables on trigger."
+                    description="Use Up/Down arrow keys or Home/End keys to navigate between buttons. The last button disables on trigger. The third button hides on trigger."
                 >
                     <VerticalMenu />
                 </MenuSection>
@@ -98,8 +98,8 @@ function VerticalMenu() {
         <VStack {...menuProps} justify="center" gap={5} padding={2}>
             <RovingMenuRoot menuState={menuState}>
                 <MenuItem value="A" />
-                <MenuItem value="B" hideOnClick />
-                <MenuItem value="C" />
+                <MenuItem value="B" />
+                <MenuItem value="C" hideOnClick />
                 <MenuItem value="D" disableOnClick />
             </RovingMenuRoot>
         </VStack>
@@ -117,7 +117,7 @@ function MenuItem(props: {
     const [hiddenState, setHiddenState] = useState(false);
     const { itemProps } = useRovingMenuItem({
         value,
-        disabled: disabledState || hiddenState
+        disabled: disabledProp || disabledState || hiddenState
     });
 
     const disabled = disabledProp ?? disabledState;
