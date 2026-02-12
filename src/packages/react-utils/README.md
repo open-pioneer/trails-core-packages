@@ -101,6 +101,17 @@ function MenuItem(props: { value: string }) {
 Use the `disabled` prop of `useRovingMenuItem` to indicate that your menu item is currently disabled.
 Disabled items will lose focus and will be skipped during keyboard navigation.
 
+To mark your items as disabled for your users, prefer `aria-disabled` over HTML's `disabled` attribute.
+The `disabled` attribute completely disables focus and any browser events, which makes moving the focus to a neighboring item difficult to implement.
+
+#### Unmounting / hiding menu items
+
+`display: none` in combination with a `disabled: true` in `useRovingMenuItem` works well.
+As an alternative, you can also completely unmount your component from a parent of your menu item.
+
+Note that returning `null` or `undefined` from your component will interfere with focus handling.
+You should always render your menu item's dom node, for as long as your item exists.
+
 #### Limitations
 
 - Items must be focusable HTML elements, such as buttons.
