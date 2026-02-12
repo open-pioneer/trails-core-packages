@@ -50,11 +50,6 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
     return menuState as unknown as InternalMenuState;
 }
 
-interface CurrentMenuItem {
-    // The item's value
-    id: string;
-}
-
 /**
  * Internal model class; created by the menu and accessible by the menu items.
  *
@@ -62,7 +57,9 @@ interface CurrentMenuItem {
  */
 export class InternalMenuState {
     #menuRef: RefObject<HTMLElement | null>;
-    #current = reactive<CurrentMenuItem | undefined>();
+
+    // Value of the currently active item
+    #current = reactive<string | undefined>();
 
     readonly menuId: string;
     readonly orientation: "horizontal" | "vertical";
@@ -78,7 +75,7 @@ export class InternalMenuState {
     }
 
     get #currentValue(): string | undefined {
-        return this.#current.value?.id;
+        return this.#current.value;
     }
 
     /**
@@ -109,8 +106,8 @@ export class InternalMenuState {
         }
 
         event.preventDefault();
-        this.#navigateToItem(target.el);
-        target.el.focus();
+        this.#navigateToItem(target);
+        target.focus();
     }
 
     /**
@@ -119,7 +116,7 @@ export class InternalMenuState {
      * This will activate the first item to ensure that at least one item is focusable.
      */
     onItemMount(value: string): void {
-        if (!this.#current.value) {
+        if (!this.#currentValue) {
             this.#activateItem(value);
         }
     }
@@ -149,18 +146,6 @@ export class InternalMenuState {
         this.#activateItem(value);
     }
 
-    /**
-     * Called by items when they lose focus.
-     * This will deactivate the item, but only if it is currently active.
-     *
-     * This allows the menu to stay in sync if an item becomes disabled while focused, but won't interfere with normal focus changes within the menu.
-     */
-    onItemBlur(value: string): void {
-        if (this.isActive(value)) {
-            this.#activateItem(value);
-        }
-    }
-
     #navigateToNextFocusableItem(disabledValue: string, hadFocus: boolean): void {
         const items = getMenuItems(this.#menuRef, this.menuId, true, false);
         const disabledIndex = findItemIndex(items, disabledValue);
@@ -176,10 +161,10 @@ export class InternalMenuState {
         }
 
         if (target) {
-            this.#navigateToItem(target.el);
+            this.#navigateToItem(target);
             if (hadFocus) {
                 LOG.debug("Restoring focus within menu to", target);
-                requestAnimationFrame(() => target.el.focus());
+                requestAnimationFrame(() => target.focus());
             }
             return;
         }
@@ -196,11 +181,7 @@ export class InternalMenuState {
     }
 
     #activateItem(value: string | undefined): void {
-        if (value == null) {
-            this.#current.value = undefined;
-            return;
-        }
-        this.#current.value = { id: value };
+        this.#current.value = value;
     }
 }
 
@@ -247,7 +228,7 @@ function getFocusTarget(
     current: string | number | undefined,
     direction: NavDirection,
     wrap = true
-): { el: HTMLElement; index: number } | undefined {
+): HTMLElement | undefined {
     if (items.length === 0) {
         return undefined;
     }
@@ -262,18 +243,12 @@ function getFocusTarget(
     if (currentIndex === -1 || direction === "home") {
         const index = items.findIndex((item) => !isDisabled(item));
         const el = items[index];
-        if (index === -1 || !el) {
-            return undefined;
-        }
-        return { el, index };
+        return el;
     }
     if (direction === "end") {
         const index = items.findLastIndex((item) => !isDisabled(item));
         const el = items[index];
-        if (index === -1 || !el) {
-            return undefined;
-        }
-        return { el, index };
+        return el;
     }
 
     if (direction === "forward") {
@@ -282,7 +257,6 @@ function getFocusTarget(
                 if (!wrap) {
                     break;
                 }
-
                 nextIndex = 0;
             }
             if (nextIndex === currentIndex) {
@@ -292,7 +266,7 @@ function getFocusTarget(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const item = items[nextIndex]!;
             if (!isDisabled(item)) {
-                return { el: item, index: nextIndex };
+                return item;
             }
             nextIndex += 1;
         }
@@ -311,7 +285,7 @@ function getFocusTarget(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const item = items[nextIndex]!;
             if (!isDisabled(item)) {
-                return { el: item, index: nextIndex };
+                return item;
             }
             nextIndex -= 1;
         }
