@@ -2,4 +2,4 @@
 "@open-pioneer/react-utils": patch
 ---
 
-roving-menu - track index of menu items for better re-focus on unmount
+roving-menu - Move focus correctly when an item unmounts while it is active.

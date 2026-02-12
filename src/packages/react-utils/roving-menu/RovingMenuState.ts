@@ -50,6 +50,19 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
     return menuState as unknown as InternalMenuState;
 }
 
+interface CurrentMenuItem {
+    // The item's value
+    id: string;
+
+    // Whether the item has focus or not.
+    // This is used to determine whether focus should be restored to the item when navigating within the menu, or if it should be allowed to move freely.
+    hasFocus: boolean;
+
+    // The index of this menu items in the list of items, as the item becomes active or focused.
+    // This is used to restore the focus if the item becomes unmounted while focused and is not longer available in the dom.
+    index: number;
+}
+
 /**
  * Internal model class; created by the menu and accessible by the menu items.
  *
@@ -57,18 +70,7 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
  */
 export class InternalMenuState {
     #menuRef: RefObject<HTMLElement | null>;
-    #current = reactive<
-        | {
-              // value
-              id: string;
-              // whether the item has focus or not. This is used to determine whether focus should be restored to the item when navigating within the menu, or if it should be allowed to move freely.
-              hasFocus: boolean;
-              // The index at all available menu items, as the item becomes active or focused.
-              // This is used to restore the focus if the item becomes unmounted while focused and is not longer available in the dom.
-              index: number;
-          }
-        | undefined
-    >();
+    #current = reactive<CurrentMenuItem | undefined>();
 
     readonly menuId: string;
     readonly orientation: "horizontal" | "vertical";
@@ -83,12 +85,17 @@ export class InternalMenuState {
         this.orientation = orientation;
     }
 
-    private get currentValue(): string | undefined {
+    get #currentValue(): string | undefined {
         return this.#current.value?.id;
     }
 
+    /**
+     * Returns true if the menu item with the given value is currently active.
+     *
+     * The active menu item can receive the focus via keyboard navigation (tab).
+     */
     isActive(value: string): boolean {
-        return this.currentValue === value;
+        return this.#currentValue === value;
     }
 
     /**
@@ -101,7 +108,7 @@ export class InternalMenuState {
         }
 
         const items = getMenuItems(this.#menuRef, this.menuId);
-        const target = getFocusTarget(items, this.currentValue, direction);
+        const target = getFocusTarget(items, this.#currentValue, direction);
         if (!target) {
             LOG.warn("Failed to identify focus target for keyboard navigation");
             return;
@@ -152,8 +159,11 @@ export class InternalMenuState {
         this.#activateItem(value, undefined, true);
     }
 
-    /** Called by items when they lose focus.
-     * This will deactivate the item, but only if it is currently active. This allows the menu to stay in sync if an item becomes disabled while focused, but won't interfere with normal focus changes within the menu.
+    /**
+     * Called by items when they lose focus.
+     * This will deactivate the item, but only if it is currently active.
+     *
+     * This allows the menu to stay in sync if an item becomes disabled while focused, but won't interfere with normal focus changes within the menu.
      */
     onItemBlur(value: string): void {
         if (this.isActive(value)) {
@@ -166,6 +176,7 @@ export class InternalMenuState {
         if (!current) {
             return;
         }
+
         const items = getMenuItems(this.#menuRef, this.menuId, true);
         const index = findItemIndex(items, current.id);
         if (index === -1) {
@@ -180,18 +191,12 @@ export class InternalMenuState {
     }
 
     #navigateToNextFocusableItem(): void {
-        const {
-            id: currentValue,
-            hasFocus: currentHasFocus,
-            index: currentIndex
-        } = this.#current.value ?? {
-            id: undefined,
-            hasFocus: false,
-            index: -1
-        };
-        if (!currentValue) {
+        const current = this.#current.value;
+        if (!current) {
             return;
         }
+
+        const { id: currentValue, hasFocus: currentHasFocus, index: currentIndex } = current;
         const items = getMenuItems(this.#menuRef, this.menuId, true, false);
         const target = findTargetToActivate(currentValue, currentIndex, items);
         if (target) {
@@ -221,27 +226,30 @@ export class InternalMenuState {
         // undefined -> do not update, true -> has focus, false -> does not have focus
         hasFocus?: boolean | undefined
     ): void {
-        const current = this.#current.value;
-        if (value === undefined) {
+        if (value == null) {
             this.#current.value = undefined;
             return;
         }
+
+        const current = this.#current.value;
+
+        // Re-activating the same item.
         if (current?.id === value) {
-            if (hasFocus !== undefined) {
+            if (hasFocus != null) {
                 current.hasFocus = hasFocus;
             }
-            if (index === undefined) {
-                return;
-            }
-            if (index > -1) {
-                current.index = index;
-            } else {
-                this.#updateCurrentValueIndex();
+            if (index != null) {
+                if (index > -1) {
+                    current.index = index;
+                } else {
+                    this.#updateCurrentValueIndex();
+                }
             }
             return;
         }
+
+        // Moving to a different item.
         index = index ?? -1;
-        // active state change
         this.#current.value = { id: value, hasFocus: hasFocus ?? false, index };
         if (index === -1) {
             this.#updateCurrentValueIndex();
@@ -314,6 +322,7 @@ function getFocusTarget(
     if (items.length === 0) {
         return undefined;
     }
+
     let currentIndex = -1;
     if (typeof current === "number") {
         currentIndex = current;

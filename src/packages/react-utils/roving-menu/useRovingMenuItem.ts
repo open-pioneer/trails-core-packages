@@ -84,10 +84,8 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
         return () => state.onItemUnmount(value);
     }, [state, value, disabled]);
 
-    const isActive = useReactiveSnapshot(
-        () => !disabled && state?.isActive(value),
-        [state, value, disabled]
-    );
+    const isActiveValue = useReactiveSnapshot(() => state?.isActive(value), [state, value]);
+    const isActive = !disabled && isActiveValue;
     const result = useMemo((): RovingMenuItemResult | undefined => {
         if (!state) {
             return undefined;
