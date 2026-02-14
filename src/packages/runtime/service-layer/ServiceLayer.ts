@@ -64,6 +64,7 @@ export class ServiceLayer {
     // Package name --> Interface name --> Declarations
     private declaredDependencies;
     private state: "not-started" | "started" | "destroyed" = "not-started";
+    private initUiServicesOnDemand: boolean = false;
 
     /**
      * Constructs a new service layer instance.
@@ -72,7 +73,12 @@ export class ServiceLayer {
      *
      * In its current form, the service layer will start only forced references and references needed by the UI (and their dependencies).
      */
-    constructor(packages: readonly PackageRepr[], forcedReferences: ReferenceSpec[] = []) {
+    constructor(
+        packages: readonly PackageRepr[],
+        private forcedReferences: readonly ReferenceSpec[] = [],
+        options?: { initUiServicesOnDemand?: boolean }
+    ) {
+        this.initUiServicesOnDemand = options?.initUiServicesOnDemand ?? false;
         const allServices = packages.map((pkg) => pkg.services).flat();
         const uiDependencies = packages
             .map((pkg) =>
@@ -92,13 +98,13 @@ export class ServiceLayer {
             })),
             ...uiDependencies
         ];
-        const { serviceLookup, serviceDependencies } = verifyDependencies({
+        const { serviceLookup, serviceDependencies, requiredServices } = verifyDependencies({
             services: allServices,
             requiredReferences: requiredReferences
         });
 
         this.allServices = allServices;
-        this.requiredServices = getRequiredServices(requiredReferences, serviceLookup);
+        this.requiredServices = requiredServices;
         this.serviceLookup = serviceLookup;
         this.serviceDependencies = serviceDependencies;
         this.declaredDependencies = buildDependencyIndex(packages);
@@ -115,19 +121,37 @@ export class ServiceLayer {
         if (this.state !== "not-started") {
             throw new Error(ErrorId.INTERNAL, "Service layer was already started.");
         }
-
-        for (const service of this.requiredServices) {
-            this.createService(service);
+        if (this.initUiServicesOnDemand) {
+            // start only forcedReferences (internal services)
+            // all ui services started lazy
+            for (const forced of this.forcedReferences) {
+                const result = forced.all
+                    ? this.serviceLookup.lookupAll(forced.interfaceName)
+                    : this.serviceLookup.lookupOne(forced);
+                if (result.type === "found") {
+                    const services = Array.isArray(result.value) ? result.value : [result.value];
+                    for (const service of services) {
+                        this.createService(service);
+                    }
+                }
+            }
+        } else {
+            // start all required services (including UI services)
+            for (const service of this.requiredServices) {
+                this.createService(service);
+            }
         }
+
         this.state = "started";
 
         // Give warnings for unneeded services during development.
         if (import.meta.env.DEV) {
+            const startCandidates = this.findAllServicesThatWillBeStarted();
             const unneededServices = this.allServices
                 .filter(
                     (service) =>
                         service.packageName !== RUNTIME_PACKAGE_NAME &&
-                        service.state === "not-constructed"
+                        !startCandidates.has(service)
                 )
                 .map((service) => `'${service.id}'`);
             if (unneededServices.length) {
@@ -165,7 +189,12 @@ export class ServiceLayer {
             }
         }
 
-        return this.serviceLookup.lookupOne(spec);
+        const result = this.serviceLookup.lookupOne(spec);
+        if (result.type === "found" && result.value.state === "not-constructed") {
+            // Lazily create the service and its dependencies if not already created.
+            this.createService(result.value);
+        }
+        return result;
     }
 
     /**
@@ -189,7 +218,15 @@ export class ServiceLayer {
         if (checkError) {
             return checkError;
         }
-        return this.serviceLookup.lookupAll(interfaceName);
+        const result = this.serviceLookup.lookupAll(interfaceName);
+        if (result.type === "found") {
+            for (const service of result.value) {
+                if (service.state === "not-constructed") {
+                    this.createService(service);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -318,31 +355,27 @@ export class ServiceLayer {
         }
         return dependencies;
     }
-}
 
-function getRequiredServices(
-    requiredReferences: readonly ReferenceSpec[],
-    serviceLookup: ReadonlyServiceLookup
-): Set<ServiceRepr> {
-    const requiredServices = new Set<ServiceRepr>();
-    for (const referenceSpec of requiredReferences) {
-        const result = serviceLookup.lookup(referenceSpec);
-        if (result.type !== "found") {
-            // Should be caught by verifier
-            throw new Error(
-                ErrorId.INTERNAL,
-                `Failed to find required reference to ${renderInterfaceSpec(referenceSpec)}.`
-            );
-        }
-        if (Array.isArray(result.value)) {
-            for (const service of result.value) {
-                requiredServices.add(service);
+    private findAllServicesThatWillBeStarted() {
+        const allServicesToStart = new Set<ServiceRepr>();
+        const toVisit = [...this.requiredServices];
+        let service = toVisit.pop();
+        while (service) {
+            if (!allServicesToStart.has(service)) {
+                allServicesToStart.add(service);
+                const deps = this.getServiceDeps(service);
+                for (const dep of Object.values(deps)) {
+                    if (Array.isArray(dep)) {
+                        toVisit.push(...dep);
+                    } else {
+                        toVisit.push(dep);
+                    }
+                }
             }
-        } else {
-            requiredServices.add(result.value);
+            service = toVisit.pop();
         }
+        return allServicesToStart;
     }
-    return requiredServices;
 }
 
 function buildDependencyIndex(packages: readonly PackageRepr[]) {

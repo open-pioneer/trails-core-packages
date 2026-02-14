@@ -43,6 +43,11 @@ export interface VerifyDependenciesResult {
      * Index structure mapping interface names to service instances.
      */
     serviceLookup: ReadonlyServiceLookup;
+
+    /**
+     * Set of services that are required to be started.
+     */
+    requiredServices: Set<ServiceRepr>;
 }
 
 /**
@@ -57,7 +62,8 @@ export function verifyDependencies(options: DependencyOptions): VerifyDependenci
     verifier.verify();
     return {
         serviceLookup: verifier.getServiceLookup(),
-        serviceDependencies: verifier.getComputedDependencies()
+        serviceDependencies: verifier.getComputedDependencies(),
+        requiredServices: verifier.getRequiredServices()
     };
 }
 
@@ -94,6 +100,7 @@ class Verifier {
     private items: GraphItem[];
     private serviceLookup = new ServiceLookup();
     private serviceToGraphItem = new Map<ServiceRepr, GraphItem>();
+    private requiredServices: Set<ServiceRepr> = new Set();
 
     // Stack of visited nodes
     private stack: [item: GraphItem, reason: ItemVisitReason][] = [];
@@ -131,11 +138,30 @@ class Verifier {
                     };
                     break;
             }
-            this.visitReference(interfaceRef);
+            const services = this.visitReference(interfaceRef);
+            if (Array.isArray(services)) {
+                for (const service of services) {
+                    this.requiredServices.add(service);
+                }
+            } else {
+                this.requiredServices.add(services);
+            }
         }
+
+        if (this.requiredReferences.length !== 0) {
+            // in tests, required references are not defined.
+            // in the runtime, we always have required references,
+            // so we can skip the rest of the checks if there are none.
+            return;
+        }
+        // this checks state of unused services
         for (const item of this.items) {
             this.visitItem(item, "root");
         }
+    }
+
+    getRequiredServices() {
+        return this.requiredServices;
     }
 
     getServiceLookup() {
