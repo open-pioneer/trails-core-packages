@@ -11,5 +11,13 @@ export default defineBuildConfig({
         "react-integration/index",
         // Needed for @open-pioneer/test-utils
         "test-support/index"
-    ]
+    ],
+    properties: {
+        initUiServicesOnDemand: false
+    },
+    propertiesMeta: {
+        initUiServicesOnDemand: {
+            required: false
+        }
+    }
 });

@@ -347,7 +347,11 @@ function createServiceLayer(config: {
             all: true
         }
     ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
+    const initUiServicesOnDemand =
+        config.properties[builtinPackage.name]?.initUiServicesOnDemand === true;
+    const serviceLayer = new ServiceLayer(packages, forcedReferences, {
+        initUiServicesOnDemand
+    });
     return {
         packages: new Map(packages.map((pkg) => [pkg.name, pkg])),
         serviceLayer: serviceLayer
