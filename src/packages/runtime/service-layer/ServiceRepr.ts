@@ -10,9 +10,11 @@ import {
     ServiceFactory,
     MarkedServiceFactoryConstructor
 } from "../Service";
-import { Error } from "@open-pioneer/core";
+import { createLogger, Error } from "@open-pioneer/core";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { PackageIntl } from "../i18n";
+import { sourceId } from "open-pioneer:source-info";
+const LOG = createLogger(sourceId);
 
 export type ServiceState = "not-constructed" | "constructing" | "constructed" | "destroyed";
 
@@ -275,10 +277,12 @@ class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFact
         } catch (e) {
             try {
                 fac.destroy?.();
-            } catch (_destroyError) {
-                // ignore errors from destroy,
-                // as the main error is more relevant
-                // and the factory might be in an inconsistent state already
+            } catch (facDestroyError) {
+                // TODO: drop the log, and throw a SuppressedError, if suppressed errors are commonly supported in browsers
+                LOG.error(
+                    `Failed to destroy service factory after failed service creation:`,
+                    facDestroyError
+                );
             }
             throw e;
         }
@@ -294,9 +298,15 @@ class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFact
         if (this._fac) {
             try {
                 this._fac.destroy?.();
-            } catch (e) {
+            } catch (facDestroyError) {
                 if (!_srvError) {
-                    throw e;
+                    throw facDestroyError;
+                } else {
+                    // TODO: drop the log, and throw a SuppressedError, if suppressed errors are commonly supported in browsers
+                    LOG.error(
+                        `Failed to destroy service factory after failed service destruction:`,
+                        facDestroyError
+                    );
                 }
             } finally {
                 this._fac = undefined;
