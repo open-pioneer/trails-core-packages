@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { expect, it } from "vitest";
 import { createEmptyPackageIntl } from "../i18n";
-import { Service, ServiceOptions } from "../Service";
+import { defineServiceFactory, Service, ServiceFactory, ServiceOptions } from "../Service";
 import { PackageRepr, PackageReprOptions } from "./PackageRepr";
 import { ServiceLayer } from "./ServiceLayer";
 import { Found } from "./ServiceLookup";
 import {
     createConstructorFactory,
     createFunctionFactory,
+    createFactoryForServiceFactory,
     ServiceRepr,
     ServiceReprOptions
 } from "./ServiceRepr";
@@ -273,6 +274,75 @@ it("supports using a function to create service instances", function () {
     const instance = service.getInstanceOrThrow();
     const message = (instance as HelloService).hello();
     expect(message).toEqual("Hello world!");
+});
+
+it("supports using a service factory to create service instances", function () {
+    let called = 0;
+
+    type HelloService = { hello(): string };
+
+    class HelloServiceFactory implements ServiceFactory<HelloService> {
+        constructor(private options: ServiceOptions) {
+            ++called;
+        }
+        createService() {
+            ++called;
+            const opts = this.options;
+            return {
+                hello() {
+                    return `Hello ${opts.properties.target}!`;
+                },
+                destroy(): void {
+                    called++;
+                }
+            };
+        }
+        destroy(): void {
+            called++;
+        }
+    }
+
+    // Mark the factory with the symbol so that the runtime recognizes it as a service factory constructor
+    const markedFactory = defineServiceFactory(HelloServiceFactory);
+
+    const service = createService({
+        name: "A",
+        packageName: "a",
+        factory: createFactoryForServiceFactory(markedFactory),
+        interfaces: [
+            {
+                interfaceName: "foo"
+            }
+        ],
+        properties: {
+            target: "world"
+        }
+    });
+    const serviceLayer = new ServiceLayer(
+        [
+            createPackage({
+                name: "a",
+                services: [service]
+            })
+        ],
+        [
+            {
+                interfaceName: "foo"
+            }
+        ]
+    );
+
+    serviceLayer.start();
+    // one for factory construction, one for service creation
+    expect(called).toBe(2);
+
+    const instance = service.getInstanceOrThrow();
+    const message = (instance as HelloService).hello();
+    expect(message).toEqual("Hello world!");
+
+    serviceLayer.destroy();
+    // one for service destroy, one for factory destroy
+    expect(called).toBe(4);
 });
 
 it("injects all implementations of an interface when requested", function () {
