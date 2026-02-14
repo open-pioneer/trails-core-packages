@@ -1,5 +1,5 @@
 ---
-"@open-pioneer/runtime": patch
+"@open-pioneer/runtime": minor
 ---
 
-runtime - introduce support for ServiceFactories, to provide constructor indirection during service creation
+runtime - Introduce support for ServiceFactories, to provide constructor indirection during service creation
