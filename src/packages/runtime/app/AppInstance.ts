@@ -169,7 +169,8 @@ export class AppInstance {
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );
 
-        await this.initAPI(serviceLayer);
+        // init api, but do not wait for it
+        this.initAPI(serviceLayer);
         this.checkAbort();
 
         // Launch react
@@ -261,13 +262,21 @@ export class AppInstance {
     private async initAPI(serviceLayer: ServiceLayer) {
         const apiService = getInternalService<ApiService>(serviceLayer, RUNTIME_API_SERVICE);
         try {
-            const api = (this.api = await apiService.getApi());
+            const api = await apiService.getApi();
+            this.checkAbort();
+            this.api = api;
             LOG.debug("Application API initialized to", api);
             this.apiPromise?.resolve(api);
         } catch (e) {
-            throw new Error(ErrorId.INTERNAL, "Failed to gather the application's API methods.", {
-                cause: e
-            });
+            LOG.error("Failed to gather the application's API methods.", e);
+            const ex = new Error(
+                ErrorId.INTERNAL,
+                "Failed to gather the application's API methods.",
+                {
+                    cause: e
+                }
+            );
+            this.apiPromise?.reject(ex);
         }
     }
 
