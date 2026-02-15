@@ -276,7 +276,14 @@ export class AppInstance {
                     cause: e
                 }
             );
-            this.apiPromise?.reject(ex);
+            if (!this.apiPromise) {
+                // no one is waiting yet.
+                // keep the error for when they do
+                this.apiPromise = createManualPromise();
+                // prevent unhandled rejection if no one is waiting for the API
+                this.apiPromise.promise.catch(() => {});
+            }
+            this.apiPromise.reject(ex);
         }
     }
 
