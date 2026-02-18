@@ -1,6 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ReadonlyReactive, Reactive, computed, reactive, watch } from "@conterra/reactivity-core";
+import {
+    DispatchType,
+    Reactive,
+    ReadonlyReactive,
+    computed,
+    reactive,
+    watchValue
+} from "@conterra/reactivity-core";
 import {
     DependencyList,
     useCallback,
@@ -87,22 +94,45 @@ export function useComputed<T>(compute: () => T, deps: DependencyList): Readonly
 }
 
 /**
+ * Advanced options for `useReactiveSnapshot`.
+ *
+ * Note that objects should either be memoized (`useMemo` etc.) or constants (see {@link DISPATCH_SYNC})).
+ */
+export interface ReactiveHookOptions {
+    dispatch?: DispatchType;
+}
+
+/**
+ * Switches from async dispatch (the default) to sync dispatch.
+ *
+ * This is helpful when using reactive values for input fields, focus management or layout behavior.
+ */
+export const DISPATCH_SYNC: ReactiveHookOptions = Object.freeze({ dispatch: "sync" });
+
+/**
  * Watches the given reactive object and returns its current value.
  *
  * > NOTE: The return value of this hook should be considered read-only.
  *
+ * > NOTE: The `options` parameter (if used) should be memoized or constant.
+ *
  * @see {@link useComputed()}
  */
-export function useReactiveValue<T>(reactive: ReadonlyReactive<T>): T {
+export function useReactiveValue<T>(
+    reactive: ReadonlyReactive<T>,
+    options?: ReactiveHookOptions
+): T {
     const getSnapshot = useCallback(() => {
         return reactive.peek();
     }, [reactive]);
     const subscribe = useCallback(
         (cb: () => void) => {
-            const handle = watch(() => [reactive.value], cb);
+            const handle = watchValue(() => reactive.value, cb, {
+                dispatch: options?.dispatch ?? "async"
+            });
             return () => handle.destroy();
         },
-        [reactive]
+        [reactive, options?.dispatch]
     );
     const value = useSyncExternalStore(subscribe, getSnapshot);
     useDebugValue(value);
@@ -118,11 +148,15 @@ export function useReactiveValue<T>(reactive: ReadonlyReactive<T>): T {
  *
  * > NOTE: The return value of this hook should be considered read-only.
  *
+ * > NOTE: The `options` parameter (if used) should be memoized or constant.
+ *
  * @example
  *
  * Simple Example:
  *
  * ```jsx
+ * import { useReactiveSnapshot, DISPATCH_SYNC } from "@open-pioneer/reactivity";
+ *
  * // A reactive signal from anywhere (global data, props, ...).
  * const name = reactive("User");
  *
@@ -137,6 +171,8 @@ export function useReactiveValue<T>(reactive: ReadonlyReactive<T>): T {
  * Multiple values, with props:
  *
  * ```jsx
+ * import { useReactiveSnapshot } from "@open-pioneer/reactivity";
+ *
  * function YourComponent({firstName, lastName}) {
  *     // You can use complex expressions in your compute function,
  *     // just like in a computed signal.
@@ -153,16 +189,35 @@ export function useReactiveValue<T>(reactive: ReadonlyReactive<T>): T {
  * }
  * ```
  *
+ * @example
+ *
+ * Changing the default timing:
+ *
+ * ```jsx
+ * import { useReactiveSnapshot, DISPATCH_SYNC } from "@open-pioneer/reactivity";
+ *
+ * function YourComponent(props) {
+ *     // DISPATCH_SYNC rerenders us faster than the default timing.
+ *     // This is useful for values used in input fields, in layout operations or focus management.
+ *     // See also https://github.com/open-pioneer/trails-core-packages/issues/125
+ *     const nameSnapshot = useReactiveSnapshot(() => props.reactiveModel.value, [props.reactiveModel], DISPATCH_SYNC);
+ * }
+ * ```
+ *
  * @see
  * This hook is based on {@link useComputed()} and {@link useReactiveValue()}.
  */
-export function useReactiveSnapshot<T>(compute: () => T, deps: DependencyList): T {
+export function useReactiveSnapshot<T>(
+    compute: () => T,
+    deps: DependencyList,
+    options?: ReactiveHookOptions
+): T {
     // We create an internal computed value that executes the compute function;
     // this way the implementation of `compute` is automatically tracked.
     // getSnapshot and subscribe simply watch the current value of that computed value.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const computedSnapshot = useComputed(compute, deps);
-    const snapshot = useReactiveValue(computedSnapshot);
+    const snapshot = useReactiveValue(computedSnapshot, options);
     useDebugValue(snapshot);
     return snapshot;
 }
