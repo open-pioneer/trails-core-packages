@@ -1,5 +1,20 @@
 # @open-pioneer/runtime
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.32.0
+- c866e13: createCustomElement: Add support for configuration of `chakraSystemConfig` in `config` and `resolveConfig`.
+  This is needed when the specific application theme depends on asynchronous data.
+
+### Patch Changes
+
+- Updated dependencies [4e76893]
+    - @open-pioneer/base-theme@4.5.0
+    - @open-pioneer/core@4.5.0
+    - @open-pioneer/reactivity@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes

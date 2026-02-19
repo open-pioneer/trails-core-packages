@@ -1,7 +1,7 @@
 {
     "name": "@open-pioneer/base-theme",
     "description": "This package provides the default theme for all Open Pioneer Trails applications.",
-    "version": "4.4.0",
+    "version": "4.5.0",
     "main": "index.ts",
     "license": "Apache-2.0",
     "repository": {

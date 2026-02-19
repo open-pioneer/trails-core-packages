@@ -1,5 +1,17 @@
 # @open-pioneer/test-utils
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.32.0
+
+### Patch Changes
+
+- Updated dependencies [4e76893]
+- Updated dependencies [c866e13]
+    - @open-pioneer/runtime@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes
