@@ -1,5 +1,33 @@
 # @open-pioneer/react-utils
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.32.0
+- d523ade: Add more properties to the `CommonComponentProps` interface.
+  Previously, trails components only allowed customizing the `className`.
+
+    Now, these additional properties are supported:
+    - `role`: the ARIA role
+    - `aria-*`: arbitrary ARIA attributes
+    - `data-*`: arbitrary JavaScript values
+    - `css`: additional Chakra style rules
+
+    NOTE: Defining these values may overwrite existing behavior of a component if values cannot be merged.
+    For example, overriding an existing `data-` property may break a component.
+
+- d523ade: Implement `mergeChakraProps` helper to merge multiple props objects.
+- 604a589: Provide an implementation of the roving tab index pattern for menus.
+  This roving menu can be used to implement accessible menus with support for keyboard navigation.
+
+### Patch Changes
+
+- bb3f515: roving-menu - Move focus correctly when an item unmounts while it is active.
+- Updated dependencies [4e76893]
+    - @open-pioneer/core@4.5.0
+    - @open-pioneer/reactivity@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes

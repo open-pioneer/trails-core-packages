@@ -1,5 +1,24 @@
 # @open-pioneer/notifier
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.32.0
+
+### Patch Changes
+
+- 9712265: Fix rendering of long strings in notifier UI.
+- Updated dependencies [bb3f515]
+- Updated dependencies [4e76893]
+- Updated dependencies [d523ade]
+- Updated dependencies [c866e13]
+- Updated dependencies [d523ade]
+- Updated dependencies [604a589]
+    - @open-pioneer/react-utils@4.5.0
+    - @open-pioneer/core@4.5.0
+    - @open-pioneer/runtime@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes
