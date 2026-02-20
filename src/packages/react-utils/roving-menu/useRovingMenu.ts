@@ -1,9 +1,16 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { KeyboardEvent, RefObject, useId, useMemo, useRef } from "react";
+import { KeyboardEvent, FocusEvent, RefObject, useCallback, useId, useMemo, useRef } from "react";
 import { useEvent } from "../useEvent";
 import { type RovingMenuRoot } from "./RovingMenuRoot";
-import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
+import {
+    getInternalState,
+    InternalMenuState,
+    MENU_ID_ATTR,
+    RovingMenuState
+} from "./RovingMenuState";
+import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
+import { useMenuState } from "./useMenuState";
 
 /**
  * Properties supported when creating a new menu via {@link useRovingMenu}.
@@ -19,6 +26,16 @@ export interface RovingMenuProps {
     orientation?: "vertical" | "horizontal";
 }
 
+/** @internal */
+export interface RovingMenuDomProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ref: RefObject<any>;
+    role: string;
+    [MENU_ID_ATTR]: string;
+    "aria-orientation": "horizontal" | "vertical";
+    onKeyDown: (event: KeyboardEvent) => void;
+}
+
 /**
  * The return value of {@link useRovingMenu}.
  *
@@ -30,14 +47,7 @@ export interface RovingMenuResult {
      *
      * Note that other properties may be added in a future release.
      */
-    menuProps: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ref: RefObject<any>;
-        role: string;
-        [MENU_ID_ATTR]: string;
-        "aria-orientation": "horizontal" | "vertical";
-        onKeyDown: (event: KeyboardEvent) => void;
-    };
+    menuProps: RovingMenuDomProps;
 
     /**
      * Properties that should be passed to the {@link RovingMenuRoot}.
@@ -57,14 +67,76 @@ export interface RovingMenuResult {
  * @expandType RovingMenuProps
  */
 export function useRovingMenu(props: RovingMenuProps = {}): RovingMenuResult {
+    return useRovingMenuImpl(props);
+}
+
+/**
+ * Properties supported when creating a new nested menu via {@link useNestedRovingMenu}.
+ *
+ * @group Roving menu
+ */
+export interface NestedRovingMenuProps extends RovingMenuProps {
+    /**
+     * The value of the menu within its parent menu.
+     */
+    value: string;
+}
+
+/**
+ * The return value of {@link useNestedRovingMenu}.
+ *
+ * @group Roving menu
+ */
+export interface NestedRovingMenuResult extends RovingMenuResult {
+    menuProps: RovingMenuDomProps & RovingMenuItemDomProps;
+}
+
+/**
+ * Like {@link useRovingMenu}, but suitable for nested menus.
+ *
+ * Only a single level of nested is supported at this time (i.e. horizontal in vertical, or the other way around).
+ *
+ * @group Roving menu
+ * @expandType NestedRovingMenuProps
+ */
+export function useNestedRovingMenu(props: NestedRovingMenuProps): NestedRovingMenuResult {
+    const parentMenuState = useMenuState();
+    const { menuProps, menuState } = useRovingMenuImpl(
+        props,
+        useCallback(() => parentMenuState.isActive(props.value), [parentMenuState, props.value])
+    );
+    const { itemProps } = useRovingMenuItemImpl(props, "nested");
+
+    return useMemo(() => {
+        return {
+            menuProps: {
+                ...menuProps,
+                ...itemProps,
+                onFocus(e: FocusEvent) {
+                    // Tracks active state in parent
+                    itemProps.onFocus(e);
+
+                    // Focuses the correct child
+                    getInternalState(menuState).onFocus(e);
+                }
+            },
+            menuState
+        };
+    }, [menuProps, menuState, itemProps]);
+}
+
+function useRovingMenuImpl(
+    props: RovingMenuProps = {},
+    isActiveInParent?: () => boolean
+): RovingMenuResult {
     const { orientation = "horizontal" } = props;
     const menuId = useId();
     const menuRef = useRef<HTMLElement>(null);
 
     // Shared state between items and root
     const state = useMemo(
-        () => new InternalMenuState(menuId, orientation, menuRef),
-        [menuRef, orientation, menuId]
+        () => new InternalMenuState(menuId, orientation, menuRef, isActiveInParent),
+        [menuRef, orientation, menuId, isActiveInParent]
     );
 
     // Key handler on the menu

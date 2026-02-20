@@ -112,10 +112,31 @@ As an alternative, you can also completely unmount your component from a parent 
 Note that returning `null` or `undefined` from your component will interfere with focus handling.
 You should always render your menu item's dom node, for as long as your item exists.
 
-#### Limitations
+#### Nested menus
 
-- Items must be focusable HTML elements, such as buttons.
-  Composed components are not supported at this time.
+Roving menu supports limited nesting (2 levels deep).
+
+For the outer menu, use the normal `useRovingMenu()` hook with a certain orientation.
+For the child menu, use the `useNestedRovingMenu()` hook with the _opposite_ orientation.
+
+The child menu will act as an item in its parent menu, so it requires a `value` as well.
+
+Example for the child menu:
+
+```tsx
+function NestedMenu() {
+    const { menuProps, menuState } = useNestedRovingMenu({
+        orientation: "horizontal",
+        value: "some-value"
+    });
+
+    return (
+        <HStack {...menuProps} justify="center" gap={5} padding={2}>
+            <RovingMenuRoot menuState={menuState}>{/* nested items ... */}</RovingMenuRoot>
+        </HStack>
+    );
+}
+```
 
 ### Hooks
 
