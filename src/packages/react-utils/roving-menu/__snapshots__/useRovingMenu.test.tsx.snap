@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`works when items are not direct neighbors or immediate children of the menu 1`] = `
+<ul
+  aria-orientation="vertical"
+  data-roving-menu-id="r1"
+  role="toolbar"
+>
+  <div
+    class="wrapper-div"
+  >
+    <li
+      data-roving-menu-parent="r1"
+      data-roving-menu-value="a"
+      tabindex="0"
+    >
+      Item 
+      a
+    </li>
+  </div>
+  <div
+    class="wrapper-div"
+  >
+    <li
+      data-roving-menu-parent="r1"
+      data-roving-menu-value="b"
+      tabindex="-1"
+    >
+      Item 
+      b
+    </li>
+  </div>
+  <div
+    class="wrapper-div"
+  >
+    <li
+      data-roving-menu-parent="r1"
+      data-roving-menu-value="c"
+      tabindex="-1"
+    >
+      Item 
+      c
+    </li>
+  </div>
+</ul>
+`;

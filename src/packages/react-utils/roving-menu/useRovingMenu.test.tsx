@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { Box } from "@chakra-ui/react";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ReactNode } from "react";
@@ -52,6 +53,24 @@ it("ensures that only one item can receive the keyboard focus", async () => {
     expect(items[0]?.tabIndex).toBe(0);
     expect(items[1]?.tabIndex).toBe(-1);
     expect(items[2]?.tabIndex).toBe(-1);
+});
+
+it("works when items are not direct neighbors or immediate children of the menu", async () => {
+    await render(<SimpleList wrapItems />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+    expect(list).toMatchSnapshot();
+
+    const items = Array.from(list.querySelectorAll("li"));
+    expect(items[0]!.tabIndex).toBe(0);
+
+    fireEvent.keyDown(list, { key: "ArrowDown" });
+    await waitFor(() => {
+        expect(items[0]!.tabIndex).toBe(-1);
+        expect(items[1]!.tabIndex).toBe(0);
+    });
 });
 
 it("renders with horizontal orientation correctly", async () => {
@@ -271,6 +290,7 @@ it("is useable when the first menu item is disabled", async () => {
 
 function SimpleList(props?: {
     orientation?: "horizontal" | "vertical";
+    wrapItems?: boolean;
     values?: string[];
     disabledValues?: string[];
     hiddenValues?: string[];
@@ -282,14 +302,24 @@ function SimpleList(props?: {
     const values = props?.values ?? ["a", "b", "c"];
     const disabledValues = props?.disabledValues ?? [];
     const hiddenValues = props?.hiddenValues ?? [];
-    const items = values.map((v) => (
-        <SimpleMenuItem
-            key={v}
-            value={v}
-            disabled={disabledValues.includes(v)}
-            hidden={hiddenValues.includes(v)}
-        />
-    ));
+    const items = values.map((v) => {
+        let item = (
+            <SimpleMenuItem
+                key={!props?.wrapItems ? v : undefined}
+                value={v}
+                disabled={disabledValues.includes(v)}
+                hidden={hiddenValues.includes(v)}
+            />
+        );
+        if (props?.wrapItems) {
+            item = (
+                <Box className="wrapper-div" key={v}>
+                    {item}
+                </Box>
+            );
+        }
+        return item;
+    });
 
     return (
         <RovingMenuRoot menuState={menuState}>
