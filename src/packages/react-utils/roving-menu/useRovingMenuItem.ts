@@ -1,14 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
-import { FocusEventHandler, useContext, useLayoutEffect, useMemo, useRef } from "react";
-import {
-    getInternalState,
-    InternalMenuState,
-    MENU_OWNER_ATTR,
-    MENU_VALUE_ATTR,
-    MenuStateContext
-} from "./RovingMenuState";
+import { FocusEventHandler, useLayoutEffect, useMemo, useRef } from "react";
+import { MENU_OWNER_ATTR, MENU_VALUE_ATTR } from "./RovingMenuState";
+import { useMenuState } from "./useMenuState";
 
 /**
  * Properties support when creating a new menu item via {@link useRovingMenuItem}.
@@ -40,6 +35,15 @@ export interface RovingMenuItemProps {
     required?: boolean;
 }
 
+/** @internal */
+export interface RovingMenuItemDomProps {
+    [MENU_OWNER_ATTR]: string;
+    [MENU_VALUE_ATTR]: string;
+    tabIndex: number;
+    onFocus: FocusEventHandler;
+    onBlur: FocusEventHandler;
+}
+
 /**
  * The return value of {@link useRovingMenuItem}.
  *
@@ -54,13 +58,7 @@ export interface RovingMenuItemResult {
      *
      * Note that other properties may be added in a future release.
      */
-    itemProps: {
-        [MENU_OWNER_ATTR]: string;
-        [MENU_VALUE_ATTR]: string;
-        tabIndex: number;
-        onFocus: FocusEventHandler;
-        onBlur: FocusEventHandler;
-    };
+    itemProps: RovingMenuItemDomProps;
 }
 
 /**
@@ -73,6 +71,24 @@ export function useRovingMenuItem(
 ): RovingMenuItemResult;
 export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemResult | undefined;
 export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemResult | undefined {
+    return useRovingMenuItemImpl(props, "item");
+}
+
+/**
+ * @internal
+ */
+export function useRovingMenuItemImpl(
+    props: RovingMenuItemProps & { required?: true },
+    context: "item" | "nested"
+): RovingMenuItemResult;
+export function useRovingMenuItemImpl(
+    props: RovingMenuItemProps,
+    context: "item" | "nested"
+): RovingMenuItemResult | undefined;
+export function useRovingMenuItemImpl(
+    props: RovingMenuItemProps,
+    context: "item" | "nested"
+): RovingMenuItemResult | undefined {
     const { value, disabled = false, required = true } = props;
     const state = useMenuState(required);
 
@@ -97,7 +113,10 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
             itemProps: {
                 [MENU_OWNER_ATTR]: menuId,
                 [MENU_VALUE_ATTR]: value,
-                tabIndex: isActive ? 0 : -1,
+
+                // items can be reached via user tab, nested menus can't
+                tabIndex: context === "item" && isActive ? 0 : -1,
+
                 onFocus: (_event) => {
                     hasFocus.current = true;
                     state?.onItemFocus(value);
@@ -107,19 +126,6 @@ export function useRovingMenuItem(props: RovingMenuItemProps): RovingMenuItemRes
                 }
             }
         };
-    }, [state, value, isActive]);
+    }, [state, value, isActive, context]);
     return result;
-}
-
-function useMenuState(required: boolean): InternalMenuState | undefined {
-    const state = useContext(MenuStateContext);
-    if (!state) {
-        if (required) {
-            throw new Error(
-                "Failed to find the outer menu. Is the menu item surrounded by the RovingMenuRoot?"
-            );
-        }
-        return undefined;
-    }
-    return getInternalState(state);
 }
