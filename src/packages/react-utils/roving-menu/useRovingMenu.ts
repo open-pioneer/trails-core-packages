@@ -31,6 +31,7 @@ export interface RovingMenuDomProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: RefObject<any>;
     role: string;
+    tabIndex: number;
     [MENU_ID_ATTR]: string;
     "aria-orientation": "horizontal" | "vertical";
     onKeyDown: (event: KeyboardEvent) => void;
@@ -154,6 +155,7 @@ function useRovingMenuImpl(
                 ref: menuRef,
                 role: "toolbar",
                 "aria-orientation": orientation,
+                tabIndex: -1,
                 [MENU_ID_ATTR]: menuId,
                 onKeyDown: onKeyDown
             },
