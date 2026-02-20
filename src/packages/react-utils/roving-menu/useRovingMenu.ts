@@ -3,12 +3,7 @@
 import { KeyboardEvent, FocusEvent, RefObject, useCallback, useId, useMemo, useRef } from "react";
 import { useEvent } from "../useEvent";
 import { type RovingMenuRoot } from "./RovingMenuRoot";
-import {
-    getInternalState,
-    InternalMenuState,
-    MENU_ID_ATTR,
-    RovingMenuState
-} from "./RovingMenuState";
+import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
 import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
 import { useMenuState } from "./useMenuState";
 
@@ -35,6 +30,7 @@ export interface RovingMenuDomProps {
     [MENU_ID_ATTR]: string;
     "aria-orientation": "horizontal" | "vertical";
     onKeyDown: (event: KeyboardEvent) => void;
+    onFocus: (event: FocusEvent) => void;
 }
 
 /**
@@ -118,7 +114,7 @@ export function useNestedRovingMenu(props: NestedRovingMenuProps): NestedRovingM
                     itemProps.onFocus(e);
 
                     // Focuses the correct child
-                    getInternalState(menuState).onFocus(e);
+                    menuProps.onFocus(e);
                 }
             },
             menuState
@@ -140,15 +136,12 @@ function useRovingMenuImpl(
         [menuRef, orientation, menuId, isActiveInParent]
     );
 
-    // Key handler on the menu
     const onKeyDown = useEvent((event: KeyboardEvent) => {
-        if (event.defaultPrevented) {
-            return;
-        }
-
         state.onKeyDown(event);
     });
-
+    const onFocus = useEvent((event: FocusEvent) => {
+        state.onFocus(event);
+    });
     const result = useMemo(
         (): RovingMenuResult => ({
             menuProps: {
@@ -157,11 +150,12 @@ function useRovingMenuImpl(
                 "aria-orientation": orientation,
                 tabIndex: -1,
                 [MENU_ID_ATTR]: menuId,
-                onKeyDown: onKeyDown
+                onKeyDown,
+                onFocus
             },
             menuState: state as unknown as RovingMenuState
         }),
-        [menuId, orientation, onKeyDown, state]
+        [menuId, orientation, onKeyDown, onFocus, state]
     );
     return result;
 }
