@@ -169,7 +169,8 @@ export class AppInstance {
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );
 
-        await this.initAPI(serviceLayer);
+        // init api, but do not wait for it
+        const apiPromise = this.initAPI(serviceLayer);
         this.checkAbort();
 
         // Launch react
@@ -186,6 +187,12 @@ export class AppInstance {
         });
         const component = this.options.elementOptions.component ?? EmptyComponent;
         this.reactIntegration.render(createElement(component));
+
+        // wait for api, to ensure that the "started" state is only reached after the API is available.
+        // but do not block the react rendering, to allow for a fast Time to Interactive and to show potential errors in the UI even if the API fails.
+        await apiPromise;
+        this.checkAbort();
+
         this.state = "started";
 
         this.triggerApplicationLifecycleEvent("after-start");
@@ -261,13 +268,29 @@ export class AppInstance {
     private async initAPI(serviceLayer: ServiceLayer) {
         const apiService = getInternalService<ApiService>(serviceLayer, RUNTIME_API_SERVICE);
         try {
-            const api = (this.api = await apiService.getApi());
+            const api = await apiService.getApi();
+            this.checkAbort();
+            this.api = api;
             LOG.debug("Application API initialized to", api);
             this.apiPromise?.resolve(api);
         } catch (e) {
-            throw new Error(ErrorId.INTERNAL, "Failed to gather the application's API methods.", {
-                cause: e
-            });
+            LOG.error("Failed to gather the application's API methods.", e);
+            const ex = new Error(
+                ErrorId.INTERNAL,
+                "Failed to gather the application's API methods.",
+                {
+                    cause: e
+                }
+            );
+            if (!this.apiPromise) {
+                // no one is waiting yet.
+                // keep the error for when they do
+                this.apiPromise = createManualPromise();
+                // prevent unhandled rejection if no one is waiting for the API
+                this.apiPromise.promise.catch(() => {});
+            }
+            this.apiPromise.reject(ex);
+            throw ex;
         }
     }
 
