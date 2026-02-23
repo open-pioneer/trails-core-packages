@@ -274,7 +274,6 @@ export class AppInstance {
             LOG.debug("Application API initialized to", api);
             this.apiPromise?.resolve(api);
         } catch (e) {
-            LOG.error("Failed to gather the application's API methods.", e);
             const ex = new Error(
                 ErrorId.INTERNAL,
                 "Failed to gather the application's API methods.",

@@ -2,4 +2,4 @@
 "@open-pioneer/runtime": minor
 ---
 
-runtime - api initialization does not longer block app start
+API initialization does no longer block rendering of the user interface.
