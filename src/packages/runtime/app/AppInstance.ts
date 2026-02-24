@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
+import { computed, effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
@@ -13,12 +13,13 @@ import {
 } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { createElement } from "react";
-import { ApiMethods, ApiService } from "../api";
+import { ApiMethods, ApiService, ThemeService } from "../api";
 import {
     createBuiltinPackage,
     RUNTIME_API_SERVICE,
     RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
-    RUNTIME_AUTO_START
+    RUNTIME_AUTO_START,
+    RUNTIME_THEME_SERVICE
 } from "../builtin-services";
 import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
 import {
@@ -77,6 +78,8 @@ export class AppInstance {
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
+    private themeService = reactive<ThemeService | undefined>(undefined);
+    private currentColorModeValue = computed(() => this.themeService.value?.colorMode ?? "light");
     private reactIntegration: ReactIntegration | undefined;
 
     private stylesWatch: Resource | undefined;
@@ -126,6 +129,7 @@ export class AppInstance {
         this.container.replaceChildren();
         this.appRoot = undefined;
         this.lifecycleEvents = undefined;
+        this.themeService.value = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
     }
@@ -168,6 +172,10 @@ export class AppInstance {
             serviceLayer,
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );
+        this.themeService.value = getInternalService<ThemeService>(
+            serviceLayer,
+            RUNTIME_THEME_SERVICE
+        );
 
         // init api, but do not wait for it
         const apiPromise = this.initAPI(serviceLayer);
@@ -183,7 +191,8 @@ export class AppInstance {
             packages,
             locale: i18n.locale,
             config: chakraSystemConfig,
-            styles
+            styles,
+            colorMode: this.currentColorModeValue
         });
         const component = this.options.elementOptions.component ?? EmptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -228,13 +237,24 @@ export class AppInstance {
         properties: ApplicationProperties;
         i18n: AppIntl;
     }) {
-        const { hostElement, rootNode: shadowRoot, elementOptions, restart } = this.options;
+        const {
+            hostElement,
+            rootNode: shadowRoot,
+            elementOptions,
+            restart,
+            overrides
+        } = this.options;
+        const currentColorMode = this.currentColorModeValue;
         const { container, properties, i18n } = config;
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
+        const initialColorMode = overrides?.colorMode ?? "light";
         const builtinPackage = createBuiltinPackage({
             host: hostElement,
             rootNode: shadowRoot,
             container: container,
+            // TODO: service is always initialized with "light"
+            // The override value exist only on restarts
+            initialColorMode: initialColorMode,
             locale: i18n.locale,
             supportedLocales: i18n.supportedMessageLocales,
             changeLocale(locale) {
@@ -247,7 +267,13 @@ export class AppInstance {
                         )}).`
                     );
                 }
-                restart({ locale });
+                // transport color mode only, if not same as initial value
+                const colorMode =
+                    currentColorMode.value !== initialColorMode
+                        ? currentColorMode.value
+                        : undefined;
+                const newOverrides = { locale, ...(colorMode ? { colorMode } : {}) };
+                restart(newOverrides);
             }
         });
         const { serviceLayer, packages } = createServiceLayer({
@@ -324,7 +350,8 @@ export class AppInstance {
             appRoot: appRoot,
             locale: locale,
             config: this.options.elementOptions.chakraSystemConfig,
-            styles
+            styles,
+            colorMode: this.currentColorModeValue
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }

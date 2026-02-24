@@ -20,6 +20,7 @@ import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { APP_ROOT_CLASS, getBuiltinStyles, getStylesRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
+import { ColorModeValue } from "../api";
 
 /** @internal */
 export type CustomChakraProviderProps = PropsWithChildren<{
@@ -51,6 +52,11 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     locale?: string;
 
     /**
+     * Custom color mode value.
+     */
+    colorMode: ReadonlyReactive<ColorModeValue>;
+
+    /**
      * Custom CSS used by the application.
      */
     styles?: ReadonlyReactive<string>;
@@ -72,6 +78,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     children,
     config = defaultTrailsConfig,
     locale = "en-US",
+    colorMode,
     styles
 }) => {
     /*
@@ -100,14 +107,13 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         );
     }, [config]);
 
+    const effectiveColorMode = useReactiveSnapshot(() => colorMode.value, [colorMode]);
+
     useEffect(() => {
         const classes = appRoot.classList;
-        const colorMode = "light"; // "light" | "dark"
-        classes.add(colorMode);
-        return () => {
-            classes.remove(colorMode);
-        };
-    }, [appRoot]);
+        classes.toggle("light", effectiveColorMode === "light");
+        classes.toggle("dark", effectiveColorMode === "dark");
+    }, [appRoot, effectiveColorMode]);
 
     const cache = useEmotionCache(rootNode);
     return (

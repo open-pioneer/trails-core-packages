@@ -4,7 +4,7 @@ import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
-import { ApiMethods, type ApiExtension } from "./api";
+import { type ApiMethods, type ColorModeValue, type ApiExtension } from "./api";
 import { AppInstance } from "./app";
 import { ErrorId } from "./errors";
 import { ApplicationMetadata } from "./metadata";
@@ -88,6 +88,11 @@ export interface ApplicationOverrides {
      * The new application locale.
      */
     locale?: string;
+
+    /**
+     * The last color mode selected by the user.
+     */
+    colorMode?: ColorModeValue;
 }
 
 /**

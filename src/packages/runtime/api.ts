@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import type { ApplicationConfig } from "./CustomElement";
-import { DeclaredService } from "./DeclaredService";
+import { type DeclaredService } from "./DeclaredService";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
@@ -113,8 +113,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
  * **Experimental**. This interface is not affected by semver guarantees.
  * It may change (or be removed) in a future minor release.
  */
-export interface ApplicationLifecycleListener
-    extends DeclaredService<"runtime.ApplicationLifecycleListener"> {
+export interface ApplicationLifecycleListener extends DeclaredService<"runtime.ApplicationLifecycleListener"> {
     /**
      * Called after all services required by the application have been started.
      */
@@ -134,4 +133,35 @@ export interface NumberParserService extends DeclaredService<"runtime.NumberPars
      * Parses a number from a string according to the current locale.
      */
     parseNumber(numberString: string): number;
+}
+
+/**
+ * A color mode value, either "light" or "dark".
+ */
+export type ColorModeValue = "light" | "dark";
+
+/**
+ * A function that returns a ColorModeValue.
+ * If it uses a reactive value internally, the ThemeService will react to changes of the color mode.
+ */
+export type ColorModeValueSupplier = () => ColorModeValue;
+
+/**
+ * A Theme Service that provides methods to interact with the chakra theme.
+ * e.g. change the color mode of the application.
+ */
+export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
+    /**
+     * The currently active color mode.
+     * It is reactive.
+     * Defaults to `"light".
+     */
+    readonly colorMode: ColorModeValue;
+
+    /**
+     * Updates the color mode of the application.
+     * Can be called with a direct value or a function that returns a value.
+     * The function form allows the use of reactive values, which will automatically trigger a color mode update.
+     */
+    updateColorMode(value: ColorModeValue | ColorModeValueSupplier): void;
 }

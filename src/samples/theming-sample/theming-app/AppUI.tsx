@@ -9,6 +9,7 @@ import {
     createListCollection,
     Flex,
     Group,
+    HStack,
     Input,
     InputAddon,
     Link,
@@ -30,15 +31,38 @@ import { Slider } from "@open-pioneer/chakra-snippets/slider";
 import { Switch } from "@open-pioneer/chakra-snippets/switch";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import { SectionHeading, TitledSection } from "@open-pioneer/react-utils";
-import { Children, cloneElement, isValidElement, ReactNode, useState } from "react";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
+import { ApplicationContext, ThemeService } from "@open-pioneer/runtime";
+import { useService } from "open-pioneer:react-hooks";
+import { Children, cloneElement, isValidElement, ReactNode, useCallback, useState } from "react";
 
 export function AppUI() {
+    const themeService = useService<ThemeService>("runtime.ThemeService");
+    const effectiveColorMode = useReactiveSnapshot(() => themeService.colorMode, [themeService]);
+    const toogleColorMode = useCallback(() => {
+        themeService.updateColorMode(effectiveColorMode === "light" ? "dark" : "light");
+    }, [effectiveColorMode, themeService]);
+
+    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
+    const toggleLanguage = useCallback(() => {
+        const newLocale = appCtx.getLocale() === "en" ? "de" : "en";
+        appCtx.setLocale(newLocale);
+    }, [appCtx]);
+
     return (
         <Container centerContent={true}>
             <TitledSection
                 title='Demo page based on color scheme "trails"'
                 sectionHeadingProps={{ size: "md", py: 2 }}
             >
+                <HStack>
+                    <Switch checked={effectiveColorMode === "dark"} onChange={toogleColorMode}>
+                        Toggle Color Mode
+                    </Switch>
+                    <Switch checked={appCtx.getLocale() === "de"} onChange={toggleLanguage}>
+                        Toggle Language (en/de)
+                    </Switch>
+                </HStack>
                 <Flex justifyContent={"center"}>
                     <Pane>
                         <ButtonSection />
@@ -79,7 +103,6 @@ function Pane(props: { children: ReactNode }) {
 
     return (
         <Box
-            bg="white"
             borderWidth="1px"
             borderRadius="lg"
             padding={2}

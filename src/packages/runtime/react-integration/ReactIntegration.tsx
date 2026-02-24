@@ -13,6 +13,7 @@ import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "./ChakraProvider";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
+import { ColorModeValue } from "../api";
 
 export interface ReactIntegrationOptions {
     rootNode: RootNode;
@@ -24,6 +25,7 @@ export interface ReactIntegrationOptions {
     locale: string;
     config: SystemConfig | undefined;
     styles: ReadonlyReactive<string>;
+    colorMode: ReadonlyReactive<ColorModeValue>;
 }
 
 export class ReactIntegration {
@@ -35,6 +37,7 @@ export class ReactIntegration {
     private locale: string;
     private chakraConfig: SystemConfig | undefined;
     private styles: ReadonlyReactive<string>;
+    private colorMode: ReadonlyReactive<ColorModeValue>;
 
     static createForApp(options: ReactIntegrationOptions): ReactIntegration {
         const { serviceLayer, packages } = options;
@@ -70,6 +73,7 @@ export class ReactIntegration {
         this.packageContext = options.packageContext;
         this.locale = options.locale;
         this.styles = options.styles;
+        this.colorMode = options.colorMode;
     }
 
     render(contentNode: ReactNode) {
@@ -82,6 +86,7 @@ export class ReactIntegration {
                     config={this.chakraConfig}
                     locale={this.locale}
                     styles={this.styles}
+                    colorMode={this.colorMode}
                 >
                     <PackageContext.Provider value={this.packageContext}>
                         {contentNode}
