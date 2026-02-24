@@ -1,0 +1,4 @@
+messages:
+  langSwitcher: "Sprache wechseln zu { lang , select, de {Deutsch} other {Englisch} }"
+  appHeading: "Demo Seite basierend auf dem Farbschema 'trails'"
+  colorToggle: "Farbmodus wechseln"
