@@ -5,6 +5,14 @@ import { defineBuildConfig } from "@open-pioneer/build-support";
 export default defineBuildConfig({
     i18n: ["en", "de"],
     ui: {
-        references: ["runtime.ThemeService", "runtime.ApplicationContext"]
+        references: ["runtime.ThemeService", "runtime.ApplicationContext", "theming.ColorThemes"]
+    },
+    services: {
+        "ColorThemes": {
+            provides: "theming.ColorThemes",
+            references: {
+                themeService: "runtime.ThemeService"
+            }
+        }
     }
 });

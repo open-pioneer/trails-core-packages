@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import type { ApplicationConfig } from "./CustomElement";
 import { type DeclaredService } from "./DeclaredService";
 
@@ -147,8 +148,16 @@ export type ColorModeValue = "light" | "dark";
 export type ColorModeValueSupplier = () => ColorModeValue;
 
 /**
+ * A function that returns a SystemConfig.
+ * If it uses a reactive value internally, the ThemeService will react to changes of the system config.
+ */
+export type ChakraSystemConfigSupplier = () => ChakraSystemConfig | undefined;
+
+/**
  * A Theme Service that provides methods to interact with the chakra theme.
+ *
  * e.g. change the color mode of the application.
+ * or update the system config of the application.
  */
 export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
     /**
@@ -164,4 +173,16 @@ export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
      * The function form allows the use of reactive values, which will automatically trigger a color mode update.
      */
     updateColorMode(value: ColorModeValue | ColorModeValueSupplier): void;
+
+    /**
+     * The currently active system config.
+     */
+    readonly chakraSystemConfig: ChakraSystemConfig | undefined;
+
+    /**
+     * Updates the system config of the application.
+     * Can be called with a direct value or a function that returns a value.
+     * The function form allows the use of reactive values, which will automatically trigger a system config update.
+     */
+    updateSystemConfig(value: ChakraSystemConfig | ChakraSystemConfigSupplier | undefined): void;
 }

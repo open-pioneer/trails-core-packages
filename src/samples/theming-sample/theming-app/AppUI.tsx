@@ -35,6 +35,7 @@ import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { ApplicationContext, ThemeService } from "@open-pioneer/runtime";
 import { useService, useIntl } from "open-pioneer:react-hooks";
 import { Children, cloneElement, isValidElement, ReactNode, useCallback, useState } from "react";
+import { type ColorThemes, type ColorThemeName } from "./services";
 
 export function AppUI() {
     const themeService = useService<ThemeService>("runtime.ThemeService");
@@ -50,6 +51,21 @@ export function AppUI() {
         appCtx.setLocale(newLocale);
     }, [appCtx, newLocale]);
 
+    const colorThemes = useService<ColorThemes>("theming.ColorThemes");
+    const effectiveTheme = useReactiveSnapshot(
+        () => ({
+            currentColorTheme: colorThemes.currentColorTheme,
+            allColorThemes: colorThemes.availableColorThemes
+        }),
+        [colorThemes]
+    );
+    const onThemeChange = useCallback(
+        (theme: ColorThemeName) => {
+            colorThemes.setColorTheme(theme);
+        },
+        [colorThemes]
+    );
+
     return (
         <Container centerContent={true}>
             <TitledSection
@@ -57,12 +73,33 @@ export function AppUI() {
                 sectionHeadingProps={{ size: "md", py: 2 }}
             >
                 <HStack>
-                    <Switch checked={effectiveColorMode === "dark"} onChange={toogleColorMode}>
-                        {intl.formatMessage({ id: "colorToggle" })}
-                    </Switch>
-                    <Switch checked={appCtx.getLocale() === "de"} onChange={toggleLanguage}>
-                        {intl.formatMessage({ id: "langSwitcher" }, { lang: newLocale })}
-                    </Switch>
+                    {intl.formatMessage({ id: "lang" }, { lang: "en" })}
+                    <Switch checked={appCtx.getLocale() === "de"} onChange={toggleLanguage} />
+                    {intl.formatMessage({ id: "lang" }, { lang: "de" })}
+                </HStack>
+                <HStack>
+                    {intl.formatMessage({ id: "colorMode" }, { colorMode: "light" })}
+                    <Switch checked={effectiveColorMode === "dark"} onChange={toogleColorMode} />
+                    {intl.formatMessage({ id: "colorMode" }, { colorMode: "dark" })}
+                </HStack>
+                <HStack>
+                    {intl.formatMessage({ id: "colorThemeSelectLabel" })}
+                    <NativeSelectRoot variant={"outline"}>
+                        <NativeSelectField
+                            value={effectiveTheme.currentColorTheme}
+                            onChange={(e) => onThemeChange(e.currentTarget.value as ColorThemeName)}
+                        >
+                            {effectiveTheme.allColorThemes.map((theme) => (
+                                <option
+                                    value={theme}
+                                    key={theme}
+                                    //selected={theme === effectiveTheme.currentColorTheme}
+                                >
+                                    {theme}
+                                </option>
+                            ))}
+                        </NativeSelectField>
+                    </NativeSelectRoot>
                 </HStack>
                 <Flex justifyContent={"center"}>
                     <Pane>

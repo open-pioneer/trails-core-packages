@@ -1,4 +1,5 @@
 messages:
-  langSwitcher: "Switch language to { lang , select, de {German} other {English} }"
+  lang: "{ lang , select, de {German} other {English} }"
   appHeading: "Demo page based on color scheme 'trails'"
-  colorToggle: "Toggle Color Mode"
+  colorMode: "{ colorMode , select, dark {Dark} light {Light} other {System} }"
+  colorThemeSelectLabel: "Color scheme:"

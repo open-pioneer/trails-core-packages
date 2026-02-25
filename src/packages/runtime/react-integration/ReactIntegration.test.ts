@@ -504,7 +504,7 @@ function createIntegration(options?: {
         rootNode: shadowRoot,
         hostNode: host,
         appRoot: wrapper,
-        config: options?.config,
+        config: reactive(options?.config),
         packages,
         serviceLayer,
         locale: options?.locale ?? "en",

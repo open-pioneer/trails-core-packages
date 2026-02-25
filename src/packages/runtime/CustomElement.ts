@@ -90,9 +90,14 @@ export interface ApplicationOverrides {
     locale?: string;
 
     /**
-     * The last color mode selected by the user.
+     * The new color mode.
      */
     colorMode?: ColorModeValue;
+
+    /**
+     * The new used chakra system config.
+     */
+    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**

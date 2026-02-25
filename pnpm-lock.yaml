@@ -852,6 +852,12 @@ importers:
 
   src/samples/theming-sample/theming-app:
     dependencies:
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.8.1
+      '@open-pioneer/base-theme':
+        specifier: workspace:*
+        version: link:../../../packages/base-theme
       '@open-pioneer/chakra-snippets':
         specifier: workspace:*
         version: link:../../../packages/chakra-snippets

@@ -22,6 +22,7 @@ import {
     RUNTIME_THEME_SERVICE
 } from "../builtin-services";
 import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
+import { DEFAULT_INITIAL_COLOR_MODE } from "../builtin-services/ThemeServiceImpl";
 import {
     ApplicationConfig,
     ApplicationOverrides,
@@ -38,7 +39,9 @@ import { ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { gatherConfig } from "./gatherConfig";
+
 import { logError } from "./logErrors";
+import { SystemConfig } from "@chakra-ui/react";
 
 const LOG = createLogger(sourceId);
 
@@ -79,7 +82,10 @@ export class AppInstance {
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
     private themeService = reactive<ThemeService | undefined>(undefined);
-    private currentColorModeValue = computed(() => this.themeService.value?.colorMode ?? "light");
+    private currentColorModeValue = computed(
+        () => this.themeService.value?.colorMode ?? DEFAULT_INITIAL_COLOR_MODE
+    );
+    private currentChakraSystemConfig = computed(() => this.themeService.value?.chakraSystemConfig);
     private reactIntegration: ReactIntegration | undefined;
 
     private stylesWatch: Resource | undefined;
@@ -159,14 +165,14 @@ export class AppInstance {
         // Setup application root node in the shadow dom
         const appRoot = (this.appRoot = createAppRoot(i18n.locale));
         this.container.appendChild(appRoot);
-
         const styles = this.initStylesSignal();
-
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
             container: appRoot,
             properties: config.properties,
-            i18n
+            i18n,
+            initialChakraSystemConfig:
+                config.chakraSystemConfig ?? elementOptions.chakraSystemConfig
         });
         this.lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
             serviceLayer,
@@ -182,7 +188,6 @@ export class AppInstance {
         this.checkAbort();
 
         // Launch react
-        const chakraSystemConfig = config.chakraSystemConfig ?? elementOptions.chakraSystemConfig;
         this.reactIntegration = ReactIntegration.createForApp({
             rootNode: root,
             hostNode: hostElement,
@@ -190,7 +195,7 @@ export class AppInstance {
             serviceLayer,
             packages,
             locale: i18n.locale,
-            config: chakraSystemConfig,
+            config: this.currentChakraSystemConfig,
             styles,
             colorMode: this.currentColorModeValue
         });
@@ -236,6 +241,7 @@ export class AppInstance {
         container: HTMLDivElement;
         properties: ApplicationProperties;
         i18n: AppIntl;
+        initialChakraSystemConfig: SystemConfig | undefined;
     }) {
         const {
             hostElement,
@@ -244,17 +250,22 @@ export class AppInstance {
             restart,
             overrides
         } = this.options;
-        const currentColorMode = this.currentColorModeValue;
+
         const { container, properties, i18n } = config;
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
-        const initialColorMode = overrides?.colorMode ?? "light";
+        const currentColorMode = this.currentColorModeValue;
+        // not yet configurable.
+        const colorModeFromConfig = DEFAULT_INITIAL_COLOR_MODE;
+        const currentChakraSystemConfig = this.currentChakraSystemConfig;
         const builtinPackage = createBuiltinPackage({
             host: hostElement,
             rootNode: shadowRoot,
             container: container,
             // TODO: service is always initialized with "light"
             // The override value exist only on restarts
-            initialColorMode: initialColorMode,
+            initialColorMode: overrides?.colorMode ?? colorModeFromConfig,
+            initialChakraSystemConfig:
+                overrides?.chakraSystemConfig ?? config.initialChakraSystemConfig,
             locale: i18n.locale,
             supportedLocales: i18n.supportedMessageLocales,
             changeLocale(locale) {
@@ -267,12 +278,20 @@ export class AppInstance {
                         )}).`
                     );
                 }
-                // transport color mode only, if not same as initial value
+                // transport color mode only, if not same as initial configured value
                 const colorMode =
-                    currentColorMode.value !== initialColorMode
+                    currentColorMode.value !== colorModeFromConfig
                         ? currentColorMode.value
                         : undefined;
-                const newOverrides = { locale, ...(colorMode ? { colorMode } : {}) };
+                const systemConfig =
+                    currentChakraSystemConfig.value !== config.initialChakraSystemConfig
+                        ? currentChakraSystemConfig.value
+                        : undefined;
+                const newOverrides = {
+                    locale,
+                    ...(colorMode ? { colorMode } : {}),
+                    ...(systemConfig ? { chakraSystemConfig: systemConfig } : {})
+                };
                 restart(newOverrides);
             }
         });
@@ -349,9 +368,9 @@ export class AppInstance {
             hostNode: this.options.hostElement,
             appRoot: appRoot,
             locale: locale,
-            config: this.options.elementOptions.chakraSystemConfig,
+            config: reactive(this.options.elementOptions.chakraSystemConfig),
             styles,
-            colorMode: this.currentColorModeValue
+            colorMode: reactive(DEFAULT_INITIAL_COLOR_MODE)
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }

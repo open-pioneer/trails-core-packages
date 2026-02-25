@@ -23,7 +23,7 @@ export interface ReactIntegrationOptions {
     serviceLayer: ServiceLayer;
 
     locale: string;
-    config: SystemConfig | undefined;
+    config?: ReadonlyReactive<SystemConfig | undefined>;
     styles: ReadonlyReactive<string>;
     colorMode: ReadonlyReactive<ColorModeValue>;
 }
@@ -35,7 +35,7 @@ export class ReactIntegration {
     private reactRoot: Root;
     private packageContext: PackageContextMethods;
     private locale: string;
-    private chakraConfig: SystemConfig | undefined;
+    private chakraConfig?: ReadonlyReactive<SystemConfig | undefined>;
     private styles: ReadonlyReactive<string>;
     private colorMode: ReadonlyReactive<ColorModeValue>;
 

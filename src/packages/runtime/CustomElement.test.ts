@@ -4,7 +4,7 @@
 /**
  * @vitest-environment happy-dom
  */
-import { mergeConfigs, Portal, useChakraContext } from "@chakra-ui/react";
+import { mergeConfigs, Portal, SystemConfig, useChakraContext } from "@chakra-ui/react";
 import { isAbortError } from "@open-pioneer/core";
 import {
     defineComponent,
@@ -14,7 +14,14 @@ import {
 import { findByTestId, waitFor } from "@testing-library/dom";
 import { createElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiExtension, ApiMethods, ApplicationContext, ApplicationLifecycleListener } from "./api";
+import {
+    ApiExtension,
+    ApiMethods,
+    ApplicationContext,
+    ApplicationLifecycleListener,
+    ColorModeValue,
+    ThemeService
+} from "./api";
 import {
     ApplicationElement,
     ApplicationElementConstructor,
@@ -660,23 +667,102 @@ describe("i18n support", function () {
         expect(observedOverrides).toEqual([undefined, { locale: "en" }]);
     });
 
-    interface I18nAppApi {
+    it("transports changed color mode in overrides on lang change", async () => {
+        mockNavigatorLocales();
+
+        const observedOverrides: (ApplicationOverrides | undefined)[] = [];
+        const api = await launchApp({
+            async resolveConfig({ overrides }) {
+                observedOverrides.push(overrides);
+                return {
+                    locale: "de"
+                };
+            }
+        });
+
+        expect(observedOverrides).toEqual([undefined]);
+        await api.setColorMode("dark");
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([undefined, { locale: "en", colorMode: "dark" }]);
+        });
+        observedOverrides.length = 0; // reset
+        // switch back to de, the override should be still there
+        await api.setLocale("de");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([{ locale: "de", colorMode: "dark" }]);
+        });
+        observedOverrides.length = 0; // reset
+        // change color mode back to light and change locale to en, the override should be gone
+        await api.setColorMode("light");
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([{ locale: "en" }]);
+        });
+    });
+
+    it("transports changed chakra system config in overrides on lang change", async () => {
+        mockNavigatorLocales();
+
+        const observedOverrides: (ApplicationOverrides | undefined)[] = [];
+        const api = await launchApp({
+            async resolveConfig({ overrides }) {
+                observedOverrides.push(overrides);
+                return {
+                    locale: "de"
+                };
+            }
+        });
+
+        expect(observedOverrides).toEqual([undefined]);
+        const testConfig = {
+            theme: { semanticTokens: { colors: { dummyColor: { value: "#654321" } } } }
+        };
+        await api.setCustomChakraConfig(testConfig);
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([
+                undefined,
+                { locale: "en", chakraSystemConfig: testConfig }
+            ]);
+        });
+        observedOverrides.length = 0; // reset
+        // switch back to de, the override should be still there
+        await api.setLocale("de");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([{ locale: "de", chakraSystemConfig: testConfig }]);
+        });
+        observedOverrides.length = 0; // reset
+        // change color mode back to light and change locale to en, the override should be gone
+        await api.setCustomChakraConfig(undefined);
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([{ locale: "en" }]);
+        });
+    });
+
+    interface TestAppApi {
         getLocaleInfo(): Promise<{ locale: string; message: string; supportedLocales: string[] }>;
         setLocale(newLocale: string): Promise<void>;
+        setColorMode(newColorMode: ColorModeValue): Promise<void>;
+        setCustomChakraConfig(newConfig: SystemConfig | undefined): Promise<void>;
     }
 
     /**
      * Runs an app with mocked services and i18n and returns the inner locale + translated message.
      */
-    async function launchApp(options?: Partial<CustomElementOptions>): Promise<I18nAppApi> {
+    async function launchApp(options?: Partial<CustomElementOptions>): Promise<TestAppApi> {
         class TestService implements ApiExtension {
             private ctx: ApplicationContext;
+            private theme: ThemeService;
             private locale: string;
             private message: string;
 
-            constructor(options: ServiceOptions<{ ctx: ApplicationContext }>) {
+            constructor(options: ServiceOptions<{ ctx: ApplicationContext; theme: ThemeService }>) {
                 const ctx = options.references.ctx;
+                const theme = options.references.theme;
                 this.ctx = ctx;
+                this.theme = theme;
                 this.locale = ctx.getLocale();
                 this.message = options.intl.formatMessage({ id: "greeting" });
             }
@@ -692,6 +778,12 @@ describe("i18n support", function () {
                     },
                     setLocale: (newLocale: string) => {
                         this.ctx.setLocale(newLocale);
+                    },
+                    setColorMode: (newColorMode: ColorModeValue) => {
+                        this.theme.updateColorMode(newColorMode);
+                    },
+                    setCustomChakraConfig: (newConfig: SystemConfig | undefined) => {
+                        this.theme.updateSystemConfig(newConfig);
                     }
                 };
             }
@@ -710,6 +802,9 @@ describe("i18n support", function () {
                                 references: {
                                     ctx: {
                                         name: "runtime.ApplicationContext"
+                                    },
+                                    theme: {
+                                        name: "runtime.ThemeService"
                                     }
                                 },
                                 provides: [
@@ -758,6 +853,16 @@ describe("i18n support", function () {
             async setLocale(newLocale: string) {
                 const api = await (node as ApplicationElement).when();
                 api.setLocale!(newLocale);
+            },
+
+            async setColorMode(newColorMode: ColorModeValue) {
+                const api = await (node as ApplicationElement).when();
+                api.setColorMode!(newColorMode);
+            },
+
+            async setCustomChakraConfig(newConfig: SystemConfig | undefined) {
+                const api = await (node as ApplicationElement).when();
+                api.setCustomChakraConfig!(newConfig);
             }
         };
         return result;
@@ -917,6 +1022,92 @@ describe("theming", () => {
         });
         const { queries } = await renderComponentShadowDOM(elem);
 
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #654321"`);
+    });
+
+    it("applies custom color mode if changed via ThemeService", async () => {
+        class TestService {
+            constructor(options: ServiceOptions<{ theme: ThemeService }>) {
+                const theme = options.references.theme;
+                theme.updateColorMode("dark");
+            }
+        }
+        const elem = createCustomElement({
+            component: TestComponent,
+            appMetadata: {
+                packages: {
+                    test: {
+                        name: "test",
+                        services: {
+                            testService: {
+                                name: "testService",
+                                clazz: TestService,
+                                references: {
+                                    theme: {
+                                        name: "runtime.ThemeService"
+                                    }
+                                },
+                                provides: [
+                                    {
+                                        name: "runtime.AutoStart"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const { innerContainer } = await renderComponentShadowDOM(elem);
+
+        expect(innerContainer.className).toEqual("pioneer-root dark");
+    });
+
+    it("applies custom system config if changed via ThemeService", async () => {
+        class TestService {
+            constructor(options: ServiceOptions<{ theme: ThemeService }>) {
+                const theme = options.references.theme;
+                // this wins over the config provided directly to the element and the one from resolveConfig
+                theme.updateSystemConfig({
+                    theme: {
+                        semanticTokens: {
+                            colors: {
+                                dummyColor: { value: "#654321" }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        const elem = createCustomElement({
+            component: TestComponent,
+            chakraSystemConfig: testConfig,
+            appMetadata: {
+                packages: {
+                    test: {
+                        name: "test",
+                        services: {
+                            testService: {
+                                name: "testService",
+                                clazz: TestService,
+                                references: {
+                                    theme: {
+                                        name: "runtime.ThemeService"
+                                    }
+                                },
+                                provides: [
+                                    {
+                                        name: "runtime.AutoStart"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
         const div = await queries.findByTestId("test-div");
         expect(div.innerText).toMatchInlineSnapshot(`"Color: #654321"`);
     });
