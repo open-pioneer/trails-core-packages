@@ -614,6 +614,9 @@ importers:
 
   src/packages/test-utils:
     dependencies:
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.8.1
       '@formatjs/intl':
         specifier: 'catalog:'
         version: 4.1.2(typescript@5.9.3)
@@ -851,6 +854,12 @@ importers:
 
   src/samples/theming-sample/theming-app:
     dependencies:
+      '@conterra/reactivity-core':
+        specifier: 'catalog:'
+        version: 0.8.1
+      '@open-pioneer/base-theme':
+        specifier: workspace:*
+        version: link:../../../packages/base-theme
       '@open-pioneer/chakra-snippets':
         specifier: workspace:*
         version: link:../../../packages/chakra-snippets

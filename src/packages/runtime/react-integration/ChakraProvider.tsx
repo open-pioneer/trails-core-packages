@@ -17,9 +17,10 @@ import { CacheProvider, Global } from "@emotion/react";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { Error } from "@open-pioneer/core";
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
-import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { APP_ROOT_CLASS, getBuiltinStyles, getStylesRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
+import { ColorModeValue } from "../api";
 
 /** @internal */
 export type CustomChakraProviderProps = PropsWithChildren<{
@@ -43,12 +44,17 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     /**
      * Chakra system config (can be used to provide custom theme).
      */
-    config?: SystemConfig;
+    config?: ReadonlyReactive<SystemConfig | undefined>;
 
     /**
      * Application locale for chakra's `LocaleProvider`.
      */
     locale?: string;
+
+    /**
+     * Custom color mode value.
+     */
+    colorMode: ReadonlyReactive<ColorModeValue>;
 
     /**
      * Custom CSS used by the application.
@@ -70,8 +76,9 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     appRoot,
     hostNode,
     children,
-    config = defaultTrailsConfig,
+    config,
     locale = "en-US",
+    colorMode,
     styles
 }) => {
     /*
@@ -83,8 +90,10 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         4. Render the rest of the application
     */
 
+    const systemConfig = useReactiveSnapshot(() => config?.value ?? defaultTrailsConfig, [config]);
+
     const system = useMemo(() => {
-        const mergedConfig = mergeConfigs(defaultConfig, config);
+        const mergedConfig = mergeConfigs(defaultConfig, systemConfig);
         return createSystem(
             mergedConfig,
 
@@ -98,16 +107,15 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
                 globalCss: redirectHtmlProps(mergedConfig.globalCss)
             })
         );
-    }, [config]);
+    }, [systemConfig]);
 
-    useEffect(() => {
+    const effectiveColorMode = useReactiveSnapshot(() => colorMode.value, [colorMode]);
+
+    useLayoutEffect(() => {
         const classes = appRoot.classList;
-        const colorMode = "light"; // "light" | "dark"
-        classes.add(colorMode);
-        return () => {
-            classes.remove(colorMode);
-        };
-    }, [appRoot]);
+        classes.toggle("light", effectiveColorMode === "light");
+        classes.toggle("dark", effectiveColorMode === "dark");
+    }, [appRoot, effectiveColorMode]);
 
     const cache = useEmotionCache(rootNode);
     return (

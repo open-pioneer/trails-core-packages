@@ -34,26 +34,26 @@ function ExampleStack() {
         <Stack
             mb={5}
             mt={5}
-            separator={<StackSeparator borderColor="gray.200" />}
+            separator={<StackSeparator borderColor="colorPalette.border" />}
             gap="24px"
             align="stretch"
         >
-            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+            <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
                 <InterpolationExample></InterpolationExample>
             </Box>
-            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+            <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
                 <PluralsExample></PluralsExample>
             </Box>
-            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+            <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
                 <SelectionExample></SelectionExample>
             </Box>
-            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+            <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
                 <NumberFormatExample></NumberFormatExample>
             </Box>
-            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+            <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
                 <DateTimeFormatExample></DateTimeFormatExample>
             </Box>
-            <Box bg="white" w="100%" p={4} color="black" borderWidth="1px" borderColor="black">
+            <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
                 <RichTextExample></RichTextExample>
             </Box>
         </Stack>

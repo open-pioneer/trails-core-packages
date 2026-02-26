@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@open-pioneer/runtime": "workspace:*",
+        "@conterra/reactivity-core": "catalog:",
         "@testing-library/react": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
