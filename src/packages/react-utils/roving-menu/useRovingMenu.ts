@@ -6,6 +6,7 @@ import { type RovingMenuRoot } from "./RovingMenuRoot";
 import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
 import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
 import { useMenuState } from "./useMenuState";
+import { useEffect } from "react";
 
 /**
  * Properties supported when creating a new menu via {@link useRovingMenu}.
@@ -26,6 +27,14 @@ export interface RovingMenuProps {
      * Default: `true`.
      */
     wrap?: boolean;
+
+    /**
+     * Whether the menu is active.
+     * Only active menus are focusable by the user through keyboard navigation.
+     *
+     * Default: `true`
+     */
+    active?: boolean;
 }
 
 /** @internal */
@@ -130,18 +139,33 @@ export function useNestedRovingMenu(props: NestedRovingMenuProps): NestedRovingM
 }
 
 function useRovingMenuImpl(
-    props: RovingMenuProps = {},
+    props: RovingMenuProps,
     isActiveInParent?: () => boolean
 ): RovingMenuResult {
-    const { orientation = "horizontal", wrap = true } = props;
+    const { orientation = "horizontal", active = true, wrap = true } = props;
     const menuId = useId();
     const menuRef = useRef<HTMLElement>(null);
 
+    const initialActive = useRef(active);
+
     // Shared state between items and root
     const state = useMemo(
-        () => new InternalMenuState(menuId, orientation, menuRef, wrap, isActiveInParent),
+        () =>
+            new InternalMenuState({
+                menuId,
+                orientation,
+                menuRef,
+                wrap,
+                active: initialActive.current,
+                isActiveInParent
+            }),
         [menuRef, orientation, menuId, wrap, isActiveInParent]
     );
+
+    // Fine grained updates without losing state
+    useEffect(() => {
+        state.active = active;
+    }, [state, active]);
 
     const onKeyDown = useEvent((event: KeyboardEvent) => {
         state.onKeyDown(event);

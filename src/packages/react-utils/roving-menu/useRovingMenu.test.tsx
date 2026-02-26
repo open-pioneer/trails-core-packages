@@ -29,7 +29,7 @@ vi.mock(import("react"), async (importOriginal) => {
 });
 
 it("ensures that only one item can receive the keyboard focus", async () => {
-    await render(<SimpleList />, {
+    render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -54,7 +54,7 @@ it("ensures that only one item can receive the keyboard focus", async () => {
 });
 
 it("works when items are not direct neighbors or immediate children of the menu", async () => {
-    await render(<SimpleList wrapItems />, {
+    render(<SimpleList wrapItems />, {
         wrapper: TestWrapper
     });
 
@@ -71,7 +71,7 @@ it("works when items are not direct neighbors or immediate children of the menu"
 });
 
 it("renders with horizontal orientation correctly", async () => {
-    await render(<SimpleList orientation="horizontal" />, {
+    render(<SimpleList orientation="horizontal" />, {
         wrapper: TestWrapper
     });
 
@@ -84,7 +84,7 @@ it("renders with horizontal orientation correctly", async () => {
 });
 
 it("handles keyboard navigation correctly in vertical orientation", async () => {
-    await render(<SimpleList />, {
+    render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -126,7 +126,7 @@ it("handles keyboard navigation correctly in vertical orientation", async () => 
 });
 
 it("does not wrap when wrapping is disabled", async () => {
-    await render(<SimpleList wrap={false} />, {
+    render(<SimpleList wrap={false} />, {
         wrapper: TestWrapper
     });
 
@@ -163,7 +163,7 @@ it("does not wrap when wrapping is disabled", async () => {
 });
 
 it("handles home and end key navigation in vertical orientation", async () => {
-    await render(<SimpleList />, {
+    render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -191,7 +191,7 @@ it("handles home and end key navigation in vertical orientation", async () => {
 });
 
 it("switches active items if the active item is unmounted", async () => {
-    const { rerender } = await render(<SimpleList />, {
+    const { rerender } = render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -208,7 +208,7 @@ it("switches active items if the active item is unmounted", async () => {
 });
 
 it("switches active items if the last active item is unmounted", async () => {
-    const { rerender } = await render(<SimpleList />, {
+    const { rerender } = render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -228,7 +228,7 @@ it("switches active items if the last active item is unmounted", async () => {
 });
 
 it("switches active items if the active item is disabled", async () => {
-    const { rerender } = await render(<SimpleList />, {
+    const { rerender } = render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -245,7 +245,7 @@ it("switches active items if the active item is disabled", async () => {
 });
 
 it("switches active items if the active item is hidden/unmounted", async () => {
-    const { rerender } = await render(<SimpleList />, {
+    const { rerender } = render(<SimpleList />, {
         wrapper: TestWrapper
     });
 
@@ -263,7 +263,7 @@ it("switches active items if the active item is hidden/unmounted", async () => {
 });
 
 it("is useable when the first menu item is disabled", async () => {
-    await render(<SimpleList disabledValues={["a"]} />, {
+    render(<SimpleList disabledValues={["a"]} />, {
         wrapper: TestWrapper
     });
 
@@ -274,9 +274,27 @@ it("is useable when the first menu item is disabled", async () => {
     expect(getTabIndices(initialItems)).toEqual([-1, 0, -1]);
 });
 
+it("disables keyboard focus when 'active' is false", async () => {
+    const { rerender } = render(<SimpleList active={false} />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+    expect(list.getAttribute("aria-orientation")).toBe("vertical");
+
+    const items = Array.from(list.querySelectorAll("li"));
+    expect(items.length).toBe(3);
+    expect(getTabIndices(items)).toEqual([-1, -1, -1]);
+
+    rerender(<SimpleList active={true} />);
+    await waitFor(() => {
+        expect(getTabIndices(items)).toEqual([0, -1, -1]);
+    });
+});
+
 describe("nested menus", () => {
     it("inner items are not in the tab order before the sub-menu is entered", async () => {
-        await render(<SimpleParentMenu />, { wrapper: TestWrapper });
+        render(<SimpleParentMenu />, { wrapper: TestWrapper });
 
         const parentMenu = await screen.findByTestId("parent-menu");
         const nestedMenu = await screen.findByTestId("nested-menu");
@@ -292,7 +310,7 @@ describe("nested menus", () => {
     });
 
     it("navigating into the sub-menu forwards focus to its active inner item", async () => {
-        await render(<SimpleParentMenu />, { wrapper: TestWrapper });
+        render(<SimpleParentMenu />, { wrapper: TestWrapper });
 
         const parentMenu = await screen.findByTestId("parent-menu");
         const beforeItem = parentMenu.querySelector<HTMLElement>(
@@ -310,7 +328,7 @@ describe("nested menus", () => {
     });
 
     it("keys matching sub-menu orientation navigate within the sub-menu", async () => {
-        await render(<SimpleParentMenu />, { wrapper: TestWrapper });
+        render(<SimpleParentMenu />, { wrapper: TestWrapper });
 
         const parentMenu = await screen.findByTestId("parent-menu");
         const nestedMenu = await screen.findByTestId("nested-menu");
@@ -343,7 +361,7 @@ describe("nested menus", () => {
     });
 
     it("keys matching parent orientation navigate to the next parent item", async () => {
-        await render(<SimpleParentMenu />, { wrapper: TestWrapper });
+        render(<SimpleParentMenu />, { wrapper: TestWrapper });
 
         const parentMenu = await screen.findByTestId("parent-menu");
         const nestedMenu = await screen.findByTestId("nested-menu");
@@ -367,7 +385,7 @@ describe("nested menus", () => {
     });
 
     it("focus returns to the last active inner item when re-entering the sub-menu", async () => {
-        await render(<SimpleParentMenu />, { wrapper: TestWrapper });
+        render(<SimpleParentMenu />, { wrapper: TestWrapper });
 
         const parentMenu = await screen.findByTestId("parent-menu");
         const nestedMenu = await screen.findByTestId("nested-menu");
@@ -394,7 +412,7 @@ describe("nested menus", () => {
     });
 
     it("sub-menu element itself receives focus when all inner items are disabled", async () => {
-        await render(<SimpleParentMenu disabledInnerValues={["x", "y", "z"]} />, {
+        render(<SimpleParentMenu disabledInnerValues={["x", "y", "z"]} />, {
             wrapper: TestWrapper
         });
 
@@ -432,13 +450,15 @@ function SimpleList(props?: {
     orientation?: "horizontal" | "vertical";
     wrapItems?: boolean;
     wrap?: boolean;
+    active?: boolean;
     values?: string[];
     disabledValues?: string[];
     hiddenValues?: string[];
 }) {
     const { menuProps, menuState } = useRovingMenu({
         orientation: props?.orientation ?? "vertical",
-        wrap: props?.wrap
+        wrap: props?.wrap,
+        active: props?.active
     });
 
     const values = props?.values ?? ["a", "b", "c"];

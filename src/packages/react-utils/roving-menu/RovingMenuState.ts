@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { reactive } from "@conterra/reactivity-core";
+import { Reactive, reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { createContext, KeyboardEvent, FocusEvent, RefObject } from "react";
@@ -52,13 +52,25 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
     return menuState as unknown as InternalMenuState;
 }
 
+export interface MenuStateOptions {
+    menuId: string;
+    orientation: "horizontal" | "vertical";
+    menuRef: RefObject<HTMLElement | null>;
+    wrap: boolean;
+    active: boolean;
+    isActiveInParent?: () => boolean;
+}
+
 /**
  * Internal model class; created by the menu and accessible by the menu items.
  *
  * @internal
  */
 export class InternalMenuState {
-    // True if the menu is currently active in its parent menu (used for nesting),
+    #active: Reactive<boolean>;
+
+    // True if the menu is currently active in its parent menu (used for nesting).
+    // Note: reactive function
     #isActiveInParent: () => boolean;
 
     #menuRef: RefObject<HTMLElement | null>;
@@ -70,18 +82,21 @@ export class InternalMenuState {
     readonly orientation: "horizontal" | "vertical";
     readonly wrap: boolean;
 
-    constructor(
-        menuId: string,
-        orientation: "horizontal" | "vertical",
-        menuRef: RefObject<HTMLElement | null>,
-        wrap: boolean,
-        isActiveInParent?: () => boolean
-    ) {
-        this.#menuRef = menuRef;
-        this.wrap = wrap;
-        this.menuId = menuId;
-        this.orientation = orientation;
-        this.#isActiveInParent = isActiveInParent ?? (() => true);
+    constructor(options: MenuStateOptions) {
+        this.menuId = options.menuId;
+        this.wrap = options.wrap;
+        this.orientation = options.orientation;
+        this.#active = reactive(options.active);
+        this.#menuRef = options.menuRef;
+        this.#isActiveInParent = options.isActiveInParent ?? (() => true);
+    }
+
+    get active(): boolean {
+        return this.#active.value;
+    }
+
+    set active(value: boolean) {
+        this.#active.value = value;
     }
 
     get #currentValue(): string | undefined {
@@ -94,7 +109,7 @@ export class InternalMenuState {
      * The active menu item can receive the focus via keyboard navigation (tab).
      */
     isActive(value: string): boolean {
-        return this.#isActiveInParent() && this.#currentValue === value;
+        return this.active && this.#isActiveInParent() && this.#currentValue === value;
     }
 
     /**
