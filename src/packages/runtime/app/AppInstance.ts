@@ -85,7 +85,7 @@ export class AppInstance {
     private currentColorModeValue = computed(
         () => this.themeService.value?.colorMode ?? DEFAULT_INITIAL_COLOR_MODE
     );
-    private currentChakraSystemConfig = computed(() => this.themeService.value?.chakraSystemConfig);
+    private currentChakraSystemConfig = computed(() => this.themeService.value?.systemConfig);
     private reactIntegration: ReactIntegration | undefined;
 
     private stylesWatch: Resource | undefined;

@@ -17,7 +17,7 @@ export class ColorThemes {
     constructor(opts: ServiceOptions<{ themeService: ThemeService }>) {
         this.#themeService = opts.references.themeService;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const iniitialTheme = this.#themeService.chakraSystemConfig as any;
+        const iniitialTheme = this.#themeService.systemConfig as any;
         // lookup up color theme name (marked during theme update)
         const initialTheme = iniitialTheme?.[_themeName] ?? "trails";
         this.#currentTheme.value = initialTheme;
@@ -28,7 +28,7 @@ export class ColorThemes {
         // mark the effective theme with the name of the color theme for later retrieval
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (effectiveTheme as any)[_themeName] = theme;
-        this.#themeService.updateSystemConfig(effectiveTheme);
+        this.#themeService.setSystemConfig(effectiveTheme);
         this.#currentTheme.value = theme;
     }
 

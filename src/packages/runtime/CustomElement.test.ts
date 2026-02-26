@@ -780,10 +780,10 @@ describe("i18n support", function () {
                         this.ctx.setLocale(newLocale);
                     },
                     setColorMode: (newColorMode: ColorModeValue) => {
-                        this.theme.updateColorMode(newColorMode);
+                        this.theme.setColorMode(newColorMode);
                     },
                     setCustomChakraConfig: (newConfig: SystemConfig | undefined) => {
-                        this.theme.updateSystemConfig(newConfig);
+                        this.theme.setSystemConfig(newConfig);
                     }
                 };
             }
@@ -1030,7 +1030,7 @@ describe("theming", () => {
         class TestService {
             constructor(options: ServiceOptions<{ theme: ThemeService }>) {
                 const theme = options.references.theme;
-                theme.updateColorMode("dark");
+                theme.setColorMode("dark");
             }
         }
         const elem = createCustomElement({
@@ -1069,7 +1069,7 @@ describe("theming", () => {
             constructor(options: ServiceOptions<{ theme: ThemeService }>) {
                 const theme = options.references.theme;
                 // this wins over the config provided directly to the element and the one from resolveConfig
-                theme.updateSystemConfig({
+                theme.setSystemConfig({
                     theme: {
                         semanticTokens: {
                             colors: {

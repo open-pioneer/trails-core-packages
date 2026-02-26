@@ -41,7 +41,7 @@ export function AppUI() {
     const themeService = useService<ThemeService>("runtime.ThemeService");
     const effectiveColorMode = useReactiveSnapshot(() => themeService.colorMode, [themeService]);
     const toogleColorMode = useCallback(() => {
-        themeService.updateColorMode(effectiveColorMode === "light" ? "dark" : "light");
+        themeService.setColorMode(effectiveColorMode === "light" ? "dark" : "light");
     }, [effectiveColorMode, themeService]);
 
     const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");

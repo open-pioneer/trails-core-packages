@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { computed, reactive } from "@conterra/reactivity-core";
 import {
-    type ColorModeValueSupplier,
+    type ChakraSystemConfigSupplier,
     type ColorModeValue,
-    type ThemeService,
-    type ChakraSystemConfigSupplier
+    type ColorModeValueSupplier,
+    type ThemeService
 } from "../api";
-import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 
 export const DEFAULT_INITIAL_COLOR_MODE: ColorModeValue = "light";
 
@@ -29,10 +29,10 @@ export class ThemeServiceImpl implements ThemeService {
 
     constructor({ initialChakraSystemConfig, initialColorMode }: ThemeServiceProperties) {
         if (initialColorMode) {
-            this.updateColorMode(initialColorMode ?? DEFAULT_INITIAL_COLOR_MODE);
+            this.setColorMode(initialColorMode ?? DEFAULT_INITIAL_COLOR_MODE);
         }
         if (initialChakraSystemConfig) {
-            this.updateSystemConfig(initialChakraSystemConfig);
+            this.setSystemConfig(initialChakraSystemConfig);
         }
     }
 
@@ -40,7 +40,7 @@ export class ThemeServiceImpl implements ThemeService {
         return this.#colorMode.value;
     }
 
-    updateColorMode(value: ColorModeValue | ColorModeValueSupplier): void {
+    setColorMode(value: ColorModeValue | ColorModeValueSupplier): void {
         if (typeof value === "function") {
             this.#colorModeSource.value = value;
         } else {
@@ -48,11 +48,11 @@ export class ThemeServiceImpl implements ThemeService {
         }
     }
 
-    get chakraSystemConfig(): ChakraSystemConfig | undefined {
+    get systemConfig(): ChakraSystemConfig | undefined {
         return this.#systemConfig.value;
     }
 
-    updateSystemConfig(value: ChakraSystemConfig | ChakraSystemConfigSupplier | undefined): void {
+    setSystemConfig(value: ChakraSystemConfig | ChakraSystemConfigSupplier | undefined): void {
         if (typeof value === "function") {
             this.#systemConfigSource.value = value;
         } else {

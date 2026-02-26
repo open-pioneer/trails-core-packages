@@ -28,7 +28,7 @@ it("updates color mode to 'dark' when called with a direct value", () => {
     const service = new ThemeServiceImpl({});
     expect(service.colorMode).toBe("light");
 
-    service.updateColorMode("dark");
+    service.setColorMode("dark");
     expect(service.colorMode).toBe("dark");
 });
 
@@ -36,13 +36,13 @@ it("updates color mode back to 'light' when called with a direct value", () => {
     const service = new ThemeServiceImpl({ initialColorMode: "dark" });
     expect(service.colorMode).toBe("dark");
 
-    service.updateColorMode("light");
+    service.setColorMode("light");
     expect(service.colorMode).toBe("light");
 });
 
 it("accepts a supplier function and uses its return value", () => {
     const service = new ThemeServiceImpl({});
-    service.updateColorMode(() => "dark");
+    service.setColorMode(() => "dark");
     expect(service.colorMode).toBe("dark");
 });
 
@@ -50,7 +50,7 @@ it("reacts to changes of a reactive supplier", () => {
     const mode = reactive<"light" | "dark">("light");
     const service = new ThemeServiceImpl({});
 
-    service.updateColorMode(() => mode.value);
+    service.setColorMode(() => mode.value);
     expect(service.colorMode).toBe("light");
 
     mode.value = "dark";
@@ -62,9 +62,9 @@ it("reacts to changes of a reactive supplier", () => {
 
 it("replaces a supplier function with a direct value", () => {
     const service = new ThemeServiceImpl({});
-    service.updateColorMode(() => "dark");
+    service.setColorMode(() => "dark");
     expect(service.colorMode).toBe("dark");
 
-    service.updateColorMode("light");
+    service.setColorMode("light");
     expect(service.colorMode).toBe("light");
 });

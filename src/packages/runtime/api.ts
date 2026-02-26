@@ -172,17 +172,17 @@ export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
      * Can be called with a direct value or a function that returns a value.
      * The function form allows the use of reactive values, which will automatically trigger a color mode update.
      */
-    updateColorMode(value: ColorModeValue | ColorModeValueSupplier): void;
+    setColorMode(value: ColorModeValue | ColorModeValueSupplier): void;
 
     /**
      * The currently active system config.
      */
-    readonly chakraSystemConfig: ChakraSystemConfig | undefined;
+    readonly systemConfig: ChakraSystemConfig | undefined;
 
     /**
      * Updates the system config of the application.
      * Can be called with a direct value or a function that returns a value.
      * The function form allows the use of reactive values, which will automatically trigger a system config update.
      */
-    updateSystemConfig(value: ChakraSystemConfig | ChakraSystemConfigSupplier | undefined): void;
+    setSystemConfig(value: ChakraSystemConfig | ChakraSystemConfigSupplier | undefined): void;
 }
