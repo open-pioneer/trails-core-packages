@@ -113,10 +113,6 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
             {
                 interfaceName: RUNTIME_THEME_SERVICE,
                 qualifier: "builtin"
-            },
-            {
-                // ensure service is always started
-                interfaceName: RUNTIME_AUTO_START
             }
         ],
         dependencies: [

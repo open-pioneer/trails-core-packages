@@ -13,7 +13,7 @@ export const DEFAULT_INITIAL_COLOR_MODE: ColorModeValue = "light";
 
 export interface ThemeServiceProperties {
     initialColorMode?: ColorModeValue;
-    initialChakraSystemConfig?: ChakraSystemConfig;
+    initialSystemConfig?: ChakraSystemConfig;
 }
 
 export class ThemeServiceImpl implements ThemeService {
@@ -27,12 +27,12 @@ export class ThemeServiceImpl implements ThemeService {
         () => this.#systemConfigSource.value() ?? undefined
     );
 
-    constructor({ initialChakraSystemConfig, initialColorMode }: ThemeServiceProperties) {
+    constructor({ initialSystemConfig, initialColorMode }: ThemeServiceProperties) {
         if (initialColorMode) {
             this.setColorMode(initialColorMode ?? DEFAULT_INITIAL_COLOR_MODE);
         }
-        if (initialChakraSystemConfig) {
-            this.setSystemConfig(initialChakraSystemConfig);
+        if (initialSystemConfig) {
+            this.setSystemConfig(initialSystemConfig);
         }
     }
 

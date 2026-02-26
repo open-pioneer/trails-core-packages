@@ -40,8 +40,8 @@ import { createPackages, PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { gatherConfig } from "./gatherConfig";
 
-import { logError } from "./logErrors";
 import { SystemConfig } from "@chakra-ui/react";
+import { logError } from "./logErrors";
 
 const LOG = createLogger(sourceId);
 
@@ -81,11 +81,7 @@ export class AppInstance {
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
-    private themeService = reactive<ThemeService | undefined>(undefined);
-    private currentColorModeValue = computed(
-        () => this.themeService.value?.colorMode ?? DEFAULT_INITIAL_COLOR_MODE
-    );
-    private currentChakraSystemConfig = computed(() => this.themeService.value?.systemConfig);
+    private themeService: ThemeService | undefined;
     private reactIntegration: ReactIntegration | undefined;
 
     private stylesWatch: Resource | undefined;
@@ -135,7 +131,7 @@ export class AppInstance {
         this.container.replaceChildren();
         this.appRoot = undefined;
         this.lifecycleEvents = undefined;
-        this.themeService.value = undefined;
+        this.themeService = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
     }
@@ -178,10 +174,10 @@ export class AppInstance {
             serviceLayer,
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );
-        this.themeService.value = getInternalService<ThemeService>(
+        const themeService = (this.themeService = getInternalService<ThemeService>(
             serviceLayer,
             RUNTIME_THEME_SERVICE
-        );
+        ));
 
         // init api, but do not wait for it
         const apiPromise = this.initAPI(serviceLayer);
@@ -195,9 +191,9 @@ export class AppInstance {
             serviceLayer,
             packages,
             locale: i18n.locale,
-            config: this.currentChakraSystemConfig,
+            config: computed(() => themeService.systemConfig),
             styles,
-            colorMode: this.currentColorModeValue
+            colorMode: computed(() => themeService.colorMode)
         });
         const component = this.options.elementOptions.component ?? EmptyComponent;
         this.reactIntegration.render(createElement(component));
@@ -253,45 +249,37 @@ export class AppInstance {
 
         const { container, properties, i18n } = config;
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
-        const currentColorMode = this.currentColorModeValue;
         // not yet configurable.
         const colorModeFromConfig = DEFAULT_INITIAL_COLOR_MODE;
-        const currentChakraSystemConfig = this.currentChakraSystemConfig;
         const builtinPackage = createBuiltinPackage({
             host: hostElement,
             rootNode: shadowRoot,
             container: container,
-            // TODO: service is always initialized with "light"
-            // The override value exist only on restarts
             initialColorMode: overrides?.colorMode ?? colorModeFromConfig,
-            initialChakraSystemConfig:
-                overrides?.chakraSystemConfig ?? config.initialChakraSystemConfig,
+            initialSystemConfig: overrides?.chakraSystemConfig ?? config.initialChakraSystemConfig,
             locale: i18n.locale,
             supportedLocales: i18n.supportedMessageLocales,
-            changeLocale(locale) {
+            changeLocale: (locale) => {
                 const supported = i18n.supportedMessageLocales;
                 if (locale != null && !i18n.supportsLocale(locale)) {
+                    const supportedLocales = supported.join(", ");
                     throw new Error(
                         ErrorId.UNSUPPORTED_LOCALE,
-                        `Unsupported locale '${locale}' (supported locales: ${supported.join(
-                            ", "
-                        )}).`
+                        `Unsupported locale '${locale}' (supported locales: ${supportedLocales}).`
                     );
                 }
+
                 // transport color mode only, if not same as initial configured value
-                const colorMode =
-                    currentColorMode.value !== colorModeFromConfig
-                        ? currentColorMode.value
-                        : undefined;
-                const systemConfig =
-                    currentChakraSystemConfig.value !== config.initialChakraSystemConfig
-                        ? currentChakraSystemConfig.value
-                        : undefined;
-                const newOverrides = {
-                    locale,
-                    ...(colorMode ? { colorMode } : {}),
-                    ...(systemConfig ? { chakraSystemConfig: systemConfig } : {})
-                };
+                const themeService = this.themeService;
+                const currentColorMode = themeService?.colorMode ?? colorModeFromConfig;
+                const currentSystemConfig = themeService?.systemConfig;
+                const newOverrides: ApplicationOverrides = { locale };
+                if (currentColorMode !== colorModeFromConfig) {
+                    newOverrides.colorMode = currentColorMode;
+                }
+                if (currentSystemConfig !== config.initialChakraSystemConfig) {
+                    newOverrides.chakraSystemConfig = currentSystemConfig;
+                }
                 restart(newOverrides);
             }
         });
@@ -409,6 +397,9 @@ function createServiceLayer(config: {
         },
         {
             interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
+        },
+        {
+            interfaceName: RUNTIME_THEME_SERVICE
         },
         {
             interfaceName: RUNTIME_AUTO_START,
