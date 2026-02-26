@@ -9,6 +9,7 @@ import {
     createListCollection,
     Flex,
     Group,
+    HStack,
     Input,
     InputAddon,
     Link,
@@ -20,6 +21,7 @@ import {
     Span,
     Stack,
     Tag,
+    Text,
     Textarea
 } from "@chakra-ui/react";
 import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
@@ -30,15 +32,79 @@ import { Slider } from "@open-pioneer/chakra-snippets/slider";
 import { Switch } from "@open-pioneer/chakra-snippets/switch";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import { SectionHeading, TitledSection } from "@open-pioneer/react-utils";
-import { Children, cloneElement, isValidElement, ReactNode, useState } from "react";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
+import { ApplicationContext, ThemeService } from "@open-pioneer/runtime";
+import { useService, useIntl } from "open-pioneer:react-hooks";
+import { Children, cloneElement, isValidElement, ReactNode, useCallback, useState } from "react";
+import { type ColorThemes, type ColorThemeName } from "./services";
 
 export function AppUI() {
+    const themeService = useService<ThemeService>("runtime.ThemeService");
+    const effectiveColorMode = useReactiveSnapshot(() => themeService.colorMode, [themeService]);
+    const toggleColorMode = useCallback(() => {
+        themeService.setColorMode(effectiveColorMode === "light" ? "dark" : "light");
+    }, [effectiveColorMode, themeService]);
+
+    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
+    const intl = useIntl();
+
+    const isGerman = appCtx.getLocale().match(/^de-?/) != null;
+    const toggleLanguage = useCallback(() => {
+        appCtx.setLocale(!isGerman ? "de" : "en");
+    }, [appCtx, isGerman]);
+
+    const colorThemes = useService<ColorThemes>("theming.ColorThemes");
+    const effectiveTheme = useReactiveSnapshot(
+        () => ({
+            currentColorTheme: colorThemes.currentColorTheme,
+            allColorThemes: colorThemes.availableColorThemes
+        }),
+        [colorThemes]
+    );
+    const onThemeChange = useCallback(
+        (theme: ColorThemeName) => {
+            colorThemes.setColorTheme(theme);
+        },
+        [colorThemes]
+    );
+
     return (
         <Container centerContent={true}>
             <TitledSection
-                title='Demo page based on color scheme "trails"'
+                title={intl.formatMessage({ id: "appHeading" })}
                 sectionHeadingProps={{ size: "md", py: 2 }}
             >
+                <HStack>
+                    {intl.formatMessage({ id: "lang" }, { lang: "en" })}
+                    <Switch checked={isGerman} onChange={toggleLanguage} />
+                    {intl.formatMessage({ id: "lang" }, { lang: "de" })}
+                </HStack>
+                <HStack>
+                    {intl.formatMessage({ id: "colorMode" }, { colorMode: "light" })}
+                    <Switch checked={effectiveColorMode === "dark"} onChange={toggleColorMode} />
+                    {intl.formatMessage({ id: "colorMode" }, { colorMode: "dark" })}
+                </HStack>
+                <HStack>
+                    <Text whiteSpace="nowrap">
+                        {intl.formatMessage({ id: "colorThemeSelectLabel" })}
+                    </Text>
+                    <NativeSelectRoot variant={"outline"}>
+                        <NativeSelectField
+                            value={effectiveTheme.currentColorTheme}
+                            onChange={(e) => onThemeChange(e.currentTarget.value as ColorThemeName)}
+                        >
+                            {effectiveTheme.allColorThemes.map((theme) => (
+                                <option
+                                    value={theme}
+                                    key={theme}
+                                    //selected={theme === effectiveTheme.currentColorTheme}
+                                >
+                                    {theme}
+                                </option>
+                            ))}
+                        </NativeSelectField>
+                    </NativeSelectRoot>
+                </HStack>
                 <Flex justifyContent={"center"}>
                     <Pane>
                         <ButtonSection />
@@ -79,7 +145,6 @@ function Pane(props: { children: ReactNode }) {
 
     return (
         <Box
-            bg="white"
             borderWidth="1px"
             borderRadius="lg"
             padding={2}
