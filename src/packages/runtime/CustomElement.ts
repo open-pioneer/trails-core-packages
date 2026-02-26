@@ -92,7 +92,7 @@ export interface ApplicationOverrides {
     /**
      * The new color mode.
      */
-    colorMode?: ColorModeValue;
+    colorMode?: ColorModeValue | "system";
 
     /**
      * The new used chakra system config.
@@ -112,6 +112,15 @@ export interface ApplicationConfig {
      * The locale must be supported by the application.
      */
     locale?: string | undefined;
+
+    /**
+     * Configures the application's initial color mode.
+     *
+     * Use `system` to use the user's preferred color mode, derived from the browser or operating system.
+     *
+     * Default: `light`.
+     */
+    colorMode?: ColorModeValue | "system";
 
     /**
      * Properties specified here will override default properties of the application's packages.

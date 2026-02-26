@@ -13,7 +13,7 @@ import {
 } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { createElement } from "react";
-import { ApiMethods, ApiService, ThemeService } from "../api";
+import { ApiMethods, ApiService, ColorModeValue, ThemeService } from "../api";
 import {
     createBuiltinPackage,
     RUNTIME_API_SERVICE,
@@ -162,13 +162,14 @@ export class AppInstance {
         const appRoot = (this.appRoot = createAppRoot(i18n.locale));
         this.container.appendChild(appRoot);
         const styles = this.initStylesSignal();
+
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
             container: appRoot,
             properties: config.properties,
             i18n,
-            initialChakraSystemConfig:
-                config.chakraSystemConfig ?? elementOptions.chakraSystemConfig
+            initialColorMode: config.colorMode,
+            initialSystemConfig: config.chakraSystemConfig
         });
         this.lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
             serviceLayer,
@@ -237,26 +238,19 @@ export class AppInstance {
         container: HTMLDivElement;
         properties: ApplicationProperties;
         i18n: AppIntl;
-        initialChakraSystemConfig: SystemConfig | undefined;
+        initialColorMode: ColorModeValue | "system" | undefined;
+        initialSystemConfig: SystemConfig | undefined;
     }) {
-        const {
-            hostElement,
-            rootNode: shadowRoot,
-            elementOptions,
-            restart,
-            overrides
-        } = this.options;
+        const { hostElement, rootNode: shadowRoot, elementOptions, restart } = this.options;
 
-        const { container, properties, i18n } = config;
+        const { container, properties, i18n, initialColorMode, initialSystemConfig } = config;
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
-        // not yet configurable.
-        const colorModeFromConfig = DEFAULT_INITIAL_COLOR_MODE;
         const builtinPackage = createBuiltinPackage({
             host: hostElement,
             rootNode: shadowRoot,
             container: container,
-            initialColorMode: overrides?.colorMode ?? colorModeFromConfig,
-            initialSystemConfig: overrides?.chakraSystemConfig ?? config.initialChakraSystemConfig,
+            initialColorMode,
+            initialSystemConfig,
             locale: i18n.locale,
             supportedLocales: i18n.supportedMessageLocales,
             changeLocale: (locale) => {
@@ -269,18 +263,10 @@ export class AppInstance {
                     );
                 }
 
-                // transport color mode only, if not same as initial configured value
                 const themeService = this.themeService;
-                const currentColorMode = themeService?.colorMode ?? colorModeFromConfig;
-                const currentSystemConfig = themeService?.systemConfig;
-                const newOverrides: ApplicationOverrides = { locale };
-                if (currentColorMode !== colorModeFromConfig) {
-                    newOverrides.colorMode = currentColorMode;
-                }
-                if (currentSystemConfig !== config.initialChakraSystemConfig) {
-                    newOverrides.chakraSystemConfig = currentSystemConfig;
-                }
-                restart(newOverrides);
+                const colorMode = themeService?.colorMode;
+                const chakraSystemConfig = themeService?.systemConfig;
+                restart({ locale, colorMode, chakraSystemConfig });
             }
         });
         const { serviceLayer, packages } = createServiceLayer({

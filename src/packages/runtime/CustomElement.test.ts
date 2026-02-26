@@ -664,7 +664,10 @@ describe("i18n support", function () {
             }
         });
 
-        expect(observedOverrides).toEqual([undefined, { locale: "en" }]);
+        expect(observedOverrides).toEqual([
+            undefined,
+            { locale: "en", chakraSystemConfig: undefined, colorMode: "light" }
+        ]);
     });
 
     it("transports changed color mode in overrides on lang change", async () => {
@@ -697,7 +700,9 @@ describe("i18n support", function () {
         await api.setColorMode("light");
         await api.setLocale("en");
         await waitFor(async () => {
-            expect(observedOverrides).toEqual([{ locale: "en" }]);
+            expect(observedOverrides).toEqual([
+                { locale: "en", "chakraSystemConfig": undefined, "colorMode": "light" }
+            ]);
         });
     });
 
@@ -723,21 +728,26 @@ describe("i18n support", function () {
         await waitFor(async () => {
             expect(observedOverrides).toEqual([
                 undefined,
-                { locale: "en", chakraSystemConfig: testConfig }
+                { locale: "en", chakraSystemConfig: testConfig, colorMode: "light" }
             ]);
         });
         observedOverrides.length = 0; // reset
+
         // switch back to de, the override should be still there
         await api.setLocale("de");
         await waitFor(async () => {
-            expect(observedOverrides).toEqual([{ locale: "de", chakraSystemConfig: testConfig }]);
+            expect(observedOverrides).toEqual([
+                { locale: "de", chakraSystemConfig: testConfig, colorMode: "light" }
+            ]);
         });
         observedOverrides.length = 0; // reset
-        // change color mode back to light and change locale to en, the override should be gone
+
         await api.setCustomChakraConfig(undefined);
         await api.setLocale("en");
         await waitFor(async () => {
-            expect(observedOverrides).toEqual([{ locale: "en" }]);
+            expect(observedOverrides).toEqual([
+                { locale: "en", chakraSystemConfig: undefined, colorMode: "light" }
+            ]);
         });
     });
 

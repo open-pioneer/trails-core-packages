@@ -161,6 +161,11 @@ export type ChakraSystemConfigSupplier = () => ChakraSystemConfig | undefined;
  */
 export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
     /**
+     * The color mode preferred by the system (browser or operating system).
+     */
+    readonly systemColorMode: ColorModeValue;
+
+    /**
      * The currently active color mode.
      * It is reactive.
      * Defaults to `"light".
