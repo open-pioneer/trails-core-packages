@@ -21,6 +21,7 @@ import {
     Span,
     Stack,
     Tag,
+    Text,
     Textarea
 } from "@chakra-ui/react";
 import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
@@ -40,16 +41,17 @@ import { type ColorThemes, type ColorThemeName } from "./services";
 export function AppUI() {
     const themeService = useService<ThemeService>("runtime.ThemeService");
     const effectiveColorMode = useReactiveSnapshot(() => themeService.colorMode, [themeService]);
-    const toogleColorMode = useCallback(() => {
+    const toggleColorMode = useCallback(() => {
         themeService.setColorMode(effectiveColorMode === "light" ? "dark" : "light");
     }, [effectiveColorMode, themeService]);
 
     const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
     const intl = useIntl();
-    const newLocale = appCtx.getLocale() === "en" ? "de" : "en";
+
+    const isGerman = appCtx.getLocale().match(/^de-?/) != null;
     const toggleLanguage = useCallback(() => {
-        appCtx.setLocale(newLocale);
-    }, [appCtx, newLocale]);
+        appCtx.setLocale(!isGerman ? "de" : "en");
+    }, [appCtx, isGerman]);
 
     const colorThemes = useService<ColorThemes>("theming.ColorThemes");
     const effectiveTheme = useReactiveSnapshot(
@@ -74,16 +76,18 @@ export function AppUI() {
             >
                 <HStack>
                     {intl.formatMessage({ id: "lang" }, { lang: "en" })}
-                    <Switch checked={appCtx.getLocale() === "de"} onChange={toggleLanguage} />
+                    <Switch checked={isGerman} onChange={toggleLanguage} />
                     {intl.formatMessage({ id: "lang" }, { lang: "de" })}
                 </HStack>
                 <HStack>
                     {intl.formatMessage({ id: "colorMode" }, { colorMode: "light" })}
-                    <Switch checked={effectiveColorMode === "dark"} onChange={toogleColorMode} />
+                    <Switch checked={effectiveColorMode === "dark"} onChange={toggleColorMode} />
                     {intl.formatMessage({ id: "colorMode" }, { colorMode: "dark" })}
                 </HStack>
                 <HStack>
-                    {intl.formatMessage({ id: "colorThemeSelectLabel" })}
+                    <Text whiteSpace="nowrap">
+                        {intl.formatMessage({ id: "colorThemeSelectLabel" })}
+                    </Text>
                     <NativeSelectRoot variant={"outline"}>
                         <NativeSelectField
                             value={effectiveTheme.currentColorTheme}
