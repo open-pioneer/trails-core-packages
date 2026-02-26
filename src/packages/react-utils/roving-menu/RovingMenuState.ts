@@ -68,17 +68,20 @@ export class InternalMenuState {
 
     readonly menuId: string;
     readonly orientation: "horizontal" | "vertical";
+    readonly wrap: boolean;
 
     constructor(
         menuId: string,
         orientation: "horizontal" | "vertical",
         menuRef: RefObject<HTMLElement | null>,
+        wrap: boolean,
         isActiveInParent?: () => boolean
     ) {
-        this.#isActiveInParent = isActiveInParent ?? (() => true);
         this.#menuRef = menuRef;
+        this.wrap = wrap;
         this.menuId = menuId;
         this.orientation = orientation;
+        this.#isActiveInParent = isActiveInParent ?? (() => true);
     }
 
     get #currentValue(): string | undefined {
@@ -131,11 +134,9 @@ export class InternalMenuState {
         }
 
         const items = getMenuItems(this.#menuRef, this.menuId);
-        const target = getFocusTarget(items, this.#currentValue, direction);
+        const target = getFocusTarget(items, this.#currentValue, direction, this.wrap);
         if (!target) {
-            if (items.length > 1) {
-                LOG.warn("Failed to identify focus target for keyboard navigation");
-            }
+            // No candidate in the requested direction.
             return;
         }
 
@@ -186,7 +187,7 @@ export class InternalMenuState {
 
         let target;
         if (disabledIndex === -1) {
-            target = getFocusTarget(items, -1, "home");
+            target = getFocusTarget(items, -1, "home", false);
         } else {
             // Attempt to move focus to something sensible
             target =
@@ -261,7 +262,7 @@ function getFocusTarget(
     items: HTMLElement[],
     current: string | number | undefined,
     direction: NavDirection,
-    wrap = true
+    wrap: boolean
 ): HTMLElement | undefined {
     if (items.length === 0) {
         return undefined;

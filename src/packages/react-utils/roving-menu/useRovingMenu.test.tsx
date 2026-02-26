@@ -50,9 +50,7 @@ it("ensures that only one item can receive the keyboard focus", async () => {
       </li>
     `);
 
-    expect(items[0]?.tabIndex).toBe(0);
-    expect(items[1]?.tabIndex).toBe(-1);
-    expect(items[2]?.tabIndex).toBe(-1);
+    expect(getTabIndices(items)).toEqual([0, -1, -1]);
 });
 
 it("works when items are not direct neighbors or immediate children of the menu", async () => {
@@ -68,8 +66,7 @@ it("works when items are not direct neighbors or immediate children of the menu"
 
     fireEvent.keyDown(list, { key: "ArrowDown" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(-1);
-        expect(items[1]!.tabIndex).toBe(0);
+        expect(getTabIndices(items)).toEqual([-1, 0, -1]);
     });
 });
 
@@ -83,9 +80,7 @@ it("renders with horizontal orientation correctly", async () => {
 
     const items = Array.from(list.querySelectorAll("li"));
     expect(items.length).toBe(3);
-    expect(items[0]?.tabIndex).toBe(0);
-    expect(items[1]?.tabIndex).toBe(-1);
-    expect(items[2]?.tabIndex).toBe(-1);
+    expect(getTabIndices(items)).toEqual([0, -1, -1]);
 });
 
 it("handles keyboard navigation correctly in vertical orientation", async () => {
@@ -98,49 +93,72 @@ it("handles keyboard navigation correctly in vertical orientation", async () => 
 
     // Initial state: first item has focus
     items[0]?.focus();
-    expect(items[0]!.tabIndex).toBe(0);
-    expect(items[1]!.tabIndex).toBe(-1);
-    expect(items[2]!.tabIndex).toBe(-1);
+    expect(getTabIndices(items)).toEqual([0, -1, -1]);
     expect(items[0]).toHaveFocus();
 
     // Press down arrow - focus should move to second item
     fireEvent.keyDown(list, { key: "ArrowDown" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(-1);
-        expect(items[1]!.tabIndex).toBe(0);
-        expect(items[2]!.tabIndex).toBe(-1);
-
+        expect(getTabIndices(items)).toEqual([-1, 0, -1]);
         expect(items[1]).toHaveFocus();
     });
 
     // Press down arrow again - focus should move to third item
     fireEvent.keyDown(list, { key: "ArrowDown" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(-1);
-        expect(items[1]!.tabIndex).toBe(-1);
-        expect(items[2]!.tabIndex).toBe(0);
-
+        expect(getTabIndices(items)).toEqual([-1, -1, 0]);
         expect(items[2]).toHaveFocus();
     });
 
     // Press down arrow again - focus should wrap to first item
     fireEvent.keyDown(list, { key: "ArrowDown" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(0);
-        expect(items[1]!.tabIndex).toBe(-1);
-        expect(items[2]!.tabIndex).toBe(-1);
-
+        expect(getTabIndices(items)).toEqual([0, -1, -1]);
         expect(items[0]).toHaveFocus();
     });
 
     // Press up arrow - focus should wrap to third item
     fireEvent.keyDown(list, { key: "ArrowUp" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(-1);
-        expect(items[1]!.tabIndex).toBe(-1);
-        expect(items[2]!.tabIndex).toBe(0);
-
+        expect(getTabIndices(items)).toEqual([-1, -1, 0]);
         expect(items[2]).toHaveFocus();
+    });
+});
+
+it("does not wrap when wrapping is disabled", async () => {
+    await render(<SimpleList wrap={false} />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+    const items = Array.from(list.querySelectorAll("li"));
+
+    // Focus the last item
+    items[2]?.focus();
+    await waitFor(() => {
+        expect(items[2]!.tabIndex).toBe(0);
+        expect(items[2]).toHaveFocus();
+    });
+
+    // Press ArrowDown at the end - should NOT wrap to the first item
+    fireEvent.keyDown(list, { key: "ArrowDown" });
+    await waitFor(() => {
+        expect(getTabIndices(items)).toEqual([-1, -1, 0]);
+        expect(items[2]).toHaveFocus();
+    });
+
+    // Focus the first item
+    items[0]?.focus();
+    await waitFor(() => {
+        expect(items[0]!.tabIndex).toBe(0);
+        expect(items[0]).toHaveFocus();
+    });
+
+    // Press ArrowUp at the start - should NOT wrap to the last item
+    fireEvent.keyDown(list, { key: "ArrowUp" });
+    await waitFor(() => {
+        expect(getTabIndices(items)).toEqual([0, -1, -1]);
+        expect(items[0]).toHaveFocus();
     });
 });
 
@@ -154,28 +172,20 @@ it("handles home and end key navigation in vertical orientation", async () => {
 
     // Initial state: first item has focus
     items[0]?.focus();
-    expect(items[0]!.tabIndex).toBe(0);
-    expect(items[1]!.tabIndex).toBe(-1);
-    expect(items[2]!.tabIndex).toBe(-1);
+    expect(getTabIndices(items)).toEqual([0, -1, -1]);
     expect(items[0]).toHaveFocus();
 
     // Press End key - focus should move to last item
     fireEvent.keyDown(list, { key: "End" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(-1);
-        expect(items[1]!.tabIndex).toBe(-1);
-        expect(items[2]!.tabIndex).toBe(0);
-
+        expect(getTabIndices(items)).toEqual([-1, -1, 0]);
         expect(items[2]).toHaveFocus();
     });
 
     // Press Home key - focus should move to first item
     fireEvent.keyDown(list, { key: "Home" });
     await waitFor(() => {
-        expect(items[0]!.tabIndex).toBe(0);
-        expect(items[1]!.tabIndex).toBe(-1);
-        expect(items[2]!.tabIndex).toBe(-1);
-
+        expect(getTabIndices(items)).toEqual([0, -1, -1]);
         expect(items[0]).toHaveFocus();
     });
 });
@@ -188,18 +198,12 @@ it("switches active items if the active item is unmounted", async () => {
     const list = await screen.findByRole("toolbar");
 
     const initialItems = Array.from(list.querySelectorAll("li"));
-    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
-      [
-        0,
-        -1,
-        -1,
-      ]
-    `);
+    expect(getTabIndices(initialItems)).toEqual([0, -1, -1]);
 
     await rerender(<SimpleList values={["b", "c"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
-        expect(updatedItems.map((item) => item.tabIndex)).toEqual([0, -1]);
+        expect(getTabIndices(updatedItems)).toEqual([0, -1]);
     });
 });
 
@@ -213,13 +217,13 @@ it("switches active items if the last active item is unmounted", async () => {
     const initialItems = Array.from(list.querySelectorAll("li"));
     initialItems[2]?.focus();
     await waitFor(() => {
-        expect(initialItems.map((item) => item.tabIndex)).toStrictEqual([-1, -1, 0]);
+        expect(getTabIndices(initialItems)).toEqual([-1, -1, 0]);
     });
 
     await rerender(<SimpleList values={["a", "b"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
-        expect(updatedItems.map((item) => item.tabIndex)).toEqual([-1, 0]);
+        expect(getTabIndices(updatedItems)).toEqual([-1, 0]);
     });
 });
 
@@ -231,18 +235,12 @@ it("switches active items if the active item is disabled", async () => {
     const list = await screen.findByRole("toolbar");
 
     const initialItems = Array.from(list.querySelectorAll("li"));
-    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
-      [
-        0,
-        -1,
-        -1,
-      ]
-    `);
+    expect(getTabIndices(initialItems)).toEqual([0, -1, -1]);
 
     await rerender(<SimpleList disabledValues={["a"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
-        expect(updatedItems.map((item) => item.tabIndex)).toEqual([-1, 0, -1]);
+        expect(getTabIndices(updatedItems)).toEqual([-1, 0, -1]);
     });
 });
 
@@ -254,19 +252,13 @@ it("switches active items if the active item is hidden/unmounted", async () => {
     const list = await screen.findByRole("toolbar");
 
     const initialItems = Array.from(list.querySelectorAll("li"));
-    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
-      [
-        0,
-        -1,
-        -1,
-      ]
-    `);
+    expect(getTabIndices(initialItems)).toEqual([0, -1, -1]);
 
     await rerender(<SimpleList hiddenValues={["a"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
         // a is hidden, b becomes the active item
-        expect(updatedItems.map((item) => item.tabIndex)).toEqual([0, -1]);
+        expect(getTabIndices(updatedItems)).toEqual([0, -1]);
     });
 });
 
@@ -279,13 +271,7 @@ it("is useable when the first menu item is disabled", async () => {
     const initialItems = Array.from(list.querySelectorAll("li"));
 
     // Second button gets the focus because the first one is disabled
-    expect(initialItems.map((item) => item.tabIndex)).toMatchInlineSnapshot(`
-      [
-        -1,
-        0,
-        -1,
-      ]
-    `);
+    expect(getTabIndices(initialItems)).toEqual([-1, 0, -1]);
 });
 
 describe("nested menus", () => {
@@ -438,15 +424,21 @@ describe("nested menus", () => {
     });
 });
 
+function getTabIndices(items: HTMLElement[]): number[] {
+    return items.map((item) => item.tabIndex);
+}
+
 function SimpleList(props?: {
     orientation?: "horizontal" | "vertical";
     wrapItems?: boolean;
+    wrap?: boolean;
     values?: string[];
     disabledValues?: string[];
     hiddenValues?: string[];
 }) {
     const { menuProps, menuState } = useRovingMenu({
-        orientation: props?.orientation ?? "vertical"
+        orientation: props?.orientation ?? "vertical",
+        wrap: props?.wrap
     });
 
     const values = props?.values ?? ["a", "b", "c"];

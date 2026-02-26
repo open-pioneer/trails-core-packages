@@ -19,6 +19,13 @@ export interface RovingMenuProps {
      * Horizontal menus can be navigated using left/right, vertical menus use up/down.
      */
     orientation?: "vertical" | "horizontal";
+
+    /**
+     * Wrap around when pressing an arrow key at the start or the end of the menu.
+     *
+     * Default: `true`.
+     */
+    wrap?: boolean;
 }
 
 /** @internal */
@@ -126,14 +133,14 @@ function useRovingMenuImpl(
     props: RovingMenuProps = {},
     isActiveInParent?: () => boolean
 ): RovingMenuResult {
-    const { orientation = "horizontal" } = props;
+    const { orientation = "horizontal", wrap = true } = props;
     const menuId = useId();
     const menuRef = useRef<HTMLElement>(null);
 
     // Shared state between items and root
     const state = useMemo(
-        () => new InternalMenuState(menuId, orientation, menuRef, isActiveInParent),
-        [menuRef, orientation, menuId, isActiveInParent]
+        () => new InternalMenuState(menuId, orientation, menuRef, wrap, isActiveInParent),
+        [menuRef, orientation, menuId, wrap, isActiveInParent]
     );
 
     const onKeyDown = useEvent((event: KeyboardEvent) => {
