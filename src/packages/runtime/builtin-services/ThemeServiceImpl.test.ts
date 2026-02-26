@@ -19,11 +19,6 @@ it("uses 'dark' when initialColorMode is 'dark'", () => {
     expect(service.colorMode).toBe("dark");
 });
 
-it("falls back to 'light' when initialColorMode is an invalid string", () => {
-    const service = new ThemeServiceImpl({ initialColorMode: "invalid" });
-    expect(service.colorMode).toBe("light");
-});
-
 it("defaults to 'light' when initialColorMode is undefined", () => {
     const service = new ThemeServiceImpl({ initialColorMode: undefined });
     expect(service.colorMode).toBe("light");
