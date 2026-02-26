@@ -4,4 +4,5 @@
 "@open-pioneer/runtime": minor
 ---
 
-Integrate a 'runtime.ThemeService' to support switching between colormode 'light' and 'dark'
+Support for color modes (light and dark).
+The default color mode remains `light` for backwards compatibility.
