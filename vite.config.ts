@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
     const isVitest = mode === "test";
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
-    const logLevel = devMode ? "INFO" : "WARN";
+    const logLevel = devMode ? "DEBUG" : "WARN";
 
     return {
         root: resolve(__dirname, "src"),

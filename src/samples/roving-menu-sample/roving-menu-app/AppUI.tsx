@@ -11,7 +11,12 @@ import {
     Text,
     VStack
 } from "@chakra-ui/react";
-import { RovingMenuRoot, useRovingMenu, useRovingMenuItem } from "@open-pioneer/react-utils";
+import {
+    RovingMenuRoot,
+    useNestedRovingMenu,
+    useRovingMenu,
+    useRovingMenuItem
+} from "@open-pioneer/react-utils";
 import { ReactNode, useState } from "react";
 
 export function AppUI() {
@@ -53,6 +58,12 @@ export function AppUI() {
                     description="Use Up/Down arrow keys or Home/End keys to navigate between buttons. Button 'B' unmounts itself on click. Button 'C' hides itself. Button 'D' disables itself."
                 >
                     <VerticalMenu />
+                </MenuSection>
+                <MenuSection
+                    title="Nested Menus"
+                    description="Menus with opposite orientation can be nested. Up/Down arrow keys navigate through the parent menu, and Left/Right arrow keys can be used to navigate through the nested menu."
+                >
+                    <NestedMenuParent />
                 </MenuSection>
             </VStack>
         </Container>
@@ -103,6 +114,56 @@ function VerticalMenu() {
                 <MenuItem value="D" disableOnClick />
             </RovingMenuRoot>
         </VStack>
+    );
+}
+
+function NestedMenuParent() {
+    const { menuProps, menuState } = useRovingMenu({
+        orientation: "vertical"
+    });
+
+    return (
+        <VStack {...menuProps} justify="center" gap={5} padding={2}>
+            <RovingMenuRoot menuState={menuState}>
+                <MenuItem value="A" />
+                <NestedMenuChild value="nested" />
+                <MenuItem value="E" />
+            </RovingMenuRoot>
+        </VStack>
+    );
+}
+
+function NestedMenuChild(props: { value: string }) {
+    const { value } = props;
+    const { menuProps, menuState } = useNestedRovingMenu({
+        orientation: "horizontal",
+        value
+    });
+
+    return (
+        <HStack
+            {...menuProps}
+            justify="center"
+            gap={5}
+            padding={2}
+            css={{
+                borderRadius: "md",
+                outline: "2px solid",
+                outlineColor: "gray.300",
+
+                // See https://larsmagnus.co/blog/focus-visible-within-the-missing-pseudo-class
+                "&:has(:focus-visible)": {
+                    outline: "2px solid",
+                    outlineColor: "colorPalette.focusRing"
+                }
+            }}
+        >
+            <RovingMenuRoot menuState={menuState}>
+                <MenuItem value="B" />
+                <MenuItem value="C" />
+                <MenuItem value="D" />
+            </RovingMenuRoot>
+        </HStack>
     );
 }
 

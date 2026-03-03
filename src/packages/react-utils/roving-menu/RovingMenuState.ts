@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { reactive } from "@conterra/reactivity-core";
+import { Reactive, reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
-import { createContext, KeyboardEvent, RefObject } from "react";
+import { createContext, KeyboardEvent, FocusEvent, RefObject } from "react";
 
 const LOG = createLogger(sourceId);
 
@@ -18,6 +18,8 @@ export const MENU_VALUE_ATTR = "data-roving-menu-value";
 
 // Same as above, but for access via node.dataset
 export const MENU_VALUE_JS = "rovingMenuValue";
+
+const NOT_DISABLED_SELECTOR = ":not([disabled],[aria-disabled='true'])";
 
 /**
  * Shared context for Menu <--> MenuItem coordination.
@@ -50,12 +52,27 @@ export function getInternalState(menuState: RovingMenuState): InternalMenuState 
     return menuState as unknown as InternalMenuState;
 }
 
+export interface MenuStateOptions {
+    menuId: string;
+    orientation: "horizontal" | "vertical";
+    menuRef: RefObject<HTMLElement | null>;
+    wrap: boolean;
+    active: boolean;
+    isActiveInParent?: () => boolean;
+}
+
 /**
  * Internal model class; created by the menu and accessible by the menu items.
  *
  * @internal
  */
 export class InternalMenuState {
+    #active: Reactive<boolean>;
+
+    // True if the menu is currently active in its parent menu (used for nesting).
+    // Note: reactive function
+    #isActiveInParent: () => boolean;
+
     #menuRef: RefObject<HTMLElement | null>;
 
     // Value of the currently active item
@@ -63,15 +80,23 @@ export class InternalMenuState {
 
     readonly menuId: string;
     readonly orientation: "horizontal" | "vertical";
+    readonly wrap: boolean;
 
-    constructor(
-        menuId: string,
-        orientation: "horizontal" | "vertical",
-        menuRef: RefObject<HTMLElement | null>
-    ) {
-        this.#menuRef = menuRef;
-        this.menuId = menuId;
-        this.orientation = orientation;
+    constructor(options: MenuStateOptions) {
+        this.menuId = options.menuId;
+        this.wrap = options.wrap;
+        this.orientation = options.orientation;
+        this.#active = reactive(options.active);
+        this.#menuRef = options.menuRef;
+        this.#isActiveInParent = options.isActiveInParent ?? (() => true);
+    }
+
+    get active(): boolean {
+        return this.#active.value;
+    }
+
+    set active(value: boolean) {
+        this.#active.value = value;
     }
 
     get #currentValue(): string | undefined {
@@ -84,24 +109,49 @@ export class InternalMenuState {
      * The active menu item can receive the focus via keyboard navigation (tab).
      */
     isActive(value: string): boolean {
-        return this.#currentValue === value;
+        return this.active && this.#isActiveInParent() && this.#currentValue === value;
+    }
+
+    /**
+     * Called when the menu itself is focused.
+     * The focus handler moves focus to the active child.
+     *
+     * This is used to implement nested menus.
+     */
+    onFocus(e: FocusEvent) {
+        if (e.target !== e.currentTarget) {
+            return; // Focus event from child
+        }
+
+        const activeValue = this.#currentValue;
+        if (activeValue != null) {
+            const item = getMenuItem(this.#menuRef, this.menuId, activeValue);
+            if (item) {
+                LOG.debug("Forwarding menu focus to item", item);
+                item.focus();
+            } else {
+                LOG.debug("Failed to find menu item for active value");
+            }
+        }
     }
 
     /**
      * Called when a key is pressed on the menu root element.
      */
     onKeyDown(event: KeyboardEvent): void {
+        if (event.defaultPrevented) {
+            return; // Keyboard event from child
+        }
+
         const direction = getNavDirection(event, this.orientation);
         if (!direction) {
             return;
         }
 
         const items = getMenuItems(this.#menuRef, this.menuId);
-        const target = getFocusTarget(items, this.#currentValue, direction);
+        const target = getFocusTarget(items, this.#currentValue, direction, this.wrap);
         if (!target) {
-            if (items.length > 1) {
-                LOG.warn("Failed to identify focus target for keyboard navigation");
-            }
+            // No candidate in the requested direction.
             return;
         }
 
@@ -152,7 +202,7 @@ export class InternalMenuState {
 
         let target;
         if (disabledIndex === -1) {
-            target = getFocusTarget(items, -1, "home");
+            target = getFocusTarget(items, -1, "home", false);
         } else {
             // Attempt to move focus to something sensible
             target =
@@ -227,7 +277,7 @@ function getFocusTarget(
     items: HTMLElement[],
     current: string | number | undefined,
     direction: NavDirection,
-    wrap = true
+    wrap: boolean
 ): HTMLElement | undefined {
     if (items.length === 0) {
         return undefined;
@@ -318,10 +368,28 @@ function getMenuItems(
     const escapedId = CSS.escape(menuId);
     let selector = `[${MENU_OWNER_ATTR}=${escapedId}]`;
     if (excludeDisabled) {
-        selector += ":not([disabled],[aria-disabled='true'])";
+        selector += NOT_DISABLED_SELECTOR;
     }
     const children = owner.querySelectorAll(selector);
     return Array.from(children) as HTMLElement[];
+}
+
+function getMenuItem(
+    menuRef: RefObject<HTMLElement | null>,
+    menuId: string,
+    value: string
+): HTMLElement | undefined {
+    const owner = menuRef.current;
+    if (!owner) {
+        return undefined;
+    }
+
+    const escapedMenuId = CSS.escape(menuId);
+    const escapedValue = CSS.escape(value);
+    const node = owner.querySelector(
+        `[${MENU_OWNER_ATTR}=${escapedMenuId}][${MENU_VALUE_ATTR}=${escapedValue}]${NOT_DISABLED_SELECTOR}`
+    );
+    return (node ?? undefined) as HTMLElement | undefined;
 }
 
 function getItemValue(item: HTMLElement | undefined): string | undefined {

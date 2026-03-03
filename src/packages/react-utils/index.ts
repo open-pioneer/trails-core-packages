@@ -44,7 +44,10 @@ export { RovingMenuRoot, type RovingMenuRootProps } from "./roving-menu/RovingMe
 export {
     useRovingMenu,
     type RovingMenuProps,
-    type RovingMenuResult
+    type RovingMenuResult,
+    useNestedRovingMenu,
+    type NestedRovingMenuProps,
+    type NestedRovingMenuResult
 } from "./roving-menu/useRovingMenu";
 export {
     useRovingMenuItem,
