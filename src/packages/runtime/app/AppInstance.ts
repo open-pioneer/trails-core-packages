@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
+import { computed, effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
@@ -13,14 +13,16 @@ import {
 } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { createElement } from "react";
-import { ApiMethods, ApiService } from "../api";
+import { ApiMethods, ApiService, ColorModeValue, ThemeService } from "../api";
 import {
     createBuiltinPackage,
     RUNTIME_API_SERVICE,
     RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
-    RUNTIME_AUTO_START
+    RUNTIME_AUTO_START,
+    RUNTIME_THEME_SERVICE
 } from "../builtin-services";
 import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
+import { DEFAULT_INITIAL_COLOR_MODE } from "../builtin-services/ThemeServiceImpl";
 import {
     ApplicationConfig,
     ApplicationOverrides,
@@ -37,6 +39,8 @@ import { ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { gatherConfig } from "./gatherConfig";
+
+import { SystemConfig } from "@chakra-ui/react";
 import { logError } from "./logErrors";
 
 const LOG = createLogger(sourceId);
@@ -77,6 +81,7 @@ export class AppInstance {
     private config: ApplicationConfig | undefined;
     private serviceLayer: ServiceLayer | undefined;
     private lifecycleEvents: ApplicationLifecycleEventService | undefined;
+    private themeService: ThemeService | undefined;
     private reactIntegration: ReactIntegration | undefined;
 
     private stylesWatch: Resource | undefined;
@@ -126,6 +131,7 @@ export class AppInstance {
         this.container.replaceChildren();
         this.appRoot = undefined;
         this.lifecycleEvents = undefined;
+        this.themeService = undefined;
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
     }
@@ -155,21 +161,27 @@ export class AppInstance {
         // Setup application root node in the shadow dom
         const appRoot = (this.appRoot = createAppRoot(i18n.locale));
         this.container.appendChild(appRoot);
-
         const styles = this.initStylesSignal();
 
         // Launch the service layer
         const { serviceLayer, packages } = this.initServiceLayer({
             container: appRoot,
             properties: config.properties,
-            i18n
+            i18n,
+            initialColorMode: config.colorMode,
+            initialSystemConfig: config.chakraSystemConfig
         });
         this.lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
             serviceLayer,
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );
+        const themeService = (this.themeService = getInternalService<ThemeService>(
+            serviceLayer,
+            RUNTIME_THEME_SERVICE
+        ));
 
-        await this.initAPI(serviceLayer);
+        // init api, but do not wait for it
+        const apiPromise = this.initAPI(serviceLayer);
         this.checkAbort();
 
         // Launch react
@@ -180,11 +192,18 @@ export class AppInstance {
             serviceLayer,
             packages,
             locale: i18n.locale,
-            config: elementOptions.chakraSystemConfig,
-            styles
+            config: computed(() => themeService.systemConfig),
+            styles,
+            colorMode: computed(() => themeService.colorMode)
         });
         const component = this.options.elementOptions.component ?? EmptyComponent;
         this.reactIntegration.render(createElement(component));
+
+        // wait for api, to ensure that the "started" state is only reached after the API is available.
+        // but do not block the react rendering, to allow for a fast Time to Interactive and to show potential errors in the UI even if the API fails.
+        await apiPromise;
+        this.checkAbort();
+
         this.state = "started";
 
         this.triggerApplicationLifecycleEvent("after-start");
@@ -219,27 +238,35 @@ export class AppInstance {
         container: HTMLDivElement;
         properties: ApplicationProperties;
         i18n: AppIntl;
+        initialColorMode: ColorModeValue | "system" | undefined;
+        initialSystemConfig: SystemConfig | undefined;
     }) {
         const { hostElement, rootNode: shadowRoot, elementOptions, restart } = this.options;
-        const { container, properties, i18n } = config;
+
+        const { container, properties, i18n, initialColorMode, initialSystemConfig } = config;
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
         const builtinPackage = createBuiltinPackage({
             host: hostElement,
             rootNode: shadowRoot,
             container: container,
+            initialColorMode,
+            initialSystemConfig,
             locale: i18n.locale,
             supportedLocales: i18n.supportedMessageLocales,
-            changeLocale(locale) {
+            changeLocale: (locale) => {
                 const supported = i18n.supportedMessageLocales;
                 if (locale != null && !i18n.supportsLocale(locale)) {
+                    const supportedLocales = supported.join(", ");
                     throw new Error(
                         ErrorId.UNSUPPORTED_LOCALE,
-                        `Unsupported locale '${locale}' (supported locales: ${supported.join(
-                            ", "
-                        )}).`
+                        `Unsupported locale '${locale}' (supported locales: ${supportedLocales}).`
                     );
                 }
-                restart({ locale });
+
+                const themeService = this.themeService;
+                const colorMode = themeService?.colorMode;
+                const chakraSystemConfig = themeService?.systemConfig;
+                restart({ locale, colorMode, chakraSystemConfig });
             }
         });
         const { serviceLayer, packages } = createServiceLayer({
@@ -260,13 +287,28 @@ export class AppInstance {
     private async initAPI(serviceLayer: ServiceLayer) {
         const apiService = getInternalService<ApiService>(serviceLayer, RUNTIME_API_SERVICE);
         try {
-            const api = (this.api = await apiService.getApi());
+            const api = await apiService.getApi();
+            this.checkAbort();
+            this.api = api;
             LOG.debug("Application API initialized to", api);
             this.apiPromise?.resolve(api);
         } catch (e) {
-            throw new Error(ErrorId.INTERNAL, "Failed to gather the application's API methods.", {
-                cause: e
-            });
+            const ex = new Error(
+                ErrorId.INTERNAL,
+                "Failed to gather the application's API methods.",
+                {
+                    cause: e
+                }
+            );
+            if (!this.apiPromise) {
+                // no one is waiting yet.
+                // keep the error for when they do
+                this.apiPromise = createManualPromise();
+                // prevent unhandled rejection if no one is waiting for the API
+                this.apiPromise.promise.catch(() => {});
+            }
+            this.apiPromise.reject(ex);
+            throw ex;
         }
     }
 
@@ -300,8 +342,9 @@ export class AppInstance {
             hostNode: this.options.hostElement,
             appRoot: appRoot,
             locale: locale,
-            config: this.options.elementOptions.chakraSystemConfig,
-            styles
+            config: reactive(this.options.elementOptions.chakraSystemConfig),
+            styles,
+            colorMode: reactive(DEFAULT_INITIAL_COLOR_MODE)
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }
@@ -340,6 +383,9 @@ function createServiceLayer(config: {
         },
         {
             interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
+        },
+        {
+            interfaceName: RUNTIME_THEME_SERVICE
         },
         {
             interfaceName: RUNTIME_AUTO_START,

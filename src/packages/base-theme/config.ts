@@ -54,48 +54,48 @@ const semanticTokens: SemanticTokenDefinition = {
         // define semantic tokens to allow usage of `colorPalette` property in components
         // see: https://chakra-ui.com/docs/theming/customization/colors#color-palette
         trails: {
-            solid: { value: "{colors.trails.500}" },
-            contrast: { value: "{colors.white}" },
-            fg: { value: "{colors.trails.700}" },
-            muted: { value: "{colors.trails.100}" },
-            subtle: { value: "{colors.trails.50}" },
-            emphasized: { value: "{colors.trails.300}" },
-            focusRing: { value: "{colors.trails.500}" }
+            solid: { value: { _light: "{colors.trails.500}", _dark: "{colors.trails.400}" } },
+            contrast: { value: { _light: "{colors.white}", _dark: "{colors.white}" } },
+            fg: { value: { _light: "{colors.trails.700}", _dark: "{colors.trails.200}" } },
+            muted: { value: { _light: "{colors.trails.100}", _dark: "{colors.trails.900}" } },
+            subtle: { value: { _light: "{colors.trails.50}", _dark: "{colors.trails.950}" } },
+            emphasized: { value: { _light: "{colors.trails.300}", _dark: "{colors.trails.700}" } },
+            focusRing: { value: { _light: "{colors.trails.500}", _dark: "{colors.trails.400}" } }
         },
 
         // define custom semantic tokens
-        trails_placeholder: { value: "{colors.gray.700}" },
+        trails_placeholder: { value: { _light: "{colors.gray.700}", _dark: "{colors.gray.400}" } },
 
         // .600 has no enough contrast, .700 is too dark
         // https://github.com/open-pioneer/trails-openlayers-base-packages/issues/450
         orange: {
-            solid: { value: "#D2460F" }
+            solid: { value: { _light: "#D2460F", _dark: "{colors.orange.400}" } }
         },
         green: {
-            solid: { value: "{colors.green.700}" }
+            solid: { value: { _light: "{colors.green.700}", _dark: "{colors.green.400}" } }
         },
         red: {
-            solid: { value: "{colors.red.700}" }
+            solid: { value: { _light: "{colors.red.700}", _dark: "{colors.red.400}" } }
         },
 
         // overwrite chakra internal semantic tokens
         //https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/semantic-tokens/colors.ts
         fg: {
             DEFAULT: {
-                value: "{colors.black}"
+                value: { _light: "{colors.black}", _dark: "{colors.gray.50}" }
             }
         },
         bg: {
             DEFAULT: {
-                value: "{colors.white}"
+                value: { _light: "{colors.white}", _dark: "{colors.black}" }
             },
             muted: {
-                value: "{colors.trails.50}"
+                value: { _light: "{colors.trails.50}", _dark: "{colors.trails.950}" }
             }
         },
         border: {
             DEFAULT: {
-                value: "{colors.gray.300}"
+                value: { _light: "{colors.gray.300}", _dark: "{colors.gray.700}" }
             }
         }
     }

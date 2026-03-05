@@ -4,6 +4,7 @@
 /**
  * @vitest-environment happy-dom
  */
+import { mergeConfigs, Portal, SystemConfig, useChakraContext } from "@chakra-ui/react";
 import { isAbortError } from "@open-pioneer/core";
 import {
     defineComponent,
@@ -12,8 +13,15 @@ import {
 } from "@open-pioneer/test-utils/web-components";
 import { findByTestId, waitFor } from "@testing-library/dom";
 import { createElement } from "react";
-import { expect, it, describe, vi, afterEach } from "vitest";
-import { ApiExtension, ApiMethods, ApplicationContext, ApplicationLifecycleListener } from "./api";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+    ApiExtension,
+    ApiMethods,
+    ApplicationContext,
+    ApplicationLifecycleListener,
+    ColorModeValue,
+    ThemeService
+} from "./api";
 import {
     ApplicationElement,
     ApplicationElementConstructor,
@@ -25,7 +33,7 @@ import { createBox } from "./metadata";
 import { usePropertiesInternal } from "./react-integration";
 import { ServiceOptions } from "./Service";
 import { expectAsyncError } from "./test-utils/expectError";
-import { Portal } from "@chakra-ui/react";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 
 /** Hidden properties available during development / testing */
 interface InternalElementType extends ApplicationElement {
@@ -656,26 +664,115 @@ describe("i18n support", function () {
             }
         });
 
-        expect(observedOverrides).toEqual([undefined, { locale: "en" }]);
+        expect(observedOverrides).toEqual([
+            undefined,
+            { locale: "en", chakraSystemConfig: undefined, colorMode: "light" }
+        ]);
     });
 
-    interface I18nAppApi {
+    it("transports changed color mode in overrides on lang change", async () => {
+        mockNavigatorLocales();
+
+        const observedOverrides: (ApplicationOverrides | undefined)[] = [];
+        const api = await launchApp({
+            async resolveConfig({ overrides }) {
+                observedOverrides.push(overrides);
+                return {
+                    locale: "de"
+                };
+            }
+        });
+
+        expect(observedOverrides).toEqual([undefined]);
+        await api.setColorMode("dark");
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([undefined, { locale: "en", colorMode: "dark" }]);
+        });
+        observedOverrides.length = 0; // reset
+        // switch back to de, the override should be still there
+        await api.setLocale("de");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([{ locale: "de", colorMode: "dark" }]);
+        });
+        observedOverrides.length = 0; // reset
+        // change color mode back to light and change locale to en, the override should be gone
+        await api.setColorMode("light");
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([
+                { locale: "en", "chakraSystemConfig": undefined, "colorMode": "light" }
+            ]);
+        });
+    });
+
+    it("transports changed chakra system config in overrides on lang change", async () => {
+        mockNavigatorLocales();
+
+        const observedOverrides: (ApplicationOverrides | undefined)[] = [];
+        const api = await launchApp({
+            async resolveConfig({ overrides }) {
+                observedOverrides.push(overrides);
+                return {
+                    locale: "de"
+                };
+            }
+        });
+
+        expect(observedOverrides).toEqual([undefined]);
+        const testConfig = {
+            theme: { semanticTokens: { colors: { dummyColor: { value: "#654321" } } } }
+        };
+        await api.setCustomChakraConfig(testConfig);
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([
+                undefined,
+                { locale: "en", chakraSystemConfig: testConfig, colorMode: "light" }
+            ]);
+        });
+        observedOverrides.length = 0; // reset
+
+        // switch back to de, the override should be still there
+        await api.setLocale("de");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([
+                { locale: "de", chakraSystemConfig: testConfig, colorMode: "light" }
+            ]);
+        });
+        observedOverrides.length = 0; // reset
+
+        await api.setCustomChakraConfig(undefined);
+        await api.setLocale("en");
+        await waitFor(async () => {
+            expect(observedOverrides).toEqual([
+                { locale: "en", chakraSystemConfig: undefined, colorMode: "light" }
+            ]);
+        });
+    });
+
+    interface TestAppApi {
         getLocaleInfo(): Promise<{ locale: string; message: string; supportedLocales: string[] }>;
         setLocale(newLocale: string): Promise<void>;
+        setColorMode(newColorMode: ColorModeValue): Promise<void>;
+        setCustomChakraConfig(newConfig: SystemConfig | undefined): Promise<void>;
     }
 
     /**
      * Runs an app with mocked services and i18n and returns the inner locale + translated message.
      */
-    async function launchApp(options?: Partial<CustomElementOptions>): Promise<I18nAppApi> {
+    async function launchApp(options?: Partial<CustomElementOptions>): Promise<TestAppApi> {
         class TestService implements ApiExtension {
             private ctx: ApplicationContext;
+            private theme: ThemeService;
             private locale: string;
             private message: string;
 
-            constructor(options: ServiceOptions<{ ctx: ApplicationContext }>) {
+            constructor(options: ServiceOptions<{ ctx: ApplicationContext; theme: ThemeService }>) {
                 const ctx = options.references.ctx;
+                const theme = options.references.theme;
                 this.ctx = ctx;
+                this.theme = theme;
                 this.locale = ctx.getLocale();
                 this.message = options.intl.formatMessage({ id: "greeting" });
             }
@@ -691,6 +788,12 @@ describe("i18n support", function () {
                     },
                     setLocale: (newLocale: string) => {
                         this.ctx.setLocale(newLocale);
+                    },
+                    setColorMode: (newColorMode: ColorModeValue) => {
+                        this.theme.setColorMode(newColorMode);
+                    },
+                    setCustomChakraConfig: (newConfig: SystemConfig | undefined) => {
+                        this.theme.setSystemConfig(newConfig);
                     }
                 };
             }
@@ -709,6 +812,9 @@ describe("i18n support", function () {
                                 references: {
                                     ctx: {
                                         name: "runtime.ApplicationContext"
+                                    },
+                                    theme: {
+                                        name: "runtime.ThemeService"
                                     }
                                 },
                                 provides: [
@@ -757,6 +863,16 @@ describe("i18n support", function () {
             async setLocale(newLocale: string) {
                 const api = await (node as ApplicationElement).when();
                 api.setLocale!(newLocale);
+            },
+
+            async setColorMode(newColorMode: ColorModeValue) {
+                const api = await (node as ApplicationElement).when();
+                api.setColorMode!(newColorMode);
+            },
+
+            async setCustomChakraConfig(newConfig: SystemConfig | undefined) {
+                const api = await (node as ApplicationElement).when();
+                api.setCustomChakraConfig!(newConfig);
             }
         };
         return result;
@@ -843,6 +959,168 @@ it("can render without a shadow root", async () => {
     const styles = Array.from(document.head.querySelectorAll("style"));
     const rule = styles.find((s) => s.innerHTML.includes(".pioneer-root"));
     expect(rule).toBeTruthy(); // Styles are mounted into the document head
+});
+
+describe("theming", () => {
+    function TestComponent() {
+        const sys = useChakraContext();
+        const dummyColorToken = sys.tokens.getByName("colors.dummyColor");
+        return createElement(
+            "div",
+            {
+                "data-testid": "test-div"
+            },
+            `Color: ${dummyColorToken?.value}`
+        );
+    }
+
+    const testConfig = mergeConfigs(defaultTrailsConfig, {
+        theme: {
+            semanticTokens: {
+                colors: {
+                    dummyColor: { value: "#123456" }
+                }
+            }
+        }
+    });
+
+    it("applies a custom theme", async () => {
+        const elem = createCustomElement({
+            component: TestComponent,
+            chakraSystemConfig: testConfig
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #123456"`);
+    });
+
+    it("applies a custom theme via resolveConfig()", async () => {
+        const elem = createCustomElement({
+            component: TestComponent,
+            async resolveConfig(_ctx) {
+                return {
+                    chakraSystemConfig: testConfig
+                };
+            }
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #123456"`);
+    });
+
+    it("prioritizes config/resolveConfig over direct element configuration", async () => {
+        const testConfig2 = mergeConfigs(defaultTrailsConfig, {
+            theme: {
+                semanticTokens: {
+                    colors: {
+                        dummyColor: { value: "#654321" }
+                    }
+                }
+            }
+        });
+
+        const elem = createCustomElement({
+            component: TestComponent,
+            chakraSystemConfig: testConfig,
+            async resolveConfig(_ctx) {
+                return {
+                    chakraSystemConfig: testConfig2
+                };
+            }
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #654321"`);
+    });
+
+    it("applies custom color mode if changed via ThemeService", async () => {
+        class TestService {
+            constructor(options: ServiceOptions<{ theme: ThemeService }>) {
+                const theme = options.references.theme;
+                theme.setColorMode("dark");
+            }
+        }
+        const elem = createCustomElement({
+            component: TestComponent,
+            appMetadata: {
+                packages: {
+                    test: {
+                        name: "test",
+                        services: {
+                            testService: {
+                                name: "testService",
+                                clazz: TestService,
+                                references: {
+                                    theme: {
+                                        name: "runtime.ThemeService"
+                                    }
+                                },
+                                provides: [
+                                    {
+                                        name: "runtime.AutoStart"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const { innerContainer } = await renderComponentShadowDOM(elem);
+
+        expect(innerContainer.className).toEqual("pioneer-root dark");
+    });
+
+    it("applies custom system config if changed via ThemeService", async () => {
+        class TestService {
+            constructor(options: ServiceOptions<{ theme: ThemeService }>) {
+                const theme = options.references.theme;
+                // this wins over the config provided directly to the element and the one from resolveConfig
+                theme.setSystemConfig({
+                    theme: {
+                        semanticTokens: {
+                            colors: {
+                                dummyColor: { value: "#654321" }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        const elem = createCustomElement({
+            component: TestComponent,
+            chakraSystemConfig: testConfig,
+            appMetadata: {
+                packages: {
+                    test: {
+                        name: "test",
+                        services: {
+                            testService: {
+                                name: "testService",
+                                clazz: TestService,
+                                references: {
+                                    theme: {
+                                        name: "runtime.ThemeService"
+                                    }
+                                },
+                                provides: [
+                                    {
+                                        name: "runtime.AutoStart"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const { queries } = await renderComponentShadowDOM(elem);
+        const div = await queries.findByTestId("test-div");
+        expect(div.innerText).toMatchInlineSnapshot(`"Color: #654321"`);
+    });
 });
 
 async function renderComponentWithoutShadowRoot(element: ApplicationElementConstructor) {

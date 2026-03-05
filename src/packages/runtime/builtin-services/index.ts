@@ -11,6 +11,7 @@ import { ApiServiceImpl } from "./ApiServiceImpl";
 import { ApplicationContextImpl, ApplicationContextProperties } from "./ApplicationContextImpl";
 import { ApplicationLifecycleEventService } from "./ApplicationLifecycleEventService";
 import { NumberParserServiceImpl } from "./NumberParserServiceImpl";
+import { ThemeServiceImpl, ThemeServiceProperties } from "./ThemeServiceImpl";
 
 export const RUNTIME_PACKAGE_NAME = "@open-pioneer/runtime";
 export const RUNTIME_API_EXTENSION = "integration.ApiExtension";
@@ -20,8 +21,9 @@ export const RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE =
     "runtime.ApplicationLifecycleEventService";
 export const RUNTIME_NUMBER_PARSER_SERVICE = "runtime.NumberParserService";
 export const RUNTIME_AUTO_START = "runtime.AutoStart";
+export const RUNTIME_THEME_SERVICE = "runtime.ThemeService";
 
-export type BuiltinPackageProperties = ApplicationContextProperties;
+export type BuiltinPackageProperties = ApplicationContextProperties & ThemeServiceProperties;
 
 /**
  * Creates the builtin package containing the builtin services.
@@ -102,9 +104,35 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         ]
     });
 
+    const themeService = new ServiceRepr({
+        name: "ThemeServiceImpl",
+        packageName: RUNTIME_PACKAGE_NAME,
+        factory: createFunctionFactory(() => new ThemeServiceImpl(properties)),
+        intl: i18n,
+        interfaces: [
+            {
+                interfaceName: RUNTIME_THEME_SERVICE,
+                qualifier: "builtin"
+            }
+        ],
+        dependencies: [
+            {
+                referenceName: "applicationContext",
+                interfaceName: RUNTIME_APPLICATION_CONTEXT,
+                qualifier: "builtin"
+            }
+        ]
+    });
+
     return new PackageRepr({
         name: RUNTIME_PACKAGE_NAME,
-        services: [apiService, appContext, lifecycleEventService, numberParserService],
+        services: [
+            apiService,
+            appContext,
+            lifecycleEventService,
+            numberParserService,
+            themeService
+        ],
         intl: i18n
     });
 }
