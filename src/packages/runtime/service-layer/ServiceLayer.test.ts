@@ -442,6 +442,41 @@ it("injects properties into service instances", function () {
     serviceLayer.destroy();
 });
 
+it("creates ui services lazily", function () {
+    let created = false;
+
+    const service = createService({
+        name: "UIService",
+        packageName: "pkg",
+        interfaces: [{ interfaceName: "ui.Interface" }],
+        factory: createFunctionFactory(() => {
+            created = true;
+            return {};
+        })
+    });
+    const serviceLayer = new ServiceLayer(
+        [
+            createPackage({
+                name: "test-package",
+                services: [service],
+                uiReferences: [{ interfaceName: "ui.Interface" }]
+            })
+        ],
+        [],
+        // lazy start ui services
+        { initUiServicesOnDemand: true }
+    );
+    serviceLayer.start();
+
+    expect(created).toBe(false);
+    const result = serviceLayer.getService("test-package", {
+        interfaceName: "ui.Interface"
+    });
+    expect(result.type).toBe("found");
+    expect(service.instance).toBeDefined();
+    expect(created).toBe(true);
+});
+
 function createService(options: Partial<ServiceReprOptions>) {
     return new ServiceRepr({
         name: "test-service",
