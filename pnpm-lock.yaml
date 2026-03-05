@@ -184,6 +184,7 @@ overrides:
   minimatch@>=3.0.0 <3.1.4: ^3.1.4
   minimatch@>=9.0.0 <9.0.7: ^9.0.9
   minimatch@>=10.0.0 <10.2.3: ^10.2.3
+  immutable@>=5.0.0 <5.1.5: ^5.1.5
   '@emotion/react>@emotion/babel-plugin': '-'
   '@emotion/styled>@emotion/babel-plugin': '-'
   '@emotion/react>@babel/runtime': '-'
@@ -3620,8 +3621,8 @@ packages:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
 
-  immutable@5.1.2:
-    resolution: {integrity: sha512-qHKXW1q6liAk1Oys6umoaZbDRqjcjgSrbnrifHsfsttza7zcvRAsL7mMV6xWcyhwQy7Xj5v4hhbr6b+iDYwlmQ==}
+  immutable@5.1.5:
+    resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
 
   import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
@@ -8321,7 +8322,7 @@ snapshots:
 
   ignore@7.0.5: {}
 
-  immutable@5.1.2: {}
+  immutable@5.1.5: {}
 
   import-fresh@3.3.0:
     dependencies:
@@ -9188,7 +9189,7 @@ snapshots:
   sass@1.97.3:
     dependencies:
       chokidar: 4.0.3
-      immutable: 5.1.2
+      immutable: 5.1.5
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.1
