@@ -82,3 +82,55 @@ export type ServiceOptions<References extends {} = {}> = {
 export type ServiceConstructor<References extends {} = {}, Interface extends {} = {}> = {
     new (options: ServiceOptions<References>): Service<Interface>;
 };
+
+/**
+ * A service factory is an object that has a method to create a service instance.
+ * The service factory itself can also implement lifecycle hooks, which will be called by the runtime
+ * when the factory is destroyed.
+ */
+export type ServiceFactory<Interface extends {} = {}> = ServiceLifecycleHooks & {
+    /**
+     * Method to create a service instance.
+     * It is directly called by the runtime after constructing the factory
+     */
+    createService(): Service<Interface>;
+};
+
+/**
+ * A constructor type for a service factory.
+ * The service factory is an object that has a method to create a service instance,
+ * this allows for more flexibility in service construction.
+ */
+export type ServiceFactoryConstructor<References extends {} = {}, Interface extends {} = {}> = {
+    new (options: ServiceOptions<References>): ServiceFactory<Interface>;
+};
+
+/**
+ * Symbol used to detect if a constructor function is a service factory constructor.
+ */
+const IS_SERVICE_FACTORY = Symbol("runtime.IS_SERVICE_FACTORY");
+export { IS_SERVICE_FACTORY };
+
+/**
+ * A service factory constructor must be marked
+ * with the `IS_SERVICE_FACTORY` symbol to be recognized by the runtime as such.
+ */
+export type MarkedServiceFactoryConstructor<
+    References extends {} = {},
+    Interface extends {} = {}
+> = ServiceFactoryConstructor<References, Interface> & {
+    [IS_SERVICE_FACTORY]: true;
+};
+
+/**
+ * Utility function to mark a constructor as a service factory constructor.
+ * @param ctr normal constructor function for a service factory.
+ * @returns the same constructor function, but marked with the `IS_SERVICE_FACTORY` symbol so that the runtime recognizes it as a service factory constructor.
+ */
+export function defineServiceFactory(
+    ctr: ServiceFactoryConstructor
+): MarkedServiceFactoryConstructor {
+    const markedCtr = ctr as MarkedServiceFactoryConstructor;
+    markedCtr[IS_SERVICE_FACTORY] = true;
+    return markedCtr;
+}
