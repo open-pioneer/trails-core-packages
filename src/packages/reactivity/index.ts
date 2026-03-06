@@ -155,7 +155,7 @@ export function useReactiveValue<T>(
  * Simple Example:
  *
  * ```jsx
- * import { useReactiveSnapshot, DISPATCH_SYNC } from "@open-pioneer/reactivity";
+ * import { useReactiveSnapshot } from "@open-pioneer/reactivity";
  *
  * // A reactive signal from anywhere (global data, props, ...).
  * const name = reactive("User");
