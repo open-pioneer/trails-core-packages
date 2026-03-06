@@ -17,7 +17,7 @@ export async function gatherConfig(
     hostElement: HTMLElement,
     options: CustomElementOptions,
     overrides?: ApplicationOverrides
-) {
+): Promise<Required<ApplicationConfig>> {
     let configs: ApplicationConfig[];
     try {
         const staticConfig = options.config ?? {};
@@ -30,7 +30,13 @@ export async function gatherConfig(
                 overrides
             })) ?? {};
 
-        configs = [staticConfig, dynamicConfig];
+        configs = [
+            {
+                chakraSystemConfig: options.chakraSystemConfig
+            },
+            staticConfig,
+            dynamicConfig
+        ];
     } catch (e) {
         throw new Error(
             ErrorId.CONFIG_RESOLUTION_FAILED,
@@ -42,9 +48,18 @@ export async function gatherConfig(
     }
 
     const merged = mergeConfigs(configs);
-    if (overrides?.locale) {
-        merged.locale = overrides.locale;
+    if (overrides) {
+        if (overrides.locale) {
+            merged.locale = overrides.locale;
+        }
+        if (overrides.colorMode) {
+            merged.colorMode = overrides.colorMode;
+        }
+        if (overrides.chakraSystemConfig) {
+            merged.chakraSystemConfig = overrides.chakraSystemConfig;
+        }
     }
+
     return merged;
 }
 
@@ -57,6 +72,8 @@ function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig>
     const mergedConfig: Required<ApplicationConfig> = Object.assign(
         {
             locale: undefined,
+            chakraSystemConfig: undefined,
+            colorMode: undefined,
             properties: {}
         } satisfies ApplicationConfig,
         ...configs

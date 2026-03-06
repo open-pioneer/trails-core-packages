@@ -1,16 +1,10 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ServiceRepr } from "./ServiceRepr";
 import { createLogger, Error } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
+import { ReferenceMeta } from "../Service";
+import { RUNTIME_PACKAGE_NAME } from "../builtin-services";
 import { ErrorId } from "../errors";
-import {
-    ComputedServiceDependencies,
-    FrameworkDependency,
-    UIDependency,
-    verifyDependencies
-} from "./verifyDependencies";
-import { PackageRepr } from "./PackageRepr";
-import { ReadonlyServiceLookup, ServiceLookupResult, ServicesLookupResult } from "./ServiceLookup";
 import {
     InterfaceSpec,
     isAllImplementationsSpec,
@@ -18,10 +12,17 @@ import {
     ReferenceSpec,
     renderInterfaceSpec
 } from "./InterfaceSpec";
-import { ReferenceMeta } from "../Service";
-import { RUNTIME_PACKAGE_NAME } from "../builtin-services";
+import { PackageRepr } from "./PackageRepr";
+import { ReadonlyServiceLookup, ServiceLookupResult, ServicesLookupResult } from "./ServiceLookup";
+import { ServiceRepr } from "./ServiceRepr";
+import {
+    ComputedServiceDependencies,
+    FrameworkDependency,
+    UIDependency,
+    verifyDependencies
+} from "./verifyDependencies";
 
-const LOG = createLogger("runtime:ServiceLayer");
+const LOG = createLogger(sourceId);
 
 export type DynamicLookupResult = ServiceLookupResult | UndeclaredDependency;
 

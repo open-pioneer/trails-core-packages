@@ -1,14 +1,15 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { createLogger } from "@open-pioneer/core";
 import type {
     KeycloakConfig,
     KeycloakInitOptions,
     KeycloakLoginOptions,
     KeycloakLogoutOptions
 } from "keycloak-js";
+import { sourceId } from "open-pioneer:source-info";
 import type { KeycloakProperties, RefreshOptions } from "./api";
-import { createLogger } from "@open-pioneer/core";
-const LOG = createLogger("authentication-keycloak:getKeycloakConfig");
+const LOG = createLogger(sourceId);
 
 const DEFAULT_REFRESH_OPTS = {
     autoRefresh: true,

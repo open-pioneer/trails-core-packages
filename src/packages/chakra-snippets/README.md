@@ -25,7 +25,7 @@ If you notice a problem with one of the snippets, or if snippets are missing, fe
 - `avatar.tsx`
 - `blockquote.tsx`
 - `breadcrumb.tsx`
-- `carousel.tsx`
+- `carousel.tsx`: Aria labels have been translated.
 - `checkbox-card.tsx`
 - `checkbox.tsx`
 - `clipboard.tsx`: Prefer to use this snippet instead of the default Chakra one. The default `Clipboard` is not translated.
@@ -38,7 +38,7 @@ If you notice a problem with one of the snippets, or if snippets are missing, fe
 - `link-button.tsx`
 - `native-select.tsx`
 - `number-input.tsx`
-- `password-input.tsx`
+- `password-input.tsx`: Aria label has been translated.
 - `pin-input.tsx`
 - `prose.tsx`
 - `qr-code.tsx`

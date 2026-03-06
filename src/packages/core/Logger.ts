@@ -7,6 +7,22 @@ const LOG_LEVEL = typeof __LOG_LEVEL__ !== "undefined" ? validateLogLevel(__LOG_
  * For available log methods see {@link Logger} interface.
  * The log level is globally configured (see vite.config.ts).
  *
+ * You can create a logger with an arbitrary-prefix:
+ *
+ * ```ts
+ * const logger = createLogger("some-prefix");
+ * logger.debug("...");
+ * ```
+ *
+ * With recent version of the trails vite plugin, you can also use this convenient way to create a logger:
+ *
+ * ```ts
+ * import { sourceId } from "open-pioneer:source-info";
+ *
+ * // sourceId is an automatic identifier based on the current file.
+ * const LOG = createLogger(sourceId);
+ * ```
+ *
  * @param prefix Prefix used to prefix all log messages invoked by the created logger instance.
  */
 export function createLogger(prefix: string): Logger {

@@ -413,7 +413,8 @@ describe("integration for error screen ", function () {
             rootNode: document,
             config: undefined,
             locale: "en",
-            styles: reactive("")
+            styles: reactive(""),
+            colorMode: reactive("light")
         });
 
         expect(integration).toBeInstanceOf(ReactIntegration);
@@ -426,7 +427,8 @@ describe("integration for error screen ", function () {
             rootNode: document,
             config: undefined,
             locale: "en",
-            styles: reactive("")
+            styles: reactive(""),
+            colorMode: reactive("light")
         });
 
         function TestComponent() {
@@ -502,11 +504,12 @@ function createIntegration(options?: {
         rootNode: shadowRoot,
         hostNode: host,
         appRoot: wrapper,
-        config: options?.config,
+        config: reactive(options?.config),
         packages,
         serviceLayer,
         locale: options?.locale ?? "en",
-        styles: reactive("")
+        styles: reactive(""),
+        colorMode: reactive("light")
     });
     return { integration, wrapper };
 }

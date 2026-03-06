@@ -1,5 +1,16 @@
 # @open-pioneer/reactivity
 
+## 4.4.0
+
+### Minor Changes
+
+- b28d6bc: Update to chakra 3.31.0
+
+### Patch Changes
+
+- f9aaf46: Bump various dependencies
+- 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
+
 ## 4.3.0
 
 ### Minor Changes

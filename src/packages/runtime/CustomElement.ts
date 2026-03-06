@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
-import { ApiMethods, type ApiExtension } from "./api";
+import { type ApiMethods, type ColorModeValue, type ApiExtension } from "./api";
 import { AppInstance } from "./app";
 import { ErrorId } from "./errors";
 import { ApplicationMetadata } from "./metadata";
 
-const LOG = createLogger("runtime:CustomElement");
+const LOG = createLogger(sourceId);
 
 /**
  * Options for the {@link createCustomElement} function.
@@ -87,6 +88,16 @@ export interface ApplicationOverrides {
      * The new application locale.
      */
     locale?: string;
+
+    /**
+     * The new color mode.
+     */
+    colorMode?: ColorModeValue | "system";
+
+    /**
+     * The new used chakra system config.
+     */
+    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**
@@ -103,9 +114,27 @@ export interface ApplicationConfig {
     locale?: string | undefined;
 
     /**
+     * Configures the application's initial color mode.
+     *
+     * Use `system` to use the user's preferred color mode, derived from the browser or operating system.
+     *
+     * Default: `light`.
+     */
+    colorMode?: ColorModeValue | "system";
+
+    /**
      * Properties specified here will override default properties of the application's packages.
      */
     properties?: ApplicationProperties | undefined;
+
+    /**
+     * Chakra styled system object.
+     *
+     * Used to configure chakra's theme.
+     *
+     * NOTE: This setting has priority over {@link CustomElementOptions.chakraSystemConfig}.
+     */
+    chakraSystemConfig?: ChakraSystemConfig;
 }
 
 /**

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { sourceId } from "open-pioneer:source-info";
 import { createLogger, destroyResource, Error, Resource } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
@@ -7,7 +8,7 @@ import { createPackageIntl, PackageIntl } from "./PackageIntl";
 import { getBrowserLocales, I18nConfig } from "./pick";
 import { computed, reactive, watchValue } from "@conterra/reactivity-core";
 import { ReadonlyValue } from "../utils/ReadonlyValue";
-const LOG = createLogger("runtime:i18n");
+const LOG = createLogger(sourceId);
 
 /**
  * Represents i18n info for the entire application.

@@ -1,16 +1,18 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { createToaster, CreateToasterProps, CreateToasterReturn } from "@chakra-ui/react";
+import { createLogger, Resource } from "@open-pioneer/core";
+import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
+import { sourceId } from "open-pioneer:source-info";
 import type {
     NotificationLevel,
     NotificationOptions,
     NotificationService,
     NotifierProperties,
+    OffsetsObject,
     SimpleNotificationOptions
 } from "./api";
-import { Resource, createLogger } from "@open-pioneer/core";
-import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
-const LOG = createLogger("notifier:NotificationService");
+const LOG = createLogger(sourceId);
 
 export type ToasterObject = CreateToasterReturn;
 
@@ -42,6 +44,7 @@ export class NotificationServiceImpl implements InternalNotificationAPI {
 
         this.toaster = createToaster({
             placement: getPlacement(typedProperties.position),
+            offsets: getOffsets(typedProperties.offsets),
             pauseOnPageIdle: true
         });
 
@@ -161,5 +164,35 @@ function getPlacement(
             return "bottom-end";
         default:
             return "top-end";
+    }
+}
+
+function getOffsets(offsetsConfig: NotifierProperties["offsets"]): OffsetsObject | undefined {
+    if (!offsetsConfig) {
+        return undefined;
+    }
+
+    if (typeof offsetsConfig === "string") {
+        return {
+            left: offsetsConfig,
+            top: offsetsConfig,
+            right: offsetsConfig,
+            bottom: offsetsConfig
+        };
+    }
+
+    if (typeof offsetsConfig !== "object") {
+        throw new Error("Unexpected 'offsets' property value: must be a string or an object.");
+    }
+    checkProp(offsetsConfig, "left");
+    checkProp(offsetsConfig, "top");
+    checkProp(offsetsConfig, "right");
+    checkProp(offsetsConfig, "bottom");
+    return offsetsConfig;
+}
+
+function checkProp(obj: Partial<OffsetsObject>, prop: keyof OffsetsObject) {
+    if (!obj[prop]) {
+        throw new Error(`Offset '${prop}' is required.`);
     }
 }

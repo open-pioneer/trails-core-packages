@@ -74,6 +74,16 @@ export interface NotificationService extends DeclaredService<"notifier.Notificat
 }
 
 /**
+ * Offsets from the edge of the screen; one css value for each edge.
+ */
+export interface OffsetsObject {
+    left: string;
+    top: string;
+    right: string;
+    bottom: string;
+}
+
+/**
  * Properties supported by this package.
  */
 export interface NotifierProperties {
@@ -83,4 +93,13 @@ export interface NotifierProperties {
      * @default "top-right"
      */
     position?: "top" | "top-left" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
+
+    /**
+     * Offset from the edge of the screen.
+     *
+     * The default value is inherited from Chakra (currently `"1rem"`).
+     *
+     * See also https://chakra-ui.com/docs/components/toast#offset.
+     */
+    offsets?: string | OffsetsObject | null;
 }

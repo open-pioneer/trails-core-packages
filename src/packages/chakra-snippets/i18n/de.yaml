@@ -4,3 +4,8 @@ messages:
     copied: kopiert
   close-button:
     ariaLabel: Schließen
+  carousel:
+    next: Weiter
+    prev: Zurück
+  password-input:
+    triggerAriaLabel: Passwortsichtbarkeit umschalten
