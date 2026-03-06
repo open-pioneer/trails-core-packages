@@ -56,8 +56,9 @@ it("parses package metadata into internal package representations", function () 
     const testi18n: AppIntl = {
         locale: "test-locale",
         supportedMessageLocales: [],
+        destroy() {},
         createPackageI18n() {
-            return createEmptyPackageIntl("zh-CN");
+            return { value: createEmptyPackageIntl("zh-CN") };
         },
         supportsLocale() {
             return true;
@@ -69,13 +70,13 @@ it("parses package metadata into internal package representations", function () 
 
     const packageA = packages.find((b) => b.name === "a")!;
     expect(packageA).toBeDefined();
-    expect(packageA.intl.locale).toEqual("zh-CN");
+    expect(packageA.intl.value.locale).toEqual("zh-CN");
 
     const serviceA = packageA.services.find((s) => s.name === "A")!;
     expect(serviceA).toBeDefined();
     expect(serviceA.id).toStrictEqual("a::A");
     expect(serviceA.state).toStrictEqual("not-constructed");
-    expect(serviceA.intl.locale).toEqual("zh-CN");
+    expect(serviceA.intl.value.locale).toEqual("zh-CN");
     expect(serviceA.instance).toBeUndefined();
     expect(serviceA.dependencies).toStrictEqual([
         {
@@ -88,7 +89,7 @@ it("parses package metadata into internal package representations", function () 
 
     const packageB = packages.find((b) => b.name === "b")!;
     expect(packageB).toBeDefined();
-    expect(packageB.intl.locale).toEqual("zh-CN");
+    expect(packageB.intl.value.locale).toEqual("zh-CN");
 
     const serviceB = packageB.services.find((s) => s.name === "B")!;
     expect(serviceB).toBeDefined();
@@ -230,7 +231,7 @@ it("passes package properties to created ServiceRepr instances", function () {
 function createPackageFromMetadata(
     data: PackageMetadata,
     properties?: Record<string, unknown>,
-    i18n?: PackageIntl
+    intl?: PackageIntl
 ) {
-    return PackageRepr.create(data, i18n ?? createEmptyPackageIntl(), properties);
+    return PackageRepr.create(data, { value: intl ?? createEmptyPackageIntl() }, properties);
 }

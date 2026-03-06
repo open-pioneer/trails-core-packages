@@ -5,10 +5,14 @@ import { createCustomElement } from "@open-pioneer/runtime";
 import * as appMetadata from "open-pioneer:app";
 import { AppUI } from "./AppUI";
 
+const URL_PARAMS = new URLSearchParams(window.location.search);
+const FORCED_LANG = URL_PARAMS.get("lang") || undefined;
+
 const Element = createCustomElement({
     component: AppUI,
     appMetadata,
     config: {
+        locale: FORCED_LANG,
         properties: {
             "@open-pioneer/notifier": {
                 position: "top-right"

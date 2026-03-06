@@ -6,6 +6,7 @@ import { InterfaceNameForServiceType } from "../DeclaredService";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 
 /*
 
@@ -111,7 +112,20 @@ export function usePropertiesInternal(packageName: string): Readonly<Record<stri
  */
 export function useIntlInternal(packageName: string): PackageIntl {
     const context = useContext(PackageContext);
-    return checkContext("useIntl", context).getIntl(packageName);
+    const contextData = checkContext("useIntl", context);
+
+    if (import.meta.hot) {
+        // Only reactive during dev
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const intl = useReactiveSnapshot(
+            () => contextData.getIntl(packageName),
+            [packageName, contextData]
+        );
+        return intl;
+    } else {
+        // Not reactive in production code
+        return contextData.getIntl(packageName);
+    }
 }
 
 function checkContext(
