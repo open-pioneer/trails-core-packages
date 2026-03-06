@@ -1,5 +1,30 @@
 # @open-pioneer/runtime
 
+## 4.5.0
+
+### Minor Changes
+
+- 89d743b: Provide `runtime.ThemeService`:
+    - Supports switching between color modes `light` and `dark`.
+    - Supports changing the chakra theme ("systemConfig") at runtime.
+    - Supports reactive access to the preferred (system) color mode.
+
+- 89d743b: Support for color modes (light and dark).
+  The default color mode remains `light` for backwards compatibility.
+- 94b0cca: API initialization does no longer block rendering of the user interface.
+- 4e76893: Update Chakra UI to 3.32.0
+- c866e13: createCustomElement: Add support for configuration of `chakraSystemConfig` in `config` and `resolveConfig`.
+  This is needed when the specific application theme depends on asynchronous data.
+
+### Patch Changes
+
+- Updated dependencies [89d743b]
+- Updated dependencies [4e76893]
+- Updated dependencies [19b26dc]
+    - @open-pioneer/base-theme@4.5.0
+    - @open-pioneer/core@4.5.0
+    - @open-pioneer/reactivity@4.5.0
+
 ## 4.4.0
 
 ### Minor Changes
