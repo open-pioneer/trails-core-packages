@@ -5,6 +5,7 @@ export { type PackageIntl, type PackageIntlExtensions, type RichTextValue } from
 export {
     type AdvancedCustomElementOptions,
     type ApplicationConfig,
+    type ApplicationOverrides,
     type ApplicationElement,
     type ApplicationElementConstructor,
     type ApplicationProperties,

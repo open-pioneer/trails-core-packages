@@ -4,7 +4,7 @@ import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
 import { ComponentType } from "react";
 import { ApiMethods, type ApiExtension } from "./api";
-import { AppInstance, AppOverrides } from "./app";
+import { AppInstance } from "./app";
 import { ErrorId } from "./errors";
 import { ApplicationMetadata } from "./metadata";
 
@@ -67,9 +67,26 @@ export interface ConfigContext {
     hostElement: HTMLElement;
 
     /**
+     * Defined when the application forcefully restarts with new options.
+     */
+    overrides: ApplicationOverrides | undefined;
+
+    /**
      * Returns an attribute from the application's root node.
      */
     getAttribute(name: string): string | undefined;
+}
+
+/**
+ * Application overrides are defined when the is explicitly being restarted with new options.
+ *
+ * Options set through overrides cannot be overwritten by the `resolveConfig` hook.
+ */
+export interface ApplicationOverrides {
+    /**
+     * The new application locale.
+     */
+    locale?: string;
 }
 
 /**
@@ -230,7 +247,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
             return this.#instance.whenAPI();
         }
 
-        #triggerReload(overrides?: AppOverrides) {
+        #triggerReload(overrides?: ApplicationOverrides) {
             // Defer the restart operation a tiny bit so calling code does not get surprised by the application's destruction.
             if (this.#deferredRestart) {
                 clearTimeout(this.#deferredRestart);
@@ -248,7 +265,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
             }, 1);
         }
 
-        #createApplicationInstance(overrides?: AppOverrides) {
+        #createApplicationInstance(overrides?: ApplicationOverrides) {
             return new AppInstance({
                 rootNode: this.#shadowRoot ?? document,
                 hostElement: this,

@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { PackageIntl, Service } from "@open-pioneer/runtime";
 import {
+    APP_ROOT_CLASS,
     CustomChakraProvider,
     PackageContext,
     PackageContextMethods
 } from "@open-pioneer/runtime/test-support";
-import { FC, ReactNode, useMemo } from "react";
+import { FC, ReactNode, useInsertionEffect, useMemo } from "react";
 import { createIntl } from "./vanilla";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,6 +63,16 @@ export interface PackageContextProviderProps {
 export const PackageContextProvider: FC<PackageContextProviderProps> = (props) => {
     const { children, ...rest } = props;
     const [locale, contextMethods] = useMemo(() => createPackageContextMethods(rest), [rest]);
+
+    useInsertionEffect(() => {
+        // Needed for chakra tokens / theme etc. to be applied correctly.
+        // In real applications, this is done as part of the web component startup code.
+        // In test scenarios, the body is used as the root node (see props below).
+        document.body.classList.add(APP_ROOT_CLASS);
+        return () => {
+            document.body.classList.remove(APP_ROOT_CLASS);
+        };
+    }, []);
 
     return (
         <CustomChakraProvider rootNode={document} appRoot={document.body} locale={locale}>

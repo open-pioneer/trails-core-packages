@@ -17,6 +17,7 @@ import { ApiExtension, ApiMethods, ApplicationContext, ApplicationLifecycleListe
 import {
     ApplicationElement,
     ApplicationElementConstructor,
+    ApplicationOverrides,
     createCustomElement,
     CustomElementOptions
 } from "./CustomElement";
@@ -543,8 +544,7 @@ describe("i18n support", function () {
     });
 
     it("chooses locale from the supported browser locales (german)", async () => {
-        const spy = vi.spyOn(window.navigator, "languages", "get");
-        spy.mockReturnValue(["de-DE", "de", "en"]);
+        mockNavigatorLocales(["de-DE", "de", "en"]);
 
         const api = await launchApp();
         const { locale, message } = await api.getLocaleInfo();
@@ -553,8 +553,7 @@ describe("i18n support", function () {
     });
 
     it("chooses locale from the supported browser locales (english)", async () => {
-        const spy = vi.spyOn(window.navigator, "languages", "get");
-        spy.mockReturnValue(["en-US", "en"]);
+        mockNavigatorLocales();
 
         const api = await launchApp();
         const { locale, message } = await api.getLocaleInfo();
@@ -563,8 +562,7 @@ describe("i18n support", function () {
     });
 
     it("supports forcing to a specific locale", async () => {
-        const spy = vi.spyOn(window.navigator, "languages", "get");
-        spy.mockReturnValue(["en-US", "en"]);
+        mockNavigatorLocales();
 
         const api = await launchApp({
             config: {
@@ -577,8 +575,7 @@ describe("i18n support", function () {
     });
 
     it("supports forcing to a specific locale with resolveConfig()", async () => {
-        const spy = vi.spyOn(window.navigator, "languages", "get");
-        spy.mockReturnValue(["en-US", "en"]);
+        mockNavigatorLocales();
 
         const api = await launchApp({
             config: {
@@ -598,9 +595,7 @@ describe("i18n support", function () {
     it("supports restarting with a different locale", async () => {
         // Hide i18n warnings
         vi.spyOn(console, "warn").mockImplementation(() => undefined);
-
-        const spy = vi.spyOn(window.navigator, "languages", "get");
-        spy.mockReturnValue(["en-US", "en"]);
+        mockNavigatorLocales();
 
         const api = await launchApp({
             config: {
@@ -620,13 +615,13 @@ describe("i18n support", function () {
 
         // Changes locale and has priority over the `config` above
         await api.setLocale("de-DE");
-        await waitFor(async () => {
-            const { locale } = await api.getLocaleInfo();
-            if (locale !== "de-DE") {
+        const { newLocale, newMessage } = await waitFor(async () => {
+            const { locale: newLocale, message: newMessage } = await api.getLocaleInfo();
+            if (newLocale !== "de-DE") {
                 throw new Error("locale not changed yet");
             }
+            return { newLocale, newMessage };
         });
-        const { locale: newLocale, message: newMessage } = await api.getLocaleInfo();
         expect(newLocale).toBe("de-DE");
         expect(newMessage).toBe("Hallo Welt");
 
@@ -634,6 +629,34 @@ describe("i18n support", function () {
         await expect(() => api.setLocale("zh-CN")).rejects.toThrowErrorMatchingInlineSnapshot(
             `[Error: runtime:unsupported-locale: Unsupported locale 'zh-CN' (supported locales: de, en, de-simple).]`
         );
+    });
+
+    it("exposes 'overrides' in resolveConfig()", async () => {
+        mockNavigatorLocales();
+
+        const observedOverrides: (ApplicationOverrides | undefined)[] = [];
+        const api = await launchApp({
+            resolveConfig({ overrides }) {
+                observedOverrides.push(overrides);
+                return Promise.resolve({
+                    locale: "de"
+                });
+            }
+        });
+        const { locale } = await api.getLocaleInfo();
+        expect(locale).toBe("de");
+        expect(observedOverrides).toEqual([undefined]);
+
+        // 'en' has higher priority than the 'de' set by resolveConfig.
+        await api.setLocale("en");
+        await waitFor(async () => {
+            const { locale: newLocale } = await api.getLocaleInfo();
+            if (newLocale !== "en") {
+                throw new Error("locale not changed yet");
+            }
+        });
+
+        expect(observedOverrides).toEqual([undefined, { locale: "en" }]);
     });
 
     interface I18nAppApi {
@@ -737,6 +760,12 @@ describe("i18n support", function () {
             }
         };
         return result;
+    }
+
+    function mockNavigatorLocales(locales?: string[]) {
+        const spy = vi.spyOn(window.navigator, "languages", "get");
+        spy.mockReturnValue(locales ?? ["en-US", "en"]);
+        return spy;
     }
 });
 

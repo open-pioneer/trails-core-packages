@@ -186,6 +186,11 @@ function useEmotionCache(rootNode: RootNode): EmotionCache | undefined {
             key: "css",
             container: stylesRoot
         });
+
+        // Disable useless warnings like `The pseudo class ":nth-child" is potentially unsafe when doing server-side rendering. Try changing it to ":nth-of-type".`
+        // See: https://github.com/emotion-js/emotion/issues/1105#issuecomment-557726922
+        cache.compat = true;
+
         setCache(cache);
         return () => {
             setCache(undefined);

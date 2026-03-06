@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useInsertionEffect, useRef } from "react";
 
 /**
  * Creates an event handler with stable function identity.
@@ -17,16 +17,19 @@ import { useCallback, useLayoutEffect, useRef } from "react";
 export function useEvent<Args extends unknown[], Ret>(
     handler: (...args: Args) => Ret
 ): typeof handler {
-    const handlerRef = useRef<typeof handler | null>(null);
+    const handlerRef = useRef<typeof handler>(undefined);
 
-    useLayoutEffect(() => {
+    // Earliest timing as of React 19
+    useInsertionEffect(() => {
         handlerRef.current = handler;
     });
 
-    const stableHandler = useCallback((...args: Args): Ret => {
+    // useRef instead of useMemo/useCallback for guaranteed single time construction.
+    const stableRef = useRef<typeof handler>(undefined);
+    stableRef.current ??= function useEventHandler(...args: Args): Ret {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const currentHandler = handlerRef.current!;
         return currentHandler(...args);
-    }, []);
-    return stableHandler;
+    };
+    return stableRef.current;
 }

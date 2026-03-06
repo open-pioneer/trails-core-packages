@@ -20,7 +20,12 @@ import {
     RUNTIME_AUTO_START
 } from "../builtin-services";
 import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
-import { ApplicationConfig, ApplicationProperties, CustomElementOptions } from "../CustomElement";
+import {
+    ApplicationConfig,
+    ApplicationOverrides,
+    ApplicationProperties,
+    CustomElementOptions
+} from "../CustomElement";
 import { createAppRoot, isShadowRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
 import { AppIntl, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "../i18n";
@@ -46,17 +51,13 @@ export interface AppOptions {
     elementOptions: CustomElementOptions;
 
     /** These have higher priority than the options in `elementOptions`. */
-    overrides: AppOverrides | undefined;
+    overrides: ApplicationOverrides | undefined;
 
     /**
      * A callback to restart the application with new options.
      * Currently only used for reloading with a certain locale.
      */
-    restart: (overrides?: AppOverrides) => void;
-}
-
-export interface AppOverrides {
-    locale?: string;
+    restart: (overrides?: ApplicationOverrides) => void;
 }
 
 export type AppState = "not-started" | "starting" | "started" | "destroyed" | "error";

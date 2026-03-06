@@ -42,7 +42,7 @@ jobs:
         run: pnpm build-docs
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build
           path: dist/
@@ -93,7 +93,7 @@ jobs:
           persist-credentials: false
 
       - name: Load artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: build
           path: dist/
