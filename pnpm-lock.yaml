@@ -39,6 +39,9 @@ catalogs:
     '@open-pioneer/build-support':
       specifier: ^3.0.5
       version: 3.0.5
+    '@open-pioneer/changesets-release-line':
+      specifier: 0.1.0-dev.20260309143038
+      version: 0.1.0-dev.20260309143038
     '@open-pioneer/check-pnpm-duplicates':
       specifier: ^0.3.0
       version: 0.3.0
@@ -222,6 +225,9 @@ importers:
       '@open-pioneer/build-support':
         specifier: 'catalog:'
         version: 3.0.5
+      '@open-pioneer/changesets-release-line':
+        specifier: 'catalog:'
+        version: 0.1.0-dev.20260309143038
       '@open-pioneer/check-pnpm-duplicates':
         specifier: 'catalog:'
         version: 0.3.0
@@ -1613,6 +1619,10 @@ packages:
 
   '@open-pioneer/build-support@3.0.5':
     resolution: {integrity: sha512-hh3CiASsaTypL89TJ2N/8ydnEqPlpHXTbd1Q0HJ62zEjwDdRQDaabbuyZgtMlxcZ5QiMb7AAbGOgfreny+eetA==}
+    engines: {node: '>= 20'}
+
+  '@open-pioneer/changesets-release-line@0.1.0-dev.20260309143038':
+    resolution: {integrity: sha512-TfsZzs11UTFuw9d4sEWWtb/kHhm/tZ31uRJFcELjq4qs52NeEzXzV4CDzXrSqaKLzCW00mWDTmXQJtGs0hMu2w==}
     engines: {node: '>= 20'}
 
   '@open-pioneer/check-pnpm-duplicates@0.3.0':
@@ -5913,6 +5923,8 @@ snapshots:
       - supports-color
 
   '@open-pioneer/build-support@3.0.5': {}
+
+  '@open-pioneer/changesets-release-line@0.1.0-dev.20260309143038': {}
 
   '@open-pioneer/check-pnpm-duplicates@0.3.0':
     dependencies:
