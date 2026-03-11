@@ -6,6 +6,7 @@ import { Service, ServiceOptions } from "../Service";
 import { PackageRepr, PackageReprOptions } from "./PackageRepr";
 import { ServiceLayer } from "./ServiceLayer";
 import { Found } from "./ServiceLookup";
+import { ReferenceSpec } from "./InterfaceSpec";
 import {
     createConstructorFactory,
     createFunctionFactory,
@@ -78,14 +79,7 @@ it("starts and stops services in the expected order", function () {
             ]
         })
     ];
-    const forcedReferences = [
-        {
-            interfaceName: "a.serviceA"
-        }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
-
-    serviceLayer.start();
+    const serviceLayer = startServiceLayer(packages, [{ interfaceName: "a.serviceA" }]);
     expect(events).toEqual(["construct-b", "construct-a"]); // dep before usage
     events = [];
 
@@ -202,17 +196,10 @@ it("destroys services once they are no longer referenced (but not before)", func
             services: [providerService]
         })
     ];
-    const forcedReferences = [
-        {
-            interfaceName: "user-package.A"
-        },
-        {
-            interfaceName: "user-package.B"
-        }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
-
-    serviceLayer.start();
+    const serviceLayer = startServiceLayer(packages, [
+        { interfaceName: "user-package.A" },
+        { interfaceName: "user-package.B" }
+    ]);
     expect(events[0]).toBe("construct-provider"); // before users
     expect(new Set(events.slice(1))).toEqual(new Set(["construct-B", "construct-A"])); // ignore order
     expect(providerService.useCount).toBe(2);
@@ -253,21 +240,10 @@ it("supports using a function to create service instances", function () {
             target: "world"
         }
     });
-    const serviceLayer = new ServiceLayer(
-        [
-            createPackage({
-                name: "a",
-                services: [service]
-            })
-        ],
-        [
-            {
-                interfaceName: "foo"
-            }
-        ]
+    startServiceLayer(
+        [createPackage({ name: "a", services: [service] })],
+        [{ interfaceName: "foo" }]
     );
-
-    serviceLayer.start();
     expect(called).toBe(1);
 
     const instance = service.getInstanceOrThrow();
@@ -350,14 +326,7 @@ it("injects all implementations of an interface when requested", function () {
             ]
         })
     ];
-    const forcedReferences = [
-        {
-            interfaceName: "extensible.Service"
-        }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
-
-    serviceLayer.start();
+    const serviceLayer = startServiceLayer(packages, [{ interfaceName: "extensible.Service" }]);
     extensions.sort();
     extensionsServiceIds.sort();
     expect(extensions).toEqual(["ext1", "ext2"]);
@@ -368,7 +337,7 @@ it("injects all implementations of an interface when requested", function () {
 it("allows access to service instances if the dependency was declared", function () {
     class Dummy {}
 
-    const serviceLayer = new ServiceLayer([
+    const serviceLayer = startServiceLayer([
         createPackage({
             name: "test-package",
             services: [
@@ -386,7 +355,6 @@ it("allows access to service instances if the dependency was declared", function
             uiReferences: [{ interfaceName: "testpackage.Interface" }]
         })
     ]);
-    serviceLayer.start();
 
     const resultDeclared = serviceLayer.getService("test-package", {
         interfaceName: "testpackage.Interface"
@@ -425,14 +393,13 @@ it("injects properties into service instances", function () {
             }
         )
     });
-    const serviceLayer = new ServiceLayer([
+    const serviceLayer = startServiceLayer([
         createPackage({
             name: "test-package",
             services: [service],
             uiReferences: [{ interfaceName: "testpackage.Interface" }]
         })
     ]);
-    serviceLayer.start();
 
     expect(service.instance).toBeDefined();
     expect(properties).toStrictEqual({
@@ -458,4 +425,10 @@ function createPackage(options: Partial<PackageReprOptions>) {
         intl: createEmptyPackageIntl(),
         ...options
     });
+}
+
+function startServiceLayer(packages: PackageRepr[], forcedReferences?: ReferenceSpec[]) {
+    const serviceLayer = new ServiceLayer(packages, forcedReferences);
+    serviceLayer.start();
+    return serviceLayer;
 }
