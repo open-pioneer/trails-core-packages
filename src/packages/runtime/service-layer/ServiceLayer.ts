@@ -242,15 +242,15 @@ export class ServiceLayer {
         if (service.removeRef() <= 0) {
             LOG.debug(`Destroying service '${service.id}'`);
             service.destroy();
-        }
 
-        for (const serviceDeps of Object.values(this.getServiceDeps(service))) {
-            if (Array.isArray(serviceDeps)) {
-                for (const dep of serviceDeps) {
-                    this.destroyService(dep);
+            for (const serviceDeps of Object.values(this.getServiceDeps(service))) {
+                if (Array.isArray(serviceDeps)) {
+                    for (const dep of serviceDeps) {
+                        this.destroyService(dep);
+                    }
+                } else {
+                    this.destroyService(serviceDeps);
                 }
-            } else {
-                this.destroyService(serviceDeps);
             }
         }
     }
