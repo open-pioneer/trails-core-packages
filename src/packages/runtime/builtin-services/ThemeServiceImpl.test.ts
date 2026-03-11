@@ -97,6 +97,21 @@ describe("system color mode", () => {
         mql.change(false);
         expect(service.systemColorMode).toBe("light");
     });
+
+    it("color mode follows system color mode", () => {
+        const mql = mockPrefersDark(false);
+        const service = new ThemeServiceImpl({});
+        expect(service.colorMode).toBe("light");
+
+        service.setColorMode("system");
+        expect(service.colorMode).toBe("light");
+
+        mql.change(true);
+        expect(service.colorMode).toBe("dark");
+
+        mql.change(false);
+        expect(service.colorMode).toBe("light");
+    });
 });
 
 function mockPrefersDark(prefersDark: boolean) {
