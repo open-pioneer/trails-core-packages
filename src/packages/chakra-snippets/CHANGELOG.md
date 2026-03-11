@@ -1,5 +1,15 @@
 # @open-pioneer/chakra-snippets
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.32.0
+
+### Patch Changes
+
+- 4e76893: Add translations for aria labels in `Carousel` and `PasswordInput` snippets.
+
 ## 4.4.0
 
 ### Minor Changes
