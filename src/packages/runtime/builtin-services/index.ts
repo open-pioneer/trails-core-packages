@@ -36,12 +36,12 @@ export type BuiltinPackageProperties = ApplicationContextProperties & ThemeServi
  * The package produced here is always part of the application.
  */
 export function createBuiltinPackage(properties: BuiltinPackageProperties): PackageRepr {
-    const i18n = createEmptyPackageIntl();
+    const intl = createEmptyPackageIntl();
     const apiService = new ServiceRepr({
         name: "ApiServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createConstructorFactory(ApiServiceImpl),
-        intl: i18n,
+        intl: { value: intl },
         interfaces: [
             {
                 interfaceName: RUNTIME_API_SERVICE,
@@ -62,7 +62,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         factory: createFunctionFactory(
             (options) => new ApplicationContextImpl(options, properties)
         ),
-        intl: i18n,
+        intl: { value: intl },
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_CONTEXT,
@@ -74,7 +74,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ApplicationLifecycleEventServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createConstructorFactory(ApplicationLifecycleEventService),
-        intl: i18n,
+        intl: { value: intl },
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
@@ -95,7 +95,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         factory: createFunctionFactory(
             (options) => new NumberParserServiceImpl(options, properties.locale)
         ),
-        intl: i18n,
+        intl: { value: intl },
         interfaces: [
             {
                 interfaceName: RUNTIME_NUMBER_PARSER_SERVICE,
@@ -108,7 +108,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ThemeServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createFunctionFactory(() => new ThemeServiceImpl(properties)),
-        intl: i18n,
+        intl: { value: intl },
         interfaces: [
             {
                 interfaceName: RUNTIME_THEME_SERVICE,
@@ -133,6 +133,6 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
             numberParserService,
             themeService
         ],
-        intl: i18n
+        intl: { value: intl }
     });
 }

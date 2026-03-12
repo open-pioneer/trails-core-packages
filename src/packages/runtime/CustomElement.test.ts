@@ -827,7 +827,7 @@ describe("i18n support", function () {
                     }
                 },
                 locales: ["de", "en", "de-simple"],
-                async loadMessages(locale) {
+                loadMessages: createBox(async function loadMessages(locale) {
                     switch (locale) {
                         case "en":
                             return {
@@ -849,7 +849,7 @@ describe("i18n support", function () {
                             };
                     }
                     throw new Error("Unsupported locale: " + locale);
-                }
+                })
             }
         });
 
