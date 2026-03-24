@@ -39,7 +39,7 @@ const unwantedSnippets = new Set([
 const targetDir = "./unedited";
 
 // Download _all snippets_, overwrite existing ones.
-await $`pnpm chakra snippet add --all --tsx --force --outdir ${targetDir}`;
+await $({ stdio: "inherit" })`pnpm chakra snippet add --all --tsx --force --outdir ${targetDir}`;
 
 // Delete files we don't want
 const newSnippets = await findSnippets();
