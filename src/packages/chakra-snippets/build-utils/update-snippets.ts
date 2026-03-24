@@ -46,6 +46,7 @@ const newSnippets = await findSnippets();
 for (const snippet of newSnippets) {
     if (unwantedSnippets.has(snippet)) {
         const file = resolve(targetDir, snippet);
+        console.log("Deleting unwanted snippet", file);
         unlinkSync(file);
     }
 }
