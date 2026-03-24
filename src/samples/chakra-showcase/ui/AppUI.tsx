@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Box, Center, Heading, Tabs, VStack } from "@chakra-ui/react";
 import { Notifier } from "@open-pioneer/notifier";
+import { ColorModeSwitcher } from "./components/ColorModeSwitcher";
 import { Buttons } from "./sections/Buttons";
 import { Collections } from "./sections/Collections";
 import { DataDisplay } from "./sections/DataDisplay";
+import { DateTime } from "./sections/DateTime";
 import { Disclosure } from "./sections/Disclosure";
 import { Feedback } from "./sections/Feedback";
 import { Forms } from "./sections/Forms";
@@ -13,7 +15,6 @@ import { Overlays } from "./sections/Overlays";
 import { Theming } from "./sections/Theming";
 import { Typography } from "./sections/Typography";
 import { Utilities } from "./sections/Utilities";
-import { ColorModeSwitcher } from "./components/ColorModeSwitcher";
 
 export function AppUI() {
     return (
@@ -41,6 +42,7 @@ export function AppUI() {
                         <Tabs.Trigger value="theming">Theming</Tabs.Trigger>
                         <Tabs.Trigger value="typography">Typography</Tabs.Trigger>
                         <Tabs.Trigger value="buttons">Buttons</Tabs.Trigger>
+                        <Tabs.Trigger value="datetime">Date and Time</Tabs.Trigger>
                         <Tabs.Trigger value="forms">Forms</Tabs.Trigger>
                         <Tabs.Trigger value="collections">Collections</Tabs.Trigger>
                         <Tabs.Trigger value="overlays">Overlays</Tabs.Trigger>
@@ -61,6 +63,9 @@ export function AppUI() {
                         </Tabs.Content>
                         <Tabs.Content value="buttons">
                             <Buttons />
+                        </Tabs.Content>
+                        <Tabs.Content value="datetime">
+                            <DateTime />
                         </Tabs.Content>
                         <Tabs.Content value="forms">
                             <Forms />

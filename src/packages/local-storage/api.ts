@@ -7,8 +7,7 @@ import { DeclaredService } from "@open-pioneer/runtime";
  * Use the interface name `"local-storage.LocalStorageService"` to inject an instance of this interface.
  */
 export interface LocalStorageService
-    extends LocalStorageAPI,
-        DeclaredService<"local-storage.LocalStorageService"> {
+    extends LocalStorageAPI, DeclaredService<"local-storage.LocalStorageService"> {
     /**
      * Whether local storage is supported by the current environment.
      *
