@@ -14,7 +14,6 @@ catalog:
   "@emotion/react": ^11.14.0
   "@formatjs/intl": ^4.1.4
   classnames: ^2.5.1
-  framer-motion: ^12.38.0
   keycloak-js: ^26.2.3
   react-dom: ^19.2.4
   react-json-view: ^1.21.3
