@@ -3,6 +3,8 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
-    i18n: ["en"],
-    styles: "./app.css"
+    i18n: ["en", "de"],
+    ui: {
+        references: ["runtime.ThemeService", "notifier.NotificationService"]
+    }
 });

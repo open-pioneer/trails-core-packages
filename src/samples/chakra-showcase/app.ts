@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createCustomElement } from "@open-pioneer/runtime";
 import * as appMetadata from "open-pioneer:app";
-import { config } from "./theme/config";
-import { SampleUI } from "./SampleUI";
+import { AppUI } from "./ui/AppUI";
 
-const Element = createCustomElement({
-    component: SampleUI,
-    chakraSystemConfig: config,
-    appMetadata
+const element = createCustomElement({
+    component: AppUI,
+    appMetadata: appMetadata
 });
 
-customElements.define("chakra-app", Element);
+customElements.define("chakra-showcase", element);

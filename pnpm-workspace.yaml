@@ -5,9 +5,9 @@ packages:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/cli": ^3.32.0
-  "@chakra-ui/react": ^3.32.0
-  "@ark-ui/react": "^5.31.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
+  "@chakra-ui/cli": ^3.34.0
+  "@chakra-ui/react": ^3.34.0
+  "@ark-ui/react": "^5.34.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@conterra/reactivity-core": ^0.8.1
   "@conterra/reactivity-events": ^0.8.1
   "@emotion/cache": ^11.14.0
@@ -20,6 +20,7 @@ catalog:
   react-use: ^17.6.0
   react-icons: ^5.6.0
   react: ^19.2.4
+  shiki: ^4.0.2
 
   # Devtools
   "@changesets/cli": ^2.30.0
@@ -128,8 +129,11 @@ overrides:
   "csstype@<3.2.3": ">=3.2.3"
 
   # Ensure patched packages have the expected version (patch was tested with this version):
-  "@ark-ui/react": "5.31.0"
-  "@zag-js/toast": "1.33.1"
+  "@ark-ui/react": "5.34.1"
+
+  # Force newer version to avoid printing unnecessary warnings about unsupported browsers in baseline-browser-mapping during development.
+  # See https://github.com/web-platform-dx/baseline-browser-mapping/releases/tag/v2.9.0
+  "baseline-browser-mapping@<2.9.0": "^2.9.0"
 
 allowUnusedPatches: true
 ignorePatchFailures: false
