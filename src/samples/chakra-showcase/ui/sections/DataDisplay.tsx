@@ -33,6 +33,7 @@ import {
 } from "react-icons/io5";
 import { LuCheck, LuPackage, LuShip } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
+import imageUrl from "../../images/trails_logo.svg";
 
 export function DataDisplay() {
     const dataListStats = [
@@ -63,8 +64,8 @@ export function DataDisplay() {
             <Presenter title="Avatar" link="https://chakra-ui.com/docs/components/avatar">
                 <AvatarGroup>
                     <Avatar.Root>
-                        <Avatar.Fallback name="Segun Adebayo" />
-                        <Avatar.Image src="https://bit.ly/sage-adebayo" />
+                        <Avatar.Fallback name="John Doe" />
+                        <Avatar.Image src={imageUrl} />
                     </Avatar.Root>
                 </AvatarGroup>
             </Presenter>
@@ -81,10 +82,6 @@ export function DataDisplay() {
             <Presenter title="Card" link="https://chakra-ui.com/docs/components/card">
                 <Card.Root width="320px">
                     <Card.Body gap="2">
-                        <Avatar.Root size="lg" shape="rounded">
-                            <Avatar.Image src="https://picsum.photos/200/300" />
-                            <Avatar.Fallback name="Nue Camp" />
-                        </Avatar.Root>
                         <Card.Title mt="2">Nue Camp</Card.Title>
                         <Card.Description>
                             This is the card body. Lorem ipsum dolor sit amet, consectetur
@@ -110,7 +107,7 @@ export function DataDisplay() {
             </Presenter>
 
             <Presenter title="Image" link="https://chakra-ui.com/docs/components/image">
-                <Image rounded="md" src="https://i.pravatar.cc/300?img=4" alt="John Doe" />
+                <Image h="200px" src={imageUrl} alt="Open Pioneer Trails logo" />
             </Presenter>
 
             <Presenter title="Data List" link="https://chakra-ui.com/docs/components/data-list">

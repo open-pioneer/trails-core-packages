@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
     ActionBar,
-    Avatar,
     Box,
     Button,
     Checkbox,
@@ -24,7 +23,7 @@ import {
 import { ToggleTip } from "@open-pioneer/chakra-snippets/toggle-tip";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import { useState } from "react";
-import { LuChartLine, LuInfo, LuShare, LuTrash2 } from "react-icons/lu";
+import { LuInfo, LuShare, LuTrash2 } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
 
 interface DialogProps {
@@ -164,33 +163,26 @@ export function Overlays() {
             <Presenter title="Hover Card" link="https://chakra-ui.com/docs/components/hover-card">
                 <HoverCard.Root size="sm">
                     <HoverCard.Trigger asChild>
-                        <Link href="#">@chakra_ui</Link>
+                        <Link href="#">Hover me</Link>
                     </HoverCard.Trigger>
                     <Portal>
                         <HoverCard.Positioner>
                             <HoverCard.Content>
                                 <HoverCard.Arrow />
                                 <Stack gap="4" direction="row">
-                                    <Avatar.Root>
-                                        <Avatar.Image src="https://bit.ly/sage-adebayo" />
-                                        <Avatar.Fallback name="Chakra UI" />
-                                    </Avatar.Root>
                                     <Stack gap="3">
                                         <Stack gap="1">
                                             <Text textStyle="sm" fontWeight="semibold">
-                                                Chakra UI
+                                                Hover Card Title
                                             </Text>
+                                            <Icon size="sm">
+                                                <LuInfo />
+                                            </Icon>
                                             <Text textStyle="sm" color="fg.muted">
-                                                The most powerful toolkit for building modern web
-                                                applications.
+                                                This is the hover card content. It provides
+                                                additional information.
                                             </Text>
                                         </Stack>
-                                        <HStack color="fg.subtle">
-                                            <Icon size="sm">
-                                                <LuChartLine />
-                                            </Icon>
-                                            <Text textStyle="xs">2.5M Downloads</Text>
-                                        </HStack>
                                     </Stack>
                                 </Stack>
                             </HoverCard.Content>

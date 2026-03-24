@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 516 516">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Unbenannter_Verlauf_44);
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: url(#Unbenannter_Verlauf_41);
+      }
+    </style>
+    <linearGradient id="Unbenannter_Verlauf_41" data-name="Unbenannter Verlauf 41" x1="258" y1="0" x2="258" y2="516" gradientUnits="userSpaceOnUse">
+      <stop offset=".04" stop-color="#ff6000"/>
+      <stop offset=".25" stop-color="#ff8406"/>
+      <stop offset=".44" stop-color="#ff9f0b"/>
+      <stop offset=".55" stop-color="#ffa90d"/>
+    </linearGradient>
+    <linearGradient id="Unbenannter_Verlauf_44" data-name="Unbenannter Verlauf 44" x1="254.4" y1="516" x2="254.4" y2="170.11" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#110569"/>
+      <stop offset=".14" stop-color="#250669"/>
+      <stop offset=".35" stop-color="#3f0969"/>
+      <stop offset=".47" stop-color="#490a69"/>
+    </linearGradient>
+  </defs>
+  <g id="Ebene_1-2" data-name="Ebene 1">
+    <g>
+      <g>
+        <circle id="Hintergrund" class="cls-3" cx="258" cy="258" r="258"/>
+        <path class="cls-1" d="m353.62,231.8l-123.01,140.94c-1.09,1.25-2.99,1.38-4.23.29-1.25-1.09-1.38-2.98-.29-4.23l73.31-84-100.09-114.68L19.63,356.84c38.79,93.44,130.9,159.16,238.37,159.16,101.3,0,188.95-58.39,231.16-143.34l-135.54-140.86Z"/>
+      </g>
+      <g>
+        <polygon class="cls-2" points="273.02 249.5 243.44 279.69 215.46 251.71 190.75 276.42 165.57 251.24 142.54 274.27 118.31 250.04 199.42 165.67 273.02 249.5"/>
+        <path class="cls-2" d="m243.44,282.69c-.8,0-1.56-.32-2.12-.88l-25.86-25.86-22.59,22.59c-1.17,1.17-3.07,1.17-4.24,0l-23.06-23.06-20.91,20.91c-1.17,1.17-3.07,1.17-4.24,0l-24.23-24.23c-1.16-1.15-1.17-3.02-.04-4.2l81.1-84.37c.58-.6,1.39-.95,2.23-.92.84.02,1.63.39,2.19,1.02l73.6,83.83c1.04,1.18.99,2.96-.11,4.08l-29.58,30.19c-.56.57-1.33.9-2.13.9h-.02Zm-27.98-33.98c.77,0,1.54.29,2.12.88l25.84,25.84,25.51-26.04-69.61-79.28-76.8,79.89,20.03,20.03,20.91-20.91c1.17-1.17,3.07-1.17,4.24,0l23.06,23.06,22.59-22.59c.59-.59,1.35-.88,2.12-.88Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

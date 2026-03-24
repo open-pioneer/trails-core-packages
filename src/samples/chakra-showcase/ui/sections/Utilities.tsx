@@ -97,7 +97,10 @@ export function Utilities() {
                 </Stack>
             </Presenter>
 
-            <Presenter title="Show" link="https://chakra-ui.com/docs/components/show">
+            <Presenter
+                title="Show (reveals after 4 clicks)"
+                link="https://chakra-ui.com/docs/components/show"
+            >
                 <Stack align="flex-start">
                     <Button variant="outline" onClick={() => setCount(count + 1)}>
                         Value: {count}
