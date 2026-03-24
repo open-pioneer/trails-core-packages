@@ -5,8 +5,8 @@ packages:
 
 # https://pnpm.io/catalogs
 catalog:
-  "@chakra-ui/cli": ^3.32.0
-  "@chakra-ui/react": ^3.32.0
+  "@chakra-ui/cli": ^3.34.0
+  "@chakra-ui/react": ^3.34.0
   "@ark-ui/react": "^5.31.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@conterra/reactivity-core": ^0.8.1
   "@conterra/reactivity-events": ^0.8.1
@@ -128,8 +128,7 @@ overrides:
   "csstype@<3.2.3": ">=3.2.3"
 
   # Ensure patched packages have the expected version (patch was tested with this version):
-  "@ark-ui/react": "5.31.0"
-  "@zag-js/toast": "1.33.1"
+  "@ark-ui/react": "5.34.1"
 
 allowUnusedPatches: true
 ignorePatchFailures: false
