@@ -192,13 +192,7 @@ export function Layout() {
                 </SimpleGrid>
             </Presenter>
 
-            <Presenter
-                title="Splitter"
-                link="https://chakra-ui.com/docs/components/splitter"
-                issues={[
-                    "after using the mouse to resize panels the mouse cursor remains a resize cursor"
-                ]}
-            >
+            <Presenter title="Splitter" link="https://chakra-ui.com/docs/components/splitter">
                 <SplitterRoot panels={[{ id: "a" }, { id: "b" }]} borderWidth="1px" minH="60">
                     <SplitterPanel id="a">
                         <Center boxSize="full" textStyle="2xl">

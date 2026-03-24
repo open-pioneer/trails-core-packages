@@ -209,6 +209,9 @@ patchedDependencies:
   '@open-pioneer/vite-plugin-pioneer':
     hash: fd5482de73584b711f613e03ad2eaa9fc5f7f298d88a69d084852f6554eee2f2
     path: patches/@open-pioneer__vite-plugin-pioneer.patch
+  '@zag-js/splitter':
+    hash: 075d08c3b1dc7858e4c6cc6b336042f36f1ee6c6f2d5e054747a872f1b58f9cb
+    path: patches/@zag-js__splitter.patch
 
 importers:
 
@@ -5019,7 +5022,7 @@ snapshots:
       '@zag-js/select': 1.35.3
       '@zag-js/signature-pad': 1.35.3
       '@zag-js/slider': 1.35.3
-      '@zag-js/splitter': 1.35.3
+      '@zag-js/splitter': 1.35.3(patch_hash=075d08c3b1dc7858e4c6cc6b336042f36f1ee6c6f2d5e054747a872f1b58f9cb)
       '@zag-js/steps': 1.35.3
       '@zag-js/switch': 1.35.3
       '@zag-js/tabs': 1.35.3
@@ -7026,7 +7029,7 @@ snapshots:
       '@zag-js/types': 1.35.3
       '@zag-js/utils': 1.35.3
 
-  '@zag-js/splitter@1.35.3':
+  '@zag-js/splitter@1.35.3(patch_hash=075d08c3b1dc7858e4c6cc6b336042f36f1ee6c6f2d5e054747a872f1b58f9cb)':
     dependencies:
       '@zag-js/anatomy': 1.35.3
       '@zag-js/core': 1.35.3
