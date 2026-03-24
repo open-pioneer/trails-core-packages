@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Box, Center, Heading, Tabs, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Tabs } from "@chakra-ui/react";
 import { Notifier } from "@open-pioneer/notifier";
 import { ColorModeSwitcher } from "./components/ColorModeSwitcher";
 import { Buttons } from "./sections/Buttons";
@@ -18,26 +18,26 @@ import { Utilities } from "./sections/Utilities";
 
 export function AppUI() {
     return (
-        <Center h="full">
+        <>
             <Notifier />
-            <VStack h="full" overflow={"hidden"}>
+            <Flex alignItems="center" gap={4} direction="column" h="100%">
                 <Heading my="4">Chakra UI Showcase</Heading>
                 <ColorModeSwitcher />
                 <Tabs.Root
+                    flex="1 1 auto"
+                    minH="0"
                     defaultValue="layout"
                     variant={"line"}
-                    h="100%"
                     display={"flex"}
                     flexDirection={"column"}
                     maxWidth={"60em"}
                     borderWidth={"1px"}
-                    p="4"
                     borderColor="border.disabled"
                     color="fg.disabled"
                     lazyMount
                     unmountOnExit
                 >
-                    <Tabs.List mx="-4" textWrap="nowrap">
+                    <Tabs.List pt={2} textWrap="nowrap">
                         <Tabs.Trigger value="layout">Layout</Tabs.Trigger>
                         <Tabs.Trigger value="theming">Theming</Tabs.Trigger>
                         <Tabs.Trigger value="typography">Typography</Tabs.Trigger>
@@ -51,7 +51,7 @@ export function AppUI() {
                         <Tabs.Trigger value="dataDisplay">Data Display</Tabs.Trigger>
                         <Tabs.Trigger value="utilities">Utilities</Tabs.Trigger>
                     </Tabs.List>
-                    <Box flex={"1"} minH="0" overflow={"auto"} pe={2}>
+                    <Box flex={"1"} minH="0" overflow={"auto"} px={4} pb={10}>
                         <Tabs.Content value="layout">
                             <Layout />
                         </Tabs.Content>
@@ -90,7 +90,7 @@ export function AppUI() {
                         </Tabs.Content>
                     </Box>
                 </Tabs.Root>
-            </VStack>
-        </Center>
+            </Flex>
+        </>
     );
 }
