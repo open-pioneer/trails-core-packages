@@ -38,3 +38,9 @@ However, this is quite complicated and should only be done if absolutely necessa
 - Main step: Merge the [RELEASE] pull request.
 - When all github actions of the merged pull request are done, check that all published packages have been
   uploaded to the npm public registry and GitHub releases have been created for these packages.
+
+## Updating the Starter Repo
+
+- Create a PR with necessary Updates to OpenLayers Base Packages, Core Packages, Build Tools and other dependencies (use "dev" branch)
+- Create a Changelog entry titled with the Release Date
+- When merging the PR, also add a tag for the release commit (Tag name: same as title of changelog entry)
