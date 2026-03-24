@@ -1,0 +1,16 @@
+{
+    "name": "chakra-showcase",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@chakra-ui/react": "catalog:",
+        "@open-pioneer/notifier": "workspace:*",
+        "@open-pioneer/chakra-snippets": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
+        "@open-pioneer/reactivity": "workspace:*",
+        "@open-pioneer/base-theme": "workspace:*",
+        "react-icons": "catalog:",
+        "shiki": "catalog:",
+        "react": "catalog:"
+    }
+}
