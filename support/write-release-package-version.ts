@@ -4,7 +4,7 @@ import { $, ProcessOutput } from "zx";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const RELEASE_PACKAGE_NAME = "@open-pioneer/runtimeX"; // candidate for checking the new package version for root
+const RELEASE_PACKAGE_NAME = "@open-pioneer/runtime"; // candidate for checking the new package version for root
 const ROOT_PACKAGE_JSON_PATH = resolve("package.json");
 
 type PnpmListEntry = Partial<{
