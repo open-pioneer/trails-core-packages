@@ -130,6 +130,10 @@ overrides:
   # Ensure patched packages have the expected version (patch was tested with this version):
   "@ark-ui/react": "5.34.1"
 
+  # Force newer version to avoid printing unnecessary warnings about unsupported browsers in baseline-browser-mapping during development.
+  # See https://github.com/web-platform-dx/baseline-browser-mapping/releases/tag/v2.9.0
+  "baseline-browser-mapping@<2.9.0": "^2.9.0"
+
 allowUnusedPatches: true
 ignorePatchFailures: false
 patchedDependencies:
