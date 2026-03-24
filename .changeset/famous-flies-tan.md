@@ -1,8 +1,8 @@
 ---
-"@open-pioneer/chakra-snippets": minor
 "@open-pioneer/authentication": minor
 "@open-pioneer/authentication-keycloak": minor
 "@open-pioneer/base-theme": minor
+"@open-pioneer/chakra-snippets": minor
 "@open-pioneer/core": minor
 "@open-pioneer/http": minor
 "@open-pioneer/integration": minor
@@ -14,4 +14,4 @@
 "@open-pioneer/test-utils": minor
 ---
 
-Update to chakra 3.31.0
+Update Chakra UI to 3.32.0

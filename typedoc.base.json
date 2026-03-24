@@ -5,10 +5,5 @@
     "excludeExternals": true,
     "excludePrivate": true,
     "excludeInternal": true,
-    "skipErrorChecking": true,
-    "validation": {
-        "notExported": false,
-        "invalidLink": true,
-        "notDocumented": true
-    }
+    "skipErrorChecking": true
 }

@@ -1,33 +1,27 @@
 # @open-pioneer/authentication
 
+## 4.4.0
+
+### Minor Changes
+
+- b28d6bc: Update to chakra 3.31.0
+
+### Patch Changes
+
+- f9aaf46: Bump various dependencies
+- 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
+
 ## 4.3.0
 
 ### Minor Changes
 
 - eb54023: Update chakra to 3.29.0
 
-### Patch Changes
-
-- Updated dependencies [eb54023]
-    - @open-pioneer/core@4.3.0
-    - @open-pioneer/reactivity@4.3.0
-    - @open-pioneer/runtime@4.3.0
-
 ## 4.2.0
 
 ### Minor Changes
 
 - 1b95a62: Update chakra-ui to 3.28.0
-
-### Patch Changes
-
-- Updated dependencies [81308c0]
-- Updated dependencies [ed3d452]
-- Updated dependencies [0bcda89]
-- Updated dependencies [1b95a62]
-    - @open-pioneer/reactivity@4.2.0
-    - @open-pioneer/runtime@4.2.0
-    - @open-pioneer/core@4.2.0
 
 ## 4.1.0
 
@@ -51,13 +45,6 @@
 
 - b7a854d: Update dependencies
 - adf277b: Update dependencies
-- Updated dependencies [b7a854d]
-- Updated dependencies [3881d08]
-- Updated dependencies [2da02e7]
-- Updated dependencies [adf277b]
-    - @open-pioneer/core@4.1.0
-    - @open-pioneer/reactivity@4.1.0
-    - @open-pioneer/runtime@4.1.0
 
 ## 4.0.0
 
@@ -68,26 +55,12 @@
 ### Patch Changes
 
 - 434bd04: Bump dependencies.
-- Updated dependencies [9f074d8]
-- Updated dependencies [434bd04]
-- Updated dependencies [53c92ba]
-- Updated dependencies [9f074d8]
-- Updated dependencies [1f4fa84]
-    - @open-pioneer/runtime@4.0.0
-    - @open-pioneer/core@4.0.0
-    - @open-pioneer/reactivity@4.0.0
 
 ## 3.1.0
 
 ### Patch Changes
 
 - 1c1ede8: Bump dependencies.
-- Updated dependencies [248dab0]
-- Updated dependencies [1c1ede8]
-    - @open-pioneer/runtime@3.1.0
-    - @open-pioneer/chakra-integration@3.1.0
-    - @open-pioneer/core@3.1.0
-    - @open-pioneer/reactivity@3.1.0
 
 ## 3.0.0
 
@@ -101,14 +74,6 @@
     - ...
 
     For more details, see https://github.com/open-pioneer/trails-core-packages/pull/81
-
-### Patch Changes
-
-- Updated dependencies [9477e54]
-    - @open-pioneer/chakra-integration@3.0.0
-    - @open-pioneer/core@3.0.0
-    - @open-pioneer/reactivity@3.0.0
-    - @open-pioneer/runtime@3.0.0
 
 ## 2.4.0
 
@@ -153,27 +118,12 @@
 ### Patch Changes
 
 - 1b63ebe: Update dependencies
-- Updated dependencies [1b63ebe]
-- Updated dependencies [e3802fb]
-- Updated dependencies [ac39468]
-- Updated dependencies [e3802fb]
-    - @open-pioneer/chakra-integration@2.4.0
-    - @open-pioneer/core@2.4.0
-    - @open-pioneer/reactivity@2.4.0
-    - @open-pioneer/runtime@2.4.0
 
 ## 2.3.0
 
 ### Minor Changes
 
 - 2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
-
-### Patch Changes
-
-- Updated dependencies [2fbaaa0]
-    - @open-pioneer/chakra-integration@2.3.0
-    - @open-pioneer/runtime@2.3.0
-    - @open-pioneer/core@2.3.0
 
 ## 2.2.0
 
@@ -221,10 +171,6 @@
 
 - 39dad46: Switch to a new versioning strategy.
   From now on, packages released by this repository share a common version number.
-- Updated dependencies [39dad46]
-    - @open-pioneer/chakra-integration@2.2.0
-    - @open-pioneer/core@2.2.0
-    - @open-pioneer/runtime@2.2.0
 
 ## 0.3.6
 
@@ -232,28 +178,10 @@
 
 - 5c62522: Update wording and harmonize structure
 - e0b2fae: Update dependencies
-- Updated dependencies [5c62522]
-- Updated dependencies [58ce24f]
-- Updated dependencies [50550d3]
-- Updated dependencies [e0b2fae]
-- Updated dependencies [6cc7fcd]
-    - @open-pioneer/core@1.3.0
-    - @open-pioneer/runtime@2.1.7
 
 ## 0.3.5
 
-### Patch Changes
-
-- Updated dependencies [e945264]
-    - @open-pioneer/runtime@2.1.6
-
 ## 0.3.4
-
-### Patch Changes
-
-- Updated dependencies [90d0cce]
-- Updated dependencies [90d0cce]
-    - @open-pioneer/runtime@2.1.5
 
 ## 0.3.3
 
@@ -261,20 +189,12 @@
 
 - 64645aa: Update to react 18.3
 - b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
-- Updated dependencies [5d3aafd]
-- Updated dependencies [64645aa]
-- Updated dependencies [b3c60f2]
-    - @open-pioneer/core@1.2.3
-    - @open-pioneer/runtime@2.1.4
 
 ## 0.3.2
 
 ### Patch Changes
 
 - 5ff8f30: Update package.json metadata.
-- Updated dependencies [5ff8f30]
-    - @open-pioneer/runtime@2.1.3
-    - @open-pioneer/core@1.2.2
 
 ## 0.3.1
 

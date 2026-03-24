@@ -16,12 +16,17 @@
 
         customElements.whenDefined("api-app").then(() => {
             const app = document.getElementById("app");
-            app.when().then((api) => {
-                let count = 0;
-                setInterval(() => {
-                    api.changeText(`Text has been changed ${++count} times.`);
-                }, 1000);
-            });
+            app.when().then(
+                (api) => {
+                    let count = 0;
+                    setInterval(() => {
+                        api.changeText(`Text has been changed ${++count} times.`);
+                    }, 1000);
+                },
+                (error) => {
+                    console.error("App did not initialize", error);
+                }
+            );
         });
     </script>
 </html>

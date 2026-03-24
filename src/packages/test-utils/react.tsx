@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import type { PackageIntl, Service } from "@open-pioneer/runtime";
+import type { ColorModeValue, PackageIntl, Service } from "@open-pioneer/runtime";
+import { computed, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     APP_ROOT_CLASS,
     CustomChakraProvider,
@@ -39,6 +40,11 @@ export interface PackageContextProviderProps {
     locale?: string;
 
     /**
+     * The color mode.
+     */
+    colorMode?: ColorModeValue;
+
+    /**
      * I18n messages for packages
      */
     messages?: {
@@ -62,7 +68,10 @@ export interface PackageContextProviderProps {
  */
 export const PackageContextProvider: FC<PackageContextProviderProps> = (props) => {
     const { children, ...rest } = props;
-    const [locale, contextMethods] = useMemo(() => createPackageContextMethods(rest), [rest]);
+    const [locale, colorMode, contextMethods] = useMemo(
+        () => createPackageContextMethods(rest),
+        [rest]
+    );
 
     useInsertionEffect(() => {
         // Needed for chakra tokens / theme etc. to be applied correctly.
@@ -75,7 +84,12 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
     }, []);
 
     return (
-        <CustomChakraProvider rootNode={document} appRoot={document.body} locale={locale}>
+        <CustomChakraProvider
+            rootNode={document}
+            appRoot={document.body}
+            locale={locale}
+            colorMode={colorMode}
+        >
             <PackageContext.Provider value={contextMethods}>{children}</PackageContext.Provider>
         </CustomChakraProvider>
     );
@@ -83,13 +97,14 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
 
 function createPackageContextMethods(
     options: Omit<PackageContextProviderProps, "children">
-): [locale: string, PackageContextMethods] {
+): [locale: string, colorMode: ReadonlyReactive<ColorModeValue>, methods: PackageContextMethods] {
     const services = options?.services ?? {};
     const qualifiedServices = options?.qualifiedServices ?? {};
     const properties = options?.properties ?? {};
     const locale = options?.locale ?? "en";
     const messages = options?.messages ?? {};
     const cachedIntl: Record<string, PackageIntl> = {};
+    const colorMode = computed(() => options?.colorMode ?? "light");
     const methods: PackageContextMethods = {
         getService(packageName, interfaceName, options) {
             if (!options.qualifier) {
@@ -144,5 +159,5 @@ function createPackageContextMethods(
             return (cachedIntl[packageName] ??= initIntl());
         }
     };
-    return [locale, methods];
+    return [locale, colorMode, methods];
 }

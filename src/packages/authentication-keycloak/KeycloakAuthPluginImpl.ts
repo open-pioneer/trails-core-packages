@@ -11,10 +11,11 @@ import {
     type DECLARE_SERVICE_INTERFACE
 } from "@open-pioneer/runtime";
 import Keycloak, { KeycloakLogoutOptions } from "keycloak-js";
+import { sourceId } from "open-pioneer:source-info";
 import { KeycloakAuthPlugin } from "./api";
 import { getKeycloakConfig, ResolvedKeycloakOptions } from "./getKeycloakConfig";
 
-const LOG = createLogger("authentication-keycloak:KeycloakAuthPlugin");
+const LOG = createLogger(sourceId);
 
 interface References {
     notifier: NotificationService;
