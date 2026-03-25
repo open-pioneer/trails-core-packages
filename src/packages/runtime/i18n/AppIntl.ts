@@ -59,7 +59,7 @@ export async function initI18n(
     const messages = reactive<MessagesRecord>({});
     if (messageLocales.includes(messageLocale)) {
         try {
-            const messagesSignal = await appMetadata?.loadMessages?.value?.(messageLocale); 
+            const messagesSignal = await appMetadata?.loadMessages?.value?.(messageLocale);
             if (messagesSignal) {
                 messages.value = messagesSignal;
             } else {
