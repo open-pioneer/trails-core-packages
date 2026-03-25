@@ -10,7 +10,8 @@ import {
     switchAnatomy,
     tagAnatomy,
     accordionAnatomy,
-    comboboxAnatomy
+    comboboxAnatomy,
+    datePickerAnatomy
 } from "@chakra-ui/react/anatomy";
 
 // Not exported by chakra
@@ -41,11 +42,11 @@ const tokens: TokenDefinition = {
     cursor: {
         button: { value: "pointer" },
         checkbox: { value: "pointer" },
-        radio: { value: "pointer" },
+        menuitem: { value: "pointer" },
         option: { value: "pointer" },
+        radio: { value: "pointer" },
         slider: { value: "pointer" },
-        switch: { value: "pointer" },
-        menuitem: { value: "pointer" }
+        switch: { value: "pointer" }
     }
 };
 
@@ -54,7 +55,7 @@ const semanticTokens: SemanticTokenDefinition = {
         // define semantic tokens to allow usage of `colorPalette` property in components
         // see: https://chakra-ui.com/docs/theming/customization/colors#color-palette
         trails: {
-            solid: { value: { _light: "{colors.trails.500}", _dark: "{colors.trails.400}" } },
+            solid: { value: { _light: "{colors.trails.500}", _dark: "{colors.trails.500}" } },
             contrast: { value: { _light: "{colors.white}", _dark: "{colors.white}" } },
             fg: { value: { _light: "{colors.trails.700}", _dark: "{colors.trails.200}" } },
             muted: { value: { _light: "{colors.trails.100}", _dark: "{colors.trails.900}" } },
@@ -69,13 +70,27 @@ const semanticTokens: SemanticTokenDefinition = {
         // .600 has no enough contrast, .700 is too dark
         // https://github.com/open-pioneer/trails-openlayers-base-packages/issues/450
         orange: {
-            solid: { value: { _light: "#D2460F", _dark: "{colors.orange.400}" } }
+            solid: { value: { _light: "#D2460F", _dark: "{colors.orange.500}" } }
         },
         green: {
-            solid: { value: { _light: "{colors.green.700}", _dark: "{colors.green.400}" } }
+            solid: { value: { _light: "{colors.green.700}", _dark: "{colors.green.600}" } },
+            customHover: {
+                // see button recipe
+                value: {
+                    _light: "{colors.green.800/90}",
+                    _dark: "var(--chakra-empty)" // undefined -> fallback to default
+                }
+            }
         },
         red: {
-            solid: { value: { _light: "{colors.red.700}", _dark: "{colors.red.400}" } }
+            solid: { value: { _light: "{colors.red.700}", _dark: "{colors.red.600}" } },
+            customHover: {
+                // see button recipe
+                value: {
+                    _light: "{colors.red.800/90}",
+                    _dark: "var(--chakra-empty)" // undefined -> fallback to default
+                }
+            }
         },
 
         // overwrite chakra internal semantic tokens
@@ -114,7 +129,11 @@ const recipes: Record<string, RecipeDefinition> = {
             variant: {
                 solid: {
                     _hover: {
-                        bg: "colorPalette.700"
+                        // Use colorPalette.700 for most palettes, but fix hover for red and green palettes
+                        // because they use colorPalette.700 for their background, too.
+                        "--custom-hover": "{colors.colorPalette.customHover}",
+                        "--normal-hover": "{colors.colorPalette.700}",
+                        bg: "var(--custom-hover, var(--normal-hover))"
                     },
                     _pressed: {
                         bg: "colorPalette.800"
@@ -389,6 +408,29 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
                 _disabled: {
                     cursor: "disabled"
                 }
+            }
+        }
+    },
+    datePicker: {
+        slots: datePickerAnatomy.keys(),
+        base: {
+            trigger: {
+                cursor: "pointer"
+            },
+            viewTrigger: {
+                cursor: "pointer"
+            },
+            prevTrigger: {
+                cursor: "pointer"
+            },
+            nextTrigger: {
+                cursor: "pointer"
+            },
+            tableCellTrigger: {
+                cursor: "pointer"
+            },
+            clearTrigger: {
+                cursor: "pointer"
             }
         }
     }

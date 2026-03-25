@@ -8,6 +8,7 @@ import {
     Heading,
     HStack,
     IconButton,
+    Toggle,
     VStack
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
@@ -39,6 +40,9 @@ export function Buttons() {
                         States
                     </Heading>
                     <HStack wrap="wrap" gap="6">
+                        <Toggle.Root pressed asChild>
+                            <Button>Active</Button>
+                        </Toggle.Root>
                         <Button disabled>disabled</Button>
                         <Button loading>loading</Button>
                         <Button loading loadingText="loading...">
