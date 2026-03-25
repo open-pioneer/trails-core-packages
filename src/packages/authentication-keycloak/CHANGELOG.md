@@ -1,5 +1,11 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.34.0
+
 ## 4.4.0
 
 ### Minor Changes
