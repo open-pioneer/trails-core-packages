@@ -1,11 +1,12 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { createEmptyPackageIntl } from "../i18n";
 import { Service, ServiceOptions } from "../Service";
 import { PackageRepr, PackageReprOptions } from "./PackageRepr";
 import { ServiceLayer } from "./ServiceLayer";
 import { Found } from "./ServiceLookup";
+import { ReferenceSpec } from "./InterfaceSpec";
 import {
     createConstructorFactory,
     createFunctionFactory,
@@ -13,217 +14,218 @@ import {
     ServiceReprOptions
 } from "./ServiceRepr";
 
-it("starts and stops services in the expected order", function () {
-    let events: string[] = [];
+describe("service lifecycle", () => {
+    it("starts and stops services in the expected order", function () {
+        let events: string[] = [];
 
-    class ServiceA implements Service {
-        constructor(
-            options: ServiceOptions<{
-                b: unknown;
-            }>
-        ) {
-            if (!(options.references.b instanceof ServiceB)) {
-                throw new Error("unexpected value for service b");
+        class ServiceA implements Service {
+            constructor(
+                options: ServiceOptions<{
+                    b: unknown;
+                }>
+            ) {
+                if (!(options.references.b instanceof ServiceB)) {
+                    throw new Error("unexpected value for service b");
+                }
+
+                events.push("construct-a");
             }
 
-            events.push("construct-a");
+            destroy(): void {
+                events.push("destroy-a");
+            }
         }
 
-        destroy(): void {
-            events.push("destroy-a");
-        }
-    }
-
-    class ServiceB implements Service {
-        constructor() {
-            events.push("construct-b");
-        }
-
-        destroy() {
-            events.push("destroy-b");
-        }
-    }
-
-    const packages = [
-        createPackage({
-            name: "a",
-            services: [
-                createService({
-                    name: "A",
-                    packageName: "a",
-                    factory: createConstructorFactory(ServiceA),
-                    interfaces: [
-                        {
-                            interfaceName: "a.serviceA"
-                        }
-                    ],
-                    dependencies: [
-                        {
-                            referenceName: "b",
-                            interfaceName: "b.serviceB"
-                        }
-                    ]
-                })
-            ]
-        }),
-        createPackage({
-            name: "b",
-            services: [
-                createService({
-                    name: "B",
-                    packageName: "b",
-                    factory: createConstructorFactory(ServiceB),
-                    interfaces: [{ interfaceName: "b.serviceB" }]
-                })
-            ]
-        })
-    ];
-    const forcedReferences = [
-        {
-            interfaceName: "a.serviceA"
-        }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
-
-    serviceLayer.start();
-    expect(events).toEqual(["construct-b", "construct-a"]); // dep before usage
-    events = [];
-
-    serviceLayer.destroy();
-    expect(events).toEqual(["destroy-a", "destroy-b"]); // reverse order
-});
-
-it("destroys services once they are no longer referenced (but not before)", function () {
-    let events: string[] = [];
-
-    class ServiceUser implements Service {
-        private provider: ServiceProvider;
-        private id: string;
-
-        constructor(
-            options: ServiceOptions<{
-                provider: ServiceProvider;
-            }>
-        ) {
-            this.provider = options.references.provider;
-            if (this.provider.destroyed) {
-                throw new Error("Illegal state: provider destroyed while still being referenced.");
+        class ServiceB implements Service {
+            constructor() {
+                events.push("construct-b");
             }
 
-            if (options.referencesMeta.provider.serviceId !== "provider-package::Provider") {
-                throw new Error("Unexpected service id from reference metadata.");
+            destroy() {
+                events.push("destroy-b");
             }
-
-            const id = options.properties.id;
-            if (typeof id !== "string") {
-                throw new Error("Expected the `id` property to be a string.");
-            }
-            this.id = id;
-
-            events.push(`construct-${id}`);
         }
 
-        destroy(): void {
-            if (this.provider.destroyed) {
-                throw new Error("Illegal state: provider destroyed while still being referenced.");
-            }
+        const packages = [
+            createPackage({
+                name: "a",
+                services: [
+                    createService({
+                        name: "A",
+                        packageName: "a",
+                        factory: createConstructorFactory(ServiceA),
+                        interfaces: [
+                            {
+                                interfaceName: "a.serviceA"
+                            }
+                        ],
+                        dependencies: [
+                            {
+                                referenceName: "b",
+                                interfaceName: "b.serviceB"
+                            }
+                        ]
+                    })
+                ]
+            }),
+            createPackage({
+                name: "b",
+                services: [
+                    createService({
+                        name: "B",
+                        packageName: "b",
+                        factory: createConstructorFactory(ServiceB),
+                        interfaces: [{ interfaceName: "b.serviceB" }]
+                    })
+                ]
+            })
+        ];
+        const serviceLayer = startServiceLayer(packages, [{ interfaceName: "a.serviceA" }]);
+        expect(events).toEqual(["construct-b", "construct-a"]); // dep before usage
+        events = [];
 
-            events.push(`destroy-${this.id}`);
-        }
-    }
-
-    class ServiceProvider implements Service {
-        destroyed = false;
-
-        constructor() {
-            events.push("construct-provider");
-        }
-
-        destroy() {
-            this.destroyed = true;
-            events.push("destroy-provider");
-        }
-    }
-
-    const providerService = createService({
-        name: "Provider",
-        packageName: "provider-package",
-        factory: createConstructorFactory(ServiceProvider),
-        interfaces: [{ interfaceName: "provider.Service" }]
+        serviceLayer.destroy();
+        expect(events).toEqual(["destroy-a", "destroy-b"]); // reverse order
     });
 
-    const packages = [
-        createPackage({
-            name: "user-package",
-            services: [
-                createService({
-                    name: "A",
-                    packageName: "user-package",
-                    factory: createConstructorFactory(ServiceUser),
-                    dependencies: [
-                        {
-                            referenceName: "provider",
-                            interfaceName: "provider.Service"
-                        }
-                    ],
-                    interfaces: [
-                        {
-                            interfaceName: "user-package.A"
-                        }
-                    ],
-                    properties: {
-                        id: "A"
-                    }
-                }),
-                createService({
-                    name: "B",
-                    packageName: "user-package",
-                    factory: createConstructorFactory(ServiceUser),
-                    dependencies: [
-                        {
-                            referenceName: "provider",
-                            interfaceName: "provider.Service"
-                        }
-                    ],
-                    interfaces: [
-                        {
-                            interfaceName: "user-package.B"
-                        }
-                    ],
-                    properties: {
-                        id: "B"
-                    }
-                })
-            ]
-        }),
+    it("destroys service providers when they are no longer used by any dependents", function () {
+        const initEvents: string[] = [];
+        const destroyEvents: string[] = [];
 
-        createPackage({
-            name: "provider-package",
-            services: [providerService]
-        })
-    ];
-    const forcedReferences = [
-        {
-            interfaceName: "user-package.A"
-        },
-        {
-            interfaceName: "user-package.B"
+        class TestService implements Service {
+            #id: string;
+            #deps: TestService[] = [];
+            #initialized = false;
+            #destroyed = false;
+
+            constructor({ references }: ServiceOptions, id: string, expectedDeps: string[]) {
+                this.#id = id;
+
+                for (const expected of expectedDeps) {
+                    const dep = (references as any)[expected] as TestService | undefined;
+                    if (!dep) {
+                        throw new Error(
+                            `Illegal state: service ${id} needs a reference to ${expected}.`
+                        );
+                    }
+                    if (!dep.initialized) {
+                        throw new Error(
+                            `Illegal state: dependency ${dep.id} of service ${id} has not been initialized.`
+                        );
+                    }
+                    this.#deps.push(dep);
+                }
+
+                this.#initialized = true;
+                initEvents.push(id);
+            }
+
+            destroy(): void {
+                if (!this.#initialized) {
+                    throw new Error(`Illegal state: service ${this.id} was never initialized.`);
+                }
+                if (this.#destroyed) {
+                    throw new Error(`Illegal state: service ${this.id} was already destroyed.`);
+                }
+                for (const dep of this.#deps) {
+                    if (dep.destroyed) {
+                        throw new Error(
+                            `Illegal state: dependency ${dep.id} of ${this.id} was destroyed before the service.`
+                        );
+                    }
+                }
+
+                this.#destroyed = true;
+                destroyEvents.push(this.id);
+            }
+
+            get id(): string {
+                return this.#id;
+            }
+
+            get initialized() {
+                return this.#initialized;
+            }
+
+            get destroyed() {
+                return this.#destroyed;
+            }
         }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
 
-    serviceLayer.start();
-    expect(events[0]).toBe("construct-provider"); // before users
-    expect(new Set(events.slice(1))).toEqual(new Set(["construct-B", "construct-A"])); // ignore order
-    expect(providerService.useCount).toBe(2);
-    expect(providerService.state).toBe("constructed");
+        // Tests that:
+        // 1. Dependencies are initialized before the service that requires them
+        // 2. Services are destroyed before their dependencies (reverse order)
+        // 3. Initialization and destruction happens exactly once per service
+        //
+        // Service dependencies:
+        // App -> A -> B -> C
+        //          -> C
+        // App -> B ...
+        const packageName = "test-package";
+        const serviceC = createService({
+            name: "C",
+            packageName,
+            factory: createFunctionFactory((opts) => new TestService(opts, "C", [])),
+            interfaces: [{ interfaceName: "interface.C" }]
+        });
+        const serviceB = createService({
+            name: "B",
+            packageName,
+            factory: createFunctionFactory((opts) => new TestService(opts, "B", ["c"])),
+            dependencies: [{ referenceName: "c", interfaceName: "interface.C" }],
+            interfaces: [{ interfaceName: "interface.B" }]
+        });
+        const serviceA = createService({
+            name: "A",
+            packageName,
+            factory: createFunctionFactory((opts) => new TestService(opts, "A", ["b", "c"])),
+            dependencies: [
+                { referenceName: "b", interfaceName: "interface.B" },
+                { referenceName: "c", interfaceName: "interface.C" }
+            ],
+            interfaces: [{ interfaceName: "interface.A" }]
+        });
 
-    events = [];
-    serviceLayer.destroy();
-    expect(events[2]).toBe("destroy-provider"); // after users
-    expect(new Set(events.slice(0, 2))).toEqual(new Set(["destroy-B", "destroy-A"])); // ignore order
-    expect(providerService.useCount).toBe(0);
-    expect(providerService.state).toBe("destroyed");
+        const packages = [
+            createPackage({
+                name: packageName,
+                services: [serviceA, serviceB, serviceC]
+            })
+        ];
+
+        const serviceLayer = startServiceLayer(packages, [
+            { interfaceName: "interface.A" },
+            { interfaceName: "interface.B" }
+            // C only required indirectly
+        ]);
+
+        // `a` must occur before `b`
+        const isBefore = (events: string[], a: string, b: string) => {
+            const aIdx = events.indexOf(a);
+            if (aIdx < 0) {
+                throw new Error(`Event ${a} not found in array`);
+            }
+            const bIdx = events.indexOf(b);
+            if (bIdx < 0) {
+                throw new Error(`Event ${b} not found in array`);
+            }
+            return aIdx < bIdx;
+        };
+
+        // All services were constructed
+        expect(new Set(initEvents)).toEqual(new Set(["A", "B", "C"]));
+        expect(isBefore(initEvents, "C", "B")).toBe(true); // B depends on C
+        expect(isBefore(initEvents, "C", "A")).toBe(true); // A depends on C
+        expect(isBefore(initEvents, "B", "A")).toBe(true); // A depends on B
+
+        serviceLayer.destroy();
+
+        // All services were destroyed
+        expect(new Set(destroyEvents)).toEqual(new Set(["A", "B", "C"]));
+        expect(isBefore(destroyEvents, "B", "C")).toBe(true); // B depends on C
+        expect(isBefore(destroyEvents, "A", "C")).toBe(true); // A depends on C
+        expect(isBefore(destroyEvents, "A", "B")).toBe(true); // A depends on B
+    });
 });
 
 it("supports using a function to create service instances", function () {
@@ -253,21 +255,10 @@ it("supports using a function to create service instances", function () {
             target: "world"
         }
     });
-    const serviceLayer = new ServiceLayer(
-        [
-            createPackage({
-                name: "a",
-                services: [service]
-            })
-        ],
-        [
-            {
-                interfaceName: "foo"
-            }
-        ]
+    startServiceLayer(
+        [createPackage({ name: "a", services: [service] })],
+        [{ interfaceName: "foo" }]
     );
-
-    serviceLayer.start();
     expect(called).toBe(1);
 
     const instance = service.getInstanceOrThrow();
@@ -350,14 +341,7 @@ it("injects all implementations of an interface when requested", function () {
             ]
         })
     ];
-    const forcedReferences = [
-        {
-            interfaceName: "extensible.Service"
-        }
-    ];
-    const serviceLayer = new ServiceLayer(packages, forcedReferences);
-
-    serviceLayer.start();
+    const serviceLayer = startServiceLayer(packages, [{ interfaceName: "extensible.Service" }]);
     extensions.sort();
     extensionsServiceIds.sort();
     expect(extensions).toEqual(["ext1", "ext2"]);
@@ -368,7 +352,7 @@ it("injects all implementations of an interface when requested", function () {
 it("allows access to service instances if the dependency was declared", function () {
     class Dummy {}
 
-    const serviceLayer = new ServiceLayer([
+    const serviceLayer = startServiceLayer([
         createPackage({
             name: "test-package",
             services: [
@@ -386,7 +370,6 @@ it("allows access to service instances if the dependency was declared", function
             uiReferences: [{ interfaceName: "testpackage.Interface" }]
         })
     ]);
-    serviceLayer.start();
 
     const resultDeclared = serviceLayer.getService("test-package", {
         interfaceName: "testpackage.Interface"
@@ -425,14 +408,13 @@ it("injects properties into service instances", function () {
             }
         )
     });
-    const serviceLayer = new ServiceLayer([
+    const serviceLayer = startServiceLayer([
         createPackage({
             name: "test-package",
             services: [service],
             uiReferences: [{ interfaceName: "testpackage.Interface" }]
         })
     ]);
-    serviceLayer.start();
 
     expect(service.instance).toBeDefined();
     expect(properties).toStrictEqual({
@@ -458,4 +440,10 @@ function createPackage(options: Partial<PackageReprOptions>) {
         intl: { value: createEmptyPackageIntl() },
         ...options
     });
+}
+
+function startServiceLayer(packages: PackageRepr[], forcedReferences?: ReferenceSpec[]) {
+    const serviceLayer = new ServiceLayer(packages, forcedReferences);
+    serviceLayer.start();
+    return serviceLayer;
 }

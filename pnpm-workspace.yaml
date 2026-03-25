@@ -3,68 +3,7 @@ packages:
   - "!**/test-data/**"
   - "!**/dist/**"
 
-# https://pnpm.io/catalogs
-catalog:
-  "@chakra-ui/cli": 3.32.0
-  "@chakra-ui/react": 3.32.0
-  "@ark-ui/react": "^5.31.0"
-  "@conterra/reactivity-core": ^0.8.1
-  "@conterra/reactivity-events": ^0.8.1
-  "@emotion/cache": ^11.14.0
-  "@emotion/react": ^11.14.0
-  "@formatjs/intl": ^4.1.2
-  classnames: ^2.5.1
-  framer-motion: ^12.34.3
-  keycloak-js: ^26.2.3
-  react-dom: ^19.2.4
-  react-json-view: ^1.21.3
-  react-use: ^17.6.0
-  react-icons: ^5.5.0
-  react: ^19.2.4
-
-  # Devtools
-  "@changesets/cli": ^2.29.8
-  "@open-pioneer/build-package-cli": ^3.0.7
-  "@open-pioneer/build-support": ^3.0.5
-  "@open-pioneer/check-pnpm-duplicates": ^0.3.0
-  "@open-pioneer/vite-plugin-pioneer": ^5.1.0
-  "@testing-library/dom": ^10.4.1
-  "@testing-library/jest-dom": ^6.9.1
-  "@testing-library/react": ^16.3.2
-  "@testing-library/user-event": ^14.6.1
-  "@types/js-yaml": ^4.0.9
-  "@types/node": ^20.19.35
-  "@types/react-dom": ^19.2.3
-  "@types/react": ^19.2.14
-  "@typescript-eslint/parser": ^8.56.1
-  "@vitejs/plugin-react-swc": ^4.2.3
-  eslint: ^9.39.3
-  "@eslint/js": ^9.39.3
-  "typescript-eslint": ^8.56.1
-  eslint-config-prettier: ^10.1.8
-  eslint-import-resolver-typescript: ^4.4.4
-  eslint-plugin-headers: ^1.3.4
-  eslint-plugin-import: ^2.32.0
-  eslint-plugin-jsx-a11y: ^6.10.2
-  eslint-plugin-react: ^7.37.5
-  eslint-plugin-react-hooks: ^5.2.0
-  eslint-plugin-unused-imports: ^4.4.1
-  fast-glob: ^3.3.3
-  handlebars: ^4.7.8
-  happy-dom: ^20.7.0
-  husky: ^9.1.7
-  js-yaml: ^4.1.1
-  lint-staged: ^16.2.7
-  prettier: ^3.8.1
-  rimraf: ^6.1.3
-  sass: ^1.97.3
-  tsx: ^4.21.0
-  typedoc: ^0.28.17
-  typescript: ^5.9.3
-  vite: ^7.3.1
-  vite-plugin-eslint: ^1.8.1
-  vitest: ^4.0.18
-  zx: ^8.8.5
+allowUnusedPatches: true
 
 auditConfig:
   ignoreCves:
@@ -77,8 +16,81 @@ auditConfig:
     # See CVE CVE-2025-69873
     - CVE-2026-26996
 
-# Install older versions by default
-resolutionMode: "lowest-direct"
+# https://pnpm.io/catalogs
+catalog:
+  "@ark-ui/react": "^5.34.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
+  "@chakra-ui/cli": ^3.34.0
+  "@chakra-ui/react": ^3.34.0
+
+  # Devtools
+  "@changesets/cli": ^2.30.0
+  "@conterra/reactivity-core": ^0.8.1
+  "@conterra/reactivity-events": ^0.8.1
+  "@emotion/cache": ^11.14.0
+  "@emotion/react": ^11.14.0
+  "@eslint/js": ^9.39.4
+  "@formatjs/intl": ^4.1.4
+  "@open-pioneer/build-package-cli": ^3.0.8
+  "@open-pioneer/build-support": ^3.0.6
+  "@open-pioneer/changesets-release-line": ^0.1.0
+  "@open-pioneer/check-pnpm-duplicates": ^0.3.1
+  "@open-pioneer/vite-plugin-pioneer": ^5.1.1
+  "@testing-library/dom": ^10.4.1
+  "@testing-library/jest-dom": ^6.9.1
+  "@testing-library/react": ^16.3.2
+  "@testing-library/user-event": ^14.6.1
+  "@types/js-yaml": ^4.0.9
+  "@types/node": ^20.19.37
+  "@types/react": ^19.2.14
+  "@types/react-dom": ^19.2.3
+  "@typescript-eslint/parser": ^8.57.1
+  "@vitejs/plugin-react-swc": ^4.3.0
+  classnames: ^2.5.1
+  eslint: ^9.39.4
+  eslint-config-prettier: ^10.1.8
+  eslint-import-resolver-typescript: ^4.4.4
+  eslint-plugin-headers: ^1.3.4
+  eslint-plugin-import: ^2.32.0
+  eslint-plugin-jsx-a11y: ^6.10.2
+  eslint-plugin-react: ^7.37.5
+  eslint-plugin-react-hooks: ^7.0.1
+  eslint-plugin-unused-imports: ^4.4.1
+  fast-glob: ^3.3.3
+  handlebars: ^4.7.8
+  happy-dom: ^20.8.4
+  husky: ^9.1.7
+  js-yaml: ^4.1.1
+  keycloak-js: ^26.2.3
+  lint-staged: ^16.4.0
+  prettier: ^3.8.1
+  react: ^19.2.4
+  react-dom: ^19.2.4
+  react-icons: ^5.6.0
+  react-json-view: ^1.21.3
+  react-use: ^17.6.0
+  rimraf: ^6.1.3
+  sass: ^1.98.0
+  shiki: ^4.0.2
+  tsx: ^4.21.0
+  typedoc: ^0.28.17
+  typescript: ^5.9.3
+  "typescript-eslint": ^8.57.1
+  vite: ^7.3.1
+  vite-plugin-eslint: ^1.8.1
+  vitest: ^4.1.0
+  zx: ^8.8.5
+ignorePatchFailures: false
+
+# Workspace root itself depends on runtime, and all packages (including runtime) have a dev dependency on workspace root
+# for shared scripts.
+ignoreWorkspaceCycles: true
+
+ignoredBuiltDependencies:
+  # Seems to work without build scripts; may revisit later if actually needed.
+  - core-js
+  - unrs-resolver
+
+linkWorkspacePackages: false
 
 # Configure a release cooldown
 minimumReleaseAge: 4320 # 3 days in minutes
@@ -87,80 +99,77 @@ minimumReleaseAgeExclude:
   - "@conterra/*"
   - "immutable@5.1.5" # See overrides
 
-overrides:
-  # https://github.com/advisories/GHSA-7h2j-956f-4vf2
-  "@isaacs/brace-expansion@<=5.0.0": "^5.0.1"
-
-  # https://github.com/advisories/GHSA-5j98-mcp5-4vw2
-  "glob@>=10.x <= 11.0.3": "^11.1.0"
-
-  # https://github.com/advisories/GHSA-38c4-r59v-3vqw
-  "markdown-it@>=13.0.0 <14.1.1": "^14.1.1"
-
-  # https://github.com/advisories/GHSA-mw96-cpmx-2vgc
-  "rollup@>=4.0.0 <4.59.0": "^4.59.0"
-  "rollup@>=2.0.0 <2.80.0": "^2.80.0"
-
-  # https://github.com/advisories/GHSA-7r86-cg39-jmmj
-  # https://github.com/advisories/GHSA-23c5-xmqv-rm74
-  "minimatch@>=3.0.0 <3.1.4": "^3.1.4"
-  "minimatch@>=9.0.0 <9.0.7": "^9.0.9"
-  "minimatch@>=10.0.0 <10.2.3": "^10.2.3"
-
-  # https://github.com/advisories/GHSA-wf6x-7x77-mvgw
-  "immutable@>=5.0.0 <5.1.5": "^5.1.5"
-
-  # We don't actually use the babel plugin.
-  # The babel runtime is also not used as a production dependency.
-  # See e.g. https://github.com/emotion-js/emotion/issues/2371
-  "@emotion/react>@emotion/babel-plugin": "-"
-  "@emotion/styled>@emotion/babel-plugin": "-"
-  "@emotion/react>@babel/runtime": "-"
-  "@emotion/styled>@babel/runtime": "-"
-
-  # Just to get rid of some duplicate dependencies
-  "source-map@<0.6.1": ">=0.6.1"
-  "stylis@<4.3.5": ">= 4.3.5"
-  "csstype@<3.2.3": ">=3.2.3"
-
-  # Ensure patched packages have the expected version (patch was tested with this version):
-  "@ark-ui/react": "5.31.0"
-  "@zag-js/toast": "1.33.1"
-
-allowUnusedPatches: true
-ignorePatchFailures: false
-patchedDependencies:
-  # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
-  # This is ONLY needed in the core packages repository because we're developing the runtime package here.
-  # NOTE: This should be an option.
-  "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
-
-  # Ensure all portals are mounted under `.pioneer-root` div
-  "@ark-ui/react@*": "patches/@ark-ui__react.patch"
-
-peerDependencyRules:
-  allowedVersions:
-    # No release available for recent react, but they appear to work well enough for sample apps.
-    "react-json-view>react": ">=19"
-    "react-json-view>react-dom": ">=19"
-    "flux>react": ">=19"
-
 onlyBuiltDependencies:
   - "@parcel/watcher"
   - "@swc/core"
   - esbuild
 
-ignoredBuiltDependencies:
-  # Seems to work without build scripts; may revisit later if actually needed.
-  - core-js
-  - unrs-resolver
+overrides:
+  # https://github.com/advisories/GHSA-7h2j-956f-4vf2
+
+  # Ensure patched packages have the expected version (patch was tested with this version):
+  "@ark-ui/react": "5.34.1"
+  "@emotion/react>@babel/runtime": "-"
+
+  # We don't actually use the babel plugin.
+  # The babel runtime is also not used as a production dependency.
+  # See e.g. https://github.com/emotion-js/emotion/issues/2371
+  "@emotion/react>@emotion/babel-plugin": "-"
+  "@emotion/styled>@babel/runtime": "-"
+  "@emotion/styled>@emotion/babel-plugin": "-"
+  "@isaacs/brace-expansion@<=5.0.0": "^5.0.1"
+
+  # Force newer version to avoid printing unnecessary warnings about unsupported browsers in baseline-browser-mapping during development.
+  # See https://github.com/web-platform-dx/baseline-browser-mapping/releases/tag/v2.9.0
+  "baseline-browser-mapping@<2.9.0": "^2.9.0"
+  "csstype@<3.2.3": ">=3.2.3"
+
+  # https://github.com/advisories/GHSA-rf6f-7fwh-wjgh
+  "flatted@<=3.4.1": "^3.4.2"
+
+  # https://github.com/advisories/GHSA-5j98-mcp5-4vw2
+  "glob@>=10.x <= 11.0.3": "^11.1.0"
+
+  # https://github.com/advisories/GHSA-wf6x-7x77-mvgw
+  "immutable@>=5.0.0 <5.1.5": "^5.1.5"
+
+  # https://github.com/advisories/GHSA-38c4-r59v-3vqw
+  "markdown-it@>=13.0.0 <14.1.1": "^14.1.1"
+  "minimatch@>=10.0.0 <10.2.3": "^10.2.3"
+
+  # https://github.com/advisories/GHSA-7r86-cg39-jmmj
+  # https://github.com/advisories/GHSA-23c5-xmqv-rm74
+  # https://github.com/advisories/GHSA-3ppc-4f35-3m26
+  "minimatch@>=3.0.0 <3.1.4": "^3.1.4"
+  "minimatch@>=9.0.0 <9.0.7": "^9.0.9"
+  "rollup@>=2.0.0 <2.80.0": "^2.80.0"
+
+  # https://github.com/advisories/GHSA-mw96-cpmx-2vgc
+  "rollup@>=4.0.0 <4.59.0": "^4.59.0"
+
+  # Just to get rid of some duplicate dependencies
+  "source-map@<0.6.1": ">=0.6.1"
+  "stylis@<4.3.5": ">= 4.3.5"
+patchedDependencies:
+  # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
+  # This is ONLY needed in the core packages repository because we're developing the runtime package here.
+  # NOTE: This should be an option.
+
+  # Ensure all portals are mounted under `.pioneer-root` div
+  "@ark-ui/react@*": "patches/@ark-ui__react.patch"
+  "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
+  "@zag-js/splitter": patches/@zag-js__splitter.patch
+
+peerDependencyRules:
+  allowedVersions:
+    # No release available for recent react, but they appear to work well enough for sample apps.
+    "flux>react": ">=19"
+    "react-json-view>react": ">=19"
+    "react-json-view>react-dom": ">=19"
+
+# Install older versions by default
+resolutionMode: "lowest-direct"
 
 # Workaround for current problems regarding our vite plugin + vite's optimizeDeps feature
 shamefullyHoist: true
-
-# Workspace root itself depends on runtime, and all packages (including runtime) have a dev dependency on workspace root
-# for shared scripts.
-ignoreWorkspaceCycles: true
-
-linkWorkspacePackages: false
 strictPeerDependencies: true

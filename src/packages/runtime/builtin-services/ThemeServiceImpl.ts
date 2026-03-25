@@ -30,11 +30,7 @@ export class ThemeServiceImpl implements ThemeService {
     );
 
     constructor({ initialSystemConfig, initialColorMode }: ThemeServiceProperties) {
-        if (initialColorMode === "system") {
-            this.setColorMode(() => this.#systemColorMode.value);
-        } else {
-            this.setColorMode(initialColorMode ?? DEFAULT_INITIAL_COLOR_MODE);
-        }
+        this.setColorMode(initialColorMode ?? DEFAULT_INITIAL_COLOR_MODE);
         if (initialSystemConfig) {
             this.setSystemConfig(initialSystemConfig);
         }
@@ -48,9 +44,11 @@ export class ThemeServiceImpl implements ThemeService {
         return this.#colorMode.value;
     }
 
-    setColorMode(value: ColorModeValue | ColorModeValueSupplier): void {
+    setColorMode(value: ColorModeValue | "system" | ColorModeValueSupplier): void {
         if (typeof value === "function") {
             this.#colorModeSource.value = value;
+        } else if (value === "system") {
+            this.#colorModeSource.value = () => this.#systemColorMode.value;
         } else {
             this.#colorModeSource.value = () => value;
         }

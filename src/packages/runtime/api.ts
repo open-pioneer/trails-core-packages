@@ -177,7 +177,7 @@ export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
      * Can be called with a direct value or a function that returns a value.
      * The function form allows the use of reactive values, which will automatically trigger a color mode update.
      */
-    setColorMode(value: ColorModeValue | ColorModeValueSupplier): void;
+    setColorMode(value: ColorModeValue | "system" | ColorModeValueSupplier): void;
 
     /**
      * The currently active system config.

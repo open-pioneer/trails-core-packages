@@ -1,5 +1,0 @@
-messages:
-  lang: "{ lang , select, de {Deutsch} other {Englisch} }"
-  appHeading: "Demo Seite basierend auf dem Farbschema 'trails'"
-  colorMode: "{ colorMode , select, dark {Dunkel} light {Hell} other {System} }"
-  colorThemeSelectLabel: "Farbschema:"

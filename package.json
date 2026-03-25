@@ -1,6 +1,6 @@
 {
     "name": "core-packages",
-    "version": "0.0.1",
+    "version": "4.4.0",
     "private": true,
     "type": "module",
     "license": "Apache-2.0",
@@ -21,7 +21,7 @@
         "test": "vitest",
         "prepare": "husky && pnpm check-duplicates",
         "ci:test": "pnpm run clean && pnpm run lint && pnpm run check-types && vitest run",
-        "ci:version": "pnpm changeset version && pnpm exec prettier './src/**/CHANGELOG.md' --write && pnpm install",
+        "ci:version": "pnpm changeset version && tsx ./support/write-release-package-version.ts && pnpm exec prettier **/package.json ./src/**/CHANGELOG.md --write && pnpm install",
         "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && pnpm changeset tag"
     },
     "devDependencies": {
@@ -33,6 +33,7 @@
         "@open-pioneer/check-pnpm-duplicates": "catalog:",
         "@open-pioneer/runtime": "workspace:^",
         "@open-pioneer/vite-plugin-pioneer": "catalog:",
+        "@open-pioneer/changesets-release-line": "catalog:",
         "@testing-library/dom": "catalog:",
         "@testing-library/jest-dom": "catalog:",
         "@testing-library/react": "catalog:",
@@ -76,5 +77,5 @@
         "node": ">= 20",
         "pnpm": ">= 10"
     },
-    "packageManager": "pnpm@10.30.3"
+    "packageManager": "pnpm@10.32.1"
 }

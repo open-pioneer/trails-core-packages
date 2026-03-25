@@ -13,26 +13,12 @@
 - f9aaf46: Bump various dependencies
 - 554d58e: Use `workspace:*` instead of `workspace:^` for local package references as default. This ensures that trails packages from this repository are always referenced with their exact version to avoid potential issues with version mismatches. If a project specifically wants to use other versions for some trails packages, a pnpm override can be used to force other versions.
 - 84068f2: Hide emotion warnings for certain css selectors (see [Issue](https://github.com/open-pioneer/trails-core-packages/issues/169)).
-- Updated dependencies [f9aaf46]
-- Updated dependencies [b28d6bc]
-- Updated dependencies [554d58e]
-    - @open-pioneer/base-theme@4.4.0
-    - @open-pioneer/core@4.4.0
-    - @open-pioneer/reactivity@4.4.0
 
 ## 4.3.0
 
 ### Minor Changes
 
 - eb54023: Update chakra to 3.29.0
-
-### Patch Changes
-
-- Updated dependencies [eb54023]
-- Updated dependencies [eb54023]
-    - @open-pioneer/base-theme@4.3.0
-    - @open-pioneer/core@4.3.0
-    - @open-pioneer/reactivity@4.3.0
 
 ## 4.2.0
 
@@ -43,13 +29,6 @@
 ### Patch Changes
 
 - 81308c0: Update to eslint 9
-- Updated dependencies [81308c0]
-- Updated dependencies [ed3d452]
-- Updated dependencies [0bcda89]
-- Updated dependencies [1b95a62]
-    - @open-pioneer/reactivity@4.2.0
-    - @open-pioneer/core@4.2.0
-    - @open-pioneer/base-theme@4.2.0
 
 ## 4.1.0
 
@@ -59,12 +38,6 @@
 - 3881d08: - Update Chakra UI from 3.22.0 to 3.24.2
     - Update to latest Chakra snippets
 - adf277b: Update dependencies
-- Updated dependencies [b7a854d]
-- Updated dependencies [2da02e7]
-- Updated dependencies [adf277b]
-    - @open-pioneer/base-theme@4.1.0
-    - @open-pioneer/core@4.1.0
-    - @open-pioneer/reactivity@4.1.0
 
 ## 4.0.0
 
@@ -114,14 +87,6 @@
 ### Patch Changes
 
 - 434bd04: Bump dependencies.
-- Updated dependencies [9f074d8]
-- Updated dependencies [b5f25d8]
-- Updated dependencies [434bd04]
-- Updated dependencies [9f074d8]
-- Updated dependencies [1f4fa84]
-    - @open-pioneer/base-theme@4.0.0
-    - @open-pioneer/core@4.0.0
-    - @open-pioneer/reactivity@4.0.0
 
 ## 3.1.0
 
@@ -183,11 +148,6 @@
 ### Patch Changes
 
 - 1c1ede8: Bump dependencies.
-- Updated dependencies [1c1ede8]
-    - @open-pioneer/base-theme@3.1.0
-    - @open-pioneer/chakra-integration@3.1.0
-    - @open-pioneer/core@3.1.0
-    - @open-pioneer/runtime-react-support@3.1.0
 
 ## 3.0.0
 
@@ -202,14 +162,6 @@
 
     For more details, see https://github.com/open-pioneer/trails-core-packages/pull/81
 
-### Patch Changes
-
-- Updated dependencies [9477e54]
-    - @open-pioneer/base-theme@3.0.0
-    - @open-pioneer/chakra-integration@3.0.0
-    - @open-pioneer/core@3.0.0
-    - @open-pioneer/runtime-react-support@3.0.0
-
 ## 2.4.0
 
 ### Minor Changes
@@ -220,12 +172,6 @@
 ### Patch Changes
 
 - 1b63ebe: Update dependencies
-- Updated dependencies [1b63ebe]
-- Updated dependencies [e3802fb]
-    - @open-pioneer/chakra-integration@2.4.0
-    - @open-pioneer/base-theme@2.4.0
-    - @open-pioneer/core@2.4.0
-    - @open-pioneer/runtime-react-support@2.4.0
 
 ## 2.3.0
 
@@ -233,25 +179,12 @@
 
 - 2fbaaa0: Use normal `dependencies` instead of `peerDependencies`. Peer dependencies have some usability issues (and bugs) when used at scale.
 
-### Patch Changes
-
-- Updated dependencies [2fbaaa0]
-    - @open-pioneer/runtime-react-support@2.3.0
-    - @open-pioneer/chakra-integration@2.3.0
-    - @open-pioneer/base-theme@2.3.0
-    - @open-pioneer/core@2.3.0
-
 ## 2.2.0
 
 ### Patch Changes
 
 - 39dad46: Switch to a new versioning strategy.
   From now on, packages released by this repository share a common version number.
-- Updated dependencies [39dad46]
-    - @open-pioneer/base-theme@2.2.0
-    - @open-pioneer/chakra-integration@2.2.0
-    - @open-pioneer/core@2.2.0
-    - @open-pioneer/runtime-react-support@2.2.0
 
 ## 2.1.7
 
@@ -262,13 +195,6 @@
   The `type` keyword can now be omitted.
 - e0b2fae: Update dependencies
 - 6cc7fcd: Allow synchronous `getApiMethods()` when implementing an `ApiExtension`.
-- Updated dependencies [5c62522]
-- Updated dependencies [50550d3]
-- Updated dependencies [e0b2fae]
-    - @open-pioneer/chakra-integration@1.1.4
-    - @open-pioneer/core@1.3.0
-    - @open-pioneer/base-theme@0.3.3
-    - @open-pioneer/runtime-react-support@1.0.2
 
 ## 2.1.6
 
@@ -303,34 +229,14 @@
 
 - 64645aa: Update to react 18.3
 - b3c60f2: Harmonize naming of Open Pioneer Trails in READMEs and package.json files.
-- Updated dependencies [5d3aafd]
-- Updated dependencies [64645aa]
-- Updated dependencies [64645aa]
-- Updated dependencies [b3c60f2]
-    - @open-pioneer/core@1.2.3
-    - @open-pioneer/runtime-react-support@1.0.2
-    - @open-pioneer/chakra-integration@1.1.3
-    - @open-pioneer/base-theme@0.3.2
 
 ## 2.1.3
 
 ### Patch Changes
 
 - 5ff8f30: Update package.json metadata.
-- Updated dependencies [be236af]
-- Updated dependencies [5ff8f30]
-    - @open-pioneer/base-theme@0.3.1
-    - @open-pioneer/runtime-react-support@1.0.1
-    - @open-pioneer/chakra-integration@1.1.2
-    - @open-pioneer/core@1.2.2
 
 ## 2.1.2
-
-### Patch Changes
-
-- Updated dependencies [6380aa4]
-    - @open-pioneer/base-theme@0.3.0
-    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.1.1
 
@@ -392,19 +298,7 @@
 
 ## 2.0.2
 
-### Patch Changes
-
-- Updated dependencies [11b1428]
-    - @open-pioneer/core@1.2.1
-    - @open-pioneer/runtime-react-support@1.0.0
-
 ## 2.0.1
-
-### Patch Changes
-
-- Updated dependencies [a18d227]
-    - @open-pioneer/core@1.2.0
-    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 2.0.0
 
@@ -465,11 +359,6 @@
 ### Patch Changes
 
 - f5c0e31: Bump @formatjs/intl version
-- Updated dependencies [f5c0e31]
-- Updated dependencies [6f954e3]
-    - @open-pioneer/chakra-integration@1.1.1
-    - @open-pioneer/base-theme@0.2.0
-    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 1.1.0
 
@@ -478,29 +367,9 @@
 - 6632892: Implement support for custom chakra themes via the `theme` parameter in `createCustomElement()`.
   `theme` from `@open-pioneer/base-theme` is used as default when no other theme is configured.
 
-### Patch Changes
-
-- Updated dependencies [6632892]
-- Updated dependencies [6632892]
-    - @open-pioneer/base-theme@0.1.0
-    - @open-pioneer/chakra-integration@1.1.0
-    - @open-pioneer/runtime-react-support@1.0.0
-
 ## 1.0.2
 
-### Patch Changes
-
-- Updated dependencies [69c0fcd]
-    - @open-pioneer/core@1.1.0
-    - @open-pioneer/runtime-react-support@1.0.0
-
 ## 1.0.1
-
-### Patch Changes
-
-- Updated dependencies [88fd710]
-    - @open-pioneer/core@1.0.1
-    - @open-pioneer/runtime-react-support@1.0.0
 
 ## 1.0.0
 
@@ -508,22 +377,11 @@
 
 - 22ff68a: Initial release
 
-### Patch Changes
-
-- Updated dependencies [22ff68a]
-    - @open-pioneer/chakra-integration@1.0.0
-    - @open-pioneer/core@1.0.0
-    - @open-pioneer/runtime-react-support@1.0.0
-
 ## 0.1.5
 
 ### Patch Changes
 
 - 9eac5c9: Use peer dependencies for (most) dependencies
-- Updated dependencies [9eac5c9]
-    - @open-pioneer/runtime-react-support@0.1.2
-    - @open-pioneer/chakra-integration@0.1.4
-    - @open-pioneer/core@0.1.4
 
 ## 0.1.4
 
@@ -531,45 +389,27 @@
 
 - 234b3be: Fix registrations in ServiceRegistry
 - 49ba4e1: Use build-package CLI to build.
-- Updated dependencies [49ba4e1]
-    - @open-pioneer/chakra-integration@0.1.3
-    - @open-pioneer/core@0.1.3
-    - @open-pioneer/runtime-react-support@0.1.1
 
 ## 0.1.3
 
 ### Patch Changes
 
 - e752d49: Use new runtime-react-support package
-- Updated dependencies [e752d49]
-    - @open-pioneer/runtime-react-support@0.1.0
 
 ## 0.1.2
 
 ### Patch Changes
 
 - a40f12d: Update build-package tool. TypeScript declaration files should now be available.
-- Updated dependencies [a40f12d]
-    - @open-pioneer/chakra-integration@0.1.2
-    - @open-pioneer/core@0.1.2
 
 ## 0.1.1
 
 ### Patch Changes
 
 - e1c7295: Compiled with build-package 0.5.2
-- Updated dependencies [e1c7295]
-    - @open-pioneer/chakra-integration@0.1.1
-    - @open-pioneer/core@0.1.1
 
 ## 0.1.0
 
 ### Minor Changes
 
 - 77f7d5c: Initial test release
-
-### Patch Changes
-
-- Updated dependencies [77f7d5c]
-    - @open-pioneer/chakra-integration@0.1.0
-    - @open-pioneer/core@0.1.0

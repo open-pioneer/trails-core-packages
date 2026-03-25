@@ -3,7 +3,6 @@
 import { TagsInput as ChakraTagsInput } from "@chakra-ui/react"
 import { CloseButton } from "./close-button"
 import * as React from "react"
-import { TagsInputRootBaseProps } from "@ark-ui/react"
 
 interface TagsInputControlProps extends ChakraTagsInput.ControlProps {
   clearable?: boolean
@@ -73,7 +72,7 @@ export const TagsInputItemInput = ChakraTagsInput.ItemInput
 export const TagsInputItemContext = ChakraTagsInput.ItemContext
 export const TagsInputRootProvider = ChakraTagsInput.RootProvider
 // PATCH: Add type annotation
-export const TagsInputPropsProvider: React.Provider<TagsInputRootBaseProps> = ChakraTagsInput.PropsProvider
+export const TagsInputPropsProvider: typeof ChakraTagsInput.PropsProvider  = ChakraTagsInput.PropsProvider
 export const TagsInputLabel = ChakraTagsInput.Label
 export const TagsInputInput = ChakraTagsInput.Input
 export const TagsInputContext = ChakraTagsInput.Context
