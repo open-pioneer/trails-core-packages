@@ -11,5 +11,8 @@ export default defineBuildConfig({
         "react-integration/index",
         // Needed for @open-pioneer/test-utils
         "test-support/index"
-    ]
+    ],
+    runtimeMeta: {
+        metadataVersion: "1.1.0"
+    }
 });

@@ -59,7 +59,18 @@ export async function initI18n(
     const messages = reactive<MessagesRecord>({});
     if (messageLocales.includes(messageLocale)) {
         try {
-            messages.value = (await appMetadata?.loadMessages?.value?.(messageLocale)) ?? {};
+            const messagesSignal = await appMetadata?.loadMessages?.value?.(messageLocale); 
+            if (messagesSignal) {
+                messages.value = messagesSignal;
+            } else {
+                messages.value = {};
+                console.warn(
+                    `I18n messages couldn't be loaded. Check if your runtimeMeta version is not set to 1.0.0.`
+                );
+                if (LOG.isDebug()) {
+                    LOG.debug(`appMetadata.loadMessages doesn't support signal value'.`);
+                }
+            }
         } catch (e) {
             throw new Error(
                 ErrorId.INTERNAL,
