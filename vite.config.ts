@@ -75,7 +75,8 @@ export default defineConfig(({ mode }) => {
         // See also: https://vitejs.dev/config/shared-options.html#define
         define: {
             __LOG_LEVEL__: JSON.stringify(logLevel),
-            __PRINT_DEPRECATIONS__: true
+            __PRINT_DEPRECATIONS__: true,
+            __BUILD_TIMESTAMP__: JSON.stringify(new Date().getTime()) // used for timestamp in `src/index.html`
         },
 
         // https://vitest.dev/config/

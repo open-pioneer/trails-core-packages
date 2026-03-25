@@ -85,7 +85,7 @@ export function Utilities() {
                 <Portal container={containerRef}>
                     <div>Portal content</div>
                 </Portal>
-                <div ref={containerRef} />
+                <div className="portal-target" ref={containerRef} />
             </Presenter>
 
             <Presenter title="Radiomark" link="https://chakra-ui.com/docs/components/radiomark">
@@ -115,18 +115,18 @@ export function Utilities() {
                 <SkipNavLink>Skip to Content</SkipNavLink>
 
                 {/* Simulated navigation */}
-                <Box p="4" bg="gray.100" borderRadius="md" mb="4">
+                <Box p="4" bg="colorPalette.muted" borderRadius="md" mb="4">
                     <Text fontWeight="medium" mb="2">
                         Navigation
                     </Text>
-                    <Text fontSize="sm" color="gray.600">
+                    <Text fontSize="sm" color="colorPalette.solid">
                         This represents a navigation area that users might want to skip over.
                     </Text>
                 </Box>
 
                 {/* Main content area */}
                 <SkipNavContent>
-                    <Box p="4" bg="blue.50" borderRadius="md">
+                    <Box p="4" bg="colorPalette.subtle" borderRadius="md">
                         <Text fontWeight="medium" mb="2">
                             Main Content
                         </Text>
