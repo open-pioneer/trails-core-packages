@@ -182,7 +182,6 @@ catalogs:
       version: 8.8.5
 
 overrides:
-  '@ark-ui/react': 5.34.1
   '@emotion/react>@babel/runtime': '-'
   '@emotion/react>@emotion/babel-plugin': '-'
   '@emotion/styled>@babel/runtime': '-'
@@ -206,6 +205,8 @@ overrides:
   yaml@>=2.0.0 <2.8.3: ^2.8.3
   source-map@<0.6.1: '>=0.6.1'
   stylis@<4.3.5: '>= 4.3.5'
+  '@ark-ui/react': 5.34.1
+  '@zag-js/splitter': 1.35.3
 
 patchedDependencies:
   '@ark-ui/react@*':

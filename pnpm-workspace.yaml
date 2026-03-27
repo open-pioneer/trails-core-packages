@@ -3,7 +3,6 @@ packages:
   - "!**/test-data/**"
   - "!**/dist/**"
 
-
 # https://pnpm.io/catalogs
 catalog:
   "@ark-ui/react": "^5.34.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
@@ -69,15 +68,10 @@ catalog:
   zx: ^8.8.5
 
 overrides:
-  # https://github.com/advisories/GHSA-7h2j-956f-4vf2
-
-  # Ensure patched packages have the expected version (patch was tested with this version):
-  "@ark-ui/react": "5.34.1"
-  "@emotion/react>@babel/runtime": "-"
-
   # We don't actually use the babel plugin.
   # The babel runtime is also not used as a production dependency.
   # See e.g. https://github.com/emotion-js/emotion/issues/2371
+  "@emotion/react>@babel/runtime": "-"
   "@emotion/react>@emotion/babel-plugin": "-"
   "@emotion/styled>@babel/runtime": "-"
   "@emotion/styled>@emotion/babel-plugin": "-"
@@ -109,10 +103,9 @@ overrides:
 
   # https://github.com/advisories/GHSA-mw96-cpmx-2vgc
   "rollup@>=2.0.0 <2.80.0": "^2.80.0"
-  "rollup@>=4.0.0 <4.59.0":
-    "^4.59.0"
+  "rollup@>=4.0.0 <4.59.0": "^4.59.0"
 
-    # https://github.com/advisories/GHSA-3v7f-55p6-f55p
+  # https://github.com/advisories/GHSA-3v7f-55p6-f55p
   # https://github.com/advisories/GHSA-c2c7-rcm5-vvqj
   "picomatch@<2.3.2": "^2.3.2"
   "picomatch@>=3.0.0 <3.0.2": "^3.0.2"
@@ -126,16 +119,21 @@ overrides:
   "source-map@<0.6.1": ">=0.6.1"
   "stylis@<4.3.5": ">= 4.3.5"
 
+  # Ensure patched packages have the expected version (patch was tested with this version):
+  "@ark-ui/react": "5.34.1"
+  "@zag-js/splitter": "1.35.3"
+
 allowUnusedPatches: true
 ignorePatchFailures: false
 patchedDependencies:
   # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
   # This is ONLY needed in the core packages repository because we're developing the runtime package here.
   # NOTE: This should be an option.
+  "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
 
   # Ensure all portals are mounted under `.pioneer-root` div
   "@ark-ui/react@*": "patches/@ark-ui__react.patch"
-  "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
+  # Fix cursor styling
   "@zag-js/splitter": patches/@zag-js__splitter.patch
 
 peerDependencyRules:
@@ -163,6 +161,11 @@ auditConfig:
     # https://github.com/advisories/GHSA-f886-m6hf-6m8v
     - CVE-2026-33750 
 
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - "@swc/core"
+  - esbuild
+
 ignoredBuiltDependencies:
   # Seems to work without build scripts; may revisit later if actually needed.
   - core-js
@@ -179,11 +182,6 @@ minimumReleaseAgeExclude:
   - "picomatch" # See overrides
   - "happy-dom@20.8.8" # https://github.com/advisories/GHSA-6q6h-j7hj-3r64
   - "handlebars@4.7.9" # https://github.com/advisories/GHSA-2qvq-rjwj-gvw9
-
-onlyBuiltDependencies:
-  - "@parcel/watcher"
-  - "@swc/core"
-  - esbuild
 
 # Workaround for current problems regarding our vite plugin + vite's optimizeDeps feature
 shamefullyHoist: true
