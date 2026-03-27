@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
+import { ButtonWithOptionalTooltip } from "../components/ButtonWithOptionalTooltip";
 
 export function Buttons() {
     const data = "The quick brown fox jumps over the lazy dog";
@@ -48,6 +49,7 @@ export function Buttons() {
                         <Button loading loadingText="loading...">
                             loading with text
                         </Button>
+                        <ButtonWithOptionalTooltip />
                     </HStack>
                 </VStack>
             </Presenter>
