@@ -3,18 +3,6 @@ packages:
   - "!**/test-data/**"
   - "!**/dist/**"
 
-allowUnusedPatches: true
-
-auditConfig:
-  ignoreCves:
-    # This affects ajv, which is a transitive dependency of eslint.
-    # Eslint depends on ajv@v6, and an update to v8 might not be trivial.
-    # Only dev dependencies are (potentially) affected.
-    # https://github.com/advisories/GHSA-2g4f-4pwh-qvx6
-    - CVE-2025-69873
-
-    # See CVE CVE-2025-69873
-    - CVE-2026-26996
 
 # https://pnpm.io/catalogs
 catalog:
@@ -79,30 +67,6 @@ catalog:
   vite-plugin-eslint: ^1.8.1
   vitest: ^4.1.0
   zx: ^8.8.5
-ignorePatchFailures: false
-
-# Workspace root itself depends on runtime, and all packages (including runtime) have a dev dependency on workspace root
-# for shared scripts.
-ignoreWorkspaceCycles: true
-
-ignoredBuiltDependencies:
-  # Seems to work without build scripts; may revisit later if actually needed.
-  - core-js
-  - unrs-resolver
-
-linkWorkspacePackages: false
-
-# Configure a release cooldown
-minimumReleaseAge: 4320 # 3 days in minutes
-minimumReleaseAgeExclude:
-  - "@open-pioneer/*"
-  - "@conterra/*"
-  - "picomatch" # See overrides
-
-onlyBuiltDependencies:
-  - "@parcel/watcher"
-  - "@swc/core"
-  - esbuild
 
 overrides:
   # https://github.com/advisories/GHSA-7h2j-956f-4vf2
@@ -158,11 +122,12 @@ overrides:
   "yaml@>=1.0.0 <1.10.3": "^1.10.3"
   "yaml@>=2.0.0 <2.8.3": "^2.8.3"
 
-
   # Just to get rid of some duplicate dependencies
   "source-map@<0.6.1": ">=0.6.1"
   "stylis@<4.3.5": ">= 4.3.5"
 
+allowUnusedPatches: true
+ignorePatchFailures: false
 patchedDependencies:
   # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
   # This is ONLY needed in the core packages repository because we're developing the runtime package here.
@@ -184,9 +149,45 @@ peerDependencyRules:
     "rollup": "*"
     "fdir>picomatch": "*"
 
+auditConfig:
+  ignoreCves:
+    # This affects ajv, which is a transitive dependency of eslint.
+    # Eslint depends on ajv@v6, and an update to v8 might not be trivial.
+    # Only dev dependencies are (potentially) affected.
+    # https://github.com/advisories/GHSA-2g4f-4pwh-qvx6
+    - CVE-2025-69873
+
+    # See CVE CVE-2025-69873
+    - CVE-2026-26996
+
+    # https://github.com/advisories/GHSA-f886-m6hf-6m8v
+    - CVE-2026-33750 
+
+ignoredBuiltDependencies:
+  # Seems to work without build scripts; may revisit later if actually needed.
+  - core-js
+  - unrs-resolver
+
 # Install older versions by default
 resolutionMode: "lowest-direct"
+
+# Configure a release cooldown
+minimumReleaseAge: 4320 # 3 days in minutes
+minimumReleaseAgeExclude:
+  - "@open-pioneer/*"
+  - "@conterra/*"
+  - "picomatch" # See overrides
+
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - "@swc/core"
+  - esbuild
 
 # Workaround for current problems regarding our vite plugin + vite's optimizeDeps feature
 shamefullyHoist: true
 strictPeerDependencies: true
+
+# Workspace root itself depends on runtime, and all packages (including runtime) have a dev dependency on workspace root
+# for shared scripts.
+ignoreWorkspaceCycles: true
+linkWorkspacePackages: false
