@@ -98,6 +98,8 @@ minimumReleaseAgeExclude:
   - "@open-pioneer/*"
   - "@conterra/*"
   - "picomatch" # See overrides
+  # Renovate security update: handlebars@4.7.9
+  - handlebars@4.7.9
 
 onlyBuiltDependencies:
   - "@parcel/watcher"
@@ -145,10 +147,7 @@ overrides:
 
   # https://github.com/advisories/GHSA-mw96-cpmx-2vgc
   "rollup@>=2.0.0 <2.80.0": "^2.80.0"
-  "rollup@>=4.0.0 <4.59.0":
-    "^4.59.0"
-
-    # https://github.com/advisories/GHSA-3v7f-55p6-f55p
+  "rollup@>=4.0.0 <4.59.0": "^4.59.0" # https://github.com/advisories/GHSA-3v7f-55p6-f55p
   # https://github.com/advisories/GHSA-c2c7-rcm5-vvqj
   "picomatch@<2.3.2": "^2.3.2"
   "picomatch@>=3.0.0 <3.0.2": "^3.0.2"
@@ -157,7 +156,6 @@ overrides:
   # https://github.com/advisories/GHSA-48c2-rrv3-qjmp
   "yaml@>=1.0.0 <1.10.3": "^1.10.3"
   "yaml@>=2.0.0 <2.8.3": "^2.8.3"
-
 
   # Just to get rid of some duplicate dependencies
   "source-map@<0.6.1": ">=0.6.1"
