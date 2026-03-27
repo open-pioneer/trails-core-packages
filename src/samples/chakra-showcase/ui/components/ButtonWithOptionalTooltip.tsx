@@ -12,7 +12,7 @@ export function ButtonWithOptionalTooltip() {
         'The button should not lose focus when pressing "Enter".';
 
     return (
-        <Tooltip content={expanded ? null : text} disabled={expanded}>
+        <Tooltip content={text} disabled={expanded}>
             <Button onClick={() => setExpanded((prev) => !prev)}>
                 {expanded ? (
                     <>
