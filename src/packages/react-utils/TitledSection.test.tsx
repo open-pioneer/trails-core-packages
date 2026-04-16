@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
-import { ConfigureTitledSection, SectionHeading, TitledSection } from "./TitledSection";
+import {
+    ConfigureTitledSection,
+    SectionHeading,
+    TitledSection,
+    useHeadingLevel
+} from "./TitledSection";
 import { ReactNode, useEffect, useRef } from "react";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 
@@ -308,6 +313,41 @@ it("supports 'ref' prop on SectionHeading", async () => {
         </TitledSection>
     );
     expect(value!.tagName).toBe("H1");
+});
+
+it("returns headingLevel undefined when used outside a TitledSection and required is false", () => {
+    function Component() {
+        const currentHeading = useHeadingLevel({ required: false });
+        const currentHeadingText = `Current heading is ${currentHeading}`;
+        return <span>{currentHeadingText}</span>;
+    }
+
+    const content = renderContent(<Component />);
+    expect(content.textContent).toBe("Current heading is undefined");
+});
+
+it("throws when using useHeadingLevel outside a TitledSection and required is true", async () => {
+    function Component() {
+        const currentHeading = useHeadingLevel({ required: true });
+        const currentHeadingText = `Current heading is ${currentHeading}`;
+        return <span>{currentHeadingText}</span>;
+    }
+
+    expect(() => renderContent(<Component />)).toThrow(
+        "useHeadingLevel() must be used within a <TitledSection />"
+    );
+});
+
+it("throws when using useHeadingLevel outside a TitledSection", async () => {
+    function Component() {
+        const currentHeading = useHeadingLevel();
+        const currentHeadingText = `Current heading is ${currentHeading}`;
+        return <span>{currentHeadingText}</span>;
+    }
+
+    expect(() => renderContent(<Component />)).toThrow(
+        "useHeadingLevel() must be used within a <TitledSection />"
+    );
 });
 
 function renderContent(children: ReactNode): HTMLElement {
