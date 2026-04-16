@@ -123,8 +123,12 @@ export async function initI18n(
                     equal: shallowRecordEquals
                 });
 
+                let firstCall = true;
                 const packageIntl = computed(() => {
-                    LOG.debug("Recomputing i18n object for package", packageName);
+                    if (!firstCall) {
+                        LOG.info("Updating i18n messages of package", packageName);
+                    }
+                    firstCall = false;
                     return createPackageIntl(locale, packageMessages.value);
                 });
                 return packageIntl;
