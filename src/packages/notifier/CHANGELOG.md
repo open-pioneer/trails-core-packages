@@ -1,5 +1,15 @@
 # @open-pioneer/notifier
 
+## 4.5.0
+
+### Minor Changes
+
+- 4e76893: Update Chakra UI to 3.34.0
+
+### Patch Changes
+
+- 9712265: Fix rendering of long strings in notifier UI.
+
 ## 4.4.0
 
 ### Minor Changes

@@ -8,10 +8,12 @@ import {
     Heading,
     HStack,
     IconButton,
+    Toggle,
     VStack
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
+import { ButtonWithOptionalTooltip } from "../components/ButtonWithOptionalTooltip";
 
 export function Buttons() {
     const data = "The quick brown fox jumps over the lazy dog";
@@ -39,11 +41,15 @@ export function Buttons() {
                         States
                     </Heading>
                     <HStack wrap="wrap" gap="6">
+                        <Toggle.Root pressed asChild>
+                            <Button>Active</Button>
+                        </Toggle.Root>
                         <Button disabled>disabled</Button>
                         <Button loading>loading</Button>
                         <Button loading loadingText="loading...">
                             loading with text
                         </Button>
+                        <ButtonWithOptionalTooltip />
                     </HStack>
                 </VStack>
             </Presenter>

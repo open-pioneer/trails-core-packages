@@ -3,101 +3,251 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Open Pioneer Trails test site</title>
+        <title>Open Pioneer Trails - Core Packages</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
             body {
-                max-width: 600px;
-                margin: auto;
+                font:
+                    500 14px/1.5 system-ui,
+                    -apple-system,
+                    sans-serif;
+                background: #f8f9fa;
+                color: #1a1d21;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            :is(header h1, main, footer) {
+                max-width: 640px;
+                margin: 0 auto;
+            }
+
+            :is(h1, h2) {
+                font-weight: 600;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+                margin: 1.75rem 0 0.75rem;
+                color: #005587;
+            }
+
+            h3 {
+                font-size: 0.875rem;
+                font-weight: 600;
+                margin: 0 0 0.5rem;
+                color: #1a1d21;
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                background: rgba(255, 255, 255, 0.95);
+                border-bottom: 1px solid #e0e4e8;
+                padding: 1rem;
+                backdrop-filter: blur(8px);
+                z-index: 100;
+                text-align: center;
+            }
+
+            main {
+                padding: 2rem 1rem;
+                flex: 1;
+            }
+
+            .app-list {
+                list-style: none;
+                display: grid;
+                gap: 0.375rem;
+
+                & li {
+                    position: relative;
+                    background: #fff;
+                    border: 1px solid #e0e4e8;
+                    border-radius: 4px;
+                    transition: all 0.15s;
+
+                    &:hover {
+                        border-color: #005587;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+
+                        & a {
+                            color: #005587;
+
+                            &::after {
+                                opacity: 1;
+                                transform: translateX(0);
+                            }
+                        }
+                    }
+
+                    &:has(a:focus-visible) {
+                        outline: 2px solid;
+                        outline-offset: -1px;
+                    }
+
+                    & a {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0.625rem 0.75rem;
+                        color: inherit;
+                        text-decoration: none;
+
+                        &:focus-visible {
+                            outline: none;
+                        }
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            inset: 0;
+                        }
+
+                        &::after {
+                            content: "→";
+                            opacity: 0;
+                            transform: translateX(-4px);
+                            transition: all 0.15s;
+                        }
+
+                        & + p {
+                            margin-top: -0.375rem;
+                            padding: 0 0.75rem 0.625rem;
+                            font-size: 0.8125rem;
+                            color: #5a6169;
+                        }
+                    }
+                }
+            }
+
+            footer {
+                padding: 2rem 1rem;
+                text-align: right;
+                color: #5a6169;
+                font-size: 0.8125rem;
             }
         </style>
     </head>
     <body>
-        <h1>Samples overview</h1>
+        <header>
+            <h1>Open Pioneer Trails - Core Packages</h1>
+        </header>
 
-        <p>
-            Welcome to the samples overview for
-            <a href="https://github.com/open-pioneer/trails-core-packages" target="_blank">
-                Trails core packages </a
-            >. These packages are intended to be used with the
-            <a href="https://github.com/open-pioneer#open-pioneer-trails" target="_blank"
-                >Open Pioneer Trails</a
-            >
-            framework. The source code for the samples can be found in the
-            <code>src/samples/</code> directory.
-        </p>
+        <main>
+            <p>
+                Welcome to the overview page for
+                <a href="https://github.com/open-pioneer/trails-core-packages" target="_blank">
+                    Trails core packages </a
+                >. These packages are intended to be used with the
+                <a href="https://github.com/open-pioneer#open-pioneer-trails" target="_blank"
+                    >Open Pioneer Trails</a
+                >
+                framework. The source code for the apps can found in the
+                <code>src/samples/</code> directory.
+            </p>
 
-        <h2>Samples</h2>
-        <ul>
-            <li>
-                <a href="./samples/chakra-showcase/">Chakra Component Showcase</a>
-                <br />
-                Demonstrates chakra components.
-            </li>
-            <li>
-                <a href="./samples/extension-sample/">Extension Sample</a>
-                <br />
-                Contains an extensible service with a few plugins using 1-to-N service references.
-            </li>
-            <li>
-                <a href="./samples/properties-sample/">Properties sample</a>
-                <br />
-                Demonstrates how package properties can be used.
-            </li>
-            <li>
-                <a href="./samples/styling-sample/">Styling Sample</a>
-                <br />
-                Demonstrates how packages can use CSS rules.
-            </li>
-            <li>
-                <a href="./samples/api-sample/">API Sample</a>
-                <br />
-                Demonstrates how to provide an API and emit events from the Web Component.
-            </li>
-            <li>
-                <a href="./samples/i18n-sample/">I18n Sample</a>
-                <br />
-                Demonstrates how to translate an app in multiple languages.
-            </li>
-            <li>
-                <a href="./samples/i18n-howto/">I18n HowTo</a>
-                <br />
-                This is the full app for the "How to translate an app" guide.
-            </li>
-            <li>
-                <a href="./samples/http-sample/">HTTP Sample</a>
-                <br />
-                Demonstrates how to use the HttpService.
-            </li>
-            <li>
-                <a href="./samples/auth-sample/">Authentication Sample</a>
-                <br />
-                Sample app for the authentication package.
-            </li>
-            <li>
-                <a href="./samples/keycloak-sample/">Keycloak Sample</a>
-                <br />
-                Sample app for the authentication-keycloak package (requires additional setup).
-            </li>
-            <li>
-                <a href="./samples/notify-sample/">Notifier Sample</a>
-                <br />
-                Demonstrates how to use notifications.
-            </li>
-            <li>
-                <a href="./samples/error-sample/">Error Sample</a>
-                <br />
-                Test app that fails to start. Useful to see the builtin error screen.
-            </li>
-            <li>
-                <a href="./samples/no-shadowroot-sample/">No ShadowRoot Sample</a>
-                <br />
-                Test app that does not use a shadow root around the application's content.
-            </li>
-            <li>
-                <a href="./samples/roving-menu-sample/">Roving Menu Sample</a>
-                <br />
-                Contains example menus based on the roving menu pattern.
-            </li>
-        </ul>
+            <h2>Showcases</h2>
+            <ul class="app-list">
+                <li>
+                    <a href="./samples/chakra-showcase/">Chakra Component Showcase</a>
+                    <p>
+                        Demonstrates chakra components. Examples are mostly taken from Chakra's
+                        documentation, with a few trails additions (custom theme, notifier, etc.).
+                    </p>
+                </li>
+            </ul>
+
+            <h2>Samples</h2>
+            <ul class="app-list">
+                <li>
+                    <a href="./samples/i18n-sample/">I18N Sample</a>
+                    <p>Demonstrates how to translate an app in multiple languages.</p>
+                </li>
+                <li>
+                    <a href="./samples/i18n-howto/">I18N HowTo</a>
+                    <p>
+                        This is the full app for the "How to translate an app" guide. It
+                        demonstrates most capabilities of formatting i18n messages with FormatJS.
+                    </p>
+                </li>
+                <li>
+                    <a href="./samples/styling-sample/">Styling Sample</a>
+                    <p>Demonstrates how packages can use CSS rules.</p>
+                </li>
+                <li>
+                    <a href="./samples/properties-sample/">Properties Sample</a>
+                    <p>Demonstrates how package properties can be used.</p>
+                </li>
+                <li>
+                    <a href="./samples/extension-sample/">Service Extension Sample</a>
+                    <p>
+                        Contains an extensible service with a few plugins using 1-to-N service
+                        references.
+                    </p>
+                </li>
+                <li>
+                    <a href="./samples/api-sample/">Web Component API Sample</a>
+                    <p>
+                        Demonstrates how to provide an API and emit events from the Web Component.
+                    </p>
+                </li>
+                <li>
+                    <a href="./samples/auth-sample/">Authentication Sample</a>
+                    <p>Sample app for the authentication package.</p>
+                </li>
+                <li>
+                    <a href="./samples/http-sample/">HTTP Sample</a>
+                    <p>Demonstrates how to use the <code>HttpService</code>.</p>
+                </li>
+                <li>
+                    <a href="./samples/notify-sample/">Notifier Sample</a>
+                    <p>Demonstrates how to use notifications.</p>
+                </li>
+            </ul>
+
+            <h2>Test Apps</h2>
+            <ul class="app-list">
+                <li>
+                    <a href="./samples/keycloak-sample/">Keycloak Authentication</a>
+                    <p>
+                        Test app for the authentication-keycloak package (requires additional
+                        setup).
+                    </p>
+                </li>
+                <li>
+                    <a href="./samples/error-sample/">Error Screen</a>
+                    <p>An app that fails to start. Useful to see the builtin error screen.</p>
+                </li>
+                <li>
+                    <a href="./samples/no-shadowroot-sample/">No ShadowRoot</a>
+                    <p>This app does not use a shadow root around the application's content.</p>
+                </li>
+                <li>
+                    <a href="./samples/roving-menu-sample/">Roving Menu</a>
+                    <p>
+                        Contains example menus based on the roving menu pattern. Useful for testing
+                        focus management and keyboard navigation.
+                    </p>
+                </li>
+            </ul>
+        </main>
+        <footer>Built at <span id="build-date"></span></footer>
+        <script type="module">
+            const buildDate = document.getElementById("build-date");
+            const date = import.meta.env.DEV ? new Date() : new Date(__BUILD_TIMESTAMP__);
+            buildDate.textContent = date.toISOString();
+        </script>
     </body>
 </html>

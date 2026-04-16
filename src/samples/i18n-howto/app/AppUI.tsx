@@ -140,15 +140,19 @@ function SelectionExample() {
 
 function NumberFormatExample() {
     const intl = useIntl();
+
     const [value, setValue] = useState("2334232.24");
+    const [numericValue, setNumericValue] = useState(2334232.24);
     return (
         <>
             <Heading as="h4" size="md">
                 {intl.formatMessage({ id: "numberformat.heading" })}
             </Heading>
             <NumberInputRoot
-                onValueChange={(valueChangeDetails) => {
-                    setValue(String(valueChangeDetails.valueAsNumber));
+                onValueChange={({ value, valueAsNumber }) => {
+                    // See https://chakra-ui.com/docs/components/number-input#why-use-string-values
+                    setValue(value);
+                    setNumericValue(valueAsNumber);
                 }}
                 value={value}
                 step={0.25}
@@ -162,11 +166,11 @@ function NumberFormatExample() {
             </NumberInputRoot>
             <Text mb="8px">
                 {intl.formatMessage({ id: "numberformat.example.currency1" })}
-                {intl.formatNumber(+value, { style: "currency", currency: "EUR" })}
+                {intl.formatNumber(numericValue, { style: "currency", currency: "EUR" })}
             </Text>
             <Text mb="8px">
                 {intl.formatMessage({ id: "numberformat.example.currency2" })}
-                {intl.formatNumber(+value, {
+                {intl.formatNumber(numericValue, {
                     style: "currency",
                     currency: "EUR",
                     currencyDisplay: "name"
@@ -174,11 +178,11 @@ function NumberFormatExample() {
             </Text>
             <Text mb="8px">
                 {intl.formatMessage({ id: "numberformat.example.unit1" })}
-                {intl.formatNumber(+value, { style: "unit", unit: "terabyte-per-second" })}
+                {intl.formatNumber(numericValue, { style: "unit", unit: "terabyte-per-second" })}
             </Text>
             <Text mb="8px">
                 {intl.formatMessage({ id: "numberformat.example.unit2" })}
-                {intl.formatNumber(+value, {
+                {intl.formatNumber(numericValue, {
                     style: "unit",
                     unit: "terabyte-per-second",
                     unitDisplay: "long"

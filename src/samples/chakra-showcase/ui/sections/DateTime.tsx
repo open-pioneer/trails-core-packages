@@ -13,9 +13,17 @@ export function DateTime() {
                     <DatePicker.Control>
                         <DatePicker.Input />
                         <DatePicker.IndicatorGroup>
-                            <DatePicker.Trigger>
-                                <LuCalendar />
-                            </DatePicker.Trigger>
+                            <DatePicker.Context>
+                                {(context) =>
+                                    context.value.length ? (
+                                        <DatePicker.ClearTrigger />
+                                    ) : (
+                                        <DatePicker.Trigger>
+                                            <LuCalendar />
+                                        </DatePicker.Trigger>
+                                    )
+                                }
+                            </DatePicker.Context>
                         </DatePicker.IndicatorGroup>
                     </DatePicker.Control>
                     <Portal>
