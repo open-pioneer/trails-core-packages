@@ -8,6 +8,7 @@ import { createPackageIntl, PackageIntl } from "./PackageIntl";
 import { getBrowserLocales, I18nConfig } from "./pick";
 import { computed, reactive, watchValue } from "@conterra/reactivity-core";
 import { ReadonlyValue } from "../utils/ReadonlyValue";
+import { unwrapBox } from "../metadata/ObservableBox";
 const LOG = createLogger(sourceId);
 
 /**
@@ -57,11 +58,15 @@ export async function initI18n(
     }
 
     const messages = reactive<MessagesRecord>({});
-    if (messageLocales.includes(messageLocale)) {
+
+    // Initial load of i18n messages.
+    // During development, i18n messages are also loaded when they change on disk (see below).
+    if (appMetadata?.loadMessages && messageLocales.includes(messageLocale)) {
         try {
-            const messagesSignal = await appMetadata?.loadMessages?.value?.(messageLocale);
-            if (messagesSignal) {
-                messages.value = messagesSignal;
+            const loader = unwrapBox(appMetadata.loadMessages);
+            const messagesRecord = await loader(messageLocale);
+            if (messagesRecord) {
+                messages.value = messagesRecord;
             } else {
                 messages.value = {};
                 console.warn(
@@ -82,30 +87,27 @@ export async function initI18n(
         }
     }
 
+    // During dev: watch for changes of the loadMessage function
+    // and fetch new I18N messages if the user edited any i18n file.
     let hmrWatch: Resource | undefined;
     if (import.meta.hot) {
-        // During dev: watch for changes of the loadMessage function
-        // and fetch new I18N messages if the user edited any i18n file.
+        const handleHotUpdate = async (loader: MessageLoader) => {
+            const newMessages = (await loader?.(messageLocale)) ?? {};
+            LOG.debug("Applying new i18n messages", newMessages);
+            messages.value = newMessages;
+        };
+
         hmrWatch = watchValue(
-            () => appMetadata?.loadMessages?.value,
-            (loadMessages) => {
-                if (!loadMessages) {
+            () => (appMetadata?.loadMessages ? unwrapBox(appMetadata.loadMessages) : undefined),
+            (loader) => {
+                if (!loader) {
                     return;
                 }
-
-                handleHotUpdate(loadMessages).catch((e) => {
+                handleHotUpdate(loader).catch((e) => {
                     LOG.error(`Failed to load messages after hot reload`, e);
                 });
             }
         );
-
-        async function handleHotUpdate(loadMessages: MessageLoader) {
-            LOG.debug("I18n changed, loading new messages");
-            const newMessages = (await loadMessages?.(messageLocale)) ?? {};
-
-            LOG.debug("Applying new i18n messages", newMessages);
-            messages.value = newMessages;
-        }
     }
 
     return {
