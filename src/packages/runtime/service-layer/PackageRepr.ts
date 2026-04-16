@@ -1,17 +1,17 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { Error } from "@open-pioneer/core";
 import { ApplicationProperties } from "../CustomElement";
 import { ErrorId } from "../errors";
 import { AppIntl, PackageIntl } from "../i18n";
 import { PackageMetadata, PropertyMetadata } from "../metadata";
-import { ReadonlyValue } from "../utils/ReadonlyValue";
 import { parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { ServiceRepr } from "./ServiceRepr";
 
 export interface PackageReprOptions {
     name: string;
-    intl: ReadonlyValue<PackageIntl>;
+    intl: ReadonlyReactive<PackageIntl>;
     services?: ServiceRepr[];
     uiReferences?: ReferenceSpec[];
     properties?: Record<string, unknown>;
@@ -20,7 +20,7 @@ export interface PackageReprOptions {
 export class PackageRepr {
     static create(
         data: PackageMetadata,
-        intl: ReadonlyValue<PackageIntl>,
+        intl: ReadonlyReactive<PackageIntl>,
         customProperties?: Record<string, unknown>
     ): PackageRepr {
         const name = data.name;
@@ -60,7 +60,7 @@ export class PackageRepr {
     readonly properties: Readonly<Record<string, unknown>>;
 
     /** Locale-dependant i18n messages. */
-    readonly intl: ReadonlyValue<PackageIntl>;
+    readonly intl: ReadonlyReactive<PackageIntl>;
 
     constructor(options: PackageReprOptions) {
         const name = options.name;

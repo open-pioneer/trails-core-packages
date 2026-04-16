@@ -7,6 +7,7 @@ import { InterfaceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { ReadonlyServiceLookup } from "./ServiceLookup";
 import { createConstructorFactory, ServiceDependency, ServiceRepr } from "./ServiceRepr";
 import { verifyDependencies } from "./verifyDependencies";
+import { reactiveConstant } from "../utils/reactive-constant";
 
 it("does not return an error on acyclic graphs", function () {
     const services = mockServices([
@@ -406,7 +407,7 @@ function mockServices(data: ServiceData[]): ServiceRepr[] {
             name,
             packageName,
             factory: createConstructorFactory(clazz),
-            intl: { value: createEmptyPackageIntl() },
+            intl: reactiveConstant(createEmptyPackageIntl()),
             dependencies,
             interfaces
         });

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { PackageIntl } from "./i18n";
 
 /** Lifecycle hooks supported by the service interface. */
@@ -72,8 +73,18 @@ export type ServiceOptions<References extends {} = {}> = {
 
     /**
      * A reference to the shared i18n object of the current package.
+     *
+     * @deprecated TODO
      */
     intl: PackageIntl;
+
+    /**
+     * A signal that returns the current i18n object of the service's package.
+     *
+     * The i18n object may change at runtime (for example to implement hot reloading during development,
+     * or to implement language changes while the application is running).
+     */
+    currentIntl: ReadonlyReactive<PackageIntl>;
 };
 
 /**

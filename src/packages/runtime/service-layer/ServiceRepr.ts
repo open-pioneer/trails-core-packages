@@ -1,12 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { watchValue } from "@conterra/reactivity-core";
+import { ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
 import { createLogger, destroyResource, Error, Resource } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 import { ServiceMetadata } from "../metadata";
 import { Service, ServiceConstructor, ServiceOptions } from "../Service";
-import { ReadonlyValue } from "../utils/ReadonlyValue";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 
 const LOG = createLogger("runtime:ServiceRepr");
@@ -32,7 +31,7 @@ export interface ServiceReprOptions {
     name: string;
     packageName: string;
     factory: ServiceFactory;
-    intl: ReadonlyValue<PackageIntl>;
+    intl: ReadonlyReactive<PackageIntl>;
     dependencies?: ServiceDependency[];
     interfaces?: InterfaceSpec[];
     properties?: Record<string, unknown>;
@@ -50,7 +49,7 @@ export class ServiceRepr {
     static create(
         packageName: string,
         data: ServiceMetadata,
-        intl: ReadonlyValue<PackageIntl>,
+        intl: ReadonlyReactive<PackageIntl>,
         properties?: Record<string, unknown>
     ): ServiceRepr {
         const clazz = data.clazz;
@@ -94,7 +93,7 @@ export class ServiceRepr {
     readonly packageName: string;
 
     /** Locale-dependant i18n messages. */
-    readonly intl: ReadonlyValue<PackageIntl>;
+    readonly intl: ReadonlyReactive<PackageIntl>;
 
     /** Service properties made available via the service's constructor. */
     readonly properties: Readonly<Record<string, unknown>>;
@@ -242,11 +241,13 @@ export class ServiceRepr {
                 ...options,
                 properties: this.properties,
                 get intl() {
+                    // TODO: deprecation notice
                     if (import.meta.hot) {
                         hmrState?.onIntlUsed();
                     }
                     return intl.value;
-                }
+                },
+                currentIntl: this.intl
             });
             this._state = "constructed";
             this._useCount = 1;

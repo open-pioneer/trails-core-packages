@@ -21,6 +21,7 @@ import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
+import { reactiveConstant } from "../utils/reactive-constant";
 
 interface TestProvider {
     value: string;
@@ -482,14 +483,14 @@ function createIntegration(options?: {
                     packageName,
                     interfaces: spec.interfaces,
                     factory: createConstructorFactory(spec.clazz),
-                    intl: { value: intl }
+                    intl: reactiveConstant(intl)
                 });
             }) ?? [];
         packages.set(
             packageName,
             new PackageRepr({
                 name: packageName,
-                intl: { value: intl },
+                intl: reactiveConstant(intl),
                 properties: options?.packageProperties,
                 uiReferences: options?.packageUiReferences,
                 services

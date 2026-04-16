@@ -5,6 +5,7 @@ import { AppIntl, createEmptyPackageIntl, PackageIntl } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { expectError } from "../test-utils/expectError";
 import { createPackages, PackageRepr } from "./PackageRepr";
+import { reactiveConstant } from "../utils/reactive-constant";
 
 class ClazzA {}
 
@@ -58,7 +59,7 @@ it("parses package metadata into internal package representations", function () 
         supportedMessageLocales: [],
         destroy() {},
         createPackageI18n() {
-            return { value: createEmptyPackageIntl("zh-CN") };
+            return reactiveConstant(createEmptyPackageIntl("zh-CN"));
         },
         supportsLocale() {
             return true;
@@ -233,5 +234,5 @@ function createPackageFromMetadata(
     properties?: Record<string, unknown>,
     intl?: PackageIntl
 ) {
-    return PackageRepr.create(data, { value: intl ?? createEmptyPackageIntl() }, properties);
+    return PackageRepr.create(data, reactiveConstant(intl ?? createEmptyPackageIntl()), properties);
 }

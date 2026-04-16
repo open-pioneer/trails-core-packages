@@ -7,6 +7,7 @@ import {
     createFunctionFactory,
     ServiceRepr
 } from "../service-layer/ServiceRepr";
+import { reactiveConstant } from "../utils/reactive-constant";
 import { ApiServiceImpl } from "./ApiServiceImpl";
 import { ApplicationContextImpl, ApplicationContextProperties } from "./ApplicationContextImpl";
 import { ApplicationLifecycleEventService } from "./ApplicationLifecycleEventService";
@@ -41,7 +42,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ApiServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createConstructorFactory(ApiServiceImpl),
-        intl: { value: intl },
+        intl: reactiveConstant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_API_SERVICE,
@@ -62,7 +63,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         factory: createFunctionFactory(
             (options) => new ApplicationContextImpl(options, properties)
         ),
-        intl: { value: intl },
+        intl: reactiveConstant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_CONTEXT,
@@ -74,7 +75,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ApplicationLifecycleEventServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createConstructorFactory(ApplicationLifecycleEventService),
-        intl: { value: intl },
+        intl: reactiveConstant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
@@ -95,7 +96,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         factory: createFunctionFactory(
             (options) => new NumberParserServiceImpl(options, properties.locale)
         ),
-        intl: { value: intl },
+        intl: reactiveConstant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_NUMBER_PARSER_SERVICE,
@@ -108,7 +109,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ThemeServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createFunctionFactory(() => new ThemeServiceImpl(properties)),
-        intl: { value: intl },
+        intl: reactiveConstant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_THEME_SERVICE,
@@ -133,6 +134,6 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
             numberParserService,
             themeService
         ],
-        intl: { value: intl }
+        intl: reactiveConstant(intl)
     });
 }

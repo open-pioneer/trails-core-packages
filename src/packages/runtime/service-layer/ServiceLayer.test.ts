@@ -13,6 +13,7 @@ import {
     ServiceRepr,
     ServiceReprOptions
 } from "./ServiceRepr";
+import { reactiveConstant } from "../utils/reactive-constant";
 
 describe("service lifecycle", () => {
     it("starts and stops services in the expected order", function () {
@@ -429,7 +430,7 @@ function createService(options: Partial<ServiceReprOptions>) {
         name: "test-service",
         packageName: "test-package",
         factory: createConstructorFactory(class {}),
-        intl: { value: createEmptyPackageIntl() },
+        intl: reactiveConstant(createEmptyPackageIntl()),
         ...options
     });
 }
@@ -437,7 +438,7 @@ function createService(options: Partial<ServiceReprOptions>) {
 function createPackage(options: Partial<PackageReprOptions>) {
     return new PackageRepr({
         name: "test-package",
-        intl: { value: createEmptyPackageIntl() },
+        intl: reactiveConstant(createEmptyPackageIntl()),
         ...options
     });
 }

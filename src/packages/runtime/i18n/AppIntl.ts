@@ -6,9 +6,9 @@ import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
 import { createPackageIntl, PackageIntl } from "./PackageIntl";
 import { getBrowserLocales, I18nConfig } from "./pick";
-import { computed, reactive, watchValue } from "@conterra/reactivity-core";
-import { ReadonlyValue } from "../utils/ReadonlyValue";
+import { computed, reactive, ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
 import { unwrapBox } from "../metadata/ObservableBox";
+import { reactiveConstant } from "../utils/reactive-constant";
 const LOG = createLogger(sourceId);
 
 /**
@@ -28,7 +28,7 @@ export interface AppIntl {
     supportsLocale(locale: string): boolean;
 
     /** Given the package name, constructs a package i18n instance. */
-    createPackageI18n(packageName: string): ReadonlyValue<PackageIntl>;
+    createPackageI18n(packageName: string): ReadonlyReactive<PackageIntl>;
 }
 
 /**
@@ -137,9 +137,7 @@ export async function initI18n(
             } else {
                 const packageMessages = messages.value[packageName] ?? {};
                 const packageIntl = createPackageIntl(locale, packageMessages);
-                return {
-                    value: packageIntl
-                };
+                return reactiveConstant(packageIntl);
             }
         }
     };
