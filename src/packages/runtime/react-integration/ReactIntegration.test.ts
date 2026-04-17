@@ -21,6 +21,7 @@ import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
+import { reactiveConstant } from "../utils/reactive-constant";
 
 interface TestProvider {
     value: string;
@@ -462,7 +463,7 @@ function createIntegration(options?: {
     packageName?: string;
     packageProperties?: Record<string, unknown>;
     packageUiReferences?: ReferenceSpec[];
-    i18n?: PackageIntl;
+    intl?: PackageIntl;
     services?: ServiceSpec[];
     config?: SystemConfig | undefined;
     locale?: string;
@@ -472,7 +473,7 @@ function createIntegration(options?: {
     const shadowRoot = wrapper.attachShadow({ mode: "open" });
 
     const packages = new Map<string, PackageRepr>();
-    const i18n = options?.i18n ?? createEmptyPackageIntl();
+    const intl = options?.intl ?? createEmptyPackageIntl();
     if (!options?.disablePackage) {
         const packageName = options?.packageName ?? "test";
         const services =
@@ -482,14 +483,14 @@ function createIntegration(options?: {
                     packageName,
                     interfaces: spec.interfaces,
                     factory: createConstructorFactory(spec.clazz),
-                    intl: i18n
+                    intl: reactiveConstant(intl)
                 });
             }) ?? [];
         packages.set(
             packageName,
             new PackageRepr({
                 name: packageName,
-                intl: i18n,
+                intl: reactiveConstant(intl),
                 properties: options?.packageProperties,
                 uiReferences: options?.packageUiReferences,
                 services

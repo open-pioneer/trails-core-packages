@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { reactive } from "@conterra/reactivity-core";
 import { ReferenceMeta, Service, ServiceConstructor } from "@open-pioneer/runtime";
 import { createIntl } from "./vanilla";
 
@@ -89,7 +90,8 @@ export function createService<References extends {}, Interface extends {}>(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         referencesMeta: referencesMeta as any,
         properties: options?.properties ?? {},
-        intl
+        intl,
+        currentIntl: reactive(intl)
     });
 }
 

@@ -28,6 +28,16 @@ export function createBox<T>(value: T): ObservableBox<T> {
     }
 }
 
+/** @internal */
+export function isBox<T>(value: T | ObservableBox<T>): value is ObservableBox<T> {
+    return value instanceof BoxImpl;
+}
+
+/** @internal */
+export function unwrapBox<T>(value: T | ObservableBox<T>): T {
+    return isBox(value) ? value.value : value;
+}
+
 class BoxImpl<T> implements Required<ObservableBox<T>> {
     #signal: Reactive<T>;
 

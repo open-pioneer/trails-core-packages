@@ -180,7 +180,7 @@ function createPackageContext(
             return getPackage(packageName).properties;
         },
         getIntl: (packageName) => {
-            return getPackage(packageName).intl;
+            return getPackage(packageName).intl.value;
         }
     };
     return packageContext;
