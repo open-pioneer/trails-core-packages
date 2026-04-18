@@ -88,17 +88,19 @@ export type ServiceConstructor<References extends {} = {}, Interface extends {} 
  * The service factory itself can also implement lifecycle hooks, which will be called by the runtime
  * when the factory is destroyed.
  */
-export type ServiceFactory<Interface extends {} = {}> = ServiceLifecycleHooks & {
+export type ServiceFactory<Interface extends {} = {}> = {
     /**
      * Method to create a service instance.
-     * It is directly called by the runtime after constructing the factory
+     * It is directly called by the runtime after constructing the factory.
+     * NOTE: the service.destroy lifecycle hook is not called by the runtime.
      */
-    createService(): Service<Interface>;
+    createService(): Interface;
     /**
      * Optional method to destroy a service instance created by this factory.
-     * This is called shortly before the factory itself is destroyed.
+     * If provided, this method will be called by the runtime when the service instance is destroyed.
+     * A factory instance exists per service, this method invocation means that the factory is no longer used by the runtime.
      */
-    destroyService?(service: Service<Interface>): void;
+    destroyService?(service: Interface): void;
 };
 
 /**

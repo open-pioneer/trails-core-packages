@@ -288,7 +288,7 @@ it("supports using a service factory to create service instances", function () {
                 }
             };
         }
-        destroyService(service: Service<HelloService>): void {
+        destroyService(_service: Service<HelloService>): void {
             called.push("factory.destroyService");
         }
         destroy(): void {
@@ -338,9 +338,8 @@ it("supports using a service factory to create service instances", function () {
     serviceLayer.destroy();
 
     expect(called).toEqual([
-        //-> Should not be called: "service.destroy",
-        "factory.destroyService",
-        "factory.destroy"
+        //Should not be called by runtime: "service.destroy",
+        "factory.destroyService"
     ]);
 });
 

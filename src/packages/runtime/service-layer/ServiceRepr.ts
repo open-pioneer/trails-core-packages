@@ -10,11 +10,9 @@ import {
     ServiceFactory,
     MarkedServiceFactoryConstructor
 } from "../Service";
-import { createLogger, Error } from "@open-pioneer/core";
+import { Error } from "@open-pioneer/core";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { PackageIntl } from "../i18n";
-import { sourceId } from "open-pioneer:source-info";
-const LOG = createLogger(sourceId);
 
 export type ServiceState = "not-constructed" | "constructing" | "constructed" | "destroyed";
 
@@ -270,22 +268,9 @@ class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFact
 
     create(options: ServiceOptions<T>) {
         const fac = new this._facClazz(options);
-        try {
-            const instance = fac.createService();
-            this._fac = fac;
-            return instance;
-        } catch (e) {
-            try {
-                fac.destroy?.();
-            } catch (facDestroyError) {
-                // TODO: drop the log, and throw a SuppressedError, if suppressed errors are commonly supported in browsers
-                LOG.error(
-                    `Failed to destroy service factory after failed service creation:`,
-                    facDestroyError
-                );
-            }
-            throw e;
-        }
+        const instance = fac.createService();
+        this._fac = fac;
+        return instance;
     }
 
     destroy(srv: Service) {
@@ -295,29 +280,10 @@ class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFact
                 "Inconsistent state: service factory instance is not present."
             );
         }
-        let srvDestroyError: unknown;
         try {
             this._fac.destroyService?.(srv);
-        } catch (e) {
-            srvDestroyError = e;
-        }
-        try {
-            this._fac.destroy?.();
-        } catch (facDestroyError) {
-            if (!srvDestroyError) {
-                throw facDestroyError;
-            } else {
-                // TODO: drop the log, and throw a SuppressedError, if suppressed errors are commonly supported in browsers
-                LOG.error(
-                    `Failed to destroy service factory after failed service destruction:`,
-                    facDestroyError
-                );
-            }
         } finally {
             this._fac = undefined;
-        }
-        if (srvDestroyError) {
-            throw srvDestroyError;
         }
     }
 }
