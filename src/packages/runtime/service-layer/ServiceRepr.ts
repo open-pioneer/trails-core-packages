@@ -289,31 +289,35 @@ class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFact
     }
 
     destroy(srv: Service) {
-        let _srvError: unknown;
+        if (!this._fac) {
+            throw new Error(
+                ErrorId.INTERNAL,
+                "Inconsistent state: service factory instance is not present."
+            );
+        }
+        let srvDestroyError: unknown;
         try {
-            srv.destroy?.();
+            this._fac.destroyService?.(srv);
         } catch (e) {
-            _srvError = e;
+            srvDestroyError = e;
         }
-        if (this._fac) {
-            try {
-                this._fac.destroy?.();
-            } catch (facDestroyError) {
-                if (!_srvError) {
-                    throw facDestroyError;
-                } else {
-                    // TODO: drop the log, and throw a SuppressedError, if suppressed errors are commonly supported in browsers
-                    LOG.error(
-                        `Failed to destroy service factory after failed service destruction:`,
-                        facDestroyError
-                    );
-                }
-            } finally {
-                this._fac = undefined;
+        try {
+            this._fac.destroy?.();
+        } catch (facDestroyError) {
+            if (!srvDestroyError) {
+                throw facDestroyError;
+            } else {
+                // TODO: drop the log, and throw a SuppressedError, if suppressed errors are commonly supported in browsers
+                LOG.error(
+                    `Failed to destroy service factory after failed service destruction:`,
+                    facDestroyError
+                );
             }
+        } finally {
+            this._fac = undefined;
         }
-        if (_srvError) {
-            throw _srvError;
+        if (srvDestroyError) {
+            throw srvDestroyError;
         }
     }
 }

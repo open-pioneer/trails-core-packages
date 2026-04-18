@@ -94,6 +94,11 @@ export type ServiceFactory<Interface extends {} = {}> = ServiceLifecycleHooks & 
      * It is directly called by the runtime after constructing the factory
      */
     createService(): Service<Interface>;
+    /**
+     * Optional method to destroy a service instance created by this factory.
+     * This is called shortly before the factory itself is destroyed.
+     */
+    destroyService?(service: Service<Interface>): void;
 };
 
 /**

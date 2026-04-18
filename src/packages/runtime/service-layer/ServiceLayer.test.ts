@@ -268,28 +268,31 @@ it("supports using a function to create service instances", function () {
 });
 
 it("supports using a service factory to create service instances", function () {
-    let called = 0;
+    let called: string[] = [];
 
     type HelloService = { hello(): string };
 
     class HelloServiceFactory implements ServiceFactory<HelloService> {
         constructor(private options: ServiceOptions) {
-            ++called;
+            called.push("factory.constructor");
         }
         createService() {
-            ++called;
+            called.push("factory.createService");
             const opts = this.options;
             return {
                 hello() {
                     return `Hello ${opts.properties.target}!`;
                 },
                 destroy(): void {
-                    called++;
+                    called.push("service.destroy");
                 }
             };
         }
+        destroyService(service: Service<HelloService>): void {
+            called.push("factory.destroyService");
+        }
         destroy(): void {
-            called++;
+            called.push("factory.destroy");
         }
     }
 
@@ -324,16 +327,21 @@ it("supports using a service factory to create service instances", function () {
     );
 
     serviceLayer.start();
-    // one for factory construction, one for service creation
-    expect(called).toBe(2);
+
+    expect(called).toEqual(["factory.constructor", "factory.createService"]);
+    called = [];
 
     const instance = service.getInstanceOrThrow();
     const message = (instance as HelloService).hello();
     expect(message).toEqual("Hello world!");
 
     serviceLayer.destroy();
-    // one for service destroy, one for factory destroy
-    expect(called).toBe(4);
+
+    expect(called).toEqual([
+        //-> Should not be called: "service.destroy",
+        "factory.destroyService",
+        "factory.destroy"
+    ]);
 });
 
 it("injects all implementations of an interface when requested", function () {
