@@ -16,7 +16,7 @@ catalog:
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
   "@eslint/js": ^9.39.4
-  "@formatjs/intl": ^4.1.5
+  "@formatjs/intl": ^4.1.6
   "@open-pioneer/build-package-cli": ^3.0.9
   "@open-pioneer/build-support": ^3.0.6
   "@open-pioneer/changesets-release-line": ^0.1.0
@@ -30,7 +30,7 @@ catalog:
   "@types/node": ^20.19.39
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@typescript-eslint/parser": ^8.58.0
+  "@typescript-eslint/parser": ^8.58.2
   "@vitejs/plugin-react-swc": ^4.3.0
   classnames: ^2.5.1
   eslint: ^9.39.4
@@ -40,18 +40,18 @@ catalog:
   eslint-plugin-import: ^2.32.0
   eslint-plugin-jsx-a11y: ^6.10.2
   eslint-plugin-react: ^7.37.5
-  eslint-plugin-react-hooks: ^7.0.1
+  eslint-plugin-react-hooks: ^7.1.0
   eslint-plugin-unused-imports: ^4.4.1
   fast-glob: ^3.3.3
   handlebars: ^4.7.9
-  happy-dom: ^20.8.9
+  happy-dom: ^20.9.0
   husky: ^9.1.7
   js-yaml: ^4.1.1
   keycloak-js: ^26.2.3
   lint-staged: ^16.4.0
-  prettier: ^3.8.1
-  react: ^19.2.4
-  react-dom: ^19.2.4
+  prettier: ^3.8.3
+  react: ^19.2.5
+  react-dom: ^19.2.5
   react-icons: ^5.6.0
   react-json-view: ^1.21.3
   react-use: ^17.6.0
@@ -59,12 +59,12 @@ catalog:
   sass: ^1.99.0
   shiki: ^4.0.2
   tsx: ^4.21.0
-  typedoc: ^0.28.18
+  typedoc: ^0.28.19
   typescript: ^5.9.3
-  "typescript-eslint": ^8.58.0
+  "typescript-eslint": ^8.58.2
   vite: ^7.3.2
   vite-plugin-eslint: ^1.8.1
-  vitest: ^4.1.3
+  vitest: ^4.1.4
   zx: ^8.8.5
 
 overrides:
