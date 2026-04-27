@@ -10,13 +10,13 @@ catalog:
   "@chakra-ui/react": ^3.34.0
 
   # Devtools
-  "@changesets/cli": ^2.30.0
+  "@changesets/cli": ^2.31.0
   "@conterra/reactivity-core": ^0.8.2
   "@conterra/reactivity-events": ^0.8.2
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
   "@eslint/js": ^9.39.4
-  "@formatjs/intl": ^4.1.6
+  "@formatjs/intl": ^4.1.7
   "@open-pioneer/build-package-cli": ^3.0.9
   "@open-pioneer/build-support": ^3.0.6
   "@open-pioneer/changesets-release-line": ^0.1.0
@@ -30,7 +30,7 @@ catalog:
   "@types/node": ^20.19.39
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@typescript-eslint/parser": ^8.58.2
+  "@typescript-eslint/parser": ^8.59.0
   "@vitejs/plugin-react-swc": ^4.3.0
   classnames: ^2.5.1
   eslint: ^9.39.4
@@ -40,14 +40,14 @@ catalog:
   eslint-plugin-import: ^2.32.0
   eslint-plugin-jsx-a11y: ^6.10.2
   eslint-plugin-react: ^7.37.5
-  eslint-plugin-react-hooks: ^7.1.0
+  eslint-plugin-react-hooks: ^7.1.1
   eslint-plugin-unused-imports: ^4.4.1
   fast-glob: ^3.3.3
   handlebars: ^4.7.9
   happy-dom: ^20.9.0
   husky: ^9.1.7
   js-yaml: ^4.1.1
-  keycloak-js: ^26.2.3
+  keycloak-js: ^26.2.4
   lint-staged: ^16.4.0
   prettier: ^3.8.3
   react: ^19.2.5
@@ -61,10 +61,10 @@ catalog:
   tsx: ^4.21.0
   typedoc: ^0.28.19
   typescript: ^5.9.3
-  "typescript-eslint": ^8.58.2
+  "typescript-eslint": ^8.59.0
   vite: ^7.3.2
   vite-plugin-eslint: ^1.8.1
-  vitest: ^4.1.4
+  vitest: ^4.1.5
   zx: ^8.8.5
 
 overrides:
