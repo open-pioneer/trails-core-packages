@@ -1,5 +1,15 @@
 # @open-pioneer/runtime
 
+## 4.6.0
+
+### Minor Changes
+
+- 05425c6: runtime - Introduce support for ServiceFactories, to provide constructor indirection during service creation
+
+### Patch Changes
+
+- b092b75: Declare css property `color-scheme` on the application root. This can be used by the browser to render builtin controls differently.
+
 ## 4.5.0
 
 ### Minor Changes
