@@ -115,6 +115,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
         const classes = appRoot.classList;
         classes.toggle("light", effectiveColorMode === "light");
         classes.toggle("dark", effectiveColorMode === "dark");
+        appRoot.style.colorScheme = effectiveColorMode;
     }, [appRoot, effectiveColorMode]);
 
     const cache = useEmotionCache(rootNode);
