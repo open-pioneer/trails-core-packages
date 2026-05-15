@@ -774,7 +774,7 @@ describe("i18n support", function () {
                 this.ctx = ctx;
                 this.theme = theme;
                 this.locale = ctx.getLocale();
-                this.message = options.intl.formatMessage({ id: "greeting" });
+                this.message = options.currentIntl.value.formatMessage({ id: "greeting" });
             }
 
             async getApiMethods(): Promise<ApiMethods> {
