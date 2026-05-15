@@ -72,9 +72,9 @@ export type ServiceOptions<References extends {} = {}> = {
     properties: Record<string, unknown>;
 
     /**
-     * A reference to the shared i18n object of the current package.
+     * A constant reference to the shared i18n object of the current package.
      *
-     * @deprecated TODO
+     * @deprecated use `currentIntl` instead, which is a signal that returns the current i18n object and updates when it changes at runtime. Be aware to implement a watch for yourself  
      */
     intl: PackageIntl;
 

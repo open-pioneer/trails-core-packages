@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
-import { createLogger, destroyResource, Error, Resource } from "@open-pioneer/core";
+import { createLogger, deprecated, destroyResource, Error, Resource } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 import { ServiceMetadata } from "../metadata";
@@ -40,6 +40,13 @@ export interface ServiceReprOptions {
 interface HmrState extends Resource {
     onIntlUsed(): void;
 }
+
+const intlDeprecation = deprecated({
+    name: "intl",
+    packageName: "@open-pioneer/runtime",
+    since: "4.5.1",
+    alternative: "use currentIntl instead. Keep in mind to watch for changes in the received object."
+});
 
 /**
  * Represents metadata and state of a service in the runtime.
@@ -217,6 +224,7 @@ export class ServiceRepr {
                         return;
                     }
 
+                    //TODO
                     intlWatch = watchValue(
                         () => intl.value,
                         (_newIntl, _, context) => {
@@ -241,7 +249,7 @@ export class ServiceRepr {
                 ...options,
                 properties: this.properties,
                 get intl() {
-                    // TODO: deprecation notice
+                    intlDeprecation();
                     if (import.meta.hot) {
                         hmrState?.onIntlUsed();
                     }
