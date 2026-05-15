@@ -45,7 +45,8 @@ const intlDeprecation = deprecated({
     name: "intl",
     packageName: "@open-pioneer/runtime",
     since: "4.5.1",
-    alternative: "use currentIntl instead. Keep in mind to watch for changes in the received object."
+    alternative:
+        "use currentIntl instead. Keep in mind to watch for changes in the received object."
 });
 
 /**
@@ -224,13 +225,13 @@ export class ServiceRepr {
                         return;
                     }
 
-                    //TODO
                     intlWatch = watchValue(
                         () => intl.value,
                         (_newIntl, _, context) => {
                             LOG.warn(
                                 `Service ${id} has used 'intl' but intl has changed.` +
-                                    ` Hot reloading of intl changes is not implemented yet for services.` +
+                                    ` Hot reloading of intl changes is only implemented ` +
+                                    ` with "currentIntl". Consider to change your implementation.` +
                                     ` Triggering full reload.`
                             );
                             context.destroy();
