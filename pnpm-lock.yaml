@@ -210,18 +210,10 @@ overrides:
   '@zag-js/splitter': 1.35.3
 
 patchedDependencies:
-  '@ark-ui/react@*':
-    hash: 6c7ccdc3ae257d66f6007fd0e7de6405701490cd678ce8c7f1570d5a4bef79eb
-    path: patches/@ark-ui__react.patch
-  '@open-pioneer/vite-plugin-pioneer':
-    hash: 5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a
-    path: patches/@open-pioneer__vite-plugin-pioneer.patch
-  '@zag-js/interact-outside':
-    hash: 7a4ba966901c52e148876cbcd8f0d83d2b9cd5332e1e32c5a8bba781c7d6ac2d
-    path: patches/@zag-js__interact-outside.patch
-  '@zag-js/splitter':
-    hash: 075d08c3b1dc7858e4c6cc6b336042f36f1ee6c6f2d5e054747a872f1b58f9cb
-    path: patches/@zag-js__splitter.patch
+  '@ark-ui/react@*': 6c7ccdc3ae257d66f6007fd0e7de6405701490cd678ce8c7f1570d5a4bef79eb
+  '@open-pioneer/vite-plugin-pioneer': 5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a
+  '@zag-js/interact-outside': 7a4ba966901c52e148876cbcd8f0d83d2b9cd5332e1e32c5a8bba781c7d6ac2d
+  '@zag-js/splitter': 075d08c3b1dc7858e4c6cc6b336042f36f1ee6c6f2d5e054747a872f1b58f9cb
 
 importers:
 
