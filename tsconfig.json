@@ -5,7 +5,7 @@
         "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo",
 
         "lib": ["DOM", "DOM.Iterable", "ES2024"],
-        "module": "ES2022",
+        "module": "esnext",
         "moduleResolution": "Bundler",
         "moduleDetection": "force",
         "noEmit": true,
