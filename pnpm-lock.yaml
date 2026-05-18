@@ -34,20 +34,20 @@ catalogs:
       specifier: ^4.1.11
       version: 4.1.11
     '@open-pioneer/build-package-cli':
-      specifier: 3.1.0-dev-vite8.20260518112306
+      specifier: ^3.1.0-
       version: 3.1.0-dev-vite8.20260518112306
     '@open-pioneer/build-support':
-      specifier: 3.1.0-dev-vite8.20260518112306
-      version: 3.1.0-dev-vite8.20260518112306
+      specifier: ^3.1.0
+      version: 3.1.0
     '@open-pioneer/changesets-release-line':
       specifier: ^0.1.0
       version: 0.1.0
     '@open-pioneer/check-pnpm-duplicates':
-      specifier: 0.3.2-dev-vite8.20260518112306
-      version: 0.3.2-dev-vite8.20260518112306
+      specifier: ^0.3.2
+      version: 0.3.2
     '@open-pioneer/vite-plugin-pioneer':
-      specifier: 6.0.0-dev-vite8.20260518112306
-      version: 6.0.0-dev-vite8.20260518112306
+      specifier: ^6.0.0
+      version: 6.0.0
     '@testing-library/dom':
       specifier: ^10.4.1
       version: 10.4.1
@@ -233,19 +233,19 @@ importers:
         version: 3.1.0-dev-vite8.20260518112306(sass@1.99.0)(typescript@6.0.3)
       '@open-pioneer/build-support':
         specifier: 'catalog:'
-        version: 3.1.0-dev-vite8.20260518112306
+        version: 3.1.0
       '@open-pioneer/changesets-release-line':
         specifier: 'catalog:'
         version: 0.1.0
       '@open-pioneer/check-pnpm-duplicates':
         specifier: 'catalog:'
-        version: 0.3.2-dev-vite8.20260518112306
+        version: 0.3.2
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: 'catalog:'
-        version: 6.0.0-dev-vite8.20260518112306(patch_hash=5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a)(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.60.4)(sass@1.99.0)(vite@8.0.13(@types/node@20.19.41)(esbuild@0.28.0)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))
+        version: 6.0.0(patch_hash=5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a)(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.60.4)(sass@1.99.0)(vite@8.0.13(@types/node@20.19.41)(esbuild@0.28.0)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1594,8 +1594,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@open-pioneer/build-common@4.0.0-dev-vite8.20260518112306':
-    resolution: {integrity: sha512-ggwLUK8/bWOLluJ24SKQrvaGy5JkWSevyw6tsfi3JSPWVMudOn6U8QwdHI4OSmEGGbomuzfk+qQ5SPzZYLBbBQ==}
+  '@open-pioneer/build-common@4.0.0':
+    resolution: {integrity: sha512-RXUaNM0Qo1XAx21TGJI/KpiN1ZsLgRtUAGYSnfiaWpqL/drDEtMB0fE3y+CbfMp21syCK+B9k548zBdLIXyOfA==}
     engines: {node: '>= 20'}
 
   '@open-pioneer/build-package-cli@3.1.0-dev-vite8.20260518112306':
@@ -1615,21 +1615,21 @@ packages:
       typescript:
         optional: true
 
-  '@open-pioneer/build-support@3.1.0-dev-vite8.20260518112306':
-    resolution: {integrity: sha512-cJaiwMHcNNxgV8nHJRd3BWWdvIbGra3NzvCg8D/33tIwwuVp17zv+/7GVEZ0fG8eGmfI1LEciFEhhacwLACwBw==}
+  '@open-pioneer/build-support@3.1.0':
+    resolution: {integrity: sha512-nrEreM98d0HasYWobTKnrFC2CV0FeJLmH0Pvma5W4Ne0zzuXM889tPF/U6qspyItV6vPtXrzd2ZOBWrgmzORSQ==}
     engines: {node: '>= 20'}
 
   '@open-pioneer/changesets-release-line@0.1.0':
     resolution: {integrity: sha512-1Ipnbesv1lHQIODR01ltgB3lPC9MEN24j4QjeQU2atnZujGMPgNvVimL4/lZ0ZI6kZkeWQZIRE3derAPU1M+QQ==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/check-pnpm-duplicates@0.3.2-dev-vite8.20260518112306':
-    resolution: {integrity: sha512-3NHC843qzRQTcFJ4Cw3MvprkDr/ArKenAL8v3MYnP2YLbP3UOEqdd+DZtCqqUePzLjo5x8IyoKVfKFmwD4VD3w==}
+  '@open-pioneer/check-pnpm-duplicates@0.3.2':
+    resolution: {integrity: sha512-nTmn+VOE2SZUz27uBB+P6Q9gQgkrlpSDa0QqLsuOdEEbrz2C0ZEwfckmJtd0GBtzujqmwaS1TKczddQ1a5PFrw==}
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/vite-plugin-pioneer@6.0.0-dev-vite8.20260518112306':
-    resolution: {integrity: sha512-tdXFNCb4nuxf94gXX596frfVF8JgZ8we+n4qNTLweHoR6zToj18u/LxeOCf09PDlpV9E8YT7Dxp4FttMOWmH9w==}
+  '@open-pioneer/vite-plugin-pioneer@6.0.0':
+    resolution: {integrity: sha512-ts6hLWoDYJFDnm4jrTrCgS9zyDN88jgFonXEWP3sQwOZbhS/k6paXoACk+ZBR3h7uwbBeHnkGcxwTV3xqiuWNg==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -6068,7 +6068,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  '@open-pioneer/build-common@4.0.0-dev-vite8.20260518112306(rollup@4.60.4)':
+  '@open-pioneer/build-common@4.0.0(rollup@4.60.4)':
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.60.4)
       semver: 7.8.0
@@ -6089,8 +6089,8 @@ snapshots:
 
   '@open-pioneer/build-package@4.2.0-dev-vite8.20260518112306(sass@1.99.0)(typescript@6.0.3)':
     dependencies:
-      '@open-pioneer/build-common': 4.0.0-dev-vite8.20260518112306(rollup@4.60.4)
-      '@open-pioneer/build-support': 3.1.0-dev-vite8.20260518112306
+      '@open-pioneer/build-common': 4.0.0(rollup@4.60.4)
+      '@open-pioneer/build-support': 3.1.0
       '@rollup/plugin-node-resolve': 16.0.3(rollup@4.60.4)
       chalk: 5.6.2
       debug: 4.4.3
@@ -6110,11 +6110,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@open-pioneer/build-support@3.1.0-dev-vite8.20260518112306': {}
+  '@open-pioneer/build-support@3.1.0': {}
 
   '@open-pioneer/changesets-release-line@0.1.0': {}
 
-  '@open-pioneer/check-pnpm-duplicates@0.3.2-dev-vite8.20260518112306':
+  '@open-pioneer/check-pnpm-duplicates@0.3.2':
     dependencies:
       '@pnpm/lockfile.fs': 1001.1.33(@pnpm/logger@1001.0.1)
       '@pnpm/lockfile.utils': 1004.0.4
@@ -6125,12 +6125,12 @@ snapshots:
       commander: 14.0.3
       js-yaml: 4.1.1
 
-  '@open-pioneer/vite-plugin-pioneer@6.0.0-dev-vite8.20260518112306(patch_hash=5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a)(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.60.4)(sass@1.99.0)(vite@8.0.13(@types/node@20.19.41)(esbuild@0.28.0)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))':
+  '@open-pioneer/vite-plugin-pioneer@6.0.0(patch_hash=5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a)(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.60.4)(sass@1.99.0)(vite@8.0.13(@types/node@20.19.41)(esbuild@0.28.0)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))':
     dependencies:
       '@babel/generator': 7.29.1
       '@babel/template': 7.28.6
       '@babel/types': 7.29.0
-      '@open-pioneer/build-common': 4.0.0-dev-vite8.20260518112306(rollup@4.60.4)
+      '@open-pioneer/build-common': 4.0.0(rollup@4.60.4)
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.3
       js-yaml: 4.1.1
