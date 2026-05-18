@@ -19,13 +19,7 @@ export interface ObservableBox<T> {
  * In development node, the box value can be changed and observed.
  */
 export function createBox<T>(value: T): ObservableBox<T> {
-    if (import.meta.env.DEV) {
-        return new BoxImpl(value);
-    } else {
-        return {
-            value
-        };
-    }
+    return new BoxImpl(value);
 }
 
 /** @internal */
@@ -38,18 +32,21 @@ export function unwrapBox<T>(value: T | ObservableBox<T>): T {
     return isBox(value) ? value.value : value;
 }
 
-class BoxImpl<T> implements Required<ObservableBox<T>> {
+class BoxImpl<T> implements ObservableBox<T> {
     #signal: Reactive<T>;
+
+    readonly setValue?: (newValue: T) => void;
 
     constructor(value: T) {
         this.#signal = reactive(value);
+        if (import.meta.env.DEV) {
+            this.setValue = (newValue) => {
+                this.#signal.value = newValue;
+            };
+        }
     }
 
     get value(): T {
         return this.#signal.value;
-    }
-
-    setValue(newValue: T): void {
-        this.#signal.value = newValue;
     }
 }
