@@ -6,7 +6,10 @@ import { AppUI } from "./ui/AppUI";
 
 const element = createCustomElement({
     component: AppUI,
-    appMetadata: appMetadata
+    appMetadata: appMetadata,
+    advanced: {
+        enableShadowRoot: true
+    }
 });
 
 customElements.define("chakra-showcase", element);
