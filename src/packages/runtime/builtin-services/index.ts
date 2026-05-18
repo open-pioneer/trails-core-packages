@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { constant } from "@conterra/reactivity-core";
 import { createEmptyPackageIntl } from "../i18n";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import {
@@ -7,7 +8,6 @@ import {
     createFunctionFactory,
     ServiceRepr
 } from "../service-layer/ServiceRepr";
-import { reactiveConstant } from "../utils/reactive-constant";
 import { ApiServiceImpl } from "./ApiServiceImpl";
 import { ApplicationContextImpl, ApplicationContextProperties } from "./ApplicationContextImpl";
 import { ApplicationLifecycleEventService } from "./ApplicationLifecycleEventService";
@@ -42,7 +42,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ApiServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createConstructorFactory(ApiServiceImpl),
-        intl: reactiveConstant(intl),
+        intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_API_SERVICE,
@@ -63,7 +63,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         factory: createFunctionFactory(
             (options) => new ApplicationContextImpl(options, properties)
         ),
-        intl: reactiveConstant(intl),
+        intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_CONTEXT,
@@ -75,7 +75,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ApplicationLifecycleEventServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createConstructorFactory(ApplicationLifecycleEventService),
-        intl: reactiveConstant(intl),
+        intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
@@ -96,7 +96,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         factory: createFunctionFactory(
             (options) => new NumberParserServiceImpl(options, properties.locale)
         ),
-        intl: reactiveConstant(intl),
+        intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_NUMBER_PARSER_SERVICE,
@@ -109,7 +109,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ThemeServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createFunctionFactory(() => new ThemeServiceImpl(properties)),
-        intl: reactiveConstant(intl),
+        intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_THEME_SERVICE,
@@ -134,6 +134,6 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
             numberParserService,
             themeService
         ],
-        intl: reactiveConstant(intl)
+        intl: constant(intl)
     });
 }

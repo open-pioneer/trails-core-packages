@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { constant } from "@conterra/reactivity-core";
 import { assert, expect, it } from "vitest";
 import { createEmptyPackageIntl } from "../i18n";
 import { expectError } from "../test-utils/expectError";
@@ -7,7 +8,6 @@ import { InterfaceSpec, ReferenceSpec } from "./InterfaceSpec";
 import { ReadonlyServiceLookup } from "./ServiceLookup";
 import { createConstructorFactory, ServiceDependency, ServiceRepr } from "./ServiceRepr";
 import { verifyDependencies } from "./verifyDependencies";
-import { reactiveConstant } from "../utils/reactive-constant";
 
 it("does not return an error on acyclic graphs", function () {
     const services = mockServices([
@@ -407,7 +407,7 @@ function mockServices(data: ServiceData[]): ServiceRepr[] {
             name,
             packageName,
             factory: createConstructorFactory(clazz),
-            intl: reactiveConstant(createEmptyPackageIntl()),
+            intl: constant(createEmptyPackageIntl()),
             dependencies,
             interfaces
         });

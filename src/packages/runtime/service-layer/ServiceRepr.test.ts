@@ -1,10 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ReadonlyReactive } from "@conterra/reactivity-core";
+import { constant, ReadonlyReactive } from "@conterra/reactivity-core";
 import { afterEach, expect, it, vi } from "vitest";
 import { createEmptyPackageIntl, createPackageIntl, PackageIntl } from "../i18n";
 import { Service, ServiceOptions } from "../Service";
-import { reactiveConstant } from "../utils/reactive-constant";
 import { createConstructorFactory, ServiceRepr } from "./ServiceRepr";
 
 afterEach(() => {
@@ -45,7 +44,7 @@ it("exposes `currentIntl` as a reactive signal that returns the package intl wit
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
     const intl: PackageIntl = createPackageIntl("en", { greeting: "hello" });
-    const intlSignal: ReadonlyReactive<PackageIntl> = reactiveConstant(intl);
+    const intlSignal: ReadonlyReactive<PackageIntl> = constant(intl);
 
     let capturedOptions: ServiceOptions | undefined;
     class TestService implements Service {
@@ -68,7 +67,7 @@ it("exposes `currentIntl` as a reactive signal that returns the package intl wit
 
 function constructService(
     clazz: new (options: ServiceOptions) => Service,
-    intl: ReadonlyReactive<PackageIntl> = reactiveConstant(createEmptyPackageIntl())
+    intl: ReadonlyReactive<PackageIntl> = constant(createEmptyPackageIntl())
 ): ServiceRepr {
     const repr = new ServiceRepr({
         name: "test-service",

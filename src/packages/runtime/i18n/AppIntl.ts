@@ -1,14 +1,20 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { sourceId } from "open-pioneer:source-info";
+import {
+    computed,
+    constant,
+    reactive,
+    ReadonlyReactive,
+    watchValue
+} from "@conterra/reactivity-core";
 import { createLogger, destroyResource, Error, Resource } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
+import { unwrapBox } from "../metadata/ObservableBox";
 import { createPackageIntl, PackageIntl } from "./PackageIntl";
 import { getBrowserLocales, I18nConfig } from "./pick";
-import { computed, reactive, ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
-import { unwrapBox } from "../metadata/ObservableBox";
-import { reactiveConstant } from "../utils/reactive-constant";
+
 const LOG = createLogger(sourceId);
 
 /**
@@ -137,7 +143,7 @@ export async function initI18n(
             } else {
                 const packageMessages = messages.value[packageName] ?? {};
                 const packageIntl = createPackageIntl(locale, packageMessages);
-                return reactiveConstant(packageIntl);
+                return constant(packageIntl);
             }
         }
     };

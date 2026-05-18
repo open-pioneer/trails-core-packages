@@ -4,7 +4,7 @@
  * @vitest-environment happy-dom
  */
 import { FormatNumber, SystemConfig, mergeConfigs, useChakraContext } from "@chakra-ui/react";
-import { reactive } from "@conterra/reactivity-core";
+import { constant, reactive } from "@conterra/reactivity-core";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
@@ -21,7 +21,6 @@ import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
-import { reactiveConstant } from "../utils/reactive-constant";
 
 interface TestProvider {
     value: string;
@@ -483,14 +482,14 @@ function createIntegration(options?: {
                     packageName,
                     interfaces: spec.interfaces,
                     factory: createConstructorFactory(spec.clazz),
-                    intl: reactiveConstant(intl)
+                    intl: constant(intl)
                 });
             }) ?? [];
         packages.set(
             packageName,
             new PackageRepr({
                 name: packageName,
-                intl: reactiveConstant(intl),
+                intl: constant(intl),
                 properties: options?.packageProperties,
                 uiReferences: options?.packageUiReferences,
                 services

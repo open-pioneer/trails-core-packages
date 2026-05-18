@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { constant } from "@conterra/reactivity-core";
 import { expect, it } from "vitest";
 import { AppIntl, createEmptyPackageIntl, PackageIntl } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { expectError } from "../test-utils/expectError";
 import { createPackages, PackageRepr } from "./PackageRepr";
-import { reactiveConstant } from "../utils/reactive-constant";
 
 class ClazzA {}
 
@@ -59,7 +59,7 @@ it("parses package metadata into internal package representations", function () 
         supportedMessageLocales: [],
         destroy() {},
         createPackageI18n() {
-            return reactiveConstant(createEmptyPackageIntl("zh-CN"));
+            return constant(createEmptyPackageIntl("zh-CN"));
         },
         supportsLocale() {
             return true;
@@ -234,5 +234,5 @@ function createPackageFromMetadata(
     properties?: Record<string, unknown>,
     intl?: PackageIntl
 ) {
-    return PackageRepr.create(data, reactiveConstant(intl ?? createEmptyPackageIntl()), properties);
+    return PackageRepr.create(data, constant(intl ?? createEmptyPackageIntl()), properties);
 }
