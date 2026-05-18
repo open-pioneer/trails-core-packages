@@ -74,7 +74,7 @@ export type ServiceOptions<References extends {} = {}> = {
     /**
      * A constant reference to the shared i18n object of the current package.
      *
-     * @deprecated use `currentIntl` instead, which is a signal that returns the current i18n object and updates when it changes at runtime. Be aware to implement a watch for yourself  
+     * @deprecated use `currentIntl` instead, which is a signal that returns the current i18n object and updates when it changes at runtime. Be aware to implement a watch for yourself
      */
     intl: PackageIntl;
 
@@ -93,3 +93,62 @@ export type ServiceOptions<References extends {} = {}> = {
 export type ServiceConstructor<References extends {} = {}, Interface extends {} = {}> = {
     new (options: ServiceOptions<References>): Service<Interface>;
 };
+
+/**
+ * A service factory is an object that has a method to create a service instance.
+ * The service factory itself can also implement lifecycle hooks, which will be called by the runtime
+ * when the factory is destroyed.
+ */
+export type ServiceFactory<Interface extends {} = {}> = {
+    /**
+     * Method to create a service instance.
+     * It is directly called by the runtime after constructing the factory.
+     * NOTE: the service.destroy lifecycle hook is not called by the runtime.
+     */
+    createService(): Interface;
+    /**
+     * Optional method to destroy a service instance created by this factory.
+     * If provided, this method will be called by the runtime when the service instance is destroyed.
+     * A factory instance exists per service, this method invocation means that the factory is no longer used by the runtime.
+     */
+    destroyService?(service: Interface): void;
+};
+
+/**
+ * A constructor type for a service factory.
+ * The service factory is an object that has a method to create a service instance,
+ * this allows for more flexibility in service construction.
+ */
+export type ServiceFactoryConstructor<References extends {} = {}, Interface extends {} = {}> = {
+    new (options: ServiceOptions<References>): ServiceFactory<Interface>;
+};
+
+/**
+ * Symbol used to detect if a constructor function is a service factory constructor.
+ */
+const IS_SERVICE_FACTORY = Symbol("runtime.IS_SERVICE_FACTORY");
+export { IS_SERVICE_FACTORY };
+
+/**
+ * A service factory constructor must be marked
+ * with the `IS_SERVICE_FACTORY` symbol to be recognized by the runtime as such.
+ */
+export type MarkedServiceFactoryConstructor<
+    References extends {} = {},
+    Interface extends {} = {}
+> = ServiceFactoryConstructor<References, Interface> & {
+    [IS_SERVICE_FACTORY]: true;
+};
+
+/**
+ * Utility function to mark a constructor as a service factory constructor.
+ * @param ctr normal constructor function for a service factory.
+ * @returns the same constructor function, but marked with the `IS_SERVICE_FACTORY` symbol so that the runtime recognizes it as a service factory constructor.
+ */
+export function defineServiceFactory(
+    ctr: ServiceFactoryConstructor
+): MarkedServiceFactoryConstructor {
+    const markedCtr = ctr as MarkedServiceFactoryConstructor;
+    markedCtr[IS_SERVICE_FACTORY] = true;
+    return markedCtr;
+}

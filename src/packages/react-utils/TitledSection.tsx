@@ -212,12 +212,20 @@ export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
  * Returns the current heading level.
  *
  * This hook should be used in the `title` property of a {@link TitledSection} or in that component's children.
+ * If you use it outside of a TitledSection, it will throw an error by default.
+ * You can set `required: false` to make it return `undefined` instead of throwing an error
  *
  * @group Headings
  */
-export function useHeadingLevel(): HeadingLevel {
+export function useHeadingLevel(): HeadingLevel;
+export function useHeadingLevel(props: { required: false }): HeadingLevel | undefined;
+export function useHeadingLevel(props: { required?: true }): HeadingLevel;
+export function useHeadingLevel(props?: { required?: boolean }): HeadingLevel | undefined {
     const level = useContext(LevelContext);
     if (level == null) {
+        if (props?.required === false) {
+            return undefined;
+        }
         throw new Error("useHeadingLevel() must be used within a <TitledSection />");
     }
     return Math.max(1, Math.min(level, 6)) as HeadingLevel;
