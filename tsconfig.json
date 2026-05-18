@@ -3,7 +3,8 @@
         "target": "ESNext",
         "incremental": true,
         "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo",
-        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+
+        "lib": ["DOM", "DOM.Iterable", "ES2024"],
         "module": "ES2022",
         "moduleResolution": "Bundler",
         "moduleDetection": "force",
