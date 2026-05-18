@@ -37,6 +37,7 @@ export interface ServiceReprOptions {
 }
 
 interface HmrState extends Resource {
+    /** Called when usage of `serviceOptions.intl` is detected at runtime. */
     onIntlUsed(): void;
 }
 
@@ -204,42 +205,8 @@ export class ServiceRepr {
             );
         }
 
-        const id = this.id;
         const intl = this.intl;
-
-        let hmrState: HmrState | undefined;
-        if (import.meta.hot) {
-            let intlWatch: Resource | undefined = undefined;
-            hmrState = this._hmrState = {
-                destroy() {
-                    intlWatch = destroyResource(intlWatch);
-                },
-
-                onIntlUsed() {
-                    if (intlWatch) {
-                        return;
-                    }
-
-                    intlWatch = watchValue(
-                        () => intl.value,
-                        (_newIntl, _, context) => {
-                            LOG.warn(
-                                `Service ${id} has used 'intl' but intl has changed.` +
-                                    ` Hot reloading of intl changes is only implemented ` +
-                                    ` with "currentIntl". Consider to change your implementation.` +
-                                    ` Triggering full reload.`
-                            );
-                            context.destroy();
-
-                            // TODO: Figure out a cleaner way to force vite to reload the application
-                            // https://github.com/open-pioneer/trails-core-packages/issues/164
-                            window.location.reload();
-                        }
-                    );
-                }
-            };
-        }
-
+        const hmrState = (this._hmrState = /*#__PURE__*/ createHmrState(this.id, intl));
         try {
             this._instance = this.factory.create({
                 ...options,
@@ -359,6 +326,52 @@ export function createFunctionFactory(
             srv.destroy?.();
         }
     };
+}
+
+/**
+ * Triggers a full page reload if:
+ *
+ * - We are in development mode (import.meta.hot) AND
+ * - The service uses the deprecated `intl` option AND
+ * - The messages changes due to a HMR event
+ */
+function createHmrState(
+    serviceId: string,
+    intl: ReadonlyReactive<PackageIntl>
+): HmrState | undefined {
+    let hmrState: HmrState | undefined;
+    if (import.meta.hot) {
+        let intlWatch: Resource | undefined = undefined;
+        hmrState = {
+            destroy() {
+                intlWatch = destroyResource(intlWatch);
+            },
+
+            onIntlUsed() {
+                if (intlWatch) {
+                    return;
+                }
+
+                intlWatch = watchValue(
+                    () => intl.value,
+                    (_newIntl, _, context) => {
+                        LOG.warn(
+                            `Service ${serviceId} has used the deprecated 'intl' option but messages have changed.` +
+                                ` Hot reloading of intl changes is only implemented ` +
+                                ` with 'currentIntl'.` +
+                                ` Triggering full reload.`
+                        );
+                        context.destroy();
+
+                        // TODO: Figure out a cleaner way to force vite to reload the application
+                        // https://github.com/open-pioneer/trails-core-packages/issues/164
+                        window.location.reload();
+                    }
+                );
+            }
+        };
+    }
+    return hmrState;
 }
 
 const SERVICE_NAME_REGEX = /^[a-z0-9_-]+$/i;
