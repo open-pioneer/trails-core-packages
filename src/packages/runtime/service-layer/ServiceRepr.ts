@@ -1,18 +1,21 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
+import { createLogger, deprecated, destroyResource, Error, Resource } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
+import { PackageIntl } from "../i18n";
 import { ServiceMetadata } from "../metadata";
 import {
+    IS_SERVICE_FACTORY,
+    MarkedServiceFactoryConstructor,
     Service,
     ServiceConstructor,
-    ServiceOptions,
-    IS_SERVICE_FACTORY,
     ServiceFactory,
-    MarkedServiceFactoryConstructor
+    ServiceOptions
 } from "../Service";
-import { Error } from "@open-pioneer/core";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
-import { PackageIntl } from "../i18n";
+
+const LOG = createLogger("runtime:ServiceRepr");
 
 export type ServiceState = "not-constructed" | "constructing" | "constructed" | "destroyed";
 
@@ -27,11 +30,23 @@ export interface ServiceReprOptions {
     name: string;
     packageName: string;
     factory: ServiceInstanceFactory;
-    intl: PackageIntl;
+    intl: ReadonlyReactive<PackageIntl>;
     dependencies?: ServiceDependency[];
     interfaces?: InterfaceSpec[];
     properties?: Record<string, unknown>;
 }
+
+interface HmrState extends Resource {
+    /** Called when usage of `serviceOptions.intl` is detected at runtime. */
+    onIntlUsed(): void;
+}
+
+const intlDeprecation = deprecated({
+    name: "ServiceOptions.intl",
+    packageName: "@open-pioneer/runtime",
+    since: "4.5.1",
+    alternative: "use currentIntl instead and watch for changes where appropriate"
+});
 
 /**
  * Represents metadata and state of a service in the runtime.
@@ -41,7 +56,7 @@ export class ServiceRepr {
     static create(
         packageName: string,
         data: ServiceMetadata,
-        intl: PackageIntl,
+        intl: ReadonlyReactive<PackageIntl>,
         properties?: Record<string, unknown>
     ): ServiceRepr {
         const clazz = data.clazz;
@@ -82,7 +97,7 @@ export class ServiceRepr {
     readonly packageName: string;
 
     /** Locale-dependant i18n messages. */
-    readonly intl: PackageIntl;
+    readonly intl: ReadonlyReactive<PackageIntl>;
 
     /** Service properties made available via the service's constructor. */
     readonly properties: Readonly<Record<string, unknown>>;
@@ -104,6 +119,9 @@ export class ServiceRepr {
 
     /** Service instance, once constructed. */
     private _instance: Service | undefined = undefined;
+
+    /** Used in dev mode only. */
+    private _hmrState: HmrState | undefined = undefined;
 
     constructor(options: ServiceReprOptions) {
         const {
@@ -186,11 +204,21 @@ export class ServiceRepr {
                 "Inconsistent state: service is not being constructed."
             );
         }
+
+        const intl = this.intl;
+        const hmrState = (this._hmrState = /*#__PURE__*/ createHmrState(this.id, intl));
         try {
             this._instance = this.factory.create({
                 ...options,
                 properties: this.properties,
-                intl: this.intl
+                get intl() {
+                    intlDeprecation();
+                    if (import.meta.hot) {
+                        hmrState?.onIntlUsed();
+                    }
+                    return intl.value;
+                },
+                currentIntl: this.intl
             });
             this._state = "constructed";
             this._useCount = 1;
@@ -208,6 +236,7 @@ export class ServiceRepr {
         if (this._instance) {
             try {
                 this.factory.destroy(this._instance);
+                this._hmrState = destroyResource(this._hmrState);
             } catch (e) {
                 throw new Error(
                     ErrorId.SERVICE_DESTRUCTION_FAILED,
@@ -297,6 +326,52 @@ export function createFunctionFactory(
             srv.destroy?.();
         }
     };
+}
+
+/**
+ * Triggers a full page reload if:
+ *
+ * - We are in development mode (import.meta.hot) AND
+ * - The service uses the deprecated `intl` option AND
+ * - The messages changes due to a HMR event
+ */
+function createHmrState(
+    serviceId: string,
+    intl: ReadonlyReactive<PackageIntl>
+): HmrState | undefined {
+    let hmrState: HmrState | undefined;
+    if (import.meta.hot) {
+        let intlWatch: Resource | undefined = undefined;
+        hmrState = {
+            destroy() {
+                intlWatch = destroyResource(intlWatch);
+            },
+
+            onIntlUsed() {
+                if (intlWatch) {
+                    return;
+                }
+
+                intlWatch = watchValue(
+                    () => intl.value,
+                    (_newIntl, _, context) => {
+                        LOG.warn(
+                            `Service ${serviceId} has used the deprecated 'intl' option but messages have changed.` +
+                                ` Hot reloading of intl changes is only implemented ` +
+                                ` with 'currentIntl'.` +
+                                ` Triggering full reload.`
+                        );
+                        context.destroy();
+
+                        // TODO: Figure out a cleaner way to force vite to reload the application
+                        // https://github.com/open-pioneer/trails-core-packages/issues/164
+                        window.location.reload();
+                    }
+                );
+            }
+        };
+    }
+    return hmrState;
 }
 
 const SERVICE_NAME_REGEX = /^[a-z0-9_-]+$/i;

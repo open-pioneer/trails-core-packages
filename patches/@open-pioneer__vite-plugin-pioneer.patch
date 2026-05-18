@@ -1,13 +1,13 @@
 diff --git a/dist/index.js b/dist/index.js
-index 6ca17b6a74247e867fe7771eeba78be133c4d9f0..99ddcfb31146d5b93a3d688ba3ac9c4d4e41dbed 100644
+index 104ba85620defccd7117ae535e74d65bed8f7b86..839835976ac5ba5ec8d3069971fb796fbd38439e 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -1535,7 +1535,7 @@ async function optimizeTrailsPackages(userConfig, rootDir) {
+@@ -1700,7 +1700,7 @@ async function getOptimizeDepsIncludes(rootDir) {
      const serviceModule = pkg2.servicesModuleId;
      return serviceModule ? [serviceModule] : [];
    });
--  trailsModules.push(`${RuntimeSupport.RUNTIME_PACKAGE_NAME}/**`);
-+  //trailsModules.push(`${RuntimeSupport.RUNTIME_PACKAGE_NAME}/**`);
-   isDebug4 && debug5("Optimizing additional modules %O", trailsModules);
-   const optimizeDeps = userConfig.optimizeDeps ??= {};
-   const includes = optimizeDeps.include ??= [];
+-  trailsModules.push(`${RuntimeSupport3.RUNTIME_PACKAGE_NAME}/**`);
++  //trailsModules.push(`${RuntimeSupport3.RUNTIME_PACKAGE_NAME}/**`);
+   isDebug5 && debug6("Optimizing additional modules %O", trailsModules);
+   return trailsModules;
+ }

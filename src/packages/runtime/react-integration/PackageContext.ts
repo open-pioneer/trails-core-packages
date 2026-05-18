@@ -9,6 +9,10 @@ export interface PackageContextMethods {
     getService: (packageName: string, interfaceName: string, options: UseServiceOptions) => Service;
     getServices: (packageName: string, interfaceName: string) => Service[];
     getProperties: (packageName: string) => Readonly<Record<string, unknown>>;
+
+    /**
+     * NOTE: This is reactive during development for hot reloading support.
+     */
     getIntl(packageName: string): PackageIntl;
 }
 
