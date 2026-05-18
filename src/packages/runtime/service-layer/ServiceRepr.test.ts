@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { constant, ReadonlyReactive } from "@conterra/reactivity-core";
+import { constant, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import { afterEach, expect, it, vi } from "vitest";
 import { createEmptyPackageIntl, createPackageIntl, PackageIntl } from "../i18n";
 import { Service, ServiceOptions } from "../Service";
@@ -25,17 +25,17 @@ it("emits a deprecation warning via console.warn when `intl` is accessed", funct
     // Access triggers the deprecation
     void capturedOptions!.intl;
 
-    const calls = warn.mock.calls.filter((args) => isDeprecationCall(args, "intl"));
+    const calls = warn.mock.calls;
     expect(calls.length).toBe(1);
-    const [firstWarningArgument] = calls[0]!;
-    const message = String(firstWarningArgument);
-    expect(message).toContain("@open-pioneer/runtime");
-    expect(message).toContain("currentIntl");
+    expect(calls[0]).toMatchInlineSnapshot(`
+      [
+        "⚠️ DEPRECATED: ServiceOptions.intl in @open-pioneer/runtime (since 4.5.1, use currentIntl instead and watch for changes where appropriate) - Please update your code as this may be removed in future versions.",
+      ]
+    `);
 
     // Repeated access on the same service does not warn again
     void capturedOptions!.intl;
-    const callsAfter = warn.mock.calls.filter((args) => isDeprecationCall(args, "intl"));
-    expect(callsAfter.length).toBe(1);
+    expect(warn.mock.calls.length).toBe(1);
 
     repr.destroy();
 });
@@ -44,7 +44,7 @@ it("exposes `currentIntl` as a reactive signal that returns the package intl wit
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
     const intl: PackageIntl = createPackageIntl("en", { greeting: "hello" });
-    const intlSignal: ReadonlyReactive<PackageIntl> = constant(intl);
+    const intlSignal = reactive(intl);
 
     let capturedOptions: ServiceOptions | undefined;
     class TestService implements Service {
@@ -58,9 +58,7 @@ it("exposes `currentIntl` as a reactive signal that returns the package intl wit
     expect(capturedOptions!.currentIntl).toBe(intlSignal);
     expect(capturedOptions!.currentIntl.value).toBe(intl);
     expect(capturedOptions!.currentIntl.value.formatMessage({ id: "greeting" })).toBe("hello");
-
-    const deprecationCalls = warn.mock.calls.filter((args) => isDeprecationCall(args, "intl"));
-    expect(deprecationCalls.length).toBe(0);
+    expect(warn.mock.calls.length).toBe(0); // No warning
 
     repr.destroy();
 });
@@ -78,9 +76,4 @@ function constructService(
     repr.beforeCreate();
     repr.create({ references: {}, referencesMeta: {} });
     return repr;
-}
-
-function isDeprecationCall(args: unknown[], name: string): boolean {
-    const first = args[0];
-    return typeof first === "string" && first.includes("DEPRECATED") && first.includes(name);
 }

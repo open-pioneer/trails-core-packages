@@ -41,11 +41,10 @@ interface HmrState extends Resource {
 }
 
 const intlDeprecation = deprecated({
-    name: "intl",
+    name: "ServiceOptions.intl",
     packageName: "@open-pioneer/runtime",
     since: "4.5.1",
-    alternative:
-        "use currentIntl instead. Keep in mind to watch for changes in the received object."
+    alternative: "use currentIntl instead and watch for changes where appropriate"
 });
 
 /**

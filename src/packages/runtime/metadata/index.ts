@@ -32,7 +32,7 @@ export interface ApplicationMetadata {
      * Loads messages for the given locale.
      *
      * >NOTE: Previously (before runtime metadata version 1.1.0), this was a plain function;
-     * >then a plain function in a box.
+     * >then a plain function in a box (the function is replaced to indicate a reload event for i18n messages).
      *
      * @returns A record of packageName -> (messageId, messageTemplate) entries.
      */
