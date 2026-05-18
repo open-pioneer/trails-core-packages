@@ -34,20 +34,20 @@ catalogs:
       specifier: ^4.1.11
       version: 4.1.11
     '@open-pioneer/build-package-cli':
-      specifier: 3.1.0-dev.20260518082810
-      version: 3.1.0-dev.20260518082810
+      specifier: 3.1.0-dev.20260518093119
+      version: 3.1.0-dev.20260518093119
     '@open-pioneer/build-support':
-      specifier: 3.1.0-dev.20260518082810
-      version: 3.1.0-dev.20260518082810
+      specifier: 3.1.0-dev.20260518093119
+      version: 3.1.0-dev.20260518093119
     '@open-pioneer/changesets-release-line':
       specifier: ^0.1.0
       version: 0.1.0
     '@open-pioneer/check-pnpm-duplicates':
-      specifier: 0.3.2-dev.20260518082810
-      version: 0.3.2-dev.20260518082810
+      specifier: 0.3.2-dev.20260518093119
+      version: 0.3.2-dev.20260518093119
     '@open-pioneer/vite-plugin-pioneer':
-      specifier: 5.2.0-dev.20260518082810
-      version: 5.2.0-dev.20260518082810
+      specifier: 5.2.0-dev.20260518093119
+      version: 5.2.0-dev.20260518093119
     '@testing-library/dom':
       specifier: ^10.4.1
       version: 10.4.1
@@ -238,22 +238,22 @@ importers:
         version: 9.39.4
       '@open-pioneer/build-package-cli':
         specifier: 'catalog:'
-        version: 3.1.0-dev.20260518082810(sass@1.99.0)(typescript@6.0.3)
+        version: 3.1.0-dev.20260518093119(sass@1.99.0)(typescript@6.0.3)
       '@open-pioneer/build-support':
         specifier: 'catalog:'
-        version: 3.1.0-dev.20260518082810
+        version: 3.1.0-dev.20260518093119
       '@open-pioneer/changesets-release-line':
         specifier: 'catalog:'
         version: 0.1.0
       '@open-pioneer/check-pnpm-duplicates':
         specifier: 'catalog:'
-        version: 0.3.2-dev.20260518082810
+        version: 0.3.2-dev.20260518093119
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: 'catalog:'
-        version: 5.2.0-dev.20260518082810(patch_hash=2436dfb9177d8d2aa3bb60d803857935d64f366579220e27326e1de23f40ed8d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.59.0)(sass@1.99.0)(vite@7.3.3(@types/node@20.19.41)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))
+        version: 5.2.0-dev.20260518093119(patch_hash=2436dfb9177d8d2aa3bb60d803857935d64f366579220e27326e1de23f40ed8d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.59.0)(sass@1.99.0)(vite@7.3.3(@types/node@20.19.41)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1603,8 +1603,8 @@ packages:
     resolution: {integrity: sha512-eGmua9Ht3fJBf8VAz6nXXRC2u6oSoQ8DpVfPzcfJFsZnbZZiyEEx+Lc+TXuBLceBS9yVgkvo4G4U5bBDMkqyLg==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/build-package-cli@3.1.0-dev.20260518082810':
-    resolution: {integrity: sha512-SXd6tpU+heJE/wxRgPaOS+7Lvlz2pqvY2Bw0ZJ/qhwbTZfVYKP5QKzYyU8+KEIUG8KNUcDjAbCtyaQllxDzJiA==}
+  '@open-pioneer/build-package-cli@3.1.0-dev.20260518093119':
+    resolution: {integrity: sha512-/MV3/rfRjejzF3m8+3j4Nc0QA7bZVQfkv2dUMuAgHevQ8rvItZdNJSjka3d5yVwXtjfOs5mFqZpyVyIG+PbgPw==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -1624,21 +1624,21 @@ packages:
     resolution: {integrity: sha512-LsWaUiU+xTSVZn4NJvilIIX7LDdepd0Ct6uxauVieZAKgCaLIQ8nw3raGZ4YPe+0XSrD7vXX/vp1Voeb98xQow==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/build-support@3.1.0-dev.20260518082810':
-    resolution: {integrity: sha512-GbIZwkTKeyvgQ/p99Fs72ZIO3aeUYlDD8LokiNdozeapqsoqdN3yeT0LsnR4BHsCS/qofRUhu1F0Zr0JULO0qA==}
+  '@open-pioneer/build-support@3.1.0-dev.20260518093119':
+    resolution: {integrity: sha512-2uhWBL5RgTv4MnI6bMl6uRyW3BwPlqILTvQE0EAsEziBPpu8GBEw/OdjWmLC14byXurYmYrZUdydfY/oDi0mAw==}
     engines: {node: '>= 20'}
 
   '@open-pioneer/changesets-release-line@0.1.0':
     resolution: {integrity: sha512-1Ipnbesv1lHQIODR01ltgB3lPC9MEN24j4QjeQU2atnZujGMPgNvVimL4/lZ0ZI6kZkeWQZIRE3derAPU1M+QQ==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/check-pnpm-duplicates@0.3.2-dev.20260518082810':
-    resolution: {integrity: sha512-zP5nih4IUVFjnzhcuXhOKmzbdU4VRF6NkL/MjH/1vBtSggPFN/mBm+yjWuE6rDSNIP7jkPw1yuQvmC6hyV8jLQ==}
+  '@open-pioneer/check-pnpm-duplicates@0.3.2-dev.20260518093119':
+    resolution: {integrity: sha512-s50bV3BTvguTzDlZNvNhzq0TE80rgN1TlUHiT7IFQHq9DqVUVFZ2wq/VZxrJwOtQpKyrzw4PtaORMsLR0M+GBg==}
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/vite-plugin-pioneer@5.2.0-dev.20260518082810':
-    resolution: {integrity: sha512-dP+2RXHems37PhEYc/Rx2Qjqa+Fu2Xe5u3xO6C0+FuOZ0zgtLgXr+FuVup7DbV9IFZwdK84yo+URFdcvGFKYgg==}
+  '@open-pioneer/vite-plugin-pioneer@5.2.0-dev.20260518093119':
+    resolution: {integrity: sha512-Y+JI1rsb2QljMoUZVBxOdM0eiNw10PGt8Gohvc0nQscIN+gW1eKHmYTwC2G6NV85Rb1Oeun9y3jdCVUQLcQahw==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -5974,7 +5974,7 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  '@open-pioneer/build-package-cli@3.1.0-dev.20260518082810(sass@1.99.0)(typescript@6.0.3)':
+  '@open-pioneer/build-package-cli@3.1.0-dev.20260518093119(sass@1.99.0)(typescript@6.0.3)':
     dependencies:
       '@open-pioneer/build-package': 4.2.0-dev-i18n.20260416113643(sass@1.99.0)(typescript@6.0.3)
       chalk: 5.6.2
@@ -6009,11 +6009,11 @@ snapshots:
 
   '@open-pioneer/build-support@3.1.0-dev-i18n.20260416113643': {}
 
-  '@open-pioneer/build-support@3.1.0-dev.20260518082810': {}
+  '@open-pioneer/build-support@3.1.0-dev.20260518093119': {}
 
   '@open-pioneer/changesets-release-line@0.1.0': {}
 
-  '@open-pioneer/check-pnpm-duplicates@0.3.2-dev.20260518082810':
+  '@open-pioneer/check-pnpm-duplicates@0.3.2-dev.20260518093119':
     dependencies:
       '@pnpm/lockfile.fs': 1001.1.33(@pnpm/logger@1001.0.1)
       '@pnpm/lockfile.utils': 1004.0.4
@@ -6024,7 +6024,7 @@ snapshots:
       commander: 14.0.3
       js-yaml: 4.1.1
 
-  '@open-pioneer/vite-plugin-pioneer@5.2.0-dev.20260518082810(patch_hash=2436dfb9177d8d2aa3bb60d803857935d64f366579220e27326e1de23f40ed8d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.59.0)(sass@1.99.0)(vite@7.3.3(@types/node@20.19.41)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))':
+  '@open-pioneer/vite-plugin-pioneer@5.2.0-dev.20260518093119(patch_hash=2436dfb9177d8d2aa3bb60d803857935d64f366579220e27326e1de23f40ed8d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.59.0)(sass@1.99.0)(vite@7.3.3(@types/node@20.19.41)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))':
     dependencies:
       '@babel/generator': 7.29.1
       '@babel/template': 7.28.6
