@@ -5,23 +5,34 @@ packages:
 
 # https://pnpm.io/catalogs
 catalog:
+  # Frontend dependencies
   "@ark-ui/react": "^5.34.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@chakra-ui/cli": ^3.34.0
   "@chakra-ui/react": ^3.34.0
-
-  # Devtools
-  "@changesets/cli": ^2.31.0
   "@conterra/reactivity-core": ^0.8.5
   "@conterra/reactivity-events": ^0.8.5
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
-  "@eslint/js": ^9.39.4
   "@formatjs/intl": ^4.1.11
-  "@open-pioneer/build-package-cli": 3.1.0-dev.20260518093119
-  "@open-pioneer/build-support": 3.1.0-dev.20260518093119
+  classnames: ^2.5.1
+  keycloak-js: ^26.2.4
+  react-dom: ^19.2.6
+  react-icons: ^5.6.0
+  react-use: ^17.6.0
+  react: ^19.2.6
+
+  # Samples only
+  react-json-view: ^1.21.3
+  shiki: ^4.0.2
+
+  # Devtools
+  "@changesets/cli": ^2.31.0
+  "@eslint/js": ^9.39.4
+  "@open-pioneer/build-package-cli": ^3.1.0-
+  "@open-pioneer/build-support": ^3.1.0
   "@open-pioneer/changesets-release-line": ^0.1.0
-  "@open-pioneer/check-pnpm-duplicates": 0.3.2-dev.20260518093119
-  "@open-pioneer/vite-plugin-pioneer": 5.2.0-dev.20260518093119
+  "@open-pioneer/check-pnpm-duplicates": ^0.3.2
+  "@open-pioneer/vite-plugin-pioneer": ^6.0.0
   "@testing-library/dom": ^10.4.1
   "@testing-library/jest-dom": ^6.9.1
   "@testing-library/react": ^16.3.2
@@ -31,8 +42,7 @@ catalog:
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
   "@typescript-eslint/parser": ^8.59.3
-  "@vitejs/plugin-react-swc": ^4.3.1
-  classnames: ^2.5.1
+  "@vitejs/plugin-react": "^6.0.2"
   eslint: ^9.39.4
   eslint-config-prettier: ^10.1.8
   eslint-import-resolver-typescript: ^4.4.4
@@ -47,22 +57,15 @@ catalog:
   happy-dom: ^20.9.0
   husky: ^9.1.7
   js-yaml: ^4.1.1
-  keycloak-js: ^26.2.4
   lint-staged: ^17.0.4
   prettier: ^3.8.3
-  react: ^19.2.6
-  react-dom: ^19.2.6
-  react-icons: ^5.6.0
-  react-json-view: ^1.21.3
-  react-use: ^17.6.0
   rimraf: ^6.1.3
   sass: ^1.99.0
-  shiki: ^4.0.2
   tsx: ^4.22.0
   typedoc: ^0.28.19
   typescript: ^6.0.3
-  "typescript-eslint": ^8.59.3
-  vite: ^7.3.3
+  typescript-eslint: ^8.59.3
+  vite: ^8.0.13
   vite-plugin-eslint: ^1.8.1
   vitest: ^4.1.6
   zx: ^8.8.5
@@ -130,7 +133,7 @@ allowUnusedPatches: true
 patchedDependencies:
   # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
   # This is ONLY needed in the core packages repository because we're developing the runtime package here.
-  # NOTE: This should be an option.
+  # NOTE: This could be an (internal) option in the vite plugin instead.
   "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
 
   # Ensure all portals are mounted under `.pioneer-root` div
