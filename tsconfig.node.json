@@ -4,7 +4,8 @@
 
         "target": "ESNext",
         "lib": ["ES2024"],
-        "module": "ES2022",
+        "module": "esnext",
+        "types": ["node"],
         "moduleResolution": "Node",
         "allowJs": false,
 

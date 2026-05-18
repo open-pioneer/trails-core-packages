@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ESNext",
         "lib": ["DOM", "DOM.Iterable", "ES2024"],
-        "module": "es2022",
+        "module": "esnext",
         "moduleResolution": "Bundler",
         "noEmit": true,
         "allowJs": false,
@@ -16,7 +16,6 @@
         "forceConsistentCasingInFileNames": true,
 
         "isolatedModules": true,
-        "esModuleInterop": false,
         "skipLibCheck": true,
 
         // These options are necessary so that TypeDoc can resolve references across packages

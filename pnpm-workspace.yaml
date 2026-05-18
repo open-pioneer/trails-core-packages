@@ -150,6 +150,7 @@ peerDependencyRules:
     "flux>react": ">=19"
     "react-json-view>react": ">=19"
     "react-json-view>react-dom": ">=19"
+    "tsconfck>typescript": "*"
 
     # See overrides
     "rollup": "*"
