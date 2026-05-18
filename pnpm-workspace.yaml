@@ -17,11 +17,11 @@ catalog:
   "@emotion/react": ^11.14.0
   "@eslint/js": ^9.39.4
   "@formatjs/intl": ^4.1.11
-  "@open-pioneer/build-package-cli": 3.1.0-dev.20260518093119
-  "@open-pioneer/build-support": 3.1.0-dev.20260518093119
+  "@open-pioneer/build-package-cli": 3.1.0-dev-vite8.20260518112306
+  "@open-pioneer/build-support": 3.1.0-dev-vite8.20260518112306
   "@open-pioneer/changesets-release-line": ^0.1.0
-  "@open-pioneer/check-pnpm-duplicates": 0.3.2-dev.20260518093119
-  "@open-pioneer/vite-plugin-pioneer": 5.2.0-dev.20260518093119
+  "@open-pioneer/check-pnpm-duplicates": 0.3.2-dev-vite8.20260518112306
+  "@open-pioneer/vite-plugin-pioneer": 6.0.0-dev-vite8.20260518112306
   "@testing-library/dom": ^10.4.1
   "@testing-library/jest-dom": ^6.9.1
   "@testing-library/react": ^16.3.2
@@ -31,7 +31,7 @@ catalog:
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
   "@typescript-eslint/parser": ^8.59.3
-  "@vitejs/plugin-react-swc": ^4.3.1
+  "@vitejs/plugin-react": "^6.0.2"
   classnames: ^2.5.1
   eslint: ^9.39.4
   eslint-config-prettier: ^10.1.8
@@ -62,7 +62,7 @@ catalog:
   typedoc: ^0.28.19
   typescript: ^6.0.3
   "typescript-eslint": ^8.59.3
-  vite: ^7.3.3
+  vite: ^8.0.13
   vite-plugin-eslint: ^1.8.1
   vitest: ^4.1.6
   zx: ^8.8.5
@@ -131,7 +131,7 @@ ignorePatchFailures: false
 patchedDependencies:
   # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
   # This is ONLY needed in the core packages repository because we're developing the runtime package here.
-  # NOTE: This should be an option.
+  # NOTE: This could be an (internal) option in the vite plugin instead.
   "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
 
   # Ensure all portals are mounted under `.pioneer-root` div
@@ -188,7 +188,6 @@ minimumReleaseAge: 4320 # 3 days in minutes
 minimumReleaseAgeExclude:
   - "@open-pioneer/*"
   - "@conterra/*"
-  - "vite@7.3.2"
 
 # Workaround for current problems regarding our vite plugin + vite's optimizeDeps feature
 shamefullyHoist: true
