@@ -78,6 +78,8 @@ overrides:
   "@emotion/react>@emotion/babel-plugin": "-"
   "@emotion/styled>@babel/runtime": "-"
   "@emotion/styled>@emotion/babel-plugin": "-"
+
+  # https://github.com/advisories/GHSA-7h2j-956f-4vf2
   "@isaacs/brace-expansion@<=5.0.0": "^5.0.1"
 
   # Force newer version to avoid printing unnecessary warnings about unsupported browsers in baseline-browser-mapping during development.
@@ -120,6 +122,12 @@ overrides:
 
   # https://github.com/advisories/GHSA-qx2v-qp2m-jg93
   "postcss@<8.5.10": "^8.5.10"
+
+  # https://github.com/advisories/GHSA-jxxr-4gwj-5jf2
+  "brace-expansion@>=5.0.0 <5.0.6": "^5.0.6"
+
+  # https://github.com/advisories/GHSA-58qx-3vcg-4xpx
+  "ws@>=8.0.0 <8.20.1": "^8.20.1"
 
   # Just to get rid of some duplicate dependencies
   "source-map@<0.6.1": ">=0.6.1"
