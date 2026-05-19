@@ -774,7 +774,7 @@ describe("i18n support", function () {
                 this.ctx = ctx;
                 this.theme = theme;
                 this.locale = ctx.getLocale();
-                this.message = options.intl.formatMessage({ id: "greeting" });
+                this.message = options.currentIntl.value.formatMessage({ id: "greeting" });
             }
 
             async getApiMethods(): Promise<ApiMethods> {
@@ -827,7 +827,7 @@ describe("i18n support", function () {
                     }
                 },
                 locales: ["de", "en", "de-simple"],
-                async loadMessages(locale) {
+                loadMessages: createBox(async function loadMessages(locale) {
                     switch (locale) {
                         case "en":
                             return {
@@ -849,7 +849,7 @@ describe("i18n support", function () {
                             };
                     }
                     throw new Error("Unsupported locale: " + locale);
-                }
+                })
             }
         });
 

@@ -1,16 +1,17 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+import { constant } from "@conterra/reactivity-core";
 import { describe, expect, it } from "vitest";
 import { createEmptyPackageIntl } from "../i18n";
 import { defineServiceFactory, Service, ServiceFactory, ServiceOptions } from "../Service";
+import { ReferenceSpec } from "./InterfaceSpec";
 import { PackageRepr, PackageReprOptions } from "./PackageRepr";
 import { ServiceLayer } from "./ServiceLayer";
 import { Found } from "./ServiceLookup";
-import { ReferenceSpec } from "./InterfaceSpec";
 import {
     createConstructorFactory,
-    createFunctionFactory,
     createFactoryForServiceFactory,
+    createFunctionFactory,
     ServiceRepr,
     ServiceReprOptions
 } from "./ServiceRepr";
@@ -506,7 +507,7 @@ function createService(options: Partial<ServiceReprOptions>) {
         name: "test-service",
         packageName: "test-package",
         factory: createConstructorFactory(class {}),
-        intl: createEmptyPackageIntl(),
+        intl: constant(createEmptyPackageIntl()),
         ...options
     });
 }
@@ -514,7 +515,7 @@ function createService(options: Partial<ServiceReprOptions>) {
 function createPackage(options: Partial<PackageReprOptions>) {
     return new PackageRepr({
         name: "test-package",
-        intl: createEmptyPackageIntl(),
+        intl: constant(createEmptyPackageIntl()),
         ...options
     });
 }
