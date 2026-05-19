@@ -567,6 +567,9 @@ importers:
       core-packages:
         specifier: workspace:*
         version: link:../../..
+      test-utils:
+        specifier: workspace:*
+        version: link:../../testing/test-utils
     publishDirectory: dist
 
   src/packages/reactivity:
@@ -881,6 +884,8 @@ importers:
         version: link:../styling-sample-components
 
   src/samples/styling-sample/styling-sample-components: {}
+
+  src/testing/test-utils: {}
 
 packages:
 

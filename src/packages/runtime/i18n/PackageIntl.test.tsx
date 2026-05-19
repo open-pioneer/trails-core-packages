@@ -74,6 +74,34 @@ describe("formatRichMessage", () => {
         `);
     });
 
+    it("does not format html code in arguments", async () => {
+        const intl = createPackageIntl("en-US", {
+            test: "Hello, <strong>{name}</strong>!"
+        });
+        const message = intl.formatRichMessage(
+            {
+                id: "test"
+            },
+            {
+                name: "<a onclick='evil'>Click me</a>"
+            }
+        );
+        renderBox(message);
+
+        const element = await screen.findByTestId("test");
+        expect(element).toMatchInlineSnapshot(`
+          <div
+            data-testid="test"
+          >
+            Hello, 
+            <strong>
+              &lt;a onclick='evil'&gt;Click me&lt;/a&gt;
+            </strong>
+            !
+          </div>
+        `);
+    });
+
     it("supports defining custom tags", async () => {
         const intl = createPackageIntl("en-US", {
             test: "Hello, <custom1>Content of custom tag <custom2>and nested tag with {param}</custom2></custom1>!"
