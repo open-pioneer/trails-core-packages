@@ -11,6 +11,7 @@ import {
     tagAnatomy,
     accordionAnatomy,
     comboboxAnatomy,
+    colorPickerAnatomy,
     datePickerAnatomy
 } from "@chakra-ui/react/anatomy";
 
@@ -408,6 +409,23 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
                 _disabled: {
                     cursor: "disabled"
                 }
+            }
+        }
+    },
+    colorPicker: {
+        slots: colorPickerAnatomy.keys(),
+        base: {
+            trigger: {
+                cursor: "pointer"
+            },
+            areaBackground: {
+                cursor: "pointer"
+            },
+            channelSliderTrack: {
+                cursor: "pointer"
+            },
+            swatch: {
+                cursor: "pointer"
             }
         }
     },
