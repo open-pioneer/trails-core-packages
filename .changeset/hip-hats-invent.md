@@ -2,4 +2,4 @@
 "@open-pioneer/react-utils": minor
 ---
 
-classnames dependency removed with own solution
+Add a new `classnames` function to replace the `classnames` package.
