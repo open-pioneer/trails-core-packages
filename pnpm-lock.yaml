@@ -9,9 +9,6 @@ catalogs:
     '@chakra-ui/cli':
       specifier: ^3.35.0
       version: 3.35.0
-    '@chakra-ui/react':
-      specifier: ^3.35.0
-      version: 3.35.0
     '@changesets/cli':
       specifier: ^2.31.0
       version: 2.31.0
@@ -182,13 +179,20 @@ catalogs:
       version: 8.8.5
 
 overrides:
+  '@chakra-ui/react': 3.35.0
   '@ark-ui/react': 5.36.2
+  '@zag-js/dialog': 1.40.0
+  '@zag-js/drawer': 1.40.0
+  '@zag-js/hover-card': 1.40.0
+  '@zag-js/menu': 1.40.0
+  '@zag-js/popover': 1.40.0
+  '@zag-js/tooltip': 1.40.0
+  '@zag-js/interact-outside': 1.40.0
   '@emotion/react>@babel/runtime': '-'
   '@emotion/react>@emotion/babel-plugin': '-'
   '@emotion/styled>@babel/runtime': '-'
   '@emotion/styled>@emotion/babel-plugin': '-'
   '@isaacs/brace-expansion@<=5.0.0': ^5.0.1
-  '@zag-js/splitter': 1.40.0
   baseline-browser-mapping@<2.9.0: ^2.9.0
   csstype@<3.2.3: '>=3.2.3'
   flatted@<=3.4.1: ^3.4.2
@@ -387,7 +391,7 @@ importers:
   src/packages/authentication:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
@@ -445,7 +449,7 @@ importers:
   src/packages/base-theme:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
       core-packages:
@@ -459,7 +463,7 @@ importers:
         specifier: 5.36.2
         version: 5.36.2(patch_hash=767aaf2c2661cde67481abcb34f0720395e9f3f4e467e888edda574784cdc73a)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/core':
         specifier: workspace:*
@@ -541,7 +545,7 @@ importers:
   src/packages/notifier:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/core':
         specifier: workspace:*
@@ -570,7 +574,7 @@ importers:
   src/packages/react-utils:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
@@ -616,7 +620,7 @@ importers:
   src/packages/runtime:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
@@ -686,7 +690,7 @@ importers:
   src/samples/api-sample/api-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
@@ -707,7 +711,7 @@ importers:
   src/samples/auth-sample/auth-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/authentication':
         specifier: workspace:*
@@ -728,7 +732,7 @@ importers:
   src/samples/chakra-showcase:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/base-theme':
         specifier: workspace:*
@@ -767,7 +771,7 @@ importers:
   src/samples/extension-sample/extension-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/runtime':
         specifier: workspace:*
@@ -791,7 +795,7 @@ importers:
   src/samples/i18n-howto/app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/chakra-snippets':
         specifier: workspace:*
@@ -800,7 +804,7 @@ importers:
   src/samples/i18n-sample/i18n-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/runtime':
         specifier: workspace:*
@@ -814,7 +818,7 @@ importers:
   src/samples/keycloak-sample:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/authentication':
         specifier: workspace:*
@@ -835,7 +839,7 @@ importers:
   src/samples/no-shadowroot-sample:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/notifier':
         specifier: workspace:*
@@ -850,7 +854,7 @@ importers:
   src/samples/notify-sample/notify-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/chakra-snippets':
         specifier: workspace:*
@@ -868,7 +872,7 @@ importers:
   src/samples/properties-sample/properties-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/core':
         specifier: workspace:*
@@ -886,7 +890,7 @@ importers:
   src/samples/roving-menu-sample/roving-menu-app:
     dependencies:
       '@chakra-ui/react':
-        specifier: 'catalog:'
+        specifier: 3.35.0
         version: 3.35.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@open-pioneer/react-utils':
         specifier: workspace:*
@@ -1043,7 +1047,7 @@ packages:
     resolution: {integrity: sha512-QZzMuLPKZJMdI6wgtTT3muDtTYXcqyT+pmB8fkS6pHSzRZ5bxiq+vI6F9qvAW2VpjvbhcsRXGW2VLgaAI6BfDw==}
     hasBin: true
     peerDependencies:
-      '@chakra-ui/react': '>=3.0.0-next.0'
+      '@chakra-ui/react': 3.35.0
 
   '@chakra-ui/react@3.35.0':
     resolution: {integrity: sha512-qzfRNLwxKjxx2IXjBj6uz1nYI+pKsq6uwHxO619+hx1OzNNuwLIjEHJxnDfBzoynO7sPCBlubMwFWb1e1PrXzw==}
@@ -1766,9 +1770,6 @@ packages:
 
   '@pandacss/is-valid-prop@1.10.0':
     resolution: {integrity: sha512-OmEHkDj3BRkHYLxHwNFYJkcwF84c7PuHsWHmmmNLJnmk8z0RVlDQei4GxWjfW1bnvCihCwakJ8Xq6GDRlmcDiQ==}
-
-  '@pandacss/is-valid-prop@1.8.1':
-    resolution: {integrity: sha512-gf2HTBCOboc65Jlb9swAjbffXSIv+A4vzSQ9iHyTCDLMcXTHYjPOQNliI36WkuQgR0pNXggBbQXGNaT9wKcrAw==}
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -5437,7 +5438,7 @@ snapshots:
       '@emotion/serialize': 1.3.3
       '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.2.6)
       '@emotion/utils': 1.4.2
-      '@pandacss/is-valid-prop': 1.8.1
+      '@pandacss/is-valid-prop': 1.10.0
       csstype: 3.2.3
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
@@ -6129,8 +6130,6 @@ snapshots:
     optional: true
 
   '@pandacss/is-valid-prop@1.10.0': {}
-
-  '@pandacss/is-valid-prop@1.8.1': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
