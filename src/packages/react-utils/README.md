@@ -43,6 +43,30 @@ Example:
 In the preceding example the topmost heading(s) in `TheRestOfYourApplication` start at level 2, and nested headings use increasing levels as usual.
 For more details, see the API documentation.
 
+### FormattedMessage
+
+This package provides a few helper components to render formatted messages in a React tree:
+
+```tsx
+import { FormattedMessage } from "@open-pioneer/react-utils";
+
+<FormattedMessage intl={intl} id="message.id" />
+<FormattedRichMessage intl={intl} id="message.id" />
+```
+
+`intl` can be either a plain `PackageIntl` object, or a signal (`ReadonlyReactive<PackageIntl`>), or a reactive getter (e.g. `() => currentIntl.value`).
+
+`FormattedMessage` and `FormattedRichMessage` support `values`, too:
+
+```tsx
+// greeting: "Hello {name}"
+<FormattedMessage intl={intl} id="greeting" values={{ name: "World" }} /> // -> Hello World
+```
+
+When used from a plain react component, these components only offer minor additional utility.
+Compared to direct calls of `intl.formatMessage`, they add a layer of caching (`useMemo`).
+However, because they support reactive props for `intl`, they make it easy to compose reactive strings from non-react code.
+
 ### Roving menu
 
 The roving menu is a render-less component that can be used to implement an accessible menu with keyboard navigation.

@@ -32,6 +32,15 @@ export {
     useHeadingLevel
 } from "./TitledSection";
 
+// Formatting
+export {
+    FormattedMessage,
+    type FormattedMessageProps,
+    FormattedRichMessage,
+    type FormattedRichMessageProps,
+    type FormattingBaseProps
+} from "./FormattedMessage";
+
 // Common component props
 export {
     type CommonComponentProps,
