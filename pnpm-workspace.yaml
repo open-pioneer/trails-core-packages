@@ -6,9 +6,9 @@ packages:
 # https://pnpm.io/catalogs
 catalog:
   # Frontend dependencies
-  "@ark-ui/react": "^5.34.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
-  "@chakra-ui/cli": ^3.34.0
-  "@chakra-ui/react": ^3.34.0
+  "@chakra-ui/cli": ^3.35.0
+  "@chakra-ui/react": ^3.35.0
+  "@ark-ui/react": "^5.36.2" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@conterra/reactivity-core": ^0.8.5
   "@conterra/reactivity-events": ^0.8.5
   "@emotion/cache": ^11.14.0
@@ -78,6 +78,21 @@ overrides:
   "@emotion/styled>@babel/runtime": "-"
   "@emotion/styled>@emotion/babel-plugin": "-"
 
+  # Just to get rid of some duplicate dependencies
+  "source-map@<0.6.1": ">=0.6.1"
+  "stylis@<4.3.5": ">= 4.3.5"
+
+  # Ensure patched packages have the expected version (patch was tested with this version):
+  "@chakra-ui/react": "3.35.0"
+  "@ark-ui/react": "5.36.2"
+  "@zag-js/dialog": "1.40.0"
+  "@zag-js/drawer": "1.40.0"
+  "@zag-js/hover-card": "1.40.0"
+  "@zag-js/menu": "1.40.0"
+  "@zag-js/popover": "1.40.0"
+  "@zag-js/tooltip": "1.40.0"
+  "@zag-js/interact-outside": "1.40.0"
+
   # https://github.com/advisories/GHSA-7h2j-956f-4vf2
   "@isaacs/brace-expansion@<=5.0.0": "^5.0.1"
 
@@ -105,36 +120,28 @@ overrides:
   "minimatch@>=3.0.0 <3.1.4": "^3.1.4"
   "minimatch@>=9.0.0 <9.0.7": "^9.0.9"
 
-  # https://github.com/advisories/GHSA-mw96-cpmx-2vgc
-  "rollup@>=2.0.0 <2.80.0": "^2.80.0"
-  "rollup@>=4.0.0 <4.59.0": "^4.59.0"
-
   # https://github.com/advisories/GHSA-3v7f-55p6-f55p
   # https://github.com/advisories/GHSA-c2c7-rcm5-vvqj
   "picomatch@<2.3.2": "^2.3.2"
   "picomatch@>=3.0.0 <3.0.2": "^3.0.2"
   "picomatch@>=4.0.0 <4.0.4": "^4.0.4"
 
+  # https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+  "postcss@<8.5.10": "^8.5.10"
+
+  # https://github.com/advisories/GHSA-mw96-cpmx-2vgc
+  "rollup@>=2.0.0 <2.80.0": "^2.80.0"
+  "rollup@>=4.0.0 <4.59.0": "^4.59.0"
+
   # https://github.com/advisories/GHSA-48c2-rrv3-qjmp
   "yaml@>=1.0.0 <1.10.3": "^1.10.3"
   "yaml@>=2.0.0 <2.8.3": "^2.8.3"
-
-  # https://github.com/advisories/GHSA-qx2v-qp2m-jg93
-  "postcss@<8.5.10": "^8.5.10"
 
   # https://github.com/advisories/GHSA-jxxr-4gwj-5jf2
   "brace-expansion@>=5.0.0 <5.0.6": "^5.0.6"
 
   # https://github.com/advisories/GHSA-58qx-3vcg-4xpx
   "ws@>=8.0.0 <8.20.1": "^8.20.1"
-
-  # Just to get rid of some duplicate dependencies
-  "source-map@<0.6.1": ">=0.6.1"
-  "stylis@<4.3.5": ">= 4.3.5"
-
-  # Ensure patched packages have the expected version (patch was tested with this version):
-  "@ark-ui/react": "5.34.1"
-  "@zag-js/splitter": "1.35.3"
 
 allowUnusedPatches: true
 patchedDependencies:
@@ -146,24 +153,31 @@ patchedDependencies:
   # Ensure all portals are mounted under `.pioneer-root` div
   "@ark-ui/react@*": "patches/@ark-ui__react.patch"
 
-  # Fix cursor styling
-  "@zag-js/splitter": patches/@zag-js__splitter.patch
-
   # Fixes 'interact-outside' logic not tabbing between elements within the same shadow dom.
   # Can be removed if https://github.com/chakra-ui/zag/issues/3088 is fixed.
   "@zag-js/interact-outside": patches/@zag-js__interact-outside.patch
 
+  # Fix popover positioning (popover, tooltip, toggle tip, ...)
+  # See https://github.com/chakra-ui/zag/pull/3127
+  "@zag-js/dialog": patches/@zag-js__dialog.patch
+  "@zag-js/drawer": patches/@zag-js__drawer.patch
+  "@zag-js/hover-card": patches/@zag-js__hover-card.patch
+  "@zag-js/menu": patches/@zag-js__menu.patch
+  "@zag-js/popover": patches/@zag-js__popover.patch
+  "@zag-js/tooltip": patches/@zag-js__tooltip.patch
+
+strictPeerDependencies: true
 peerDependencyRules:
   allowedVersions:
     # No release available for recent react, but they appear to work well enough for sample apps.
     "flux>react": ">=19"
     "react-json-view>react": ">=19"
     "react-json-view>react-dom": ">=19"
-    "tsconfck>typescript": "*"
 
     # See overrides
     "rollup": "*"
     "fdir>picomatch": "*"
+    "tsconfck>typescript": "*"
 
 auditConfig:
   ignoreGhsas:
@@ -178,6 +192,15 @@ allowBuilds:
   core-js: false
   unrs-resolver: false
 
+# Install older versions by default
+resolutionMode: "lowest-direct"
+
+# Configure a release cooldown
+minimumReleaseAge: 4320 # 3 days in minutes
+minimumReleaseAgeExclude:
+  - "@open-pioneer/*"
+  - "@conterra/*"
+
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - "@pnpm/lockfile.utils@1004.0.4"
@@ -191,20 +214,12 @@ trustPolicyExclude:
   - "rollup@2.80.0"
   - "ua-parser-js@1.0.40"
 
-# Install older versions by default
-resolutionMode: "lowest-direct"
-
-# Configure a release cooldown
-minimumReleaseAge: 4320 # 3 days in minutes
-minimumReleaseAgeExclude:
-  - "@open-pioneer/*"
-  - "@conterra/*"
-
-# Workaround for current problems regarding our vite plugin + vite's optimizeDeps feature
-shamefullyHoist: true
-strictPeerDependencies: true
-
 # Workspace root itself depends on runtime, and all packages (including runtime) have a dev dependency on workspace root
 # for shared scripts.
 ignoreWorkspaceCycles: true
+
+# Don't like unless `workspace:` is used as protocol.
 linkWorkspacePackages: false
+
+# Workaround for current problems regarding our vite plugin + vite's optimizeDeps feature
+shamefullyHoist: true

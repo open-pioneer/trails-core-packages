@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { SystemConfig } from "@chakra-ui/react";
+import { SystemConfig, TooltipPropsProvider } from "@chakra-ui/react";
 import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { Error } from "@open-pioneer/core";
 import { ReactNode, StrictMode } from "react";
@@ -88,9 +88,12 @@ export class ReactIntegration {
                     styles={this.styles}
                     colorMode={this.colorMode}
                 >
-                    <PackageContext.Provider value={this.packageContext}>
-                        {contentNode}
-                    </PackageContext.Provider>
+                    {/*TooltipPropsProvider sets shorter `openDelay` for globally all Tooltips  (500 ms instead of 1000 ms)*/}
+                    <TooltipPropsProvider value={{ openDelay: 500 }}>
+                        <PackageContext.Provider value={this.packageContext}>
+                            {contentNode}
+                        </PackageContext.Provider>
+                    </TooltipPropsProvider>
                 </CustomChakraProvider>
             </StrictMode>
         );

@@ -20,8 +20,6 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       content,
       contentProps,
       portalRef,
-      //PATCH shorter default delay
-      openDelay = 500,
       ...rest
     } = props
 
@@ -29,8 +27,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     // if (disabled) return children
 
     return (
-      //PATCH apply open delay, apply disabled prop
-      <ChakraTooltip.Root openDelay={openDelay} disabled={disabled} {...rest}>
+      <ChakraTooltip.Root disabled={disabled} {...rest}>
         <ChakraTooltip.Trigger asChild>{children}</ChakraTooltip.Trigger>
         <Portal disabled={!portalled} container={portalRef}>
           <ChakraTooltip.Positioner>

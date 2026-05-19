@@ -54,12 +54,11 @@ If you notice a problem with one of the snippets, or if snippets are missing, fe
 - `tags-input.tsx`
 - `toggle-tip.tsx`
 - `toggle.tsx`
-- `tooltip.tsx`: Prefer to use this snippet for the shorter `openDelay`.
+- `tooltip.tsx`
 
 ### Differences from Chakra's default snippets
 
 - Aria labels and messages are translated (this currently only affects the `CloseButton` and the `Clipboard`).
-- The `Tooltip` component has a shorter default `openDelay` (500 ms instead of 1000 ms).
 
 ## License
 
