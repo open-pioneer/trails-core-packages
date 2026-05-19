@@ -58,3 +58,4 @@ export { type RovingMenuState } from "./roving-menu/RovingMenuState";
 
 // Generic helpers
 export { mergeChakraProps } from "./mergeChakraProps";
+export { classNames, type ClassValue, type ClassDictionary } from "./classNames";
