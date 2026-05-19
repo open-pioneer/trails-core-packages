@@ -7,6 +7,10 @@
  *
  * Implements automatic heading levels. Use {@link TitledSection} and {@link SectionHeading} instead of raw `h1`, `h2`, ... tags.
  *
+ * @groupDescription Formatting
+ *
+ * Formatting helpers.
+ *
  * @groupDescription Roving menu
  *
  * A (render-less) implementation of the roving tab index pattern.
