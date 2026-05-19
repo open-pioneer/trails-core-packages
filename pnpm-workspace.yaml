@@ -177,6 +177,15 @@ patchedDependencies:
   # Can be removed if https://github.com/chakra-ui/zag/issues/3088 is fixed.
   "@zag-js/interact-outside": patches/@zag-js__interact-outside.patch
 
+  # Fix popover positioning (popover, tooltip, toggle tip, ...)
+  # TODO: Issue / PR Link
+  "@zag-js/dialog": patches/@zag-js__dialog.patch
+  "@zag-js/drawer": patches/@zag-js__drawer.patch
+  "@zag-js/hover-card": patches/@zag-js__hover-card.patch
+  "@zag-js/menu": patches/@zag-js__menu.patch
+  "@zag-js/popover": patches/@zag-js__popover.patch
+  "@zag-js/tooltip": patches/@zag-js__tooltip.patch
+
 peerDependencyRules:
   allowedVersions:
     # No release available for recent react, but they appear to work well enough for sample apps.
