@@ -1,5 +1,25 @@
 # @open-pioneer/chakra-snippets
 
+## 4.6.0
+
+### Patch Changes
+
+- e6db101: Update to Chakra UI 3.35.0
+    - update to Chakra UI @ 3.35.0, Ark UI @ 5.36.2, Zag JS @ 1.40.0
+    - use TooltipProviderProps to override `openDelay` globally (instead of Tooltip snippet)
+
+- 0ac098b: Fix keyboard focus when a button is sometimes surrounded with a tooltip and sometimes not.
+  Previously the button would lose focus when pressing the Enter key:
+
+    ```tsx
+    <Tooltip
+        content={/* ... */}
+        disabled={expanded} // enabled/disabled based on dynamic condition
+    >
+        <Button onClick={toggleExpanded}>...</Button>
+    </Tooltip>
+    ```
+
 ## 4.5.0
 
 ### Minor Changes
