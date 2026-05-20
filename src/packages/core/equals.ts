@@ -10,7 +10,7 @@ import { deepEqual, shallowEqual } from "fast-equals";
  *
  * Primitive values are compared by value.
  * Arrays and objects are compared by their own enumerable keys, but nested values are only compared
- * by reference.
+ * by reference. Circular objects are not supported.
  *
  * Examples:
  *
@@ -33,7 +33,7 @@ export function shallowEquals(a: unknown, b: unknown): boolean {
  *
  * Primitive values are compared by value.
  * Arrays and objects are traversed recursively, so nested values must also be equal.
- * Functions are compared by reference.
+ * Functions are compared by reference. Circular objects are not supported.
  *
  * Examples:
  *
