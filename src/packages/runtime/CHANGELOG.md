@@ -1,5 +1,26 @@
 # @open-pioneer/runtime
 
+## 4.6.0
+
+### Minor Changes
+
+- 63db133: Deprecate `serviceOptions.intl`. Use `serviceOptions.currentIntl` instead.
+  The new interface supports updating `intl` messages at runtime.
+- 05425c6: runtime - Introduce support for ServiceFactories, to provide constructor indirection during service creation
+- 63db133: Support for hot reloading of i18n messages (requires updated vite plugin).
+  When i18n messages are updated:
+    - React components rerender automatically with new `intl` object returned by `useIntl()`.
+    - Services that use the new `serviceOptions.currentIntl` interface also receive a new `intl` object (if they are watching for changes).
+    - Services that that still use the deprecated `serviceOptions.intl` interface cause the application to reload instead.
+
+### Patch Changes
+
+- e6db101: Update to Chakra UI 3.35.0
+    - update to Chakra UI @ 3.35.0, Ark UI @ 5.36.2, Zag JS @ 1.40.0
+    - use TooltipProviderProps to override `openDelay` globally (instead of Tooltip snippet)
+
+- b092b75: Declare css property `color-scheme` on the application root. This can be used by the browser to render builtin controls differently.
+
 ## 4.5.0
 
 ### Minor Changes
