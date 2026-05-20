@@ -17,7 +17,8 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "@conterra/reactivity-events": "catalog:"
+        "@conterra/reactivity-events": "catalog:",
+        "fast-equals": "catalog:"
     },
     "devDependencies": {
         "core-packages": "workspace:*"
