@@ -143,6 +143,9 @@ overrides:
   # https://github.com/advisories/GHSA-58qx-3vcg-4xpx
   "ws@>=8.0.0 <8.20.1": "^8.20.1"
 
+  # https://github.com/advisories/GHSA-qjx8-664m-686j
+  "js-cookie@<=3.0.5": "^3.0.7"
+
 allowUnusedPatches: true
 patchedDependencies:
   # Currently needed to disable optimization of @open-pioneer/runtime during dev mode.
