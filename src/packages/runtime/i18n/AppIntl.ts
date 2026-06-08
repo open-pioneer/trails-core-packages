@@ -239,6 +239,7 @@ function filterAvailableLocales(
     // optional restriction on supported locales, must be subset of messageLocaleStrings
     restrictSupportedLocales: readonly string[] | undefined
 ): readonly Locale[] {
+    //NOTE: the set preserves the order of 'restrictSupportedLocales', this is relevant and intentional.
     const localesToSupport = new Set(restrictSupportedLocales ?? messageLocaleStrings);
     const supportedLocales: Locale[] = [];
     for (const l of localesToSupport) {

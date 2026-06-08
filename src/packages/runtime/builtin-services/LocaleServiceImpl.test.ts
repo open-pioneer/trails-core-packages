@@ -138,6 +138,14 @@ it("supportsLocale returns false for unsupported locales", async () => {
     expect(service.supportsLocale(Locale.parse("fr"))).toBe(false);
 });
 
+it("restrictSupportedLocales=[] order is preserved", async () => {
+    const appIntl = await makeAppIntl(["de", "fr", "en"], {
+        restrictSupportedLocales: ["en", "fr", "de"]
+    });
+    const { service } = makeService(appIntl);
+    expect(service.supportedMessageLocales.map((l) => l.tag)).toEqual(["en", "fr", "de"]);
+});
+
 it("restrictSupportedLocales=[] yields empty supportedMessageLocales and messageLocale falls back to 'en'", async () => {
     // App declares "de" and "en", but all are restricted away via an empty list.
     // filterAvailableLocales produces no valid locales, so LocalePicker has nothing to match.
