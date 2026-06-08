@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { computed, effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
+import { computed, constant, effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
@@ -19,6 +19,7 @@ import {
     RUNTIME_API_SERVICE,
     RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE,
     RUNTIME_AUTO_START,
+    RUNTIME_LOCALE_SERVICE,
     RUNTIME_THEME_SERVICE
 } from "../builtin-services";
 import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
@@ -31,7 +32,14 @@ import {
 } from "../CustomElement";
 import { createAppRoot, isShadowRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
-import { AppIntl, createPackageIntl, getBrowserLocales, I18nConfig, initI18n } from "../i18n";
+import {
+    AppIntl,
+    createPackageIntl,
+    getBrowserLocales,
+    LocalePicker,
+    initI18n,
+    Locale
+} from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "../react-integration/ErrorScreen";
 import { EmptyComponent, ReactIntegration } from "../react-integration/ReactIntegration";
@@ -156,12 +164,29 @@ export class AppInstance {
         this.checkAbort();
         LOG.debug("Application config is", config);
 
+        const reactiveSwitching = elementOptions.advanced?.enableLocaleReactiveSwitching ?? false;
+
+        const restartWithLocale = (locale: Locale | undefined) => {
+            // this code is triggered, when the app calls setLocale while reactive switching is disabled.
+            const restart = this.options.restart;
+            const themeService = this.themeService;
+            const colorMode = themeService?.colorMode;
+            const chakraSystemConfig = themeService?.systemConfig;
+            restart({ locale: locale?.tag, colorMode, chakraSystemConfig });
+        };
+
         // Decide on locale and load i18n messages (if any).
-        const i18n = (this.i18n = await initI18n(elementOptions.appMetadata, config.locale));
+        const i18n = (this.i18n = await initI18n({
+            appMetadata: elementOptions.appMetadata,
+            forcedLocale: config.locale,
+            restrictSupportedLocales: config.supportedLocales,
+            reactiveSwitching,
+            restartWithLocale
+        }));
         this.checkAbort();
 
         // Setup application root node in the shadow dom
-        const appRoot = (this.appRoot = createAppRoot(i18n.locale));
+        const appRoot = (this.appRoot = createAppRoot(i18n.locale.tag));
         this.container.appendChild(appRoot);
         const styles = this.initStylesSignal();
 
@@ -193,7 +218,7 @@ export class AppInstance {
             appRoot: appRoot,
             serviceLayer,
             packages,
-            locale: i18n.locale,
+            locale: computed(() => i18n.locale.tag),
             config: computed(() => themeService.systemConfig),
             styles,
             colorMode: computed(() => themeService.colorMode)
@@ -220,7 +245,7 @@ export class AppInstance {
     private initStylesSignal(): ReadonlyReactive<string> {
         const stylesBox = this.options.elementOptions.appMetadata?.styles;
         if (!stylesBox) {
-            return reactive("");
+            return constant("");
         }
 
         const signal = reactive(stylesBox.value);
@@ -243,9 +268,9 @@ export class AppInstance {
         initialColorMode: ColorModeValue | "system" | undefined;
         initialSystemConfig: SystemConfig | undefined;
     }) {
-        const { hostElement, rootNode: shadowRoot, elementOptions, restart } = this.options;
-
+        const { hostElement, rootNode: shadowRoot, elementOptions } = this.options;
         const { container, properties, i18n, initialColorMode, initialSystemConfig } = config;
+
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
         const builtinPackage = createBuiltinPackage({
             host: hostElement,
@@ -253,23 +278,7 @@ export class AppInstance {
             container: container,
             initialColorMode,
             initialSystemConfig,
-            locale: i18n.locale,
-            supportedLocales: i18n.supportedMessageLocales,
-            changeLocale: (locale) => {
-                const supported = i18n.supportedMessageLocales;
-                if (locale != null && !i18n.supportsLocale(locale)) {
-                    const supportedLocales = supported.join(", ");
-                    throw new Error(
-                        ErrorId.UNSUPPORTED_LOCALE,
-                        `Unsupported locale '${locale}' (supported locales: ${supportedLocales}).`
-                    );
-                }
-
-                const themeService = this.themeService;
-                const colorMode = themeService?.colorMode;
-                const chakraSystemConfig = themeService?.systemConfig;
-                restart({ locale, colorMode, chakraSystemConfig });
-            }
+            appIntl: i18n
         });
         const { serviceLayer, packages } = createServiceLayer({
             packageMetadata,
@@ -326,14 +335,16 @@ export class AppInstance {
 
     private showErrorScreen(error: globalThis.Error) {
         const userLocales = getBrowserLocales();
-        const i18nConfig = new I18nConfig(Object.keys(MESSAGES_BY_LOCALE));
-        const { locale, messageLocale } = i18nConfig.pickSupportedLocale(undefined, userLocales);
+        const localePicker = new LocalePicker(
+            Object.keys(MESSAGES_BY_LOCALE).map((tag) => Locale.parse(tag))
+        );
+        const { locale, messageLocale } = localePicker.pickSupportedLocale(undefined, userLocales);
         const messages =
-            MESSAGES_BY_LOCALE[messageLocale as keyof typeof MESSAGES_BY_LOCALE] ??
+            MESSAGES_BY_LOCALE[messageLocale.tag as keyof typeof MESSAGES_BY_LOCALE] ??
             MESSAGES_BY_LOCALE["en"];
-        const intl = createPackageIntl(locale, messages);
+        const intl = createPackageIntl(locale.tag, messages);
 
-        const appRoot = (this.appRoot = createAppRoot(locale));
+        const appRoot = (this.appRoot = createAppRoot(locale.tag));
         appRoot.classList.add("pioneer-root-error-screen");
         this.container.appendChild(appRoot);
 
@@ -343,10 +354,10 @@ export class AppInstance {
             rootNode: this.rootNode,
             hostNode: this.options.hostElement,
             appRoot: appRoot,
-            locale: locale,
-            config: reactive(this.options.elementOptions.chakraSystemConfig),
+            locale: constant(locale.tag),
+            config: constant(this.options.elementOptions.chakraSystemConfig),
             styles,
-            colorMode: reactive(DEFAULT_INITIAL_COLOR_MODE)
+            colorMode: constant(DEFAULT_INITIAL_COLOR_MODE)
         });
         this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }
@@ -385,6 +396,9 @@ function createServiceLayer(config: {
         },
         {
             interfaceName: RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
+        },
+        {
+            interfaceName: RUNTIME_LOCALE_SERVICE
         },
         {
             interfaceName: RUNTIME_THEME_SERVICE

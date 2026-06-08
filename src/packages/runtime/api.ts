@@ -3,6 +3,9 @@
 import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import type { ApplicationConfig } from "./CustomElement";
 import { type DeclaredService } from "./DeclaredService";
+import { type Locale } from "./i18n";
+
+export { Locale } from "./i18n";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
@@ -85,6 +88,8 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * Returns the current locale of the application.
      *
      * E.g. `"de-DE"`
+     *
+     * @deprecated Use {@link LocaleService.locale} instead.
      */
     getLocale(): string;
 
@@ -95,6 +100,8 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      *
      * > NOTE: This method will currently trigger a full restart of the application.
      * > Altering the locale on the fly is possible in theory but has not been implemented yet.
+     *
+     * @deprecated Use {@link LocaleService.setLocale} instead.
      */
     setLocale(locale: string | undefined): void;
 
@@ -103,8 +110,79 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * the locales that have associated i18n messages.
      *
      * For example: `["de", "en"]`
+     * @deprecated Use {@link LocaleService.supportedMessageLocales} instead.
      */
     getSupportedLocales(): readonly string[];
+}
+
+/**
+ * A service to inspect and control the application's active locale.
+ *
+ * The properties `locale` and `messageLocale` are reactive (powered by
+ * `@conterra/reactivity-core`) and can be observed with `useReactiveSnapshot`
+ * inside React components.
+ *
+ * ### `locale` vs `messageLocale`
+ *
+ * - {@link locale} is the locale used for `Intl`-based formatting
+ *   (numbers, dates, relative time, ...). It tracks the user's preferred locale
+ *   precisely, e.g. `de-AT`.
+ * - {@link messageLocale} is the locale of the currently loaded message bundle.
+ *   It is always one of {@link supportedMessageLocales}, e.g. `de`. A language
+ *   toggler should use this value to highlight the active button.
+ *
+ * ### Reactive switching
+ *
+ * By default, {@link setLocale} triggers a full application restart. When the
+ * application opts in by setting `enableLocaleReactiveSwitching` in the
+ * {@link AdvancedCustomElementOptions}, the locale is updated in place: the new
+ * message bundle is loaded first, then `locale`, `messageLocale` and all
+ * `PackageIntl` instances are updated atomically.
+ *
+ * Watching `messageLocale` is therefore the canonical way to detect that a
+ * locale switch has fully completed (the value updates only after the new
+ * messages have loaded).
+ */
+export interface LocaleService extends DeclaredService<"runtime.LocaleService"> {
+    /**
+     * Reactive: the active locale used for Intl-based formatting.
+     * This locale may not match any of the supported message locales,
+     * but it always tracks the user's preferred locale as closely as possible (e.g. `de-AT` instead of `de` if `de-AT` is supported).
+     */
+    readonly locale: Locale;
+
+    /**
+     * Reactive: the active message bundle locale.
+     * If supportedMessageLocales is empty, this falls back to `en`.
+     */
+    readonly messageLocale: Locale;
+
+    /**
+     * Locales for which the application has translated messages.
+     * This list may be empty, if the application has no message bundles.
+     */
+    readonly supportedMessageLocales: readonly Locale[];
+
+    /**
+     * Read-only mirror of the resolved reactive-switching setting,
+     * see {@link AdvancedCustomElementOptions.enableLocaleReactiveSwitching}.
+     */
+    readonly isReactiveSwitching: boolean;
+
+    /**
+     * Switches to the given locale.
+     *
+     * - Pass a {@link Locale} or `undefined` to re-pick from the user's browser
+     *   preference.
+     * - In reactive-switching mode the change applies in place. Otherwise the
+     *   application restarts.
+     */
+    setLocale(locale: Locale | undefined): Promise<void>;
+
+    /**
+     * Returns `true` if it is supported by the application and useable in setLocale.
+     */
+    supportsLocale(locale: Locale): boolean;
 }
 
 /**

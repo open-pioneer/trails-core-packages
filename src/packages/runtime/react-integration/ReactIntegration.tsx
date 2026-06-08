@@ -22,7 +22,7 @@ export interface ReactIntegrationOptions {
     packages: Map<string, PackageRepr>;
     serviceLayer: ServiceLayer;
 
-    locale: string;
+    locale: ReadonlyReactive<string>;
     config?: ReadonlyReactive<SystemConfig | undefined>;
     styles: ReadonlyReactive<string>;
     colorMode: ReadonlyReactive<ColorModeValue>;
@@ -34,7 +34,7 @@ export class ReactIntegration {
     private appRoot: HTMLDivElement;
     private reactRoot: Root;
     private packageContext: PackageContextMethods;
-    private locale: string;
+    private locale: ReadonlyReactive<string>;
     private chakraConfig?: ReadonlyReactive<SystemConfig | undefined>;
     private styles: ReadonlyReactive<string>;
     private colorMode: ReadonlyReactive<ColorModeValue>;

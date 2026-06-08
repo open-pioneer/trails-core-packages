@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import type { ColorModeValue, PackageIntl, Service } from "@open-pioneer/runtime";
-import { computed, ReadonlyReactive } from "@conterra/reactivity-core";
+import { computed, constant, ReadonlyReactive } from "@conterra/reactivity-core";
 import {
     APP_ROOT_CLASS,
     CustomChakraProvider,
@@ -97,7 +97,11 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
 
 function createPackageContextMethods(
     options: Omit<PackageContextProviderProps, "children">
-): [locale: string, colorMode: ReadonlyReactive<ColorModeValue>, methods: PackageContextMethods] {
+): [
+    locale: ReadonlyReactive<string>,
+    colorMode: ReadonlyReactive<ColorModeValue>,
+    methods: PackageContextMethods
+] {
     const services = options?.services ?? {};
     const qualifiedServices = options?.qualifiedServices ?? {};
     const properties = options?.properties ?? {};
@@ -152,12 +156,12 @@ function createPackageContextMethods(
             const initIntl = () => {
                 const packageMessages = messages[packageName];
                 return createIntl({
-                    locale,
+                    locale: locale,
                     messages: packageMessages
                 });
             };
             return (cachedIntl[packageName] ??= initIntl());
         }
     };
-    return [locale, colorMode, methods];
+    return [constant(locale), colorMode, methods];
 }

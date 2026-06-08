@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { useIntl, useService } from "open-pioneer:react-hooks";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { ReactNode } from "react";
-import { ApplicationContext } from "@open-pioneer/runtime";
+import { Locale, LocaleService } from "@open-pioneer/runtime";
 import {
     Center,
     Container,
@@ -18,9 +19,12 @@ import { SamplePackageComponent } from "i18n-sample-package/SamplePackageCompone
 
 export function I18nUI() {
     const intl = useIntl();
-    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
-    const locale = appCtx.getLocale();
-    const supportedLocales = appCtx.getSupportedLocales();
+    const localeService = useService<LocaleService>("runtime.LocaleService");
+    const locale = useReactiveSnapshot(() => localeService.locale.tag, [localeService]);
+    const supportedLocales = useReactiveSnapshot(
+        () => localeService.supportedMessageLocales.map((l) => l.tag),
+        [localeService]
+    );
     const name = "Müller";
     const list = ["Hans", "Peter", "Hape"];
 
@@ -108,15 +112,18 @@ export function I18nUI() {
 }
 
 function LocalePicker() {
-    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
+    const localeService = useService<LocaleService>("runtime.LocaleService");
     const intl = useIntl();
-    const locales = appCtx.getSupportedLocales();
+    const locales = useReactiveSnapshot(
+        () => localeService.supportedMessageLocales,
+        [localeService]
+    );
 
     // One entry for every supported locale (to force it) and one empty
     // to pick the default behavior.
-    const makeButton = (locale: string | undefined) => (
-        <Button key={locale ?? ""} onClick={() => appCtx.setLocale(locale)}>
-            {locale ?? intl.formatMessage({ id: "picker.default" })}
+    const makeButton = (locale: Locale | undefined) => (
+        <Button key={locale?.tag ?? ""} onClick={() => localeService.setLocale(locale)}>
+            {locale?.tag ?? intl.formatMessage({ id: "picker.default" })}
         </Button>
     );
     const buttons: ReactNode[] = locales.map((locale) => makeButton(locale));

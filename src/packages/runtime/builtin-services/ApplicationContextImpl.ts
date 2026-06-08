@@ -1,35 +1,38 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { ApplicationContext } from "../api";
+import { Error } from "@open-pioneer/core";
+import { ApplicationContext, LocaleService } from "../api";
 import { isShadowRoot, RootNode } from "../dom";
+import { ErrorId } from "../errors";
+import { Locale } from "../i18n";
 import { ServiceOptions } from "../Service";
 
 export interface ApplicationContextProperties {
     host: HTMLElement;
     rootNode: RootNode;
     container: HTMLElement;
-    locale: string;
-    supportedLocales: string[];
-
-    /** A callback to change the application's locale is injected by the runtime. */
-    changeLocale(locale: string): void;
 }
+
+interface ServiceReferences {
+    localeService: LocaleService;
+}
+
+export type ApplicationContextServiceOptions = ServiceOptions<ServiceReferences>;
 
 export class ApplicationContextImpl implements ApplicationContext {
     #host: HTMLElement;
     #rootNode: RootNode;
     #container: HTMLElement;
-    #locale: string;
-    #supportedLocales: readonly string[];
-    #changeLocale: (locale: string) => void;
+    #localeService: LocaleService;
 
-    constructor(_options: ServiceOptions, properties: ApplicationContextProperties) {
+    constructor(
+        options: ApplicationContextServiceOptions,
+        properties: ApplicationContextProperties
+    ) {
         this.#host = properties.host;
         this.#rootNode = properties.rootNode;
         this.#container = properties.container;
-        this.#locale = properties.locale;
-        this.#supportedLocales = Object.freeze(Array.from(properties.supportedLocales));
-        this.#changeLocale = properties.changeLocale;
+        this.#localeService = options.references.localeService;
     }
 
     getHostElement(): HTMLElement {
@@ -48,17 +51,27 @@ export class ApplicationContextImpl implements ApplicationContext {
         return this.#container;
     }
 
+    /** @deprecated Use `runtime.LocaleService` instead. */
     getLocale(): string {
-        return this.#locale;
+        return this.#localeService.locale.tag;
     }
 
-    setLocale(locale: string): void {
-        // This restarts the application at the moment, so this.locale will _not_ be updated.
-        // Instead, we get a new application with a new application context.
-        this.#changeLocale(locale);
+    /** @deprecated Use `runtime.LocaleService` instead. */
+    setLocale(locale: string | undefined): void {
+        const targetLocale = Locale.tryParse(locale);
+        // to be backwards compatible, we check here synchronously
+        // same check is done in AppIntl.setLocale
+        if (targetLocale && !this.#localeService.supportsLocale(targetLocale)) {
+            throw new Error(
+                ErrorId.UNSUPPORTED_LOCALE,
+                `Unsupported locale '${targetLocale.tag}' (supported locales: ${this.#localeService.supportedMessageLocales.map((l) => l.tag).join(", ")}).`
+            );
+        }
+        this.#localeService.setLocale(targetLocale);
     }
 
+    /** @deprecated Use `runtime.LocaleService` instead. */
     getSupportedLocales(): readonly string[] {
-        return this.#supportedLocales;
+        return this.#localeService.supportedMessageLocales.map((l) => l.tag);
     }
 }

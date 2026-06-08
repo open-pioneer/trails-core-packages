@@ -3,101 +3,206 @@
 import { createLogger, Error } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
+import { Locale } from "./Locale";
+
 const LOG = createLogger(sourceId);
 
+interface LocaleMatchSuccess {
+    /** The accepted locale. */
+    readonly acceptedLocale: Locale;
+
+    /** The picked supported locale */
+    readonly supportedLocale: Locale;
+
+    /** Quality of the match. */
+    readonly quality: "exact" | "script" | "language";
+}
+interface LocaleMatchFailure {
+    /** The accepted locale or undefined if no match was possible. */
+    readonly acceptedLocale: undefined;
+
+    /** The picked supported locale, or `undefined` if no match was possible. */
+    readonly supportedLocale: undefined;
+
+    /** Quality of the match. */
+    readonly quality: "none";
+}
+
+/**
+ * Result of {@link LocalePicker.pickBestMatch}.
+ */
+type LocaleMatch = LocaleMatchSuccess | LocaleMatchFailure;
+
+/**
+ * Result of {@link LocalePicker.pickSupportedLocale}.
+ */
 export interface LocalePickResult {
     /**
-     * The actual locale (e.g. en-US) for number and date formatting etc.
+     * The actual locale (e.g. `de-DE`) used for number/date formatting.
      */
-    locale: string;
+    locale: Locale;
 
     /**
-     * The locale identifier to load messages for. E.g. "en".
+     * The locale of the matched message bundle (e.g. `de`).
      */
-    messageLocale: string;
+    messageLocale: Locale;
 }
 
 /**
- * Picks a locale for the app.
+ * Picks a locale for an application based on the locales it supports
+ * and the locales requested by a user.
  */
-export class I18nConfig {
-    private appLocales: string[];
+export class LocalePicker {
+    #supportedLocales: readonly Locale[];
 
     /**
-     * @param appLocales Locales the app has i18n messages for (e.g. "en", "de")
+     * @param supportedLocales Locales the app has i18n messages for (e.g. `"en"`, `"de"`).
      */
-    constructor(appLocales: string[]) {
-        this.appLocales = appLocales;
+    constructor(supportedLocales: ReadonlyArray<Locale>) {
+        this.#supportedLocales = supportedLocales;
     }
 
     /**
-     * @param forcedLocale Optional forced locale (must be satisfied)
-     * @param userLocales Locales requested by the user's browser
+     * Picks the locale to use during application startup.
+     *
+     * @param preferredLocale Optional preferred locale.
+     * @param userLocales Locales requested by the user's browser.
      */
-    pickSupportedLocale(forcedLocale: string | undefined, userLocales: string[]): LocalePickResult {
-        const { appLocales } = this;
-        // Attempt to satisfy forced locale
-        if (forcedLocale) {
-            const result = this.pickImpl([forcedLocale]);
-            if (!result) {
-                const localesList = appLocales.join(", ");
+    pickSupportedLocale(
+        preferredLocale: Locale | undefined,
+        userLocales: ReadonlyArray<Locale>
+    ): LocalePickResult {
+        if (preferredLocale != null) {
+            const match = this.#pickBestMatch([preferredLocale]);
+            if (!match.supportedLocale) {
+                const list = this.#supportedLocales.map((l) => l.tag).join(", ");
                 throw new Error(
                     ErrorId.UNSUPPORTED_LOCALE,
-                    `Locale '${forcedLocale}' cannot be forced because it is not supported by the application.` +
-                        ` Supported locales are ${localesList}.`
+                    `Locale '${preferredLocale.tag}' cannot be forced because it is not supported by the application.` +
+                        ` Supported locales are ${list}.`
                 );
             }
-            if (result.locale !== result.messageLocale) {
+            if (match.quality === "language" || match.quality === "script") {
                 LOG.warn(
-                    `Non-exact match for forced locale '${forcedLocale}': using messages from '${result.messageLocale}'.`
+                    `Non-exact match for forced locale '${preferredLocale.tag}': using messages from '${match.supportedLocale.tag}'.`
                 );
             }
-            return result;
+            return { locale: match.acceptedLocale, messageLocale: match.supportedLocale };
         }
 
-        // Match preferred locale
-        const supportedLocale = this.pickImpl(userLocales);
-        if (supportedLocale) {
-            return supportedLocale;
+        const match = this.#pickBestMatch(userLocales);
+        if (match.quality !== "none") {
+            return { locale: match.acceptedLocale, messageLocale: match.supportedLocale };
         }
 
-        // Fallback: Most preferred locale (for dates etc.), but some of our messages
-        return {
-            locale: userLocales[0] ?? "en",
-            messageLocale: appLocales[0] ?? "en"
-        };
+        // Fallback: keep the most preferred user locale for formatting,
+        // but pick the first app locale for messages.
+        //TODO: is this really a good idea? Better simply pick "en", also for formatting?
+        const fallbackUser = userLocales[0] ?? Locale.parse("en");
+        const fallbackMessage = this.#supportedLocales[0] ?? Locale.parse("en");
+        return { locale: fallbackUser, messageLocale: fallbackMessage };
     }
 
-    supportsLocale(locale: string): boolean {
-        return this.pickImpl([locale]) != null;
+    supportsLocale(locale: Locale): boolean {
+        return this.#pickBestMatch([locale]).quality !== "none";
     }
 
-    private pickImpl(requestedLocales: string[]) {
-        const appLocales = this.appLocales;
-        for (const requestedLocale of requestedLocales) {
-            // try exact match
-            if (appLocales.includes(requestedLocale)) {
-                return { messageLocale: requestedLocale, locale: requestedLocale };
+    /**
+     * Picks the best supported locale for a list of accepted locales.
+     *
+     * Matching is performed in up to four passes per accepted locale (in order of
+     * preference). The first hit wins:
+     *
+     * 1. **Exact tag match** – the supported locale's canonical tag equals the
+     *    accepted locale's canonical tag (e.g. `zh-Hant-TW` → `zh-Hant-TW`).
+     *    A de-simple variant, will only match with exact tag.
+     *
+     * 2. **Language + script match** – only considered when the accepted locale
+     *    carries a script subtag. The supported locale must match on both
+     *    `language` and `script` and must have no region (e.g. `zh-Hant-TW` →
+     *    `zh-Hant`). Supported locales that carry variant subtags are excluded
+     *    from this pass.
+     *
+     * 3. **Language match** – only considered when the accepted locale has
+     *    **no** script subtag. The supported locale must be language-only (no
+     *    script, region, or variants) and share the same language subtag
+     *    (e.g. `de-DE` → `de`).
+     *
+     * 4. **None** – no match found.
+     *
+     * @param accepted Locales requested by the caller, in order of preference.
+     * @param supported Locales to choose from. Defaults to the app's supported message locales.
+     */
+    #pickBestMatch(
+        accepted: ReadonlyArray<Locale>,
+        supported: ReadonlyArray<Locale> = this.#supportedLocales
+    ): LocaleMatch {
+        for (const acceptedLoc of accepted) {
+            // Pass 1: exact tag match.
+            const exact = supported.find((s) => s.tag === acceptedLoc.tag);
+            if (exact) {
+                return { acceptedLocale: acceptedLoc, supportedLocale: exact, quality: "exact" };
             }
 
-            // try plain language tag (e.g. "en") as fallback
-            const plainLanguage = requestedLocale.match(/^([a-z]+)/i)?.[1];
-            if (plainLanguage && appLocales.includes(plainLanguage)) {
-                return { messageLocale: plainLanguage, locale: requestedLocale };
+            if (acceptedLoc.script) {
+                // Pass 2: language + script match (region dropped on both sides).
+                // Supported locale must share language+script, have no region, and
+                // carry no variant subtags (variants are only matched exactly).
+                const scriptMatch = supported.find(
+                    (s) =>
+                        s.language === acceptedLoc.language &&
+                        s.script === acceptedLoc.script &&
+                        !s.region &&
+                        s.variants.length === 0
+                );
+                if (scriptMatch) {
+                    return {
+                        acceptedLocale: acceptedLoc,
+                        supportedLocale: scriptMatch,
+                        quality: "script"
+                    };
+                }
+                continue; // skip language-only pass for locales with script
+            }
+
+            // Pass 3: language-only match (no script on accepted locale).
+            // The supported locale must be fully language-only (no script, region, or variants).
+            const langMatch = supported.find(
+                (s) => s.isLanguageOnly && s.language === acceptedLoc.language
+            );
+            if (langMatch) {
+                return {
+                    acceptedLocale: acceptedLoc,
+                    supportedLocale: langMatch,
+                    quality: "language"
+                };
             }
         }
-        return undefined;
+        return { acceptedLocale: undefined, supportedLocale: undefined, quality: "none" };
     }
 }
 
 /**
- * Returns locales supported by the browser, in order of preference (preferred first).
+ * Returns the locales currently preferred by the user's browser, in order of preference.
  *
  * See also https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages
+ *
+ * Invalid entries (which should not occur in practice) are silently dropped.
  */
-export function getBrowserLocales(): string[] {
-    if (window.navigator.languages && window.navigator.languages.length) {
-        return Array.from(window.navigator.languages);
+export function getBrowserLocales(): readonly Locale[] {
+    if (typeof window === "undefined") {
+        return [];
     }
-    return [window.navigator.language];
+    const tags =
+        window.navigator.languages && window.navigator.languages.length
+            ? Array.from(window.navigator.languages)
+            : [window.navigator.language];
+    const result: Locale[] = [];
+    for (const tag of tags) {
+        const locale = Locale.tryParse(tag);
+        if (locale) {
+            result.push(locale);
+        }
+    }
+    return result;
 }

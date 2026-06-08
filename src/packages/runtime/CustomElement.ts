@@ -105,13 +105,25 @@ export interface ApplicationOverrides {
  */
 export interface ApplicationConfig {
     /**
-     * Set this value to a locale string (e.g. "en") to for the application's locale.
+     * Set this value to a locale (BCP-47 string, e.g. `"en"`) to set the default message locale of the application.
+     *
      * The default behavior is to choose an appropriate locale for the current user based
      * on the browser's settings.
      *
-     * The locale must be supported by the application.
+     * This locale should match one of the supported message locales defined by the application's package.
      */
     locale?: string | undefined;
+
+    /**
+     * The list of locales supported by the application.
+     *
+     * This allows a further restriction of the locales supported by the application, compared to the ones defined by the application's package.
+     * It is not possible to extend the supported locales defined by the package, only to restrict them.
+     * If this property is not set, then the application supports all locales defined by the build.config.mjs of the application's package.
+     * If the values are not a valid subset of the application package supported locales, then the application will throw an error at startup.
+     * An empty array will disable loading of any message bundle.
+     */
+    supportedLocales?: string[] | undefined;
 
     /**
      * Configures the application's initial color mode.
@@ -187,6 +199,22 @@ export interface AdvancedCustomElementOptions {
      * ensure that your components work in that setting.
      */
     enableShadowRoot?: boolean;
+
+    /**
+     * If `true`, calls to `runtime.LocaleService.setLocale` apply the new locale
+     * in place: the new message bundle is loaded first, then `locale`,
+     * `messageLocale` and all `PackageIntl` instances are updated atomically
+     * — without restarting the application.
+     *
+     * If `false` (default), `setLocale` triggers a full application restart
+     * with the new locale (legacy behavior).
+     *
+     * Reactive switching avoids the cost of a restart but requires that all
+     * UI code reads i18n through reactive APIs (e.g. `useIntl`,
+     * `useReactiveSnapshot`). Components that capture `intl` or `locale` once
+     * at construction time will not pick up the change.
+     */
+    enableLocaleReactiveSwitching?: boolean;
 }
 
 /**

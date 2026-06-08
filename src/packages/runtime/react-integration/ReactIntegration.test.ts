@@ -412,7 +412,7 @@ describe("integration for error screen ", function () {
             hostNode: document.createElement("div"),
             rootNode: document,
             config: undefined,
-            locale: "en",
+            locale: reactive("en"),
             styles: reactive(""),
             colorMode: reactive("light")
         });
@@ -426,7 +426,7 @@ describe("integration for error screen ", function () {
             hostNode: document.createElement("div"),
             rootNode: document,
             config: undefined,
-            locale: "en",
+            locale: reactive("en"),
             styles: reactive(""),
             colorMode: reactive("light")
         });
@@ -507,7 +507,7 @@ function createIntegration(options?: {
         config: reactive(options?.config),
         packages,
         serviceLayer,
-        locale: options?.locale ?? "en",
+        locale: reactive(options?.locale ?? "en"),
         styles: reactive(""),
         colorMode: reactive("light")
     });

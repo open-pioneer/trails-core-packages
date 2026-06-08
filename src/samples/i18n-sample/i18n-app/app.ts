@@ -6,7 +6,10 @@ import { I18nUI } from "./I18nUI";
 
 const Element = createCustomElement({
     component: I18nUI,
-    appMetadata
+    appMetadata,
+    advanced: {
+        enableLocaleReactiveSwitching: true
+    }
 });
 
 customElements.define("i18n-app", Element);

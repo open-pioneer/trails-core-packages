@@ -72,6 +72,7 @@ function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig>
     const mergedConfig: Required<ApplicationConfig> = Object.assign(
         {
             locale: undefined,
+            supportedLocales: undefined,
             chakraSystemConfig: undefined,
             colorMode: undefined,
             properties: {}
