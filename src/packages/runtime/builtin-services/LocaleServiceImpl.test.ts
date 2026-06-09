@@ -64,15 +64,6 @@ it("supportedMessageLocales contains all app locales", async () => {
     expect(tags).toContain("en");
 });
 
-it("supportedMessageLocales contains all app locales", async () => {
-    const appIntl = await makeAppIntl(["de", "en"]);
-    const { service } = makeService(appIntl);
-
-    const tags = service.supportedMessageLocales.map((l) => l.tag);
-    expect(tags).toContain("de");
-    expect(tags).toContain("en");
-});
-
 it("isReactiveSwitching reflects AppIntl.reactiveSwitching", async () => {
     const nonReactiveIntl = await makeAppIntl(["de", "en"], { reactiveSwitching: false });
     const reactiveIntl = await makeAppIntl(["de", "en"], { reactiveSwitching: true });
@@ -172,4 +163,10 @@ it("restrictSupportedLocales=['de'] reduces app locales [en, de] to only 'de'", 
     expect(service.messageLocale.tag).toBe("de");
     expect(service.supportsLocale(Locale.parse("de"))).toBe(true);
     expect(service.supportsLocale(Locale.parse("en"))).toBe(false);
+});
+
+it("throws at startup when restrictSupportedLocales is not a subset of the app's locales", async () => {
+    await expect(makeAppIntl(["de", "en"], { restrictSupportedLocales: ["fr"] })).rejects.toThrow(
+        /not one of the application's message locales \[de, en\]/
+    );
 });

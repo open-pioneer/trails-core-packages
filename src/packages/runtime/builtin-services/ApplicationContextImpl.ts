@@ -1,11 +1,14 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Error } from "@open-pioneer/core";
+import { createLogger, Error } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ApplicationContext, LocaleService } from "../api";
 import { isShadowRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
 import { Locale } from "../i18n";
 import { ServiceOptions } from "../Service";
+
+const LOG = createLogger(sourceId);
 
 export interface ApplicationContextProperties {
     host: HTMLElement;
@@ -67,7 +70,9 @@ export class ApplicationContextImpl implements ApplicationContext {
                 `Unsupported locale '${targetLocale.tag}' (supported locales: ${this.#localeService.supportedMessageLocales.map((l) => l.tag).join(", ")}).`
             );
         }
-        this.#localeService.setLocale(targetLocale);
+        this.#localeService.setLocale(targetLocale).catch((e) => {
+            LOG.error(`Failed to switch locale to '${targetLocale?.tag}'.`, e);
+        });
     }
 
     /** @deprecated Use `runtime.LocaleService` instead. */

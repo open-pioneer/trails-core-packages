@@ -207,6 +207,11 @@ export async function initI18n({
             }
         },
         createPackageI18n(packageName) {
+            //NOTE: locale instead of messageLocale is intentional,
+            // to ensure that number formatting is still according to the current locale
+            const makeIntl = (packageMessages: Record<string, string>) =>
+                createPackageIntl(locale.value.tag, packageMessages);
+
             if (import.meta.hot || reactiveSwitching) {
                 const packageMessages = computed(() => messages.value[packageName] ?? {}, {
                     equal: shallowRecordEquals
@@ -218,17 +223,10 @@ export async function initI18n({
                         LOG.info("Updating i18n messages of package", packageName);
                     }
                     firstCall = false;
-                    //NOTE: locale instead of messageLocale is intentional,
-                    // to ensure that number formatting is still according to the current locale
-                    return createPackageIntl(locale.value.tag, packageMessages.value);
+                    return makeIntl(packageMessages.value);
                 });
-            } else {
-                const packageMessages = messages.value[packageName] ?? {};
-                //NOTE: locale instead of messageLocale is intentional,
-                // to ensure that number formatting is still according to the current locale
-                const packageIntl = createPackageIntl(locale.value.tag, packageMessages);
-                return constant(packageIntl);
             }
+            return constant(makeIntl(messages.value[packageName] ?? {}));
         }
     };
 }
@@ -240,10 +238,19 @@ function filterAvailableLocales(
     restrictSupportedLocales: readonly string[] | undefined
 ): readonly Locale[] {
     //NOTE: the set preserves the order of 'restrictSupportedLocales', this is relevant and intentional.
+    const isRestricted = restrictSupportedLocales != null;
     const localesToSupport = new Set(restrictSupportedLocales ?? messageLocaleStrings);
     const supportedLocales: Locale[] = [];
     for (const l of localesToSupport) {
         if (!messageLocaleStrings.includes(l)) {
+            // 'supportedLocales' may only restrict the locales defined by the application, not extend them.
+            // A value outside the application's message locales is a configuration error.
+            if (isRestricted) {
+                throw new Error(
+                    ErrorId.UNSUPPORTED_LOCALE,
+                    `Configured supported locale '${l}' is not one of the application's message locales [${messageLocaleStrings.join(", ")}].`
+                );
+            }
             LOG.warn(`Locale '${l}' is not included in app metadata locales and will be ignored.`);
             continue;
         }

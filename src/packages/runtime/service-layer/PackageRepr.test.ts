@@ -55,11 +55,10 @@ it("parses package metadata into internal package representations", function () 
     };
 
     const testLocale = Locale.parse("en");
-    const testi18n = {
+    const testi18n: AppIntl = {
         locale: testLocale,
         messageLocale: testLocale,
         supportedMessageLocales: [],
-        isLocaleForced: false,
         reactiveSwitching: false,
         destroy() {},
         createPackageI18n() {
@@ -70,11 +69,8 @@ it("parses package metadata into internal package representations", function () 
         },
         setLocale() {
             return Promise.resolve();
-        },
-        pickBestMatch() {
-            return { locale: testLocale, quality: "exact" as const };
         }
-    } as unknown as AppIntl;
+    };
 
     const packages = createPackages(metadata, testi18n);
     expect(packages).toHaveLength(2);
