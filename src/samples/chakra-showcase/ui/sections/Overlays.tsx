@@ -9,9 +9,11 @@ import {
     createOverlay,
     Dialog,
     Drawer,
+    FloatingPanel,
     HoverCard,
     HStack,
     Icon,
+    IconButton,
     Input,
     Link,
     Menu,
@@ -23,7 +25,7 @@ import {
 import { ToggleTip } from "@open-pioneer/chakra-snippets/toggle-tip";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import { useState } from "react";
-import { LuInfo, LuShare, LuTrash2 } from "react-icons/lu";
+import { LuGripHorizontal, LuInfo, LuShare, LuTrash2, LuX } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
 
 interface DialogProps {
@@ -293,6 +295,49 @@ export function Overlays() {
                         Hover for Tooltip
                     </Button>
                 </Tooltip>
+            </Presenter>
+
+            <Presenter
+                title="Floating Panel"
+                link="https://chakra-ui.com/docs/components/floating-panel"
+            >
+                <FloatingPanel.Root
+                    persistRect
+                    defaultSize={{ width: 320, height: 200 }}
+                    minSize={{ width: 320, height: 200 }}
+                >
+                    <HStack>
+                        <FloatingPanel.Trigger asChild>
+                            <Button variant="outline" size="sm">
+                                Open Floating Panel
+                            </Button>
+                        </FloatingPanel.Trigger>
+                    </HStack>
+                    <Portal>
+                        <FloatingPanel.Positioner>
+                            <FloatingPanel.Content>
+                                <FloatingPanel.Header>
+                                    <FloatingPanel.DragTrigger>
+                                        <LuGripHorizontal />
+                                        <FloatingPanel.Title>Floating Panel</FloatingPanel.Title>
+                                    </FloatingPanel.DragTrigger>
+                                    <FloatingPanel.Control>
+                                        <FloatingPanel.CloseTrigger asChild>
+                                            <IconButton variant="ghost" size="2xs">
+                                                <LuX />
+                                            </IconButton>
+                                        </FloatingPanel.CloseTrigger>
+                                    </FloatingPanel.Control>
+                                </FloatingPanel.Header>
+                                <FloatingPanel.Body>
+                                    This is a draggable and resizable panel. Closing via the ×
+                                    button or the trigger button.
+                                </FloatingPanel.Body>
+                                <FloatingPanel.ResizeTriggers />
+                            </FloatingPanel.Content>
+                        </FloatingPanel.Positioner>
+                    </Portal>
+                </FloatingPanel.Root>
             </Presenter>
         </Box>
     );
