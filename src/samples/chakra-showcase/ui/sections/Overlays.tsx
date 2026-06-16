@@ -25,7 +25,16 @@ import {
 import { ToggleTip } from "@open-pioneer/chakra-snippets/toggle-tip";
 import { Tooltip } from "@open-pioneer/chakra-snippets/tooltip";
 import { useState } from "react";
-import { LuGripHorizontal, LuInfo, LuShare, LuTrash2, LuX } from "react-icons/lu";
+import {
+    LuGripHorizontal,
+    LuInfo,
+    LuMaximize2,
+    LuMinus,
+    LuShare,
+    LuSquare,
+    LuTrash2,
+    LuX
+} from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
 
 interface DialogProps {
@@ -322,6 +331,21 @@ export function Overlays() {
                                         <FloatingPanel.Title>Floating Panel</FloatingPanel.Title>
                                     </FloatingPanel.DragTrigger>
                                     <FloatingPanel.Control>
+                                        <FloatingPanel.StageTrigger stage="minimized" asChild>
+                                            <IconButton variant="ghost" size="2xs">
+                                                <LuMinus />
+                                            </IconButton>
+                                        </FloatingPanel.StageTrigger>
+                                        <FloatingPanel.StageTrigger stage="maximized" asChild>
+                                            <IconButton variant="ghost" size="2xs">
+                                                <LuSquare />
+                                            </IconButton>
+                                        </FloatingPanel.StageTrigger>
+                                        <FloatingPanel.StageTrigger stage="default" asChild>
+                                            <IconButton variant="ghost" size="2xs">
+                                                <LuMaximize2 />
+                                            </IconButton>
+                                        </FloatingPanel.StageTrigger>
                                         <FloatingPanel.CloseTrigger asChild>
                                             <IconButton variant="ghost" size="2xs">
                                                 <LuX />
