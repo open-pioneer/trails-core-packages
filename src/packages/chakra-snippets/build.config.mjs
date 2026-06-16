@@ -18,6 +18,7 @@ export default defineBuildConfig({
         "data-list.tsx",
         "empty-state.tsx",
         "field.tsx",
+        "floating-panel.tsx",
         "input-group.tsx",
         "link-button.tsx",
         "native-select.tsx",
