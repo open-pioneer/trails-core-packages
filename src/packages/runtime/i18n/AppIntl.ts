@@ -129,6 +129,8 @@ export async function initI18n({
         await loadMessagesSafely(appMetadata, initialMessageLocale)
     );
 
+    const messageLocale = reactive(initialMessageLocale);
+
     // During dev: watch for changes of the loadMessage function
     // and fetch new I18N messages if the user edited any i18n file.
     let hmrWatch: Resource | undefined;
@@ -154,7 +156,6 @@ export async function initI18n({
     /** Monotonic counter to discard outdated setLocale results. */
     let setLocaleSeq = 0;
     const locale = reactive(initialLocale);
-    const messageLocale = reactive(initialMessageLocale);
 
     return {
         get locale() {
