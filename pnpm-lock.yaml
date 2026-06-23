@@ -116,7 +116,7 @@ catalogs:
       version: 9.1.7
     js-yaml:
       specifier: ^4.1.1
-      version: 4.1.1
+      version: 4.2.0
     keycloak-js:
       specifier: ^26.2.4
       version: 26.2.4
@@ -316,7 +316,7 @@ importers:
         version: 9.1.7
       js-yaml:
         specifier: 'catalog:'
-        version: 4.1.1
+        version: 4.2.0
       lint-staged:
         specifier: 'catalog:'
         version: 17.0.4
@@ -3703,8 +3703,8 @@ packages:
     resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
     hasBin: true
 
-  js-yaml@4.1.1:
-    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
+  js-yaml@4.2.0:
+    resolution: {integrity: sha512-ePWsvanv0DWuDRsW8dnt+R4jQ31SCRCQ7hhNcPXZPsoBZiemuZNYGf7adZdqX2D86j6rvKp3RpCxVTSb8WQlOw==}
     hasBin: true
 
   jsesc@3.0.2:
@@ -5474,7 +5474,7 @@ snapshots:
   '@changesets/parse@0.4.3':
     dependencies:
       '@changesets/types': 6.1.0
-      js-yaml: 4.1.1
+      js-yaml: 4.2.0
 
   '@changesets/pre@2.0.2':
     dependencies:
@@ -5701,7 +5701,7 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.0
-      js-yaml: 4.1.1
+      js-yaml: 4.2.0
       minimatch: 3.1.5
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -5891,7 +5891,7 @@ snapshots:
       '@pnpm/types': 1001.3.0
       chalk: 5.6.2
       commander: 14.0.3
-      js-yaml: 4.1.1
+      js-yaml: 4.2.0
 
   '@open-pioneer/vite-plugin-pioneer@6.0.0(patch_hash=5552b425d49ba7c1e173596837e5a50bb2410628af798c6c8242947fa7cb504a)(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.60.4)(sass@1.99.0)(vite@8.0.16(@types/node@20.19.41)(esbuild@0.28.1)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0))':
     dependencies:
@@ -5901,7 +5901,7 @@ snapshots:
       '@open-pioneer/build-common': 4.0.0(rollup@4.60.4)
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.3
-      js-yaml: 4.1.1
+      js-yaml: 4.2.0
       oxc-resolver: 11.19.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       sass: 1.99.0
       vite: 8.0.16(@types/node@20.19.41)(esbuild@0.28.1)(sass@1.99.0)(tsx@4.22.0)(yaml@2.9.0)
@@ -8493,7 +8493,7 @@ snapshots:
       argparse: 1.0.10
       esprima: 4.0.1
 
-  js-yaml@4.1.1:
+  js-yaml@4.2.0:
     dependencies:
       argparse: 2.0.1
 
