@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     '@chakra-ui/cli':
-      specifier: ^3.35.0
-      version: 3.35.0
+      specifier: ^3.36.0
+      version: 3.36.0
     '@changesets/cli':
       specifier: ^2.31.0
       version: 2.31.0
@@ -219,7 +219,7 @@ importers:
     devDependencies:
       '@chakra-ui/cli':
         specifier: 'catalog:'
-        version: 3.35.0(@chakra-ui/react@3.36.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@6.0.3)
+        version: 3.36.0(@chakra-ui/react@3.36.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@6.0.3)
       '@changesets/cli':
         specifier: 'catalog:'
         version: 2.31.0(@types/node@20.19.41)
@@ -1016,8 +1016,8 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
-  '@chakra-ui/cli@3.35.0':
-    resolution: {integrity: sha512-QZzMuLPKZJMdI6wgtTT3muDtTYXcqyT+pmB8fkS6pHSzRZ5bxiq+vI6F9qvAW2VpjvbhcsRXGW2VLgaAI6BfDw==}
+  '@chakra-ui/cli@3.36.0':
+    resolution: {integrity: sha512-I41JaWdjaJFJGO5XIdQbol30YFcaWfjz/TTEECYSvyew7KN0aqw9niTBvO1DdBvXn+3g1ycWJ9Sjg3NzDW8S9A==}
     hasBin: true
     peerDependencies:
       '@chakra-ui/react': 3.36.0
@@ -1749,6 +1749,9 @@ packages:
 
   '@pandacss/is-valid-prop@1.10.0':
     resolution: {integrity: sha512-OmEHkDj3BRkHYLxHwNFYJkcwF84c7PuHsWHmmmNLJnmk8z0RVlDQei4GxWjfW1bnvCihCwakJ8Xq6GDRlmcDiQ==}
+
+  '@pandacss/is-valid-prop@1.11.1':
+    resolution: {integrity: sha512-tvfThJmSw88Lgk5qVYzVckZ2FY8T376mGvP1cWUC5SR58AYm82ZKEFciDbGOQKcyN70rF9qqJBB5JVWgJo3JmA==}
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -4875,6 +4878,7 @@ packages:
   tsconfck@3.1.6:
     resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
     engines: {node: ^18 || >=20}
+    deprecated: unmaintained
     hasBin: true
     peerDependencies:
       typescript: ^5.0.0
@@ -5480,14 +5484,14 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@chakra-ui/cli@3.35.0(@chakra-ui/react@3.36.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@6.0.3)':
+  '@chakra-ui/cli@3.36.0(@chakra-ui/react@3.36.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@6.0.3)':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/parser': 7.29.2
       '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
       '@chakra-ui/react': 3.36.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@clack/prompts': 1.0.1
-      '@pandacss/is-valid-prop': 1.10.0
+      '@pandacss/is-valid-prop': 1.11.1
       '@types/babel__core': 7.20.5
       '@types/cli-table': 0.3.4
       '@types/debug': 4.1.12
@@ -6219,6 +6223,8 @@ snapshots:
     optional: true
 
   '@pandacss/is-valid-prop@1.10.0': {}
+
+  '@pandacss/is-valid-prop@1.11.1': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true

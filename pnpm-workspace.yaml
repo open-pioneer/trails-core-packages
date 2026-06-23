@@ -6,9 +6,9 @@ packages:
 # https://pnpm.io/catalogs
 catalog:
   # Frontend dependencies
-  "@chakra-ui/cli": ^3.35.0
+  "@chakra-ui/cli": ^3.36.0
   "@chakra-ui/react": ^3.36.0
-  "@ark-ui/react": "^5.36.2" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
+  "@ark-ui/react": "^5.37.2" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@conterra/reactivity-core": ^0.8.5
   "@conterra/reactivity-events": ^0.8.5
   "@emotion/cache": ^11.14.0
