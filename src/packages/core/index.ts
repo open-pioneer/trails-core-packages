@@ -9,7 +9,7 @@ export {
     rethrowAbortError,
     throwAbortError
 } from "./error";
-export { deepEqual, shallowEqual } from "./equals";
+export { deepEqual, shallowEqual } from "./equal";
 export { EventEmitter, type EventNames, type EventSource } from "./events";
 export { createLogger, type Logger, type LogLevel, type LogMethod } from "./Logger";
 export { NumberParser } from "./NumberParser";

@@ -109,6 +109,24 @@ function someFunctionName() {
 
 The package exports the `EventEmitter` class that supports emitting and subscribing to user defined events.
 
+### Equality functions
+
+Use `shallowEqual` and `deepEqual` to compare two generic objects.
+Note that the functions are intended to be used with _plain old data_ (i.e. mostly JSON).
+
+They do _not_ support cycles.
+
+Examples:
+
+```ts
+import { shallowEqual, deepEqual } from "@open-pioneer/core";
+
+shallowEqual({ a: 1 }, { a: 1 }); // true
+shallowEqual({ a: { x: 1 } }, { a: { x: 1 } }); // false
+deepEqual({ a: { x: 1 } }, { a: { x: 1 } }); // true
+deepEqual([1, [2, 3]], [1, [2, 3]]); // true
+```
+
 ## License
 
 Apache-2.0 (see `LICENSE` file)
