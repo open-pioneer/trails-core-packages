@@ -1,5 +1,29 @@
 # @open-pioneer/react-utils
 
+## 4.6.0
+
+### Minor Changes
+
+- 10c8f27: Add new `FormattedMessage` and `FormattedRichMessage` components.
+  These components render translated messages using `intl.formatMessage` / `intl.formatRichMessage`
+  and support reactive changes of the `intl` property.
+
+    Example:
+
+    ```tsx
+    // currentIntl can be a signal
+    <FormattedMessage intl={currentIntl} id="message.id" />
+    ```
+
+- 27f5f1e: Add a new `classnames` function to replace the `classnames` package.
+- 4b207f4: Added a `required` option to `useHeadingLevel` hook to make it return `undefined` instead of throwing an error when used outside of a `TitledSection`.
+
+    This allows to use the hook in components which do not necessarily need to be used inside a `TitledSection`.
+
+    ```tsx
+    const currentHeading: number | undefined = useHeadingLevel({ required: false });
+    ```
+
 ## 4.5.0
 
 ### Minor Changes

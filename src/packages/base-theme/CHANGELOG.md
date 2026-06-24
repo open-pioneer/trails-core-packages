@@ -1,5 +1,11 @@
 # @open-pioneer/base-theme
 
+## 4.6.0
+
+### Patch Changes
+
+- e6db101: Set cursor to 'pointer' on interactive color picker elements.
+
 ## 4.5.0
 
 ### Minor Changes
