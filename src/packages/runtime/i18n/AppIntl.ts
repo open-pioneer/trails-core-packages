@@ -7,7 +7,7 @@ import {
     ReadonlyReactive,
     watchValue
 } from "@conterra/reactivity-core";
-import { createLogger, destroyResource, Error, Resource } from "@open-pioneer/core";
+import { createLogger, destroyResource, Error, Resource, shallowEqual } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
@@ -128,7 +128,7 @@ export async function initI18n(
         createPackageI18n(packageName) {
             if (import.meta.hot) {
                 const packageMessages = computed(() => messages.value[packageName] ?? {}, {
-                    equal: shallowRecordEquals
+                    equal: shallowEqual
                 });
 
                 let firstCall = true;
@@ -147,33 +147,4 @@ export async function initI18n(
             }
         }
     };
-}
-
-// TODO: Move into @open-pioneer/core; consider using a third party lib
-function shallowRecordEquals(a: Record<string, unknown>, b: Record<string, unknown>) {
-    const keysA = new Set(Object.keys(a));
-    const keysB = new Set(Object.keys(b));
-    if (keysA.size !== keysB.size) {
-        return false;
-    }
-    for (const k of keysA) {
-        if (!keysB.has(k)) {
-            return false;
-        }
-    }
-    for (const k of keysB) {
-        if (!keysA.has(k)) {
-            return false;
-        }
-    }
-
-    for (const k of keysA) {
-        const va = a[k];
-        const vb = b[k];
-        if (va !== vb) {
-            return false;
-        }
-    }
-
-    return true;
 }
