@@ -2,15 +2,15 @@
 "@open-pioneer/core": minor
 ---
 
-Add shallowEquals and deepEquals helper.
+Add shallowEqual and deepEqual helper function to compare two objects.
 
 Examples:
 
 ```ts
-import { shallowEquals, deepEquals } from "@open-pioneer/core";
+import { shallowEqual, deepEqual } from "@open-pioneer/core";
 
-shallowEquals({ a: 1 }, { a: 1 }); // true
-shallowEquals({ a: { x: 1 } }, { a: { x: 1 } }); // false
-deepEquals({ a: { x: 1 } }, { a: { x: 1 } }); // true
-deepEquals([1, [2, 3]], [1, [2, 3]]); // true
+shallowEqual({ a: 1 }, { a: 1 }); // true
+shallowEqual({ a: { x: 1 } }, { a: { x: 1 } }); // false
+deepEqual({ a: { x: 1 } }, { a: { x: 1 } }); // true
+deepEqual([1, [2, 3]], [1, [2, 3]]); // true
 ```

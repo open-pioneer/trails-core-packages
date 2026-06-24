@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { deepEqual, shallowEqual } from "fast-equals";
+import { deepEqual as deepEqualImpl, shallowEqual as shallowEqualImpl } from "fast-equals";
 
 /**
  * Compares two values using shallow equality.
@@ -15,15 +15,15 @@ import { deepEqual, shallowEqual } from "fast-equals";
  * Examples:
  *
  * ```ts
- * shallowEquals({ a: 1 }, { a: 1 }); // true
- * shallowEquals({ a: { x: 1 } }, { a: { x: 1 } }); // false
- * shallowEquals([1, 2], [1, 2]); // true
- * shallowEquals(() => 1, () => 1); // false
+ * shallowEqual({ a: 1 }, { a: 1 }); // true
+ * shallowEqual({ a: { x: 1 } }, { a: { x: 1 } }); // false
+ * shallowEqual([1, 2], [1, 2]); // true
+ * shallowEqual(() => 1, () => 1); // false
  *
  * ```
  */
-export function shallowEquals(a: unknown, b: unknown): boolean {
-    return shallowEqual(a, b);
+export function shallowEqual(a: unknown, b: unknown): boolean {
+    return shallowEqualImpl(a, b);
 }
 
 /**
@@ -38,11 +38,11 @@ export function shallowEquals(a: unknown, b: unknown): boolean {
  * Examples:
  *
  * ```ts
- * deepEquals({ a: { x: 1 } }, { a: { x: 1 } }); // true
- * deepEquals([1, [2, 3]], [1, [2, 3]]); // true
- * deepEquals(() => 1, () => 1); // false
+ * deepEqual({ a: { x: 1 } }, { a: { x: 1 } }); // true
+ * deepEqual([1, [2, 3]], [1, [2, 3]]); // true
+ * deepEqual(() => 1, () => 1); // false
  * ```
  */
-export function deepEquals(a: unknown, b: unknown): boolean {
-    return deepEqual(a, b);
+export function deepEqual(a: unknown, b: unknown): boolean {
+    return deepEqualImpl(a, b);
 }

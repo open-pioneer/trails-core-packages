@@ -7,7 +7,7 @@ import {
     ReadonlyReactive,
     watchValue
 } from "@conterra/reactivity-core";
-import { createLogger, destroyResource, Error, Resource, shallowEquals } from "@open-pioneer/core";
+import { createLogger, destroyResource, Error, Resource, shallowEqual } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
@@ -128,7 +128,7 @@ export async function initI18n(
         createPackageI18n(packageName) {
             if (import.meta.hot) {
                 const packageMessages = computed(() => messages.value[packageName] ?? {}, {
-                    equal: shallowEquals
+                    equal: shallowEqual
                 });
 
                 let firstCall = true;
