@@ -13,7 +13,7 @@ import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
 import { unwrapBox } from "../metadata/ObservableBox";
-import { Locale } from "./Locale";
+import { tryParseLocale } from "./intl-locale";
 import { createPackageIntl, PackageIntl } from "./PackageIntl";
 import { LocalePicker, getBrowserLocales } from "./pick";
 
@@ -26,31 +26,28 @@ const LOG = createLogger(sourceId);
 export interface AppIntl {
     destroy(): void;
 
-    /** Chosen locale */
-    readonly locale: Locale;
+    /** Locale for Intl formatting. */
+    readonly locale: Readonly<Intl.Locale>;
 
     /**
      * The locale of the currently loaded message bundle.
      * Always one of {@link supportedMessageLocales}.
      */
-    readonly messageLocale: Locale;
+    readonly messageLocale: Readonly<Intl.Locale>;
 
     /** Supported locales from app metadata. */
-    readonly supportedMessageLocales: readonly Locale[];
+    readonly supportedMessageLocales: readonly Readonly<Intl.Locale>[];
 
     /** True if reactive locale switching is enabled. */
     readonly reactiveSwitching: boolean;
 
-    /**
-     * Checks if the given locale is supported by the app.
-     */
-    supportsLocale(locale: Locale): boolean;
+    /** True iff `locale` best-fits a supported bundle. */
+    supportsLocale(locale: Readonly<Intl.Locale>): boolean;
 
     /**
-     * Switches to the given locale. Only allowed when reactive switching is enabled
-     * (otherwise the runtime restarts the application instead).
+     * Switches to `locale`. Best-fit match; throws `UNSUPPORTED_LOCALE` on no match.
      */
-    setLocale(locale: Locale | undefined): Promise<void>;
+    changeLocale(locale: Readonly<Intl.Locale> | undefined): Promise<void>;
 
     /** Given the package name, constructs a package i18n instance. */
     createPackageI18n(packageName: string): ReadonlyReactive<PackageIntl>;
@@ -74,16 +71,16 @@ export interface I18nOptions {
     restrictSupportedLocales?: readonly string[];
 
     /**
-     * If true, locale switching via {@link AppIntl.setLocale} is supported and
+     * If true, locale switching via {@link AppIntl.changeLocale} is supported and
      * applied in place (locale, messageLocale and PackageIntl instances become reactive).
      *
-     * If false (default), {@link AppIntl.setLocale} throws and the application
-     * must be restarted to apply locale changes.
+     * If false (default), {@link AppIntl.changeLocale} triggers an application
+     * restart via {@link restartWithLocale}.
      */
     reactiveSwitching?: boolean;
 
-    /** hook given by AppInstance to trigger restart of the application. Called by setLocale when reactive switching is OFF. */
-    restartWithLocale(locale: Locale | undefined): void;
+    /** hook given by AppInstance to trigger restart of the application. Called by changeLocale when reactive switching is OFF. */
+    restartWithLocale(locale: Readonly<Intl.Locale> | undefined): void;
 }
 
 /**
@@ -102,14 +99,14 @@ export async function initI18n({
         restrictSupportedLocales
     );
     const userLocales = getBrowserLocales();
-    const preferredLocale = Locale.tryParse(forcedLocale);
+    const preferredLocale = tryParseLocale(forcedLocale);
     if (LOG.isDebug()) {
         LOG.debug(
             `Attempting to pick locale for user (locales: ${userLocales
-                .map((l) => l.tag)
+                .map((l) => l.baseName)
                 .join(", ")}) from app (locales: ${messageLocaleStrings.join(
                 ", "
-            )} restricted to ${effectiveSupportedLocales.map((l) => l.tag).join(", ")})  [forcedLocale=${preferredLocale?.tag}].`
+            )} restricted to ${effectiveSupportedLocales.map((l) => l.baseName).join(", ")})  [forcedLocale=${preferredLocale?.baseName}].`
         );
     }
 
@@ -119,7 +116,7 @@ export async function initI18n({
 
     if (LOG.isDebug()) {
         LOG.debug(
-            `Using locale '${initialLocale.tag}' with messages from locale '${initialMessageLocale.tag}'.`
+            `Using locale '${initialLocale.baseName}' with messages from locale '${initialMessageLocale.baseName}'.`
         );
     }
 
@@ -136,7 +133,7 @@ export async function initI18n({
     let hmrWatch: Resource | undefined;
     if (import.meta.hot) {
         async function applyHotUpdate(loader: MessageLoader): Promise<void> {
-            const newMessages = (await loader(messageLocale.value.tag)) ?? {};
+            const newMessages = (await loader(messageLocale.value.baseName)) ?? {};
             LOG.debug("Applying new i18n messages", newMessages);
             messages.value = newMessages;
         }
@@ -153,8 +150,8 @@ export async function initI18n({
         );
     }
 
-    /** Monotonic counter to discard outdated setLocale results. */
-    let setLocaleSeq = 0;
+    /** Monotonic counter to discard outdated changeLocale results. */
+    let changeLocaleSeq = 0;
     const locale = reactive(initialLocale);
 
     return {
@@ -176,23 +173,18 @@ export async function initI18n({
         supportsLocale(locale) {
             return localePicker.supportsLocale(locale);
         },
-        async setLocale(targetLocale) {
-            if (targetLocale && !localePicker.supportsLocale(targetLocale)) {
-                throw new Error(
-                    ErrorId.UNSUPPORTED_LOCALE,
-                    `Unsupported locale '${targetLocale.tag}' (supported locales: ${effectiveSupportedLocales.map((l) => l.tag).join(", ")}).`
-                );
-            }
+        async changeLocale(targetLocale) {
+            const { locale: nextLocale, messageLocale: nextMessageLocale } =
+                localePicker.pickSupportedLocale(targetLocale, userLocales);
             if (!reactiveSwitching) {
+                //NOTE: it is important for restarts to ensure the input value (targetLocale) is passed to restartWithLocale, not the best-fit value (nextLocale).
                 restartWithLocale(targetLocale);
                 return Promise.resolve();
             }
-            const { locale: nextLocale, messageLocale: nextMessageLocale } =
-                localePicker.pickSupportedLocale(targetLocale, userLocales);
-            const seq = ++setLocaleSeq;
+            const seq = ++changeLocaleSeq;
             const newMessages = await loadMessagesSafely(appMetadata, nextMessageLocale);
-            if (seq !== setLocaleSeq) {
-                // Superseded by a newer setLocale call: drop the result.
+            if (seq !== changeLocaleSeq) {
+                // Superseded by a newer changeLocale call: drop the result.
                 return;
             }
             batch(() => {
@@ -203,7 +195,7 @@ export async function initI18n({
 
             if (LOG.isDebug()) {
                 LOG.debug(
-                    `Locale switched: locale='${nextLocale.tag}', messageLocale='${nextMessageLocale.tag}'.`
+                    `Locale switched: locale='${nextLocale.baseName}', messageLocale='${nextMessageLocale.baseName}'.`
                 );
             }
         },
@@ -211,7 +203,7 @@ export async function initI18n({
             //NOTE: locale instead of messageLocale is intentional,
             // to ensure that number formatting is still according to the current locale
             const makeIntl = (packageMessages: Record<string, string>) =>
-                createPackageIntl(locale.value.tag, packageMessages);
+                createPackageIntl(locale.value.baseName, packageMessages);
 
             if (import.meta.hot || reactiveSwitching) {
                 const packageMessages = computed(() => messages.value[packageName] ?? {}, {
@@ -237,11 +229,11 @@ function filterAvailableLocales(
     messageLocaleStrings: readonly string[],
     // optional restriction on supported locales, must be subset of messageLocaleStrings
     restrictSupportedLocales: readonly string[] | undefined
-): readonly Locale[] {
+): readonly Readonly<Intl.Locale>[] {
     //NOTE: the set preserves the order of 'restrictSupportedLocales', this is relevant and intentional.
     const isRestricted = restrictSupportedLocales != null;
     const localesToSupport = new Set(restrictSupportedLocales ?? messageLocaleStrings);
-    const supportedLocales: Locale[] = [];
+    const supportedLocales: Readonly<Intl.Locale>[] = [];
     for (const l of localesToSupport) {
         if (!messageLocaleStrings.includes(l)) {
             // 'supportedLocales' may only restrict the locales defined by the application, not extend them.
@@ -255,7 +247,7 @@ function filterAvailableLocales(
             LOG.warn(`Locale '${l}' is not included in app metadata locales and will be ignored.`);
             continue;
         }
-        const locale = Locale.tryParse(l);
+        const locale = tryParseLocale(l);
         if (!locale) {
             LOG.warn(
                 `Locale '${l}' from app metadata is not a valid BCP 47 tag and will be ignored.`
@@ -274,16 +266,16 @@ function filterAvailableLocales(
 
 async function loadMessagesSafely(
     appMetadata: ApplicationMetadata | undefined,
-    messageLocale: Locale
+    messageLocale: Readonly<Intl.Locale>
 ): Promise<MessagesRecord> {
     const messageLocales = appMetadata?.locales ?? [];
-    if (!appMetadata?.loadMessages || !messageLocales.includes(messageLocale.tag)) {
+    if (!appMetadata?.loadMessages || !messageLocales.includes(messageLocale.baseName)) {
         return {};
     }
 
     try {
         const loader = unwrapBox(appMetadata.loadMessages);
-        const messagesRecord = await loader(messageLocale.tag);
+        const messagesRecord = await loader(messageLocale.baseName);
         if (messagesRecord) {
             return messagesRecord;
         }
@@ -297,7 +289,7 @@ async function loadMessagesSafely(
     } catch (e) {
         throw new Error(
             ErrorId.INTERNAL,
-            `Failed to load messages for locale '${messageLocale.tag}'.`,
+            `Failed to load messages for locale '${messageLocale.baseName}'.`,
             {
                 cause: e
             }

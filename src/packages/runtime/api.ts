@@ -3,9 +3,8 @@
 import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import type { ApplicationConfig } from "./CustomElement";
 import { type DeclaredService } from "./DeclaredService";
-import { type Locale } from "./i18n";
 
-export { Locale } from "./i18n";
+export { parseLocale, tryParseLocale } from "./i18n";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
@@ -98,10 +97,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * `locale` must be one of the supported locales, see {@link getSupportedLocales()} or `undefined` (for automatic locale).
      * Note that `locale` does not need to be a precise match, e.g. `"de-DE"` is also valid if `"de"` is supported.
      *
-     * > NOTE: This method will currently trigger a full restart of the application.
-     * > Altering the locale on the fly is possible in theory but has not been implemented yet.
-     *
-     * @deprecated Use {@link LocaleService.setLocale} instead.
+     * @deprecated Use {@link LocaleService.changeLocale} instead.
      */
     setLocale(locale: string | undefined): void;
 
@@ -118,71 +114,54 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
 /**
  * A service to inspect and control the application's active locale.
  *
- * The properties `locale` and `messageLocale` are reactive (powered by
- * `@conterra/reactivity-core`) and can be observed with `useReactiveSnapshot`
- * inside React components.
- *
  * ### `locale` vs `messageLocale`
  *
- * - {@link locale} is the locale used for `Intl`-based formatting
- *   (numbers, dates, relative time, ...). It tracks the user's preferred locale
- *   precisely, e.g. `de-AT`.
+ * - {@link locale} is the locale used for `Intl`-based formatting (numbers, dates, ...).
+ *   It may upgrade {@link messageLocale} with the user's script/region when compatible.
  * - {@link messageLocale} is the locale of the currently loaded message bundle.
- *   It is always one of {@link supportedMessageLocales}, e.g. `de`. A language
- *   toggler should use this value to highlight the active button.
+ *   Always one of {@link supportedMessageLocales}.
  *
  * ### Reactive switching
  *
- * By default, {@link setLocale} triggers a full application restart. When the
- * application opts in by setting `enableLocaleReactiveSwitching` in the
- * {@link AdvancedCustomElementOptions}, the locale is updated in place: the new
- * message bundle is loaded first, then `locale`, `messageLocale` and all
- * `PackageIntl` instances are updated atomically.
- *
- * Watching `messageLocale` is therefore the canonical way to detect that a
- * locale switch has fully completed (the value updates only after the new
- * messages have loaded).
+ * If isReactiveSwitching is false {@link changeLocale} triggers a full application restart.
+ * Otherwise the locale is updated in place.
  */
 export interface LocaleService extends DeclaredService<"runtime.LocaleService"> {
     /**
-     * Reactive: the active locale used for Intl-based formatting.
-     * This locale may not match any of the supported message locales,
-     * but it always tracks the user's preferred locale as closely as possible (e.g. `de-AT` instead of `de` if `de-AT` is supported).
+     * Reactive: locale used for Intl formatting.
+     * Shares language with {@link messageLocale}; may add script/region when compatible.
      */
-    readonly locale: Locale;
+    readonly locale: Readonly<Intl.Locale>;
 
     /**
      * Reactive: the active message bundle locale.
      * If supportedMessageLocales is empty, this falls back to `en`.
      */
-    readonly messageLocale: Locale;
+    readonly messageLocale: Readonly<Intl.Locale>;
 
     /**
      * Locales for which the application has translated messages.
      * This list may be empty, if the application has no message bundles.
      */
-    readonly supportedMessageLocales: readonly Locale[];
+    readonly supportedMessageLocales: readonly Readonly<Intl.Locale>[];
 
     /**
-     * Read-only mirror of the resolved reactive-switching setting,
-     * see {@link AdvancedCustomElementOptions.enableLocaleReactiveSwitching}.
+     * Flag indicating whether the application is in reactive-switching mode.
+     * If `true`, {@link changeLocale} applies the new locale in place.
+     * If `false`, {@link changeLocale} triggers a full application restart.
      */
     readonly isReactiveSwitching: boolean;
 
     /**
-     * Switches to the given locale.
-     *
-     * - Pass a {@link Locale} or `undefined` to re-pick from the user's browser
-     *   preference.
-     * - In reactive-switching mode the change applies in place. Otherwise the
-     *   application restarts.
+     * Switches to `locale`. Best-fit match against {@link supportedMessageLocales};
+     * throws `UNSUPPORTED_LOCALE` on no match. `undefined` enables automatic picking.
      */
-    setLocale(locale: Locale | undefined): Promise<void>;
+    changeLocale(locale: Readonly<Intl.Locale> | undefined): Promise<void>;
 
     /**
-     * Returns `true` if it is supported by the application and useable in setLocale.
+     * True iff `locale` best-fits a supported bundle (regional variants accepted).
      */
-    supportsLocale(locale: Locale): boolean;
+    supportsLocale(locale: Readonly<Intl.Locale>): boolean;
 }
 
 /**

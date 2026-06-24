@@ -3,7 +3,7 @@
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { ReactNode } from "react";
-import { Locale, LocaleService } from "@open-pioneer/runtime";
+import { LocaleService } from "@open-pioneer/runtime";
 import {
     Center,
     Container,
@@ -20,9 +20,13 @@ import { SamplePackageComponent } from "i18n-sample-package/SamplePackageCompone
 export function I18nUI() {
     const intl = useIntl();
     const localeService = useService<LocaleService>("runtime.LocaleService");
-    const locale = useReactiveSnapshot(() => localeService.locale.tag, [localeService]);
+    const locale = useReactiveSnapshot(() => localeService.locale.baseName, [localeService]);
+    const messageLocale = useReactiveSnapshot(
+        () => localeService.messageLocale.baseName,
+        [localeService]
+    );
     const supportedLocales = useReactiveSnapshot(
-        () => localeService.supportedMessageLocales.map((l) => l.tag),
+        () => localeService.supportedMessageLocales.map((l) => l.baseName),
         [localeService]
     );
     const name = "Müller";
@@ -37,7 +41,8 @@ export function I18nUI() {
             <Text mb={4}>{intl.formatMessage({ id: "content.description" })}</Text>
 
             <List.Root mb={4}>
-                <List.Item>Current locale: {locale}</List.Item>
+                <List.Item>Formatting locale: {locale}</List.Item>
+                <List.Item>Message locale: {messageLocale}</List.Item>
                 <List.Item>Supported locales: {supportedLocales.join(", ")}</List.Item>
                 <List.Item>
                     Current date and time:{" "}
@@ -121,13 +126,14 @@ function LocalePicker() {
 
     // One entry for every supported locale (to force it) and one empty
     // to pick the default behavior.
-    const makeButton = (locale: Locale | undefined) => (
-        <Button key={locale?.tag ?? ""} onClick={() => localeService.setLocale(locale)}>
-            {locale?.tag ?? intl.formatMessage({ id: "picker.default" })}
+    const makeButton = (locale: Readonly<Intl.Locale> | undefined) => (
+        <Button key={locale?.baseName ?? ""} onClick={() => localeService.changeLocale(locale)}>
+            {locale?.baseName ?? intl.formatMessage({ id: "picker.default" })}
         </Button>
     );
     const buttons: ReactNode[] = locales.map((locale) => makeButton(locale));
     buttons.unshift(makeButton(undefined));
+    buttons.push(makeButton(new Intl.Locale("en-US")));
 
     return (
         <VStack>

@@ -30,6 +30,9 @@ catalogs:
     '@formatjs/intl':
       specifier: ^4.1.11
       version: 4.1.11
+    '@formatjs/intl-localematcher':
+      specifier: ^0.8.10
+      version: 0.8.10
     '@open-pioneer/build-package-cli':
       specifier: ^3.1.0-
       version: 3.1.0-dev-vite8.20260518112306
@@ -182,6 +185,7 @@ overrides:
   '@emotion/styled>@emotion/babel-plugin': '-'
   source-map@<0.6.1: '>=0.6.1'
   stylis@<4.3.5: '>= 4.3.5'
+  '@formatjs/fast-memoize@<=3.1.5': 3.1.6
   '@chakra-ui/react': 3.35.0
   '@ark-ui/react': 5.36.2
   '@zag-js/dialog': 1.40.0
@@ -617,6 +621,9 @@ importers:
       '@formatjs/intl':
         specifier: 'catalog:'
         version: 4.1.11
+      '@formatjs/intl-localematcher':
+        specifier: 'catalog:'
+        version: 0.8.10
       '@open-pioneer/base-theme':
         specifier: workspace:*
         version: link:../base-theme
@@ -1517,14 +1524,17 @@ packages:
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
-  '@formatjs/fast-memoize@3.1.5':
-    resolution: {integrity: sha512-KLi3fan6WnCHmigd9pmEEN8Hid0v4wiFBW576M/d07KMWYecf1CvyMI3n34vCmHT4AoVqG2n702kiHbXjzZX2A==}
+  '@formatjs/fast-memoize@3.1.6':
+    resolution: {integrity: sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==}
 
   '@formatjs/icu-messageformat-parser@3.5.9':
     resolution: {integrity: sha512-PZm6O9JI/gUPtQV9r2eaMuLb4yWqV2vz+ot03ORHWTKO343LSpZi0TqeXLB2ZZGDXLCw2SbfgsQ0GxoxXMl79g==}
 
   '@formatjs/icu-skeleton-parser@2.1.9':
     resolution: {integrity: sha512-rsxswgHMfU1zUgB2byc08fesf83wLGjFnzLCEtuf00mx2doiqc6pYrf67raI37XqdRcGUviQepk2UKGqpng74Q==}
+
+  '@formatjs/intl-localematcher@0.8.10':
+    resolution: {integrity: sha512-P/IC3qws3jH+1fEs+o0RIFgXKRaQlFehjS5W0FPAqdo6hgzawLl+eD0q0JjheQ3XtoOe5n8WSYfX06KQZI/QJA==}
 
   '@formatjs/intl@4.1.11':
     resolution: {integrity: sha512-CB0mZTbnVCgnZDpOwDUGp6tC6cRl8C8gbpqvP0aatwkcRdazgXctCppljnVU3nzG0yuOABO1+DDRekESiitNmA==}
@@ -4887,6 +4897,7 @@ packages:
   tsconfck@3.1.6:
     resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
     engines: {node: ^18 || >=20}
+    deprecated: unmaintained
     hasBin: true
     peerDependencies:
       typescript: ^5.0.0
@@ -5976,7 +5987,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
-  '@formatjs/fast-memoize@3.1.5': {}
+  '@formatjs/fast-memoize@3.1.6': {}
 
   '@formatjs/icu-messageformat-parser@3.5.9':
     dependencies:
@@ -5984,9 +5995,13 @@ snapshots:
 
   '@formatjs/icu-skeleton-parser@2.1.9': {}
 
+  '@formatjs/intl-localematcher@0.8.10':
+    dependencies:
+      '@formatjs/fast-memoize': 3.1.6
+
   '@formatjs/intl@4.1.11':
     dependencies:
-      '@formatjs/fast-memoize': 3.1.5
+      '@formatjs/fast-memoize': 3.1.6
       '@formatjs/icu-messageformat-parser': 3.5.9
       intl-messageformat: 11.2.6
 
@@ -8624,7 +8639,7 @@ snapshots:
 
   intl-messageformat@11.2.6:
     dependencies:
-      '@formatjs/fast-memoize': 3.1.5
+      '@formatjs/fast-memoize': 3.1.6
       '@formatjs/icu-messageformat-parser': 3.5.9
 
   is-array-buffer@3.0.5:

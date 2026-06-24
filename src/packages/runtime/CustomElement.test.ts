@@ -668,7 +668,8 @@ describe("i18n support", function () {
         await api.setLocale("en");
         await waitFor(async () => {
             const { locale: newLocale } = await api.getLocaleInfo();
-            if (newLocale !== "en") {
+            // is en-US (formatting locale)
+            if (!newLocale.startsWith("en")) {
                 throw new Error("locale not changed yet");
             }
         });

@@ -201,18 +201,13 @@ export interface AdvancedCustomElementOptions {
     enableShadowRoot?: boolean;
 
     /**
-     * If `true`, calls to `runtime.LocaleService.setLocale` apply the new locale
+     * If `true`, calls to `runtime.LocaleService.changeLocale` apply the new locale
      * in place: the new message bundle is loaded first, then `locale`,
      * `messageLocale` and all `PackageIntl` instances are updated atomically
      * — without restarting the application.
      *
-     * If `false` (default), `setLocale` triggers a full application restart
+     * If `false` (default), `changeLocale` triggers a full application restart
      * with the new locale (legacy behavior).
-     *
-     * Reactive switching avoids the cost of a restart but requires that all
-     * UI code reads i18n through reactive APIs (e.g. `useIntl`,
-     * `useReactiveSnapshot`). Components that capture `intl` or `locale` once
-     * at construction time will not pick up the change.
      */
     enableLocaleReactiveSwitching?: boolean;
 }

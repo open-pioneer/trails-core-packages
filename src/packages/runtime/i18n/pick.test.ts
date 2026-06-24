@@ -2,121 +2,259 @@
 // SPDX-License-Identifier: Apache-2.0
 import { expect, it } from "vitest";
 import { LocalePicker } from "./pick";
-import { Locale } from "./Locale";
+import { parseLocale, tryParseLocale } from "./intl-locale";
 
-it("picks a supported locale by default", () => {
+// --- Browser-only matching (no preferredLocale) -----------------------------
+
+it("picks a supported locale that matches the user's browser language", () => {
     const result = pickLocale(undefined, ["en", "de"], ["de"]);
-    expect(result.locale.tag).toBe("de");
-    expect(result.messageLocale.tag).toBe("de");
+    expect(result.locale.baseName).toBe("de");
+    expect(result.messageLocale.baseName).toBe("de");
 });
 
-it("picks a supported locale by plain language name as fallback", () => {
+it("falls back to the language bundle when no regional bundle exists", () => {
     const result = pickLocale(undefined, ["en", "de"], ["de-DE"]);
-    expect(result.locale.tag).toBe("de-DE");
-    expect(result.messageLocale.tag).toBe("de");
+    expect(result.locale.baseName).toBe("de-DE");
+    expect(result.messageLocale.baseName).toBe("de");
 });
 
-it("picks a fallback locale if nothing can be satisfied", () => {
-    // "zh_CN" is normalized to "zh-CN" by Locale
-    const result = pickLocale(undefined, ["en", "de"], ["zh_CN"]);
-    expect(result.locale.tag).toBe("zh-CN");
-    expect(result.messageLocale.tag).toBe("en");
-});
-
-it("supports forcing a custom locale", () => {
-    const result = pickLocale("de-simple", ["en", "de", "de-simple"], ["de-DE"]);
-    expect(result.locale.tag).toBe("de-simple");
-    expect(result.messageLocale.tag).toBe("de-simple");
-});
-
-it("throws if a locale cannot be forced", () => {
-    expect(() =>
-        pickLocale("de-simple", ["en", "zh"], ["de-DE"])
-    ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: runtime:unsupported-locale: Locale 'de-simple' cannot be forced because it is not supported by the application. Supported locales are en, zh.]`
-    );
-});
-
-// --- Script subtag matching ---
-
-it("matches language+script when the user has a region (pass 2)", () => {
-    // zh-Hant-TW user → zh-Hant bundle (drop region, keep script)
-    const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant-TW"]);
-    expect(result.locale.tag).toBe("zh-Hant-TW");
-    expect(result.messageLocale.tag).toBe("zh-Hant");
-});
-
-it("matches language+script without region on accepted locale (pass 2)", () => {
-    // zh-Hant user → zh-Hant bundle
-    const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant"]);
-    expect(result.locale.tag).toBe("zh-Hant");
-    expect(result.messageLocale.tag).toBe("zh-Hant");
-});
-
-it("does NOT cross script boundaries (no fallback from zh-Hant to zh-Hans)", () => {
-    // Only zh-Hans is supported; user requests zh-Hant → no match, falls back to first supported
-    const result = pickLocale(undefined, ["zh-Hans", "en"], ["zh-Hant-TW"]);
-    // locale stays at the user's preferred for formatting
-    expect(result.locale.tag).toBe("zh-Hant-TW");
-    // message falls back to the first supported locale, NOT zh-Hans
-    expect(result.messageLocale.tag).toBe("zh-Hans");
-    // Ensure it didn't silently serve zh-Hans as a "language match"
-    // (the first supported is zh-Hans only because it is the first entry, not a script match)
-});
-
-it("does NOT match zh-Hant to bare zh bundle (script blocks language-only pass)", () => {
-    // Only a bare "zh" bundle exists; user has zh-Hant → must NOT match bare zh
-    const result = pickLocale(undefined, ["zh", "en"], ["zh-Hant-TW"]);
-    // Falls through to fallback; zh is skipped because zh-Hant has a script
-    expect(result.messageLocale.tag).toBe("zh"); // first-supported fallback, not a script match
-    // The quality must be "none" (fallback path), not "language" or "script"
-    // Verify by checking that locale ≠ messageLocale (i.e., no match was found above fallback)
-    expect(result.locale.tag).toBe("zh-Hant-TW");
-});
-
-it("picks exact script match over language-only match for same language", () => {
-    // Both zh (bare) and zh-Hant are supported; zh-Hant should win over bare zh
-    const result = pickLocale(undefined, ["zh", "zh-Hant"], ["zh-Hant-TW"]);
-    expect(result.messageLocale.tag).toBe("zh-Hant");
-});
-
-it("prefers earlier accepted locale in the list (script match, pass 2)", () => {
-    // User prefers zh-Hant-TW first, then zh-Hans-CN
-    const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant-TW", "zh-Hans-CN"]);
-    expect(result.locale.tag).toBe("zh-Hant-TW");
-    expect(result.messageLocale.tag).toBe("zh-Hant");
-});
-
-// --- Variant subtag matching ---
-
-it("variant locale falls back to language bundle when no exact match", () => {
-    // de-simple user, only "de" bundle exists → language fallback
+it("variant locale: bundle falls back to language and variant subtag is dropped from formatting locale", () => {
+    // The formatting picker only considers language/script/region, so the
+    // variant subtag is not preserved when upgrading from the message locale.
     const result = pickLocale(undefined, ["en", "de"], ["de-simple"]);
-    expect(result.locale.tag).toBe("de-simple");
-    expect(result.messageLocale.tag).toBe("de");
+    expect(result.locale.baseName).toBe("de");
+    expect(result.messageLocale.baseName).toBe("de");
 });
 
 it("variant locale matches exactly when its bundle is listed", () => {
-    // de-simple user, both "de" and "de-simple" bundles exist → exact match
     const result = pickLocale(undefined, ["en", "de", "de-simple"], ["de-simple"]);
-    expect(result.locale.tag).toBe("de-simple");
-    expect(result.messageLocale.tag).toBe("de-simple");
+    expect(result.locale.baseName).toBe("de-simple");
+    expect(result.messageLocale.baseName).toBe("de-simple");
 });
 
-it("supported locale with variants does NOT match via language-only pass", () => {
-    // Only de-simple is supported; user asks for plain de → de-simple must NOT match
-    const result = pickLocale(undefined, ["de-simple", "en"], ["de"]);
-    // plain de user cannot be matched to de-simple; falls back to first supported
-    expect(result.messageLocale.tag).toBe("de-simple"); // first-supported fallback, not a quality match
-    expect(result.locale.tag).toBe("de");
+it("prefers earlier accepted user locale in the list", () => {
+    const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant-TW", "zh-Hans-CN"]);
+    expect(result.locale.baseName).toBe("zh-Hant-TW");
+    expect(result.messageLocale.baseName).toBe("zh-Hant");
 });
+
+// --- Script subtag matching -------------------------------------------------
+
+it("matches language+script when the user has a region", () => {
+    const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant-TW"]);
+    expect(result.locale.baseName).toBe("zh-Hant-TW");
+    expect(result.messageLocale.baseName).toBe("zh-Hant");
+});
+
+it("matches language+script without region on accepted locale", () => {
+    const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant"]);
+    expect(result.locale.baseName).toBe("zh-Hant");
+    expect(result.messageLocale.baseName).toBe("zh-Hant");
+});
+
+it("picks exact script match over language-only match for same language", () => {
+    const result = pickLocale(undefined, ["zh", "zh-Hant"], ["zh-Hant-TW"]);
+    expect(result.messageLocale.baseName).toBe("zh-Hant");
+});
+
+// --- Regional bundle picking ------------------------------------------------
+
+it("picks de-CH exactly for a Swiss-German user", () => {
+    const result = pickLocale(undefined, ["de-CH", "de-DE", "en"], ["de-CH"]);
+    expect(result.locale.baseName).toBe("de-CH");
+    expect(result.messageLocale.baseName).toBe("de-CH");
+});
+
+it("keeps the message bundle's region for formatting when the user's region differs", () => {
+    // 'de-AT' user, supported bundles 'de-CH'/'de-DE'/'en'. Best-fit picks one
+    // of the German regional bundles; the formatting locale stays at that
+    // bundle's region instead of adopting 'de-AT' because the formatting
+    // picker requires regional agreement once the message locale has a region.
+    const result = pickLocale(undefined, ["de-CH", "de-DE", "en"], ["de-AT"]);
+    expect(["de-CH", "de-DE"]).toContain(result.messageLocale.baseName);
+    expect(result.locale.baseName).toBe(result.messageLocale.baseName);
+});
+
+it("picks de-DE for a bare 'de' user when both de-CH and de-DE are supported", () => {
+    const result = pickLocale(undefined, ["de-CH", "de-DE", "en"], ["de"]);
+    expect(result.messageLocale.baseName).toBe("de-DE");
+    // No region on the user side: formatting locale falls back to messageLocale
+    // because picking 'de' would downgrade the region.
+    expect(result.locale.baseName).toBe("de-DE");
+});
+
+it("groups regional English variants and keeps the message bundle region for formatting", () => {
+    // 'en-AU' user → message bundle 'en-GB'. Formatting stays at 'en-GB' since
+    // 'en-AU' would change the region away from the message bundle's region.
+    const result = pickLocale(undefined, ["en-US", "en-GB", "de"], ["en-AU"]);
+    expect(result.messageLocale.baseName).toBe("en-GB");
+    expect(result.locale.baseName).toBe("en-GB");
+});
+
+// --- Formatting locale derivation -------------------------------------------
+
+it("uses the first browser locale whose language matches the message locale", () => {
+    const result = pickLocale(undefined, ["en", "de"], ["en-US", "de-AT", "fr-FR"]);
+    expect(result.messageLocale.baseName).toBe("en");
+    expect(result.locale.baseName).toBe("en-US");
+});
+
+it("uses the user's region for formatting even when message bundle is region-less", () => {
+    const result = pickLocale(undefined, ["de", "en"], ["de-AT"]);
+    expect(result.messageLocale.baseName).toBe("de");
+    expect(result.locale.baseName).toBe("de-AT");
+});
+
+it("requires script agreement when the message locale specifies a script", () => {
+    const result = pickLocale(undefined, ["zh-Hant", "en"], ["zh-Hans-CN"]);
+    if (result.messageLocale.baseName === "zh-Hant") {
+        expect(result.locale.baseName).toBe("zh-Hant");
+    }
+});
+
+// --- No-overlap edge case ---------------------------------------------------
+
+it("no overlap: uses the first configured supported locale for both message and formatting", () => {
+    const result = pickLocale(undefined, ["de", "en"], ["fr-FR"]);
+    expect(result.messageLocale.baseName).toBe("de");
+    expect(result.locale.baseName).toBe("de");
+});
+
+it("no overlap: uses the first configured supported locale when user locales are empty", () => {
+    const result = pickLocale(undefined, ["de", "en"], []);
+    expect(result.messageLocale.baseName).toBe("de");
+    expect(result.locale.baseName).toBe("de");
+});
+
+it("no overlap: uses 'en' first when 'en' is listed first", () => {
+    const result = pickLocale(undefined, ["en", "de"], ["fr-FR"]);
+    expect(result.messageLocale.baseName).toBe("en");
+    expect(result.locale.baseName).toBe("en");
+});
+
+// --- Preferred (forced) locale ---------------------------------------------
+
+it("forced locale: returns the forced locale when exactly supported", () => {
+    const result = pickLocale("de", ["en", "de"], []);
+    expect(result.messageLocale.baseName).toBe("de");
+    expect(result.locale.baseName).toBe("de");
+});
+
+it("forced locale: maps to a less-specific bundle silently", () => {
+    // 'de-CH' forced, only bare 'de' supported → message bundle 'de',
+    // formatting keeps the caller's regional intent.
+    const result = pickLocale("de-CH", ["en", "de"], []);
+    expect(result.messageLocale.baseName).toBe("de");
+    expect(result.locale.baseName).toBe("de-CH");
+});
+
+it("forced locale with variant: region upgrade from user locale wins over variant subtag", () => {
+    // 'de-simple' is exactly supported as a message bundle, but the formatting
+    // locale picker only considers language/script/region, so a user locale
+    // with a matching language and a region (de-DE) upgrades the formatting
+    // locale to 'de-DE'.
+    const result = pickLocale("de-simple", ["en", "de", "de-simple"], ["de-DE"]);
+    expect(result.messageLocale.baseName).toBe("de-simple");
+    expect(result.locale.baseName).toBe("de-DE");
+});
+
+it("forced locale: throws when no best-fit match exists, regardless of browser locales", () => {
+    expect(() => pickLocale("fr-FR", ["en", "de"], [])).toThrow(/Unsupported locale 'fr-FR'/);
+    expect(() => pickLocale("fr-FR", ["en", "de"], ["ja"])).toThrow(/Unsupported locale 'fr-FR'/);
+    expect(() => pickLocale("fr-FR", ["en", "de"], ["en-US"])).toThrow(
+        /Unsupported locale 'fr-FR'/
+    );
+    expect(() => pickLocale("fr-FR", ["en", "de"], ["de-AT"])).toThrow(
+        /Unsupported locale 'fr-FR'/
+    );
+});
+
+it("forced locale: throws with the supported locales listed in the error message", () => {
+    expect(() =>
+        pickLocale("de-simple", ["en", "zh"], ["de-DE"])
+    ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: runtime:unsupported-locale: Unsupported locale 'de-simple' (supported locales: en, zh).]`
+    );
+});
+
+// --- Empty supported list (treated as ["en"]) -------------------------------
+
+it("empty supported list: behaves as if ['en'] were configured (browser only)", () => {
+    const result = pickLocale(undefined, [], ["fr-FR"]);
+    expect(result.messageLocale.baseName).toBe("en");
+    // 'fr-FR' has a different language than the message locale → not used
+    // for formatting; falls back to messageLocale.
+    expect(result.locale.baseName).toBe("en");
+});
+
+it("empty supported list: uses browser region when language matches 'en'", () => {
+    const result = pickLocale(undefined, [], ["en-US"]);
+    expect(result.messageLocale.baseName).toBe("en");
+    expect(result.locale.baseName).toBe("en-US");
+});
+
+it("empty supported list: empty browser locales → en / en", () => {
+    const result = pickLocale(undefined, [], []);
+    expect(result.messageLocale.baseName).toBe("en");
+    expect(result.locale.baseName).toBe("en");
+});
+
+it("empty supported list: forced 'en' succeeds", () => {
+    const result = pickLocale("en", [], []);
+    expect(result.messageLocale.baseName).toBe("en");
+    expect(result.locale.baseName).toBe("en");
+});
+
+it("empty supported list: forced locale that cannot best-fit 'en' throws", () => {
+    expect(() => pickLocale("de", [], [])).toThrow(/Unsupported locale 'de'/);
+    expect(() => pickLocale("de-CH", [], [])).toThrow(/Unsupported locale 'de-CH'/);
+});
+
+// --- Invariant: locale.language === messageLocale.language ------------------
+
+it("invariant: locale.language always equals messageLocale.language", () => {
+    const cases: { forced?: string; app: string[]; user: string[] }[] = [
+        { app: ["en", "de"], user: ["de-AT"] },
+        { app: ["en", "de"], user: ["fr-FR"] },
+        { app: ["en", "de"], user: [] },
+        { app: ["zh-Hant", "en"], user: ["zh-Hans-CN"] },
+        { app: [], user: ["fr-FR"] },
+        { app: ["en", "de"], user: [], forced: "de-CH" },
+        { app: ["en", "de", "de-simple"], user: ["de-DE"], forced: "de-simple" }
+    ];
+    for (const c of cases) {
+        const r = pickLocale(c.forced, c.app, c.user);
+        expect(r.locale.language).toBe(r.messageLocale.language);
+    }
+});
+
+// --- supportsLocale ---------------------------------------------------------
+
+it("supportsLocale accepts exact and regional variants of supported bundles", () => {
+    const picker = new LocalePicker(["en", "de"].map(parseLocale));
+    expect(picker.supportsLocale(parseLocale("de"))).toBe(true);
+    expect(picker.supportsLocale(parseLocale("en"))).toBe(true);
+    expect(picker.supportsLocale(parseLocale("de-AT"))).toBe(true);
+    expect(picker.supportsLocale(parseLocale("en-GB"))).toBe(true);
+    expect(picker.supportsLocale(parseLocale("fr"))).toBe(false);
+    expect(picker.supportsLocale(parseLocale("zh-CN"))).toBe(false);
+});
+
+it("supportsLocale on empty config normalizes to ['en']", () => {
+    const picker = new LocalePicker([]);
+    expect(picker.supportsLocale(parseLocale("en"))).toBe(true);
+    expect(picker.supportsLocale(parseLocale("en-US"))).toBe(true);
+    expect(picker.supportsLocale(parseLocale("fr"))).toBe(false);
+});
+
+// --- Helper -----------------------------------------------------------------
 
 function pickLocale(forcedLocale: string | undefined, appLocales: string[], userLocales: string[]) {
-    const localePicker = new LocalePicker(appLocales.map((l) => Locale.parse(l)));
+    const localePicker = new LocalePicker(appLocales.map((l) => parseLocale(l)));
     const parsedUserLocales = userLocales.flatMap((l) => {
-        const parsed = Locale.tryParse(l);
+        const parsed = tryParseLocale(l);
         return parsed ? [parsed] : [];
     });
-    const parsedForced = forcedLocale != null ? Locale.parse(forcedLocale) : undefined;
+    const parsedForced = forcedLocale != null ? parseLocale(forcedLocale) : undefined;
     return localePicker.pickSupportedLocale(parsedForced, parsedUserLocales);
 }

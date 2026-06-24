@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createLogger, Error } from "@open-pioneer/core";
+import { createLogger, Error, deprecated } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ApplicationContext, LocaleService } from "../api";
 import { isShadowRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
-import { Locale } from "../i18n";
+import { tryParseLocale } from "../i18n";
 import { ServiceOptions } from "../Service";
 
 const LOG = createLogger(sourceId);
@@ -21,6 +21,25 @@ interface ServiceReferences {
 }
 
 export type ApplicationContextServiceOptions = ServiceOptions<ServiceReferences>;
+
+const setLocaleDeprecationMessage = deprecated({
+    name: "ApplicationContext.setLocale",
+    packageName: "@open-pioneer/runtime",
+    since: "v4.6.0",
+    alternative: "Use `runtime.LocaleService.changeLocale` instead."
+});
+const getLocaleDeprecationMessage = deprecated({
+    name: "ApplicationContext.getLocale",
+    packageName: "@open-pioneer/runtime",
+    since: "v4.6.0",
+    alternative: "Use `runtime.LocaleService.locale` instead."
+});
+const getSupportedLocalesDeprecationMessage = deprecated({
+    name: "ApplicationContext.getSupportedLocales",
+    packageName: "@open-pioneer/runtime",
+    since: "v4.6.0",
+    alternative: "Use `runtime.LocaleService.supportedMessageLocales` instead."
+});
 
 export class ApplicationContextImpl implements ApplicationContext {
     #host: HTMLElement;
@@ -56,27 +75,30 @@ export class ApplicationContextImpl implements ApplicationContext {
 
     /** @deprecated Use `runtime.LocaleService` instead. */
     getLocale(): string {
-        return this.#localeService.locale.tag;
+        getLocaleDeprecationMessage();
+        return this.#localeService.locale.baseName;
     }
 
     /** @deprecated Use `runtime.LocaleService` instead. */
     setLocale(locale: string | undefined): void {
-        const targetLocale = Locale.tryParse(locale);
+        setLocaleDeprecationMessage();
+        const targetLocale = tryParseLocale(locale);
         // to be backwards compatible, we check here synchronously
-        // same check is done in AppIntl.setLocale
+        // same check is done in AppIntl.changeLocale
         if (targetLocale && !this.#localeService.supportsLocale(targetLocale)) {
             throw new Error(
                 ErrorId.UNSUPPORTED_LOCALE,
-                `Unsupported locale '${targetLocale.tag}' (supported locales: ${this.#localeService.supportedMessageLocales.map((l) => l.tag).join(", ")}).`
+                `Unsupported locale '${targetLocale.baseName}' (supported locales: ${this.#localeService.supportedMessageLocales.map((l) => l.baseName).join(", ")}).`
             );
         }
-        this.#localeService.setLocale(targetLocale).catch((e) => {
-            LOG.error(`Failed to switch locale to '${targetLocale?.tag}'.`, e);
+        this.#localeService.changeLocale(targetLocale).catch((e) => {
+            LOG.error(`Failed to switch locale to '${targetLocale?.baseName}'.`, e);
         });
     }
 
     /** @deprecated Use `runtime.LocaleService` instead. */
     getSupportedLocales(): readonly string[] {
-        return this.#localeService.supportedMessageLocales.map((l) => l.tag);
+        getSupportedLocalesDeprecationMessage();
+        return this.#localeService.supportedMessageLocales.map((l) => l.baseName);
     }
 }

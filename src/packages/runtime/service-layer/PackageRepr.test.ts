@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { constant } from "@conterra/reactivity-core";
 import { expect, it } from "vitest";
-import { AppIntl, createEmptyPackageIntl, Locale, PackageIntl } from "../i18n";
+import { AppIntl, createEmptyPackageIntl, parseLocale, PackageIntl } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { expectError } from "../test-utils/expectError";
 import { createPackages, PackageRepr } from "./PackageRepr";
@@ -54,7 +54,7 @@ it("parses package metadata into internal package representations", function () 
         }
     };
 
-    const testLocale = Locale.parse("en");
+    const testLocale = parseLocale("en");
     const testi18n: AppIntl = {
         locale: testLocale,
         messageLocale: testLocale,
@@ -67,7 +67,7 @@ it("parses package metadata into internal package representations", function () 
         supportsLocale() {
             return true;
         },
-        setLocale() {
+        changeLocale() {
             return Promise.resolve();
         }
     };

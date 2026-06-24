@@ -38,7 +38,7 @@ import {
     getBrowserLocales,
     LocalePicker,
     initI18n,
-    Locale
+    parseLocale
 } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "../react-integration/ErrorScreen";
@@ -166,13 +166,13 @@ export class AppInstance {
 
         const reactiveSwitching = elementOptions.advanced?.enableLocaleReactiveSwitching ?? true;
 
-        const restartWithLocale = (locale: Locale | undefined) => {
-            // this code is triggered, when the app calls setLocale while reactive switching is disabled.
+        const restartWithLocale = (locale: Readonly<Intl.Locale> | undefined) => {
+            // this code is triggered, when the app calls changeLocale while reactive switching is disabled.
             const restart = this.options.restart;
             const themeService = this.themeService;
             const colorMode = themeService?.colorMode;
             const chakraSystemConfig = themeService?.systemConfig;
-            restart({ locale: locale?.tag, colorMode, chakraSystemConfig });
+            restart({ locale: locale?.baseName, colorMode, chakraSystemConfig });
         };
 
         // Decide on locale and load i18n messages (if any).
@@ -186,7 +186,7 @@ export class AppInstance {
         this.checkAbort();
 
         // Setup application root node in the shadow dom
-        const appRoot = (this.appRoot = createAppRoot(i18n.locale.tag));
+        const appRoot = (this.appRoot = createAppRoot(i18n.locale.baseName));
         this.container.appendChild(appRoot);
         const styles = this.initStylesSignal();
 
@@ -218,7 +218,7 @@ export class AppInstance {
             appRoot: appRoot,
             serviceLayer,
             packages,
-            locale: computed(() => i18n.locale.tag),
+            locale: computed(() => i18n.locale.baseName),
             config: computed(() => themeService.systemConfig),
             styles,
             colorMode: computed(() => themeService.colorMode)
@@ -336,15 +336,15 @@ export class AppInstance {
     private showErrorScreen(error: globalThis.Error) {
         const userLocales = getBrowserLocales();
         const localePicker = new LocalePicker(
-            Object.keys(MESSAGES_BY_LOCALE).map((tag) => Locale.parse(tag))
+            Object.keys(MESSAGES_BY_LOCALE).map((tag) => parseLocale(tag))
         );
         const { locale, messageLocale } = localePicker.pickSupportedLocale(undefined, userLocales);
         const messages =
-            MESSAGES_BY_LOCALE[messageLocale.tag as keyof typeof MESSAGES_BY_LOCALE] ??
+            MESSAGES_BY_LOCALE[messageLocale.baseName as keyof typeof MESSAGES_BY_LOCALE] ??
             MESSAGES_BY_LOCALE["en"];
-        const intl = createPackageIntl(locale.tag, messages);
+        const intl = createPackageIntl(locale.baseName, messages);
 
-        const appRoot = (this.appRoot = createAppRoot(locale.tag));
+        const appRoot = (this.appRoot = createAppRoot(locale.baseName));
         appRoot.classList.add("pioneer-root-error-screen");
         this.container.appendChild(appRoot);
 
@@ -354,7 +354,7 @@ export class AppInstance {
             rootNode: this.rootNode,
             hostNode: this.options.hostElement,
             appRoot: appRoot,
-            locale: constant(locale.tag),
+            locale: constant(locale.baseName),
             config: constant(this.options.elementOptions.chakraSystemConfig),
             styles,
             colorMode: constant(DEFAULT_INITIAL_COLOR_MODE)

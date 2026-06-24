@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { type LocaleService } from "../api";
-import { AppIntl, Locale } from "../i18n";
+import { AppIntl } from "../i18n";
 
 export interface LocaleServiceProperties {
     appIntl: AppIntl;
@@ -19,15 +19,15 @@ export class LocaleServiceImpl implements LocaleService {
         this.#appIntl = properties.appIntl;
     }
 
-    get locale(): Locale {
+    get locale(): Readonly<Intl.Locale> {
         return this.#appIntl.locale;
     }
 
-    get messageLocale(): Locale {
+    get messageLocale(): Readonly<Intl.Locale> {
         return this.#appIntl.messageLocale;
     }
 
-    get supportedMessageLocales(): readonly Locale[] {
+    get supportedMessageLocales(): readonly Readonly<Intl.Locale>[] {
         return this.#appIntl.supportedMessageLocales;
     }
 
@@ -35,11 +35,11 @@ export class LocaleServiceImpl implements LocaleService {
         return this.#appIntl.reactiveSwitching;
     }
 
-    setLocale(targetLocale: Locale | undefined): Promise<void> {
-        return this.#appIntl.setLocale(targetLocale);
+    changeLocale(targetLocale: Readonly<Intl.Locale> | undefined): Promise<void> {
+        return this.#appIntl.changeLocale(targetLocale);
     }
 
-    supportsLocale(locale: Locale): boolean {
+    supportsLocale(locale: Readonly<Intl.Locale>): boolean {
         return this.#appIntl.supportsLocale(locale);
     }
 }

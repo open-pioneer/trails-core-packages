@@ -21,7 +21,7 @@ export class NumberParserServiceImpl implements NumberParserService {
         const localeService = _serviceOptions.references.localeService;
         this.#numberParser = computed(() => {
             // reactive
-            const tag = localeService.locale.tag;
+            const tag = localeService.locale.baseName;
             try {
                 return new NumberParser(tag);
             } catch (e) {

@@ -1,37 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createLogger, Error } from "@open-pioneer/core";
-import { sourceId } from "open-pioneer:source-info";
+import { Error } from "@open-pioneer/core";
+import { match as bestFitMatch } from "@formatjs/intl-localematcher";
 import { ErrorId } from "../errors";
-import { Locale } from "./Locale";
+import { parseLocale, tryParseLocale } from "./intl-locale";
 
-const LOG = createLogger(sourceId);
+const NO_MATCH_SENTINEL = "qaa-x-no-match";
 
-interface LocaleMatchSuccess {
-    /** The accepted locale. */
-    readonly acceptedLocale: Locale;
-
-    /** The picked supported locale */
-    readonly supportedLocale: Locale;
-
-    /** Quality of the match. */
-    readonly quality: "exact" | "script" | "language";
-}
-interface LocaleMatchFailure {
-    /** The accepted locale or undefined if no match was possible. */
-    readonly acceptedLocale: undefined;
-
-    /** The picked supported locale, or `undefined` if no match was possible. */
-    readonly supportedLocale: undefined;
-
-    /** Quality of the match. */
-    readonly quality: "none";
-}
-
-/**
- * Result of {@link LocalePicker.pickBestMatch}.
- */
-type LocaleMatch = LocaleMatchSuccess | LocaleMatchFailure;
+const LOCALE_FIELDS = ["language", "script", "region"] as const;
 
 /**
  * Result of {@link LocalePicker.pickSupportedLocale}.
@@ -40,12 +16,12 @@ export interface LocalePickResult {
     /**
      * The actual locale (e.g. `de-DE`) used for number/date formatting.
      */
-    locale: Locale;
+    locale: Readonly<Intl.Locale>;
 
     /**
      * The locale of the matched message bundle (e.g. `de`).
      */
-    messageLocale: Locale;
+    messageLocale: Readonly<Intl.Locale>;
 }
 
 /**
@@ -53,133 +29,110 @@ export interface LocalePickResult {
  * and the locales requested by a user.
  */
 export class LocalePicker {
-    #supportedLocales: readonly Locale[];
+    #supportedLocales: readonly Readonly<Intl.Locale>[];
+    #supportedTags: readonly string[];
 
     /**
-     * @param supportedLocales Locales the app has i18n messages for (e.g. `"en"`, `"de"`).
+     * @param supportedLocales Locales the app has i18n messages for (e.g. `"en"`, `"de"`, `"de-CH"`).
+     *   May be empty; in that case the picker behaves as if a single `"en"`
+     *   supported locale were configured.
      */
-    constructor(supportedLocales: ReadonlyArray<Locale>) {
-        this.#supportedLocales = supportedLocales;
+    constructor(supportedLocales: ReadonlyArray<Readonly<Intl.Locale>>) {
+        this.#supportedLocales =
+            supportedLocales.length > 0 ? supportedLocales : [parseLocale("en")];
+        this.#supportedTags = this.#supportedLocales.map((l) => l.baseName);
     }
 
     /**
-     * Picks the locale to use during application startup.
+     * Picks the locale to use during application startup or for a runtime locale switch.
      *
-     * @param preferredLocale Optional preferred locale.
-     * @param userLocales Locales requested by the user's browser.
+     * @param preferredLocale Optional preferred (forced) locale.
+     * @param userLocales Locales requested by the user's browser, in priority order.
      */
     pickSupportedLocale(
-        preferredLocale: Locale | undefined,
-        userLocales: ReadonlyArray<Locale>
+        preferredLocale: Readonly<Intl.Locale> | undefined,
+        userLocales: ReadonlyArray<Readonly<Intl.Locale>>
     ): LocalePickResult {
-        if (preferredLocale != null) {
-            const match = this.#pickBestMatch([preferredLocale]);
-            if (!match.supportedLocale) {
-                const list = this.#supportedLocales.map((l) => l.tag).join(", ");
-                throw new Error(
-                    ErrorId.UNSUPPORTED_LOCALE,
-                    `Locale '${preferredLocale.tag}' cannot be forced because it is not supported by the application.` +
-                        ` Supported locales are ${list}.`
-                );
-            }
-            if (match.quality === "language" || match.quality === "script") {
-                LOG.warn(
-                    `Non-exact match for forced locale '${preferredLocale.tag}': using messages from '${match.supportedLocale.tag}'.`
-                );
-            }
-            return { locale: match.acceptedLocale, messageLocale: match.supportedLocale };
-        }
-
-        const match = this.#pickBestMatch(userLocales);
-        if (match.quality !== "none") {
-            return { locale: match.acceptedLocale, messageLocale: match.supportedLocale };
-        }
-
-        // Fallback: keep the most preferred user locale for formatting,
-        // but pick the first app locale for messages.
-        //TODO: is this really a good idea? Better simply pick "en", also for formatting?
-        const fallbackUser = userLocales[0] ?? Locale.parse("en");
-        const fallbackMessage = this.#supportedLocales[0] ?? Locale.parse("en");
-        return { locale: fallbackUser, messageLocale: fallbackMessage };
-    }
-
-    supportsLocale(locale: Locale): boolean {
-        return this.#pickBestMatch([locale]).quality !== "none";
+        const messageLocale = this.#pickMessageLocale(preferredLocale, userLocales);
+        const base = preferredLocale ?? messageLocale;
+        const locale = this.#pickFormattingLocale(base, userLocales);
+        return { locale, messageLocale };
     }
 
     /**
-     * Picks the best supported locale for a list of accepted locales.
-     *
-     * Matching is performed in up to four passes per accepted locale (in order of
-     * preference). The first hit wins:
-     *
-     * 1. **Exact tag match** – the supported locale's canonical tag equals the
-     *    accepted locale's canonical tag (e.g. `zh-Hant-TW` → `zh-Hant-TW`).
-     *    A de-simple variant, will only match with exact tag.
-     *
-     * 2. **Language + script match** – only considered when the accepted locale
-     *    carries a script subtag. The supported locale must match on both
-     *    `language` and `script` and must have no region (e.g. `zh-Hant-TW` →
-     *    `zh-Hant`). Supported locales that carry variant subtags are excluded
-     *    from this pass.
-     *
-     * 3. **Language match** – only considered when the accepted locale has
-     *    **no** script subtag. The supported locale must be language-only (no
-     *    script, region, or variants) and share the same language subtag
-     *    (e.g. `de-DE` → `de`).
-     *
-     * 4. **None** – no match found.
-     *
-     * @param accepted Locales requested by the caller, in order of preference.
-     * @param supported Locales to choose from. Defaults to the app's supported message locales.
+     * Returns `true` if the given locale is accepted by
+     * {@link pickSupportedLocale}.
      */
-    #pickBestMatch(
-        accepted: ReadonlyArray<Locale>,
-        supported: ReadonlyArray<Locale> = this.#supportedLocales
-    ): LocaleMatch {
-        for (const acceptedLoc of accepted) {
-            // Pass 1: exact tag match.
-            const exact = supported.find((s) => s.tag === acceptedLoc.tag);
-            if (exact) {
-                return { acceptedLocale: acceptedLoc, supportedLocale: exact, quality: "exact" };
-            }
+    supportsLocale(locale: Readonly<Intl.Locale>): boolean {
+        return bestFit([locale.baseName], this.#supportedTags) !== NO_MATCH_SENTINEL;
+    }
 
-            if (acceptedLoc.script) {
-                // Pass 2: language + script match (region dropped on both sides).
-                // Supported locale must share language+script, have no region, and
-                // carry no variant subtags (variants are only matched exactly).
-                const scriptMatch = supported.find(
-                    (s) =>
-                        s.language === acceptedLoc.language &&
-                        s.script === acceptedLoc.script &&
-                        !s.region &&
-                        s.variants.length === 0
-                );
-                if (scriptMatch) {
-                    return {
-                        acceptedLocale: acceptedLoc,
-                        supportedLocale: scriptMatch,
-                        quality: "script"
-                    };
-                }
-                continue; // skip language-only pass for locales with script
-            }
+    #pickMessageLocale(
+        preferred: Readonly<Intl.Locale> | undefined,
+        browserLocales: ReadonlyArray<Readonly<Intl.Locale>>
+    ): Readonly<Intl.Locale> {
+        const candidates = preferred ? [preferred] : browserLocales;
+        // #supportedLocales is guaranteed non-empty (see constructor).
+        const firstSupported = this.#supportedLocales[0] as Readonly<Intl.Locale>;
+        if (candidates.length === 0) {
+            return firstSupported;
+        }
 
-            // Pass 3: language-only match (no script on accepted locale).
-            // The supported locale must be fully language-only (no script, region, or variants).
-            const langMatch = supported.find(
-                (s) => s.isLanguageOnly && s.language === acceptedLoc.language
+        const match = bestFit(
+            candidates.map((l) => l.baseName),
+            this.#supportedTags
+        );
+        if (match !== NO_MATCH_SENTINEL) {
+            return parseLocale(match);
+        }
+        if (preferred) {
+            throw new Error(
+                ErrorId.UNSUPPORTED_LOCALE,
+                `Unsupported locale '${preferred.baseName}' (supported locales: ${this.#supportedTags.join(", ")}).`
             );
-            if (langMatch) {
-                return {
-                    acceptedLocale: acceptedLoc,
-                    supportedLocale: langMatch,
-                    quality: "language"
-                };
+        }
+        return firstSupported;
+    }
+
+    #pickFormattingLocale(
+        base: Readonly<Intl.Locale>,
+        userLocales: ReadonlyArray<Readonly<Intl.Locale>>
+    ): Readonly<Intl.Locale> {
+        let candidate = base;
+        let bestScore = equalityScore(candidate, base);
+        // try to find a more specific locale from the user's browser locales
+        for (const userLocale of userLocales) {
+            const score = equalityScore(userLocale, base);
+            if (score > bestScore) {
+                candidate = userLocale;
+                bestScore = score;
             }
         }
-        return { acceptedLocale: undefined, supportedLocale: undefined, quality: "none" };
+        return candidate;
     }
+}
+
+// Higher score means the candidate shares more fields with the base locale
+// without contradicting any field defined on the base.
+function equalityScore(candidate: Readonly<Intl.Locale>, base: Readonly<Intl.Locale>): number {
+    let score = 0;
+    for (const field of LOCALE_FIELDS) {
+        const b = base[field];
+        const c = candidate[field];
+        if (b && c !== b) return 0;
+        if (c) score++;
+    }
+    return score;
+}
+
+/**
+ * Runs the CLDR best-fit matcher and returns either a supported tag or
+ * {@link NO_MATCH_SENTINEL} when no real match exists.
+ */
+function bestFit(tags: readonly string[], supportedTags: readonly string[]): string {
+    return bestFitMatch(tags, supportedTags, NO_MATCH_SENTINEL, {
+        algorithm: "best fit"
+    });
 }
 
 /**
@@ -189,20 +142,12 @@ export class LocalePicker {
  *
  * Invalid entries (which should not occur in practice) are silently dropped.
  */
-export function getBrowserLocales(): readonly Locale[] {
+export function getBrowserLocales(): readonly Readonly<Intl.Locale>[] {
     if (typeof window === "undefined") {
         return [];
     }
-    const tags =
-        window.navigator.languages && window.navigator.languages.length
-            ? Array.from(window.navigator.languages)
-            : [window.navigator.language];
-    const result: Locale[] = [];
-    for (const tag of tags) {
-        const locale = Locale.tryParse(tag);
-        if (locale) {
-            result.push(locale);
-        }
-    }
-    return result;
+    const tags = window.navigator.languages?.length
+        ? window.navigator.languages
+        : [window.navigator.language];
+    return tags.map(tryParseLocale).filter((l): l is Readonly<Intl.Locale> => l != null);
 }
