@@ -12,6 +12,8 @@ import { deepEqual as deepEqualImpl, shallowEqual as shallowEqualImpl } from "fa
  * Arrays and objects are compared by their own enumerable keys, but nested values are only compared
  * by reference. Circular objects are not supported.
  *
+ * > NOTE: This function is intended to be used with _plain old data_ inputs (i.e. mostly JSON).
+ *
  * Examples:
  *
  * ```ts
@@ -34,6 +36,8 @@ export function shallowEqual(a: unknown, b: unknown): boolean {
  * Primitive values are compared by value.
  * Arrays and objects are traversed recursively, so nested values must also be equal.
  * Functions are compared by reference. Circular objects are not supported.
+ *
+ * > NOTE: This function is intended to be used with _plain old data_ inputs (i.e. mostly JSON).
  *
  * Examples:
  *
