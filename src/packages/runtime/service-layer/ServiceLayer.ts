@@ -51,19 +51,19 @@ interface DependencyDeclarations {
 
 export class ServiceLayer {
     // All services in the application.
-    private allServices: ServiceRepr[];
+    #allServices: ServiceRepr[];
 
     // Set of required services. These services and their dependencies will be started.
-    private requiredServices: Set<ServiceRepr>;
+    #requiredServices: Set<ServiceRepr>;
 
-    private serviceLookup: ReadonlyServiceLookup;
+    #serviceLookup: ReadonlyServiceLookup;
 
     // Service id --> Service dependencies
-    private serviceDependencies: Map<string, ComputedServiceDependencies>;
+    #serviceDependencies: Map<string, ComputedServiceDependencies>;
 
     // Package name --> Interface name --> Declarations
-    private declaredDependencies;
-    private state: "not-started" | "started" | "destroyed" = "not-started";
+    #declaredDependencies;
+    #state: "not-started" | "started" | "destroyed" = "not-started";
 
     /**
      * Constructs a new service layer instance.
@@ -97,33 +97,33 @@ export class ServiceLayer {
             requiredReferences: requiredReferences
         });
 
-        this.allServices = allServices;
-        this.requiredServices = getRequiredServices(requiredReferences, serviceLookup);
-        this.serviceLookup = serviceLookup;
-        this.serviceDependencies = serviceDependencies;
-        this.declaredDependencies = buildDependencyIndex(packages);
+        this.#allServices = allServices;
+        this.#requiredServices = getRequiredServices(requiredReferences, serviceLookup);
+        this.#serviceLookup = serviceLookup;
+        this.#serviceDependencies = serviceDependencies;
+        this.#declaredDependencies = buildDependencyIndex(packages);
     }
 
     destroy() {
-        for (const service of this.requiredServices) {
-            this.destroyService(service);
+        for (const service of this.#requiredServices) {
+            this.#destroyService(service);
         }
-        this.state = "destroyed";
+        this.#state = "destroyed";
     }
 
     start() {
-        if (this.state !== "not-started") {
+        if (this.#state !== "not-started") {
             throw new Error(ErrorId.INTERNAL, "Service layer was already started.");
         }
 
-        for (const service of this.requiredServices) {
-            this.createService(service);
+        for (const service of this.#requiredServices) {
+            this.#createService(service);
         }
-        this.state = "started";
+        this.#state = "started";
 
         // Give warnings for unneeded services during development.
         if (import.meta.env.DEV) {
-            const unneededServices = this.allServices
+            const unneededServices = this.#allServices
                 .filter(
                     (service) =>
                         service.packageName !== RUNTIME_PACKAGE_NAME &&
@@ -154,18 +154,18 @@ export class ServiceLayer {
         spec: InterfaceSpec,
         options?: { ignoreDeclarationCheck?: boolean }
     ): ServiceLookupResult | UndeclaredDependency | UnknownPackage {
-        if (this.state !== "started") {
+        if (this.#state !== "started") {
             throw new Error(ErrorId.INTERNAL, "Service layer is not started.");
         }
 
         if (!options?.ignoreDeclarationCheck) {
-            const checkError = this.checkDependency(packageName, spec);
+            const checkError = this.#checkDependency(packageName, spec);
             if (checkError) {
                 return checkError;
             }
         }
 
-        return this.serviceLookup.lookupOne(spec);
+        return this.#serviceLookup.lookupOne(spec);
     }
 
     /**
@@ -181,22 +181,22 @@ export class ServiceLayer {
         packageName: string,
         interfaceName: string
     ): ServicesLookupResult | UndeclaredDependency | UnknownPackage {
-        if (this.state !== "started") {
+        if (this.#state !== "started") {
             throw new Error(ErrorId.INTERNAL, "Service layer is not started.");
         }
 
-        const checkError = this.checkDependency(packageName, { interfaceName, all: true });
+        const checkError = this.#checkDependency(packageName, { interfaceName, all: true });
         if (checkError) {
             return checkError;
         }
-        return this.serviceLookup.lookupAll(interfaceName);
+        return this.#serviceLookup.lookupAll(interfaceName);
     }
 
     /**
      * Initializes the given service and its dependencies.
      * Dependencies are initialized before the service that requires them.
      */
-    private createService(service: ServiceRepr) {
+    #createService(service: ServiceRepr) {
         if (service.state === "constructed") {
             const instance = service.getInstanceOrThrow();
             service.addRef();
@@ -217,8 +217,8 @@ export class ServiceLayer {
         service.beforeCreate();
 
         // Initialize dependencies recursively before creating the current service.
-        for (const [referenceName, serviceDeps] of Object.entries(this.getServiceDeps(service))) {
-            const [referenceValue, referenceMeta] = this.getReference(serviceDeps);
+        for (const [referenceName, serviceDeps] of Object.entries(this.#getServiceDeps(service))) {
+            const [referenceValue, referenceMeta] = this.#getReference(serviceDeps);
             references[referenceName] = referenceValue;
             referencesMeta[referenceName] = referenceMeta;
         }
@@ -232,7 +232,7 @@ export class ServiceLayer {
      * Destroys the given service and its dependencies.
      * The dependencies are destroyed after the service.
      */
-    private destroyService(service: ServiceRepr) {
+    #destroyService(service: ServiceRepr) {
         if (service.state === "destroyed") {
             return;
         }
@@ -243,24 +243,24 @@ export class ServiceLayer {
             LOG.debug(`Destroying service '${service.id}'`);
             service.destroy();
 
-            for (const serviceDeps of Object.values(this.getServiceDeps(service))) {
+            for (const serviceDeps of Object.values(this.#getServiceDeps(service))) {
                 if (Array.isArray(serviceDeps)) {
                     for (const dep of serviceDeps) {
-                        this.destroyService(dep);
+                        this.#destroyService(dep);
                     }
                 } else {
-                    this.destroyService(serviceDeps);
+                    this.#destroyService(serviceDeps);
                 }
             }
         }
     }
 
     /** Undefined -> everything is okay */
-    private checkDependency(
+    #checkDependency(
         packageName: string,
         spec: ReferenceSpec
     ): UnknownPackage | UndeclaredDependency | undefined {
-        const packageEntry = this.declaredDependencies.get(packageName);
+        const packageEntry = this.#declaredDependencies.get(packageName);
         if (!packageEntry) {
             return UNKNOWN_PACKAGE;
         }
@@ -282,34 +282,34 @@ export class ServiceLayer {
         }
     }
 
-    private getReference(ref: ServiceRepr): [unknown, ReferenceMeta];
-    private getReference(ref: ServiceRepr[]): [unknown[], ReferenceMeta[]];
-    private getReference(
+    #getReference(ref: ServiceRepr): [unknown, ReferenceMeta];
+    #getReference(ref: ServiceRepr[]): [unknown[], ReferenceMeta[]];
+    #getReference(
         ref: ServiceRepr | ServiceRepr[]
     ): [unknown, ReferenceMeta] | [unknown[], ReferenceMeta[]];
-    private getReference(
+    #getReference(
         ref: ServiceRepr | ServiceRepr[]
     ): [unknown, ReferenceMeta] | [unknown[], ReferenceMeta[]] {
         if (Array.isArray(ref)) {
             const referenceValues: unknown[] = [];
             const referenceMeta: ReferenceMeta[] = [];
             for (const d of ref) {
-                const [value, meta] = this.getReference(d);
+                const [value, meta] = this.#getReference(d);
                 referenceValues.push(value);
                 referenceMeta.push(meta);
             }
             return [referenceValues, referenceMeta];
         }
 
-        const referenceValue = this.createService(ref);
+        const referenceValue = this.#createService(ref);
         const referenceMeta: ReferenceMeta = {
             serviceId: ref.id
         };
         return [referenceValue, referenceMeta];
     }
 
-    private getServiceDeps(service: ServiceRepr) {
-        const dependencies = this.serviceDependencies.get(service.id);
+    #getServiceDeps(service: ServiceRepr) {
+        const dependencies = this.#serviceDependencies.get(service.id);
         if (!dependencies) {
             throw new Error(
                 ErrorId.INTERNAL,

@@ -274,12 +274,14 @@ it("supports using a service factory to create service instances", function () {
     type HelloService = { hello(): string };
 
     class HelloServiceFactory implements ServiceFactory<HelloService> {
-        constructor(private options: ServiceOptions) {
+        #options: ServiceOptions;
+        constructor(options: ServiceOptions) {
+            this.#options = options;
             called.push("factory.constructor");
         }
         createService() {
             called.push("factory.createService");
-            const opts = this.options;
+            const opts = this.#options;
             return {
                 hello() {
                     return `Hello ${opts.properties.target}!`;

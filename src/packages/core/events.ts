@@ -10,8 +10,6 @@ import {
     SubscribeOptions
 } from "@conterra/reactivity-events";
 
-const state = Symbol("EventEmitterState");
-
 export type EventNames<Events extends {}> = keyof Events & string;
 
 type ArgType<T> = [T] extends [void] ? [] : [event: T];
@@ -57,7 +55,7 @@ const ONCE_OPT = { dispatch: "sync", once: true } as const satisfies SubscribeOp
  * @deprecated Use the package [@conterra/reactivity-events](https://www.npmjs.com/package/@conterra/reactivity-events) instead.
  */
 export class EventEmitter<Events extends {}> {
-    private [state] = new EventEmitterState();
+    #state = new EventEmitterState();
 
     constructor() {
         deprecatedHelper();
@@ -73,7 +71,7 @@ export class EventEmitter<Events extends {}> {
         eventName: Name,
         listener: (...args: EventType<Events, Name>) => void
     ): Resource {
-        const e = this[state].getEmitter(eventName, true);
+        const e = this.#state.getEmitter(eventName, true);
         return on(e, listener as InternalListener, SYNC_OPT);
     }
 
@@ -87,7 +85,7 @@ export class EventEmitter<Events extends {}> {
         eventName: Name,
         listener: (...args: EventType<Events, Name>) => void
     ): Resource {
-        const e = this[state].getEmitter(eventName, true);
+        const e = this.#state.getEmitter(eventName, true);
         return on(e, listener as InternalListener, ONCE_OPT);
     }
 
@@ -98,7 +96,7 @@ export class EventEmitter<Events extends {}> {
      * After `emit()` has completed, all listeners will already have been invoked.
      */
     emit<Name extends EventNames<Events>>(eventName: Name, ...args: EventType<Events, Name>): void {
-        const e = this[state].getEmitter(eventName);
+        const e = this.#state.getEmitter(eventName);
         if (e) {
             emit(e, args[0]);
         }
@@ -115,15 +113,15 @@ export type EventSource<Events extends {}> = Pick<EventEmitter<Events>, "on" | "
 type InternalListener = (event: unknown) => void;
 
 class EventEmitterState {
-    private emitters = new Map<string, ReactivityEmitter<unknown>>();
+    #emitters = new Map<string, ReactivityEmitter<unknown>>();
 
     getEmitter(name: string): ReactivityEmitter<unknown> | undefined;
     getEmitter(name: string, init: true): ReactivityEmitter<unknown>;
     getEmitter(name: string, init = false) {
-        let e = this.emitters.get(name);
+        let e = this.#emitters.get(name);
         if (!e && init) {
             e = emitter();
-            this.emitters.set(name, e);
+            this.#emitters.set(name, e);
         }
         return e;
     }

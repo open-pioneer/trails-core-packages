@@ -29,15 +29,15 @@ export interface ReactIntegrationOptions {
 }
 
 export class ReactIntegration {
-    private rootNode: RootNode;
-    private hostNode: HTMLElement;
-    private appRoot: HTMLDivElement;
-    private reactRoot: Root;
-    private packageContext: PackageContextMethods;
-    private locale: ReadonlyReactive<string>;
-    private chakraConfig?: ReadonlyReactive<SystemConfig | undefined>;
-    private styles: ReadonlyReactive<string>;
-    private colorMode: ReadonlyReactive<ColorModeValue>;
+    #rootNode: RootNode;
+    #hostNode: HTMLElement;
+    #appRoot: HTMLDivElement;
+    #reactRoot: Root;
+    #packageContext: PackageContextMethods;
+    #locale: ReadonlyReactive<string>;
+    #chakraConfig?: ReadonlyReactive<SystemConfig | undefined>;
+    #styles: ReadonlyReactive<string>;
+    #colorMode: ReadonlyReactive<ColorModeValue>;
 
     static createForApp(options: ReactIntegrationOptions): ReactIntegration {
         const { serviceLayer, packages } = options;
@@ -65,32 +65,32 @@ export class ReactIntegration {
             packageContext: PackageContextMethods;
         }
     ) {
-        this.rootNode = options.rootNode;
-        this.hostNode = options.hostNode;
-        this.appRoot = options.appRoot;
-        this.reactRoot = createRoot(options.appRoot);
-        this.chakraConfig = options.config;
-        this.packageContext = options.packageContext;
-        this.locale = options.locale;
-        this.styles = options.styles;
-        this.colorMode = options.colorMode;
+        this.#rootNode = options.rootNode;
+        this.#hostNode = options.hostNode;
+        this.#appRoot = options.appRoot;
+        this.#reactRoot = createRoot(options.appRoot);
+        this.#chakraConfig = options.config;
+        this.#packageContext = options.packageContext;
+        this.#locale = options.locale;
+        this.#styles = options.styles;
+        this.#colorMode = options.colorMode;
     }
 
     render(contentNode: ReactNode) {
-        this.reactRoot.render(
+        this.#reactRoot.render(
             <StrictMode>
                 <CustomChakraProvider
-                    rootNode={this.rootNode}
-                    hostNode={this.hostNode}
-                    appRoot={this.appRoot}
-                    config={this.chakraConfig}
-                    locale={this.locale}
-                    styles={this.styles}
-                    colorMode={this.colorMode}
+                    rootNode={this.#rootNode}
+                    hostNode={this.#hostNode}
+                    appRoot={this.#appRoot}
+                    config={this.#chakraConfig}
+                    locale={this.#locale}
+                    styles={this.#styles}
+                    colorMode={this.#colorMode}
                 >
                     {/*TooltipPropsProvider sets shorter `openDelay` for globally all Tooltips  (500 ms instead of 1000 ms)*/}
                     <TooltipPropsProvider value={{ openDelay: 500 }}>
-                        <PackageContext.Provider value={this.packageContext}>
+                        <PackageContext.Provider value={this.#packageContext}>
                             {contentNode}
                         </PackageContext.Provider>
                     </TooltipPropsProvider>
@@ -100,7 +100,7 @@ export class ReactIntegration {
     }
 
     destroy() {
-        this.reactRoot.unmount();
+        this.#reactRoot.unmount();
     }
 }
 

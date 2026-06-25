@@ -15,10 +15,10 @@ export interface Resource {
  *
  * ```js
  * class Holder {
- *    private myResource: Resource | undefined;
+ *    #myResource: Resource | undefined;
  *
  *    destroy() {
- *        this.myResource = destroyResource(this.myResource);
+ *        this.#myResource = destroyResource(this.#myResource);
  *    }
  * }
  * ```

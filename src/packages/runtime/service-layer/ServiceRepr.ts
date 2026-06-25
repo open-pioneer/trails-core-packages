@@ -109,19 +109,19 @@ export class ServiceRepr {
     readonly interfaces: readonly Readonly<InterfaceSpec>[];
 
     /** Number of references to this service. */
-    private _useCount = 0;
+    #useCount = 0;
 
     /** Service factory to construct an instance. */
-    private factory: ServiceInstanceFactory;
+    #factory: ServiceInstanceFactory;
 
     /** Current state of this service. "constructed" -> instance is available. */
-    private _state: ServiceState = "not-constructed";
+    #state: ServiceState = "not-constructed";
 
     /** Service instance, once constructed. */
-    private _instance: Service | undefined = undefined;
+    #instance: Service | undefined = undefined;
 
     /** Used in dev mode only. */
-    private _hmrState: HmrState | undefined = undefined;
+    #hmrState: HmrState | undefined = undefined;
 
     constructor(options: ServiceReprOptions) {
         const {
@@ -140,7 +140,7 @@ export class ServiceRepr {
         this.id = `${packageName}::${name}`;
         this.name = name;
         this.packageName = packageName;
-        this.factory = factory;
+        this.#factory = factory;
         this.intl = intl;
         this.dependencies = dependencies;
         this.interfaces = interfaces;
@@ -149,24 +149,24 @@ export class ServiceRepr {
 
     /** Returns the current service instance or undefined if the service has not been constructed. */
     get instance(): Service | undefined {
-        return this._instance;
+        return this.#instance;
     }
 
     /** Returns the current state of the service. */
     get state() {
-        return this._state;
+        return this.#state;
     }
 
     /** Returns the current reference count. */
     get useCount() {
-        return this._useCount;
+        return this.#useCount;
     }
 
     /**
      * Same as `instance`, but throws when the instance has not been constructed.
      */
     getInstanceOrThrow() {
-        const instance = this._instance;
+        const instance = this.#instance;
         if (!instance) {
             throw new Error(ErrorId.INTERNAL, "Expected service instance to be present.");
         }
@@ -178,8 +178,8 @@ export class ServiceRepr {
      * which is currently used to detect cycles.
      */
     beforeCreate() {
-        if (this._state === "not-constructed") {
-            this._state = "constructing";
+        if (this.#state === "not-constructed") {
+            this.#state = "constructing";
         } else {
             throw new Error(
                 ErrorId.INTERNAL,
@@ -198,7 +198,7 @@ export class ServiceRepr {
      * `destroy()` can be invoked once the final `removeRef()` has returned zero.
      */
     create(options: Pick<ServiceOptions, "references" | "referencesMeta">) {
-        if (this._state !== "constructing" || this.instance !== undefined) {
+        if (this.#state !== "constructing" || this.instance !== undefined) {
             throw new Error(
                 ErrorId.INTERNAL,
                 "Inconsistent state: service is not being constructed."
@@ -206,9 +206,9 @@ export class ServiceRepr {
         }
 
         const intl = this.intl;
-        const hmrState = (this._hmrState = /*#__PURE__*/ createHmrState(this.id, intl));
+        const hmrState = (this.#hmrState = /*#__PURE__*/ createHmrState(this.id, intl));
         try {
-            this._instance = this.factory.create({
+            this.#instance = this.#factory.create({
                 ...options,
                 properties: this.properties,
                 get intl() {
@@ -220,9 +220,9 @@ export class ServiceRepr {
                 },
                 currentIntl: this.intl
             });
-            this._state = "constructed";
-            this._useCount = 1;
-            return this._instance;
+            this.#state = "constructed";
+            this.#useCount = 1;
+            return this.#instance;
         } catch (e) {
             throw new Error(
                 ErrorId.SERVICE_CONSTRUCTION_FAILED,
@@ -233,10 +233,10 @@ export class ServiceRepr {
     }
 
     destroy() {
-        if (this._instance) {
+        if (this.#instance) {
             try {
-                this.factory.destroy(this._instance);
-                this._hmrState = destroyResource(this._hmrState);
+                this.#factory.destroy(this.#instance);
+                this.#hmrState = destroyResource(this.#hmrState);
             } catch (e) {
                 throw new Error(
                     ErrorId.SERVICE_DESTRUCTION_FAILED,
@@ -245,8 +245,8 @@ export class ServiceRepr {
                 );
             }
         }
-        this._instance = undefined;
-        this._state = "destroyed";
+        this.#instance = undefined;
+        this.#state = "destroyed";
     }
 
     /**
@@ -254,7 +254,7 @@ export class ServiceRepr {
      * References to a service are tracked: it should only be destroyed when it is no longer being used.
      */
     addRef() {
-        return (this._useCount += 1);
+        return (this.#useCount += 1);
     }
 
     /**
@@ -262,7 +262,7 @@ export class ServiceRepr {
      * Returns the new use count.
      */
     removeRef() {
-        return (this._useCount -= 1);
+        return (this.#useCount -= 1);
     }
 }
 
@@ -291,28 +291,31 @@ export function createFactoryForServiceFactory<T extends {}>(
 }
 
 class ServiceFactoryInstanceFactory<T extends {}> implements ServiceInstanceFactory {
-    private _fac: ServiceFactory | undefined = undefined;
+    #fac: ServiceFactory | undefined = undefined;
+    #facClazz: MarkedServiceFactoryConstructor<T>;
 
-    constructor(private _facClazz: MarkedServiceFactoryConstructor<T>) {}
+    constructor(facClazz: MarkedServiceFactoryConstructor<T>) {
+        this.#facClazz = facClazz;
+    }
 
     create(options: ServiceOptions<T>) {
-        const fac = new this._facClazz(options);
+        const fac = new this.#facClazz(options);
         const instance = fac.createService();
-        this._fac = fac;
+        this.#fac = fac;
         return instance;
     }
 
     destroy(srv: Service) {
-        if (!this._fac) {
+        if (!this.#fac) {
             throw new Error(
                 ErrorId.INTERNAL,
                 "Inconsistent state: service factory instance is not present."
             );
         }
         try {
-            this._fac.destroyService?.(srv);
+            this.#fac.destroyService?.(srv);
         } finally {
-            this._fac = undefined;
+            this.#fac = undefined;
         }
     }
 }

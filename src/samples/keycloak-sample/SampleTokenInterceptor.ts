@@ -15,14 +15,14 @@ interface References {
 }
 
 export class SampleTokenInterceptor implements Interceptor {
-    private authService: AuthService;
+    #authService: AuthService;
 
     constructor(options: ServiceOptions<References>) {
-        this.authService = options.references.authService;
+        this.#authService = options.references.authService;
     }
 
     beforeRequest({ target, options }: BeforeRequestParams): void {
-        const authState = this.authService.getAuthState();
+        const authState = this.#authService.getAuthState();
         const sessionInfo = authState.kind == "authenticated" ? authState.sessionInfo : undefined;
         const keycloak = sessionInfo?.attributes?.keycloak;
         const token = (keycloak as { token: string }).token;

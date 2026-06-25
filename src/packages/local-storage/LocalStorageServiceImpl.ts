@@ -203,28 +203,28 @@ interface StorageAccess {
 }
 
 class StorageNamespaceImpl implements LocalStorageNamespace {
-    private path: string[];
-    private access: StorageAccess;
+    #path: string[];
+    #access: StorageAccess;
 
     constructor(path: string[], access: StorageAccess) {
-        this.path = path;
-        this.access = access;
+        this.#path = path;
+        this.#access = access;
     }
 
     get(key: string): unknown {
-        return this.access.getByPath([...this.path, key]);
+        return this.#access.getByPath([...this.#path, key]);
     }
 
     set(key: string, value: unknown): void {
-        this.access.setByPath([...this.path, key], value);
+        this.#access.setByPath([...this.#path, key], value);
     }
 
     remove(key: string): void {
-        this.access.setByPath([...this.path, key], undefined);
+        this.#access.setByPath([...this.#path, key], undefined);
     }
 
     removeAll(): void {
-        this.access.setByPath(this.path, {});
+        this.#access.setByPath(this.#path, {});
     }
 
     getNamespace(key: string): StorageNamespaceImpl {
@@ -238,7 +238,7 @@ class StorageNamespaceImpl implements LocalStorageNamespace {
             );
         }
 
-        return new StorageNamespaceImpl(this.path.concat([key]), this.access);
+        return new StorageNamespaceImpl(this.#path.concat([key]), this.#access);
     }
 }
 

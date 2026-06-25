@@ -103,15 +103,15 @@ export interface Logger {
  */
 export class LoggerImpl implements Logger {
     prefix: string;
-    private readonly enabledLogLevelNumber: number;
+    readonly #enabledLogLevelNumber: number;
 
     constructor(prefix: string, logLevel: LogLevel) {
         this.prefix = prefix;
-        this.enabledLogLevelNumber = logLevelToLogLevelNumber(logLevel);
+        this.#enabledLogLevelNumber = logLevelToLogLevelNumber(logLevel);
     }
 
     isDebug() {
-        return this._isLogLevelEnabled("DEBUG");
+        return this.#isLogLevelEnabled("DEBUG");
     }
 
     /**
@@ -120,7 +120,7 @@ export class LoggerImpl implements Logger {
      * @param values
      */
     debug(message: string | Error | unknown, ...values: unknown[]) {
-        this._doLog("DEBUG", message, values);
+        this.#doLog("DEBUG", message, values);
     }
 
     /**
@@ -129,7 +129,7 @@ export class LoggerImpl implements Logger {
      * @param values
      */
     info(message: string | Error | unknown, ...values: unknown[]) {
-        this._doLog("INFO", message, values);
+        this.#doLog("INFO", message, values);
     }
 
     /**
@@ -138,7 +138,7 @@ export class LoggerImpl implements Logger {
      * @param values
      */
     warn(message: string | Error | unknown, ...values: unknown[]) {
-        this._doLog("WARN", message, values);
+        this.#doLog("WARN", message, values);
     }
 
     /**
@@ -147,7 +147,7 @@ export class LoggerImpl implements Logger {
      * @param values
      */
     error(message: string | Error | unknown, ...values: unknown[]) {
-        this._doLog("ERROR", message, values);
+        this.#doLog("ERROR", message, values);
     }
 
     /**
@@ -157,8 +157,8 @@ export class LoggerImpl implements Logger {
      * @param values
      * @private
      */
-    private _doLog(level: LogLevel, messageOrError: string | Error | unknown, values: unknown[]) {
-        if (this._isLogLevelEnabled(level)) {
+    #doLog(level: LogLevel, messageOrError: string | Error | unknown, values: unknown[]) {
+        if (this.#isLogLevelEnabled(level)) {
             let message = `[${level}] ${this.prefix}:`;
             if (!isError(messageOrError)) {
                 message += " " + String(messageOrError);
@@ -170,9 +170,9 @@ export class LoggerImpl implements Logger {
         }
     }
 
-    private _isLogLevelEnabled(logLevel: LogLevel) {
+    #isLogLevelEnabled(logLevel: LogLevel) {
         const logLevelNumber = logLevelToLogLevelNumber(logLevel);
-        return logLevelNumber >= this.enabledLogLevelNumber;
+        return logLevelNumber >= this.#enabledLogLevelNumber;
     }
 }
 

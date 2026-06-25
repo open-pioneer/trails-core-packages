@@ -145,8 +145,9 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
         }
     }
 
-    // Mocked in test
-    private __refresh(interval: number, timeLeft: number) {
+    // Mocked in test (must stay on the prototype so `vi.spyOn` can replace it;
+    // a private `#` method would not be spyable).
+    __refresh(interval: number, timeLeft: number) {
         clearInterval(this.#timerId);
         this.#timerId = setInterval(() => {
             LOG.debug("Checking token validity");

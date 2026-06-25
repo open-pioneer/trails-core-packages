@@ -40,16 +40,16 @@ export type ServicesLookupResult = Found<ServiceRepr[]>;
 
 export class ServiceLookup {
     // Service implementations indexed by interface name.
-    private services = new Map<string, Services>();
+    #services = new Map<string, Services>();
 
     // Total service count
-    private _count = 0;
+    #count = 0;
 
     /**
      * Returns the total number of registered services.
      */
     get serviceCount() {
-        return this._count;
+        return this.#count;
     }
 
     /**
@@ -72,10 +72,10 @@ export class ServiceLookup {
             );
         }
 
-        const services = this.ensureInterfaceEntry(interfaceName);
+        const services = this.#ensureInterfaceEntry(interfaceName);
         if (!qualifier) {
             services.unqualified.push(service);
-            ++this._count;
+            ++this.#count;
             return;
         }
 
@@ -89,7 +89,7 @@ export class ServiceLookup {
             );
         }
         services.byQualifier.set(qualifier, service);
-        ++this._count;
+        ++this.#count;
     }
 
     /**
@@ -120,7 +120,7 @@ export class ServiceLookup {
             );
         }
 
-        const services = this.services.get(interfaceName);
+        const services = this.#services.get(interfaceName);
         if (!services) {
             return { type: "unimplemented" };
         }
@@ -170,7 +170,7 @@ export class ServiceLookup {
             );
         }
 
-        const services = this.services.get(interfaceName);
+        const services = this.#services.get(interfaceName);
         if (!services) {
             return { type: "found", value: [] };
         }
@@ -182,8 +182,8 @@ export class ServiceLookup {
         };
     }
 
-    private ensureInterfaceEntry(interfaceName: string): Services {
-        const services = this.services;
+    #ensureInterfaceEntry(interfaceName: string): Services {
+        const services = this.#services;
         let entry = services.get(interfaceName);
         if (!entry) {
             entry = {
