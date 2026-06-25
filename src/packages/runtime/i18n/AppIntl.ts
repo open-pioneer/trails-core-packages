@@ -5,6 +5,7 @@ import {
     computed,
     constant,
     reactive,
+    Reactive,
     ReadonlyReactive,
     watchValue
 } from "@conterra/reactivity-core";
@@ -127,106 +128,165 @@ export async function initI18n({
         );
     }
 
+    const initialMessages = await loadMessagesSafely(appMetadata, initialMessageLocale);
+    return new AppIntlImpl({
+        appMetadata,
+        effectiveSupportedLocales,
+        userLocales,
+        localePicker,
+        supportsLiveChanges,
+        restartWithLocale,
+        initialMessages,
+        initialLocale,
+        initialMessageLocale
+    });
+}
+
+interface AppIntlImplOptions {
+    appMetadata: ApplicationMetadata | undefined;
+    effectiveSupportedLocales: Intl.Locale[];
+    userLocales: Intl.Locale[];
+    localePicker: LocalePicker;
+    supportsLiveChanges: boolean;
+    restartWithLocale: (locale: Intl.Locale | undefined) => void;
+    initialMessages: MessagesRecord;
+    initialLocale: Intl.Locale;
+    initialMessageLocale: Intl.Locale;
+}
+
+class AppIntlImpl implements AppIntl {
+    readonly #appMetadata: ApplicationMetadata | undefined;
+    readonly #effectiveSupportedLocales: Intl.Locale[];
+    readonly #userLocales: Intl.Locale[];
+    readonly #localePicker: LocalePicker;
+    readonly #supportsLiveChanges: boolean;
+    readonly #restartWithLocale: (locale: Intl.Locale | undefined) => void;
+
     // Messages are reactive: they can change if the locale changes at runtime
     // or if the developer edits i18n files on disk during development.
-    const messages = reactive<MessagesRecord>(
-        await loadMessagesSafely(appMetadata, initialMessageLocale)
-    );
-    const locale = reactive(initialLocale);
-    const messageLocale = reactive(initialMessageLocale);
+    readonly #messages: Reactive<MessagesRecord>;
 
-    // During dev: watch for changes of the loadMessage function
-    // and fetch new I18N messages if the user edited any i18n file.
-    let hmrWatch: Resource | undefined;
-    if (import.meta.hot) {
-        async function applyHotUpdate(loader: MessageLoader): Promise<void> {
-            const newMessages = (await loader(messageLocale.value.baseName)) ?? {};
-            LOG.debug("Applying new i18n messages", newMessages);
-            messages.value = newMessages;
-        }
-        hmrWatch = watchValue(
-            () => (appMetadata?.loadMessages ? unwrapBox(appMetadata.loadMessages) : undefined),
-            (loader) => {
-                if (!loader) {
-                    return;
-                }
-                applyHotUpdate(loader).catch((e) => {
-                    LOG.error(`Failed to load messages after hot reload`, e);
-                });
-            }
-        );
-    }
+    // Locale and messageLocale support reactive changes if `supportsLiveChanges` is enabled.
+    readonly #locale: Reactive<Intl.Locale>;
+    readonly #messageLocale: Reactive<Intl.Locale>;
+
+    /** During dev: watch for changes of the loadMessage function. */
+    #hmrWatch: Resource | undefined;
 
     /** Monotonic counter to discard outdated changeLocale results. */
-    let changeLocaleSeq = 0;
-    return {
-        get locale() {
-            return locale.value;
-        },
-        get messageLocale() {
-            return messageLocale.value;
-        },
-        get supportedMessageLocales() {
-            return effectiveSupportedLocales;
-        },
-        get supportsLiveChanges() {
-            return supportsLiveChanges;
-        },
-        destroy() {
-            hmrWatch = destroyResource(hmrWatch);
-        },
-        supportsLocale(locale) {
-            return localePicker.supportsLocale(locale);
-        },
-        async changeLocale(targetLocale) {
-            const { locale: nextLocale, messageLocale: nextMessageLocale } =
-                localePicker.pickSupportedLocale(targetLocale, userLocales);
-            if (!supportsLiveChanges) {
-                //NOTE: it is important for restarts to ensure the input value (targetLocale) is passed to restartWithLocale, not the best-fit value (nextLocale).
-                restartWithLocale(targetLocale);
-                return;
-            }
-            const seq = ++changeLocaleSeq;
-            const newMessages = await loadMessagesSafely(appMetadata, nextMessageLocale);
-            if (seq !== changeLocaleSeq) {
-                // Superseded by a newer call.
-                throwAbortError();
-            }
-            batch(() => {
-                messages.value = newMessages;
-                locale.value = nextLocale;
-                messageLocale.value = nextMessageLocale;
+    #changeLocaleSeq = 0;
+
+    constructor(options: AppIntlImplOptions) {
+        this.#appMetadata = options.appMetadata;
+        this.#effectiveSupportedLocales = options.effectiveSupportedLocales;
+        this.#userLocales = options.userLocales;
+        this.#localePicker = options.localePicker;
+        this.#supportsLiveChanges = options.supportsLiveChanges;
+        this.#restartWithLocale = options.restartWithLocale;
+
+        this.#messages = reactive<MessagesRecord>(options.initialMessages);
+        this.#locale = reactive(options.initialLocale);
+        this.#messageLocale = reactive(options.initialMessageLocale);
+
+        // During dev: watch for changes of the loadMessage function
+        // and fetch new I18N messages if the user edited any i18n file.
+        if (import.meta.hot) {
+            this.#hmrWatch = watchValue(
+                () =>
+                    this.#appMetadata?.loadMessages
+                        ? unwrapBox(this.#appMetadata.loadMessages)
+                        : undefined,
+                (loader) => {
+                    if (!loader) {
+                        return;
+                    }
+                    this.#applyHotUpdate(loader).catch((e) => {
+                        LOG.error(`Failed to load messages after hot reload`, e);
+                    });
+                }
+            );
+        }
+    }
+
+    destroy(): void {
+        this.#hmrWatch = destroyResource(this.#hmrWatch);
+    }
+
+    get locale(): Intl.Locale {
+        return this.#locale.value;
+    }
+
+    get messageLocale(): Intl.Locale {
+        return this.#messageLocale.value;
+    }
+
+    get supportedMessageLocales(): Intl.Locale[] {
+        return this.#effectiveSupportedLocales;
+    }
+
+    get supportsLiveChanges(): boolean {
+        return this.#supportsLiveChanges;
+    }
+
+    supportsLocale(locale: Intl.Locale): boolean {
+        return this.#localePicker.supportsLocale(locale);
+    }
+
+    async changeLocale(targetLocale: Intl.Locale | undefined): Promise<void> {
+        const { locale: nextLocale, messageLocale: nextMessageLocale } =
+            this.#localePicker.pickSupportedLocale(targetLocale, this.#userLocales);
+        if (!this.#supportsLiveChanges) {
+            //NOTE: it is important for restarts to ensure the input value (targetLocale) is passed to restartWithLocale, not the best-fit value (nextLocale).
+            this.#restartWithLocale(targetLocale);
+            return;
+        }
+        const seq = ++this.#changeLocaleSeq;
+        const newMessages = await loadMessagesSafely(this.#appMetadata, nextMessageLocale);
+        if (seq !== this.#changeLocaleSeq) {
+            // Superseded by a newer call.
+            throwAbortError();
+        }
+
+        batch(() => {
+            this.#messages.value = newMessages;
+            this.#locale.value = nextLocale;
+            this.#messageLocale.value = nextMessageLocale;
+        });
+        if (LOG.isDebug()) {
+            LOG.debug(
+                `Locale switched: locale='${nextLocale.baseName}', messageLocale='${nextMessageLocale.baseName}'.`
+            );
+        }
+    }
+
+    createPackageI18n(packageName: string): ReadonlyReactive<PackageIntl> {
+        //NOTE: locale instead of messageLocale is intentional,
+        // to ensure that number formatting is still according to the current locale
+        const makeIntl = (packageMessages: Record<string, string>) =>
+            createPackageIntl(this.#locale.value.baseName, packageMessages);
+
+        if (import.meta.hot || this.#supportsLiveChanges) {
+            const packageMessages = computed(() => this.#messages.value[packageName] ?? {}, {
+                equal: shallowEqual
             });
 
-            if (LOG.isDebug()) {
-                LOG.debug(
-                    `Locale switched: locale='${nextLocale.baseName}', messageLocale='${nextMessageLocale.baseName}'.`
-                );
-            }
-        },
-        createPackageI18n(packageName) {
-            //NOTE: locale instead of messageLocale is intentional,
-            // to ensure that number formatting is still according to the current locale
-            const makeIntl = (packageMessages: Record<string, string>) =>
-                createPackageIntl(locale.value.baseName, packageMessages);
-
-            if (import.meta.hot || supportsLiveChanges) {
-                const packageMessages = computed(() => messages.value[packageName] ?? {}, {
-                    equal: shallowEqual
-                });
-
-                let firstCall = true;
-                return computed(() => {
-                    if (!firstCall) {
-                        LOG.info("Updating i18n messages of package", packageName);
-                    }
-                    firstCall = false;
-                    return makeIntl(packageMessages.value);
-                });
-            }
-            return constant(makeIntl(messages.value[packageName] ?? {}));
+            let firstCall = true;
+            return computed(() => {
+                if (!firstCall) {
+                    LOG.info("Updating i18n messages of package", packageName);
+                }
+                firstCall = false;
+                return makeIntl(packageMessages.value);
+            });
         }
-    };
+        return constant(makeIntl(this.#messages.value[packageName] ?? {}));
+    }
+
+    async #applyHotUpdate(loader: MessageLoader): Promise<void> {
+        const newMessages = (await loader(this.#messageLocale.value.baseName)) ?? {};
+        LOG.debug("Applying new i18n messages", newMessages);
+        this.#messages.value = newMessages;
+    }
 }
 
 function filterAvailableLocales(
