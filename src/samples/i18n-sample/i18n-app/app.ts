@@ -8,7 +8,7 @@ const Element = createCustomElement({
     component: I18nUI,
     appMetadata,
     advanced: {
-        enableLocaleReactiveSwitching: true
+        enableLiveLocaleChanges: true
     }
 });
 

@@ -36,10 +36,10 @@ export interface AppIntl {
     readonly messageLocale: Intl.Locale;
 
     /** Supported locales from app metadata. */
-    readonly supportedMessageLocales: readonly Intl.Locale[];
+    readonly supportedMessageLocales: Intl.Locale[];
 
     /** True if reactive locale switching is enabled. */
-    readonly reactiveSwitching: boolean;
+    readonly supportsLiveChanges: boolean;
 
     /** True iff `locale` best-fits a supported bundle. */
     supportsLocale(locale: Intl.Locale): boolean;
@@ -77,7 +77,7 @@ export interface I18nOptions {
      * If false (default), {@link AppIntl.changeLocale} triggers an application
      * restart via {@link restartWithLocale}.
      */
-    reactiveSwitching?: boolean;
+    supportsLiveChanges?: boolean;
 
     /** hook given by AppInstance to trigger restart of the application. Called by changeLocale when reactive switching is OFF. */
     restartWithLocale(locale: Intl.Locale | undefined): void;
@@ -90,7 +90,7 @@ export async function initI18n({
     appMetadata,
     forcedLocale,
     restrictSupportedLocales,
-    reactiveSwitching = false,
+    supportsLiveChanges = false,
     restartWithLocale
 }: I18nOptions): Promise<AppIntl> {
     const messageLocaleStrings = appMetadata?.locales ?? [];
@@ -101,12 +101,12 @@ export async function initI18n({
     const userLocales = getBrowserLocales();
     const preferredLocale = tryParseLocale(forcedLocale);
     if (LOG.isDebug()) {
+        const userLocalesList = userLocales.map((l) => l.baseName).join(", ");
+        const appLocalesList = messageLocaleStrings.join(", ");
+        const effectiveLocalesList = effectiveSupportedLocales.map((l) => l.baseName).join(", ");
         LOG.debug(
-            `Attempting to pick locale for user (locales: ${userLocales
-                .map((l) => l.baseName)
-                .join(", ")}) from app (locales: ${messageLocaleStrings.join(
-                ", "
-            )} restricted to ${effectiveSupportedLocales.map((l) => l.baseName).join(", ")})  [forcedLocale=${preferredLocale?.baseName}].`
+            `Attempting to pick locale for user (locales: ${userLocalesList}) from app (locales: ${appLocalesList}; ` +
+                `restricted to ${effectiveLocalesList})  [forcedLocale=${preferredLocale?.baseName}].`
         );
     }
 
@@ -120,9 +120,9 @@ export async function initI18n({
         );
     }
 
+    // Messages are reactive: they can change if the locale changes at runtime
+    // or if the developer edits i18n files on disk during development.
     const messages = reactive<MessagesRecord>(
-        // Initial load of i18n messages.
-        // During development, i18n messages are also loaded when they change on disk (see below).
         await loadMessagesSafely(appMetadata, initialMessageLocale)
     );
 
@@ -164,8 +164,8 @@ export async function initI18n({
         get supportedMessageLocales() {
             return effectiveSupportedLocales;
         },
-        get reactiveSwitching() {
-            return reactiveSwitching;
+        get supportsLiveChanges() {
+            return supportsLiveChanges;
         },
         destroy() {
             hmrWatch = destroyResource(hmrWatch);
@@ -176,7 +176,7 @@ export async function initI18n({
         async changeLocale(targetLocale) {
             const { locale: nextLocale, messageLocale: nextMessageLocale } =
                 localePicker.pickSupportedLocale(targetLocale, userLocales);
-            if (!reactiveSwitching) {
+            if (!supportsLiveChanges) {
                 //NOTE: it is important for restarts to ensure the input value (targetLocale) is passed to restartWithLocale, not the best-fit value (nextLocale).
                 restartWithLocale(targetLocale);
                 return Promise.resolve();
@@ -205,7 +205,7 @@ export async function initI18n({
             const makeIntl = (packageMessages: Record<string, string>) =>
                 createPackageIntl(locale.value.baseName, packageMessages);
 
-            if (import.meta.hot || reactiveSwitching) {
+            if (import.meta.hot || supportsLiveChanges) {
                 const packageMessages = computed(() => messages.value[packageName] ?? {}, {
                     equal: shallowEqual
                 });

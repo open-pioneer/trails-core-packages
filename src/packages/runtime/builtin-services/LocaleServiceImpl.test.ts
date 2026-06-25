@@ -6,46 +6,6 @@ import { parseLocale } from "../i18n/intl-locale";
 import { AppIntl, initI18n, I18nOptions } from "../i18n/AppIntl";
 import { LocaleServiceImpl } from "./LocaleServiceImpl";
 
-// ─── helpers ────────────────────────────────────────────────────────────────
-
-/**
- * Builds a real AppIntl from a small set of app locales and an optional forced locale.
- * No message loading (no appMetadata); only locale resolution is exercised.
- */
-async function makeAppIntl(
-    appLocales: string[],
-    options?: {
-        forcedLocale?: string;
-        reactiveSwitching?: boolean;
-        restartWithLocale?: (locale: Intl.Locale | undefined) => void;
-        restrictSupportedLocales?: readonly string[];
-    }
-): Promise<AppIntl> {
-    const appMetadata = {
-        locales: appLocales,
-        packages: {},
-        styles: reactive("")
-    } as I18nOptions["appMetadata"];
-    return initI18n({
-        appMetadata,
-        forcedLocale: options?.forcedLocale,
-        reactiveSwitching: options?.reactiveSwitching ?? false,
-        restartWithLocale: options?.restartWithLocale ?? (() => {}),
-        restrictSupportedLocales: options?.restrictSupportedLocales
-    });
-}
-
-function makeService(appIntl: AppIntl): {
-    service: LocaleServiceImpl;
-} {
-    const service = new LocaleServiceImpl({
-        appIntl
-    });
-    return { service };
-}
-
-// ─── tests ───────────────────────────────────────────────────────────────────
-
 it("exposes locale and messageLocale from AppIntl", async () => {
     const appIntl = await makeAppIntl(["de", "en"], { forcedLocale: "en" });
     const { service } = makeService(appIntl);
@@ -73,8 +33,8 @@ it("isReactiveSwitching reflects AppIntl.reactiveSwitching", async () => {
     const { service: nonReactive } = makeService(nonReactiveIntl);
     const { service: reactive2 } = makeService(reactiveIntl);
 
-    expect(nonReactive.isReactiveSwitching).toBe(false);
-    expect(reactive2.isReactiveSwitching).toBe(true);
+    expect(nonReactive.supportsLiveChanges).toBe(false);
+    expect(reactive2.supportsLiveChanges).toBe(true);
 });
 
 it("changeLocale in non-reactive mode calls restartWithLocale", async () => {
@@ -189,3 +149,39 @@ it("throws at startup when restrictSupportedLocales is not a subset of the app's
         /not one of the application's message locales \[de, en\]/
     );
 });
+
+/**
+ * Builds a real AppIntl from a small set of app locales and an optional forced locale.
+ * No message loading (no appMetadata); only locale resolution is exercised.
+ */
+async function makeAppIntl(
+    appLocales: string[],
+    options?: {
+        forcedLocale?: string;
+        reactiveSwitching?: boolean;
+        restartWithLocale?: (locale: Intl.Locale | undefined) => void;
+        restrictSupportedLocales?: readonly string[];
+    }
+): Promise<AppIntl> {
+    const appMetadata = {
+        locales: appLocales,
+        packages: {},
+        styles: reactive("")
+    } as I18nOptions["appMetadata"];
+    return initI18n({
+        appMetadata,
+        forcedLocale: options?.forcedLocale,
+        supportsLiveChanges: options?.reactiveSwitching ?? false,
+        restartWithLocale: options?.restartWithLocale ?? (() => {}),
+        restrictSupportedLocales: options?.restrictSupportedLocales
+    });
+}
+
+function makeService(appIntl: AppIntl): {
+    service: LocaleServiceImpl;
+} {
+    const service = new LocaleServiceImpl({
+        appIntl
+    });
+    return { service };
+}

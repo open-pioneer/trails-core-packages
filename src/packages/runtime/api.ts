@@ -119,10 +119,13 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
  * - {@link messageLocale} is the locale of the currently loaded message bundle.
  *   Always one of {@link supportedMessageLocales}.
  *
- * ### Reactive switching
+ * ### Live locale changes
  *
- * If isReactiveSwitching is false {@link changeLocale} triggers a full application restart.
+ * If {@link supportsLiveChanges} is false, {@link changeLocale} triggers a full application restart.
  * Otherwise the locale is updated in place.
+ *
+ * NOTE: live changes will be become the new default with the next major release.
+ * Full application restarts due to locale changes will no longer happen then.
  */
 export interface LocaleService extends DeclaredService<"runtime.LocaleService"> {
     /**
@@ -132,7 +135,7 @@ export interface LocaleService extends DeclaredService<"runtime.LocaleService"> 
     readonly locale: Intl.Locale;
 
     /**
-     * Reactive: the active message bundle locale.
+     * Reactive: the active locale used for i18n messages.
      * If supportedMessageLocales is empty, this falls back to `en`.
      */
     readonly messageLocale: Intl.Locale;
@@ -144,11 +147,12 @@ export interface LocaleService extends DeclaredService<"runtime.LocaleService"> 
     readonly supportedMessageLocales: readonly Intl.Locale[];
 
     /**
-     * Flag indicating whether the application is in reactive-switching mode.
+     * Flag indicating whether the application supports live changes for the current locale.
+     *
      * If `true`, {@link changeLocale} applies the new locale in place.
      * If `false`, {@link changeLocale} triggers a full application restart.
      */
-    readonly isReactiveSwitching: boolean;
+    readonly supportsLiveChanges: boolean;
 
     /**
      * Switches to `locale`. Best-fit match against {@link supportedMessageLocales};
@@ -157,7 +161,7 @@ export interface LocaleService extends DeclaredService<"runtime.LocaleService"> 
     changeLocale(locale: Intl.Locale | undefined): Promise<void>;
 
     /**
-     * True iff `locale` best-fits a supported bundle (regional variants accepted).
+     * True iff `locale` best-fits a supported message locale (regional variants accepted).
      */
     supportsLocale(locale: Intl.Locale): boolean;
 }

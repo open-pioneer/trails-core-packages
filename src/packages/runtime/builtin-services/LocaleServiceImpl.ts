@@ -31,8 +31,8 @@ export class LocaleServiceImpl implements LocaleService {
         return this.#appIntl.supportedMessageLocales;
     }
 
-    get isReactiveSwitching(): boolean {
-        return this.#appIntl.reactiveSwitching;
+    get supportsLiveChanges(): boolean {
+        return this.#appIntl.supportsLiveChanges;
     }
 
     changeLocale(targetLocale: Intl.Locale | undefined): Promise<void> {

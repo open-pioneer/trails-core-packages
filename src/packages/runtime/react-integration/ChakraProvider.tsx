@@ -47,8 +47,7 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     config?: ReadonlyReactive<SystemConfig | undefined>;
 
     /**
-     * Application locale for chakra's `LocaleProvider`. Reactive: when the
-     * application supports reactive locale switching, this updates in place.
+     * Application locale for chakra's `LocaleProvider`.
      */
     locale?: ReadonlyReactive<string>;
 

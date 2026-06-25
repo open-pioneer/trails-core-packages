@@ -164,8 +164,11 @@ export class AppInstance {
         this.checkAbort();
         LOG.debug("Application config is", config);
 
-        const reactiveSwitching = elementOptions.advanced?.enableLocaleReactiveSwitching ?? true;
+        // TODO (next major): always true (option can be removed).
+        // Currently false by default (needs to be enabled) to preserve backwards compatibility.
+        const enableLiveLocaleChanges = elementOptions.advanced?.enableLiveLocaleChanges ?? false;
 
+        // TODO (next major): Remove restarting code!
         const restartWithLocale = (locale: Intl.Locale | undefined) => {
             // this code is triggered, when the app calls changeLocale while reactive switching is disabled.
             const restart = this.options.restart;
@@ -180,7 +183,7 @@ export class AppInstance {
             appMetadata: elementOptions.appMetadata,
             forcedLocale: config.locale,
             restrictSupportedLocales: config.supportedLocales,
-            reactiveSwitching,
+            supportsLiveChanges: enableLiveLocaleChanges,
             restartWithLocale
         }));
         this.checkAbort();

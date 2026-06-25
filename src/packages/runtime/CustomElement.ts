@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
+import type { ServiceOptions } from "./Service";
 import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
 import { type ApiMethods, type ColorModeValue, type ApiExtension } from "./api";
@@ -119,8 +120,10 @@ export interface ApplicationConfig {
      *
      * This allows a further restriction of the locales supported by the application, compared to the ones defined by the application's package.
      * It is not possible to extend the supported locales defined by the package, only to restrict them.
-     * If this property is not set, then the application supports all locales defined by the build.config.mjs of the application's package.
+     *
+     * If this property is not set, then the application supports all locales defined by the application's package.
      * If the values are not a valid subset of the application package supported locales, then the application will throw an error at startup.
+     *
      * An empty array will disable loading of any message bundle.
      */
     supportedLocales?: string[] | undefined;
@@ -201,15 +204,17 @@ export interface AdvancedCustomElementOptions {
     enableShadowRoot?: boolean;
 
     /**
-     * If `true`, calls to `runtime.LocaleService.changeLocale` apply the new locale
-     * in place: the new message bundle is loaded first, then `locale`,
-     * `messageLocale` and all `PackageIntl` instances are updated atomically
-     * — without restarting the application.
+     * Opts into live locale changes within the running application, without performing a full application restart.
      *
-     * If `false` (default), `changeLocale` triggers a full application restart
-     * with the new locale (legacy behavior).
+     * Default: `false`.
+     *
+     * Live locale changes preserve the application's state when the user changes the language.
+     * It requires that react components and services in the application handle intl changes correctly (see, for example, {@link ServiceOptions.currentIntl}).
+     *
+     * Note that this option will become the new default in the next major release,
+     * at which point this option will be removed.
      */
-    enableLocaleReactiveSwitching?: boolean;
+    enableLiveLocaleChanges?: boolean;
 }
 
 /**

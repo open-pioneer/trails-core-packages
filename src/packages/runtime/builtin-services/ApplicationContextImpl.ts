@@ -86,9 +86,12 @@ export class ApplicationContextImpl implements ApplicationContext {
         // to be backwards compatible, we check here synchronously
         // same check is done in AppIntl.changeLocale
         if (targetLocale && !this.#localeService.supportsLocale(targetLocale)) {
+            const localesList = this.#localeService.supportedMessageLocales
+                .map((l) => l.baseName)
+                .join(", ");
             throw new Error(
                 ErrorId.UNSUPPORTED_LOCALE,
-                `Unsupported locale '${targetLocale.baseName}' (supported locales: ${this.#localeService.supportedMessageLocales.map((l) => l.baseName).join(", ")}).`
+                `Unsupported locale '${targetLocale.baseName}' (supported locales: ${localesList}).`
             );
         }
         this.#localeService.changeLocale(targetLocale).catch((e) => {

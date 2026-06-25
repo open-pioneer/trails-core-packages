@@ -589,9 +589,6 @@ describe("i18n support", function () {
             config: {
                 locale: "en" // overwritten by resolveConfig
             },
-            advanced: {
-                enableLocaleReactiveSwitching: false
-            },
             resolveConfig() {
                 return Promise.resolve({
                     locale: "de-simple"
@@ -611,9 +608,6 @@ describe("i18n support", function () {
         const api = await launchApp({
             config: {
                 locale: "en-US"
-            },
-            advanced: {
-                enableLocaleReactiveSwitching: false
             }
         });
         const { locale, message, supportedLocales } = await api.getLocaleInfo();
@@ -650,9 +644,6 @@ describe("i18n support", function () {
 
         const observedOverrides: (ApplicationOverrides | undefined)[] = [];
         const api = await launchApp({
-            advanced: {
-                enableLocaleReactiveSwitching: false
-            },
             resolveConfig({ overrides }) {
                 observedOverrides.push(overrides);
                 return Promise.resolve({
@@ -685,9 +676,6 @@ describe("i18n support", function () {
 
         const observedOverrides: (ApplicationOverrides | undefined)[] = [];
         const api = await launchApp({
-            advanced: {
-                enableLocaleReactiveSwitching: false
-            },
             async resolveConfig({ overrides }) {
                 observedOverrides.push(overrides);
                 return {
@@ -724,9 +712,6 @@ describe("i18n support", function () {
 
         const observedOverrides: (ApplicationOverrides | undefined)[] = [];
         const api = await launchApp({
-            advanced: {
-                enableLocaleReactiveSwitching: false
-            },
             async resolveConfig({ overrides }) {
                 observedOverrides.push(overrides);
                 return {

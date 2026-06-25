@@ -4,7 +4,7 @@
  * @vitest-environment happy-dom
  */
 import { FormatNumber, SystemConfig, mergeConfigs, useChakraContext } from "@chakra-ui/react";
-import { constant, reactive } from "@conterra/reactivity-core";
+import { constant } from "@conterra/reactivity-core";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
@@ -412,9 +412,9 @@ describe("integration for error screen ", function () {
             hostNode: document.createElement("div"),
             rootNode: document,
             config: undefined,
-            locale: reactive("en"),
-            styles: reactive(""),
-            colorMode: reactive("light")
+            locale: constant("en"),
+            styles: constant(""),
+            colorMode: constant("light")
         });
 
         expect(integration).toBeInstanceOf(ReactIntegration);
@@ -426,9 +426,9 @@ describe("integration for error screen ", function () {
             hostNode: document.createElement("div"),
             rootNode: document,
             config: undefined,
-            locale: reactive("en"),
-            styles: reactive(""),
-            colorMode: reactive("light")
+            locale: constant("en"),
+            styles: constant(""),
+            colorMode: constant("light")
         });
 
         function TestComponent() {
@@ -504,12 +504,12 @@ function createIntegration(options?: {
         rootNode: shadowRoot,
         hostNode: host,
         appRoot: wrapper,
-        config: reactive(options?.config),
+        config: constant(options?.config),
         packages,
         serviceLayer,
-        locale: reactive(options?.locale ?? "en"),
-        styles: reactive(""),
-        colorMode: reactive("light")
+        locale: constant(options?.locale ?? "en"),
+        styles: constant(""),
+        colorMode: constant("light")
     });
     return { integration, wrapper };
 }

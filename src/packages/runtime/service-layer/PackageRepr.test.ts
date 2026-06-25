@@ -59,7 +59,7 @@ it("parses package metadata into internal package representations", function () 
         locale: testLocale,
         messageLocale: testLocale,
         supportedMessageLocales: [],
-        reactiveSwitching: false,
+        supportsLiveChanges: false,
         destroy() {},
         createPackageI18n() {
             return constant(createEmptyPackageIntl("zh-CN"));
