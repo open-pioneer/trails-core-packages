@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { createLogger, Error, deprecated } from "@open-pioneer/core";
+import { createLogger, Error, deprecated, isAbortError } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ApplicationContext, LocaleService } from "../api";
 import { isShadowRoot, RootNode } from "../dom";
@@ -95,7 +95,9 @@ export class ApplicationContextImpl implements ApplicationContext {
             );
         }
         this.#localeService.changeLocale(targetLocale).catch((e) => {
-            LOG.error(`Failed to switch locale to '${targetLocale?.baseName}'.`, e);
+            if (!isAbortError(e)) {
+                LOG.error(`Failed to switch locale to '${targetLocale?.baseName}'.`, e);
+            }
         });
     }
 

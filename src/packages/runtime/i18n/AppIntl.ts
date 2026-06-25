@@ -118,7 +118,7 @@ export class AppIntl {
                 .join(", ");
             LOG.debug(
                 `Attempting to pick locale for user (locales: ${userLocalesList}) from app (locales: ${appLocalesList}; ` +
-                    `restricted to ${effectiveLocalesList})  [forcedLocale=${preferredLocale?.baseName}].`
+                    `restricted to ${effectiveLocalesList}) [forcedLocale=${preferredLocale?.baseName}].`
             );
         }
 
@@ -316,12 +316,8 @@ async function loadMessagesSafely(
 
     try {
         const loader = unwrapBox(appMetadata.loadMessages);
-        const messagesRecord = await loader(messageLocale.baseName);
-        if (messagesRecord) {
-            return messagesRecord;
-        }
-
-        throw new Error(ErrorId.INTERNAL, `Invalid result of loader function: ${messagesRecord}.`);
+        const messagesRecord = (await loader(messageLocale.baseName)) ?? {};
+        return messagesRecord;
     } catch (e) {
         throw new Error(
             ErrorId.INTERNAL,

@@ -124,7 +124,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
  * If {@link supportsLiveChanges} is false, {@link changeLocale} triggers a full application restart.
  * Otherwise the locale is updated in place.
  *
- * NOTE: live changes will be become the new default with the next major release.
+ * NOTE: live changes will become the new default with the next major release.
  * Full application restarts due to locale changes will no longer happen then.
  */
 export interface LocaleService extends DeclaredService<"runtime.LocaleService"> {

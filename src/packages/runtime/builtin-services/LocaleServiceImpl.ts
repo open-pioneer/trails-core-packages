@@ -11,7 +11,7 @@ export interface LocaleServiceProperties {
  * Implementation of the `runtime.LocaleService` builtin service.
  */
 export class LocaleServiceImpl implements LocaleService {
-    // this is the truth of source.
+    // this is the source of truth.
     // Carries the real reactive state.
     #appIntl: AppIntl;
 
