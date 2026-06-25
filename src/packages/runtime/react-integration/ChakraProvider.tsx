@@ -49,7 +49,7 @@ export type CustomChakraProviderProps = PropsWithChildren<{
     /**
      * Application locale for chakra's `LocaleProvider`.
      */
-    locale?: string;
+    locale?: ReadonlyReactive<string>;
 
     /**
      * Custom color mode value.
@@ -77,7 +77,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     hostNode,
     children,
     config,
-    locale = "en-US",
+    locale,
     colorMode,
     styles
 }) => {
@@ -91,6 +91,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
     */
 
     const systemConfig = useReactiveSnapshot(() => config?.value ?? defaultTrailsConfig, [config]);
+    const effectiveLocale = useReactiveSnapshot(() => locale?.value ?? "en-US", [locale]);
 
     const system = useMemo(() => {
         const mergedConfig = mergeConfigs(defaultConfig, systemConfig);
@@ -127,7 +128,7 @@ export const CustomChakraProvider: FC<CustomChakraProviderProps> = ({
                     // Patched property
                     portalNode={appRoot}
                 >
-                    <LocaleProvider locale={locale}>
+                    <LocaleProvider locale={effectiveLocale}>
                         <ChakraProvider value={system}>
                             <GlobalStyles rootNode={rootNode} hostNode={hostNode} styles={styles} />
                             {children}

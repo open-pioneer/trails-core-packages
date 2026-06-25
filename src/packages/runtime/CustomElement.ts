@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
+import type { ServiceOptions } from "./Service";
 import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
 import { type ApiMethods, type ColorModeValue, type ApiExtension } from "./api";
@@ -105,13 +106,27 @@ export interface ApplicationOverrides {
  */
 export interface ApplicationConfig {
     /**
-     * Set this value to a locale string (e.g. "en") to for the application's locale.
+     * Set this value to a locale (BCP-47 string, e.g. `"en"`) to set the default message locale of the application.
+     *
      * The default behavior is to choose an appropriate locale for the current user based
      * on the browser's settings.
      *
-     * The locale must be supported by the application.
+     * This locale should match one of the supported message locales defined by the application's package.
      */
     locale?: string | undefined;
+
+    /**
+     * The list of locales supported by the application.
+     *
+     * This allows a further restriction of the locales supported by the application, compared to the ones defined by the application's package.
+     * It is not possible to extend the supported locales defined by the package, only to restrict them.
+     *
+     * If this property is not set, then the application supports all locales defined by the application's package.
+     * If the values are not a valid subset of the application package supported locales, then the application will throw an error at startup.
+     *
+     * An empty array will disable loading of any message bundle.
+     */
+    supportedLocales?: string[] | undefined;
 
     /**
      * Configures the application's initial color mode.
@@ -187,6 +202,19 @@ export interface AdvancedCustomElementOptions {
      * ensure that your components work in that setting.
      */
     enableShadowRoot?: boolean;
+
+    /**
+     * Opts into live locale changes within the running application, without performing a full application restart.
+     *
+     * Default: `false`.
+     *
+     * Live locale changes preserve the application's state when the user changes the language.
+     * It requires that react components and services in the application handle intl changes correctly (see, for example, {@link ServiceOptions.currentIntl}).
+     *
+     * Note that this option will become the new default in the next major release,
+     * at which point this option will be removed.
+     */
+    enableLiveLocaleChanges?: boolean;
 }
 
 /**

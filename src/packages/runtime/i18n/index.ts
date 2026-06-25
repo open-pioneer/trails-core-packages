@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-export { type AppIntl, initI18n } from "./AppIntl";
+export { AppIntl, type I18nOptions } from "./AppIntl";
+export { parseLocale, tryParseLocale } from "./intl-locale";
 export {
     type PackageIntl,
     type PackageIntlExtensions,
@@ -8,4 +9,4 @@ export {
     createPackageIntl,
     createEmptyPackageIntl
 } from "./PackageIntl";
-export { type LocalePickResult, I18nConfig, getBrowserLocales } from "./pick";
+export { type LocalePickResult, LocalePicker, getBrowserLocales } from "./pick";

@@ -9,9 +9,14 @@ import {
     ServiceRepr
 } from "../service-layer/ServiceRepr";
 import { ApiServiceImpl } from "./ApiServiceImpl";
-import { ApplicationContextImpl, ApplicationContextProperties } from "./ApplicationContextImpl";
+import {
+    ApplicationContextImpl,
+    ApplicationContextProperties,
+    ApplicationContextServiceOptions
+} from "./ApplicationContextImpl";
 import { ApplicationLifecycleEventService } from "./ApplicationLifecycleEventService";
-import { NumberParserServiceImpl } from "./NumberParserServiceImpl";
+import { LocaleServiceImpl, LocaleServiceProperties } from "./LocaleServiceImpl";
+import { NumberParserServiceImpl, NumberParserServiceOptions } from "./NumberParserServiceImpl";
 import { ThemeServiceImpl, ThemeServiceProperties } from "./ThemeServiceImpl";
 
 export const RUNTIME_PACKAGE_NAME = "@open-pioneer/runtime";
@@ -23,8 +28,11 @@ export const RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE =
 export const RUNTIME_NUMBER_PARSER_SERVICE = "runtime.NumberParserService";
 export const RUNTIME_AUTO_START = "runtime.AutoStart";
 export const RUNTIME_THEME_SERVICE = "runtime.ThemeService";
+export const RUNTIME_LOCALE_SERVICE = "runtime.LocaleService";
 
-export type BuiltinPackageProperties = ApplicationContextProperties & ThemeServiceProperties;
+export type BuiltinPackageProperties = ApplicationContextProperties &
+    ThemeServiceProperties &
+    LocaleServiceProperties;
 
 /**
  * Creates the builtin package containing the builtin services.
@@ -38,6 +46,19 @@ export type BuiltinPackageProperties = ApplicationContextProperties & ThemeServi
  */
 export function createBuiltinPackage(properties: BuiltinPackageProperties): PackageRepr {
     const intl = createEmptyPackageIntl();
+
+    const localeService = new ServiceRepr({
+        name: "LocaleServiceImpl",
+        packageName: RUNTIME_PACKAGE_NAME,
+        factory: createFunctionFactory(() => new LocaleServiceImpl(properties)),
+        intl: constant(intl),
+        interfaces: [
+            {
+                interfaceName: RUNTIME_LOCALE_SERVICE,
+                qualifier: "builtin"
+            }
+        ]
+    });
     const apiService = new ServiceRepr({
         name: "ApiServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
@@ -61,12 +82,20 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "ApplicationContextImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createFunctionFactory(
-            (options) => new ApplicationContextImpl(options, properties)
+            (options) =>
+                new ApplicationContextImpl(options as ApplicationContextServiceOptions, properties)
         ),
         intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_APPLICATION_CONTEXT,
+                qualifier: "builtin"
+            }
+        ],
+        dependencies: [
+            {
+                referenceName: "localeService",
+                interfaceName: RUNTIME_LOCALE_SERVICE,
                 qualifier: "builtin"
             }
         ]
@@ -94,12 +123,19 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
         name: "NumberParserServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
         factory: createFunctionFactory(
-            (options) => new NumberParserServiceImpl(options, properties.locale)
+            (options) => new NumberParserServiceImpl(options as NumberParserServiceOptions)
         ),
         intl: constant(intl),
         interfaces: [
             {
                 interfaceName: RUNTIME_NUMBER_PARSER_SERVICE,
+                qualifier: "builtin"
+            }
+        ],
+        dependencies: [
+            {
+                referenceName: "localeService",
+                interfaceName: RUNTIME_LOCALE_SERVICE,
                 qualifier: "builtin"
             }
         ]
@@ -131,6 +167,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
             apiService,
             appContext,
             lifecycleEventService,
+            localeService,
             numberParserService,
             themeService
         ],

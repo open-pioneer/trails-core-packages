@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { constant } from "@conterra/reactivity-core";
 import { expect, it } from "vitest";
-import { AppIntl, createEmptyPackageIntl, PackageIntl } from "../i18n";
+import { AppIntl, createEmptyPackageIntl, parseLocale, PackageIntl } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { expectError } from "../test-utils/expectError";
 import { createPackages, PackageRepr } from "./PackageRepr";
@@ -54,17 +54,23 @@ it("parses package metadata into internal package representations", function () 
         }
     };
 
-    const testi18n: AppIntl = {
-        locale: "test-locale",
+    const testLocale = parseLocale("en");
+    const testi18n = {
+        locale: testLocale,
+        messageLocale: testLocale,
         supportedMessageLocales: [],
+        supportsLiveChanges: false,
         destroy() {},
         createPackageI18n() {
             return constant(createEmptyPackageIntl("zh-CN"));
         },
         supportsLocale() {
             return true;
+        },
+        changeLocale() {
+            return Promise.resolve();
         }
-    };
+    } satisfies Partial<AppIntl> as unknown as AppIntl;
 
     const packages = createPackages(metadata, testi18n);
     expect(packages).toHaveLength(2);

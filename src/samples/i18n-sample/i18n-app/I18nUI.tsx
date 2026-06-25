@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 import { useIntl, useService } from "open-pioneer:react-hooks";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { ReactNode } from "react";
-import { ApplicationContext } from "@open-pioneer/runtime";
+import { LocaleService } from "@open-pioneer/runtime";
 import {
     Center,
     Container,
@@ -18,9 +19,16 @@ import { SamplePackageComponent } from "i18n-sample-package/SamplePackageCompone
 
 export function I18nUI() {
     const intl = useIntl();
-    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
-    const locale = appCtx.getLocale();
-    const supportedLocales = appCtx.getSupportedLocales();
+    const localeService = useService<LocaleService>("runtime.LocaleService");
+    const locale = useReactiveSnapshot(() => localeService.locale.baseName, [localeService]);
+    const messageLocale = useReactiveSnapshot(
+        () => localeService.messageLocale.baseName,
+        [localeService]
+    );
+    const supportedLocales = useReactiveSnapshot(
+        () => localeService.supportedMessageLocales.map((l) => l.baseName),
+        [localeService]
+    );
     const name = "Müller";
     const list = ["Hans", "Peter", "Hape"];
 
@@ -33,7 +41,8 @@ export function I18nUI() {
             <Text mb={4}>{intl.formatMessage({ id: "content.description" })}</Text>
 
             <List.Root mb={4}>
-                <List.Item>Current locale: {locale}</List.Item>
+                <List.Item>Formatting locale: {locale}</List.Item>
+                <List.Item>Message locale: {messageLocale}</List.Item>
                 <List.Item>Supported locales: {supportedLocales.join(", ")}</List.Item>
                 <List.Item>
                     Current date and time:{" "}
@@ -108,19 +117,23 @@ export function I18nUI() {
 }
 
 function LocalePicker() {
-    const appCtx = useService<ApplicationContext>("runtime.ApplicationContext");
+    const localeService = useService<LocaleService>("runtime.LocaleService");
     const intl = useIntl();
-    const locales = appCtx.getSupportedLocales();
+    const locales = useReactiveSnapshot(
+        () => localeService.supportedMessageLocales,
+        [localeService]
+    );
 
     // One entry for every supported locale (to force it) and one empty
     // to pick the default behavior.
-    const makeButton = (locale: string | undefined) => (
-        <Button key={locale ?? ""} onClick={() => appCtx.setLocale(locale)}>
-            {locale ?? intl.formatMessage({ id: "picker.default" })}
+    const makeButton = (locale: Intl.Locale | undefined) => (
+        <Button key={locale?.baseName ?? ""} onClick={() => localeService.changeLocale(locale)}>
+            {locale?.baseName ?? intl.formatMessage({ id: "picker.default" })}
         </Button>
     );
     const buttons: ReactNode[] = locales.map((locale) => makeButton(locale));
     buttons.unshift(makeButton(undefined));
+    buttons.push(makeButton(new Intl.Locale("en-US")));
 
     return (
         <VStack>

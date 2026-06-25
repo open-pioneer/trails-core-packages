@@ -85,6 +85,8 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * Returns the current locale of the application.
      *
      * E.g. `"de-DE"`
+     *
+     * @deprecated Use {@link LocaleService.locale} instead.
      */
     getLocale(): string;
 
@@ -93,8 +95,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * `locale` must be one of the supported locales, see {@link getSupportedLocales()} or `undefined` (for automatic locale).
      * Note that `locale` does not need to be a precise match, e.g. `"de-DE"` is also valid if `"de"` is supported.
      *
-     * > NOTE: This method will currently trigger a full restart of the application.
-     * > Altering the locale on the fly is possible in theory but has not been implemented yet.
+     * @deprecated Use {@link LocaleService.changeLocale} instead.
      */
     setLocale(locale: string | undefined): void;
 
@@ -103,8 +104,66 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      * the locales that have associated i18n messages.
      *
      * For example: `["de", "en"]`
+     * @deprecated Use {@link LocaleService.supportedMessageLocales} instead.
      */
     getSupportedLocales(): readonly string[];
+}
+
+/**
+ * A service to inspect and control the application's active locale.
+ *
+ * ### `locale` vs `messageLocale`
+ *
+ * - {@link locale} is the locale used for `Intl`-based formatting (numbers, dates, ...).
+ *   It may upgrade {@link messageLocale} with the user's script/region when compatible.
+ * - {@link messageLocale} is the locale of the currently loaded message bundle.
+ *   Always one of {@link supportedMessageLocales}.
+ *
+ * ### Live locale changes
+ *
+ * If {@link supportsLiveChanges} is false, {@link changeLocale} triggers a full application restart.
+ * Otherwise the locale is updated in place.
+ *
+ * NOTE: live changes will become the new default with the next major release.
+ * Full application restarts due to locale changes will no longer happen then.
+ */
+export interface LocaleService extends DeclaredService<"runtime.LocaleService"> {
+    /**
+     * Reactive: locale used for Intl formatting.
+     * Shares language with {@link messageLocale}; may add script/region when compatible.
+     */
+    readonly locale: Intl.Locale;
+
+    /**
+     * Reactive: the active locale used for i18n messages.
+     * If supportedMessageLocales is empty, this falls back to `en`.
+     */
+    readonly messageLocale: Intl.Locale;
+
+    /**
+     * Locales for which the application has translated messages.
+     * This list may be empty, if the application has no message bundles.
+     */
+    readonly supportedMessageLocales: readonly Intl.Locale[];
+
+    /**
+     * Flag indicating whether the application supports live changes for the current locale.
+     *
+     * If `true`, {@link changeLocale} applies the new locale in place.
+     * If `false`, {@link changeLocale} triggers a full application restart.
+     */
+    readonly supportsLiveChanges: boolean;
+
+    /**
+     * Switches to `locale`. Best-fit match against {@link supportedMessageLocales};
+     * throws `UNSUPPORTED_LOCALE` on no match. `undefined` enables automatic picking.
+     */
+    changeLocale(locale: Intl.Locale | undefined): Promise<void>;
+
+    /**
+     * True iff `locale` best-fits a supported message locale (regional variants accepted).
+     */
+    supportsLocale(locale: Intl.Locale): boolean;
 }
 
 /**

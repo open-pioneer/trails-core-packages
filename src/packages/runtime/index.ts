@@ -19,5 +19,11 @@ export {
     type InterfaceNameForServiceType
 } from "./DeclaredService";
 export { type RootNode } from "./dom";
-export { type PackageIntl, type PackageIntlExtensions, type RichTextValue } from "./i18n";
+export {
+    type PackageIntl,
+    type PackageIntlExtensions,
+    type RichTextValue,
+    parseLocale,
+    tryParseLocale
+} from "./i18n";
 export * from "./Service";
