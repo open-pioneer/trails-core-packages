@@ -26,9 +26,9 @@ it("supportedMessageLocales contains all app locales", async () => {
     expect(tags).toContain("en");
 });
 
-it("isReactiveSwitching reflects AppIntl.reactiveSwitching", async () => {
-    const nonReactiveIntl = await makeAppIntl(["de", "en"], { reactiveSwitching: false });
-    const reactiveIntl = await makeAppIntl(["de", "en"], { reactiveSwitching: true });
+it("supportsLiveChanges reflects AppIntl.supportsLiveChanges", async () => {
+    const nonReactiveIntl = await makeAppIntl(["de", "en"], { supportsLiveChanges: false });
+    const reactiveIntl = await makeAppIntl(["de", "en"], { supportsLiveChanges: true });
 
     const { service: nonReactive } = makeService(nonReactiveIntl);
     const { service: reactive2 } = makeService(reactiveIntl);
@@ -62,7 +62,7 @@ it("changeLocale with undefined in non-reactive mode calls restartWithLocale wit
 });
 
 it("changeLocale in reactive mode delegates to AppIntl.changeLocale and updates locale", async () => {
-    const appIntl = await makeAppIntl(["de", "en"], { reactiveSwitching: true });
+    const appIntl = await makeAppIntl(["de", "en"], { supportsLiveChanges: true });
     const { service } = makeService(appIntl);
 
     const initialMessageTag = service.messageLocale.baseName;
@@ -76,7 +76,7 @@ it("changeLocale in reactive mode delegates to AppIntl.changeLocale and updates 
 });
 
 it("changeLocale accepts non-exact locales and preserves region for formatting", async () => {
-    const appIntl = await makeAppIntl(["de", "en"], { reactiveSwitching: true });
+    const appIntl = await makeAppIntl(["de", "en"], { supportsLiveChanges: true });
     const { service } = makeService(appIntl);
 
     await service.changeLocale(parseLocale("de-AT"));
@@ -85,7 +85,7 @@ it("changeLocale accepts non-exact locales and preserves region for formatting",
 });
 
 it("changeLocale throws when the forced locale has no best-fit match", async () => {
-    const appIntl = await makeAppIntl(["de", "fr"], { reactiveSwitching: true });
+    const appIntl = await makeAppIntl(["de", "fr"], { supportsLiveChanges: true });
     const { service } = makeService(appIntl);
 
     await expect(service.changeLocale(parseLocale("zh-CN"))).rejects.toThrow(
@@ -158,7 +158,7 @@ async function makeAppIntl(
     appLocales: string[],
     options?: {
         forcedLocale?: string;
-        reactiveSwitching?: boolean;
+        supportsLiveChanges?: boolean;
         restartWithLocale?: (locale: Intl.Locale | undefined) => void;
         restrictSupportedLocales?: readonly string[];
     }
@@ -171,7 +171,7 @@ async function makeAppIntl(
     return AppIntl.create({
         appMetadata,
         forcedLocale: options?.forcedLocale,
-        supportsLiveChanges: options?.reactiveSwitching ?? false,
+        supportsLiveChanges: options?.supportsLiveChanges ?? false,
         restartWithLocale: options?.restartWithLocale ?? (() => {}),
         restrictSupportedLocales: options?.restrictSupportedLocales
     });
