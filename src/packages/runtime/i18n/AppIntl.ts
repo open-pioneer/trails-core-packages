@@ -284,13 +284,8 @@ async function loadMessagesSafely(
         if (messagesRecord) {
             return messagesRecord;
         }
-        console.warn(
-            `I18n messages couldn't be loaded. Check if your runtimeMeta version is not set to 1.0.0.`
-        );
-        if (LOG.isDebug()) {
-            LOG.debug(`appMetadata.loadMessages doesn't support signal value'.`);
-        }
-        return {};
+
+        throw new Error(ErrorId.INTERNAL, `Invalid result of loader function: ${messagesRecord}.`);
     } catch (e) {
         throw new Error(
             ErrorId.INTERNAL,
