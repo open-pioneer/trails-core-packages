@@ -17,7 +17,7 @@ async function makeAppIntl(
     options?: {
         forcedLocale?: string;
         reactiveSwitching?: boolean;
-        restartWithLocale?: (locale: Readonly<Intl.Locale> | undefined) => void;
+        restartWithLocale?: (locale: Intl.Locale | undefined) => void;
         restrictSupportedLocales?: readonly string[];
     }
 ): Promise<AppIntl> {
@@ -78,8 +78,8 @@ it("isReactiveSwitching reflects AppIntl.reactiveSwitching", async () => {
 });
 
 it("changeLocale in non-reactive mode calls restartWithLocale", async () => {
-    const restarts: (Readonly<Intl.Locale> | undefined)[] = [];
-    const restartWithLocale = (locale: Readonly<Intl.Locale> | undefined) => {
+    const restarts: (Intl.Locale | undefined)[] = [];
+    const restartWithLocale = (locale: Intl.Locale | undefined) => {
         restarts.push(locale);
     };
     const appIntl = await makeAppIntl(["de", "en"], { restartWithLocale });
@@ -90,8 +90,8 @@ it("changeLocale in non-reactive mode calls restartWithLocale", async () => {
 });
 
 it("changeLocale with undefined in non-reactive mode calls restartWithLocale with undefined", async () => {
-    const restarts: (Readonly<Intl.Locale> | undefined)[] = [];
-    const restartWithLocale = (locale: Readonly<Intl.Locale> | undefined) => {
+    const restarts: (Intl.Locale | undefined)[] = [];
+    const restartWithLocale = (locale: Intl.Locale | undefined) => {
         restarts.push(locale);
     };
     const appIntl = await makeAppIntl(["de", "en"], { restartWithLocale });

@@ -126,7 +126,7 @@ function LocalePicker() {
 
     // One entry for every supported locale (to force it) and one empty
     // to pick the default behavior.
-    const makeButton = (locale: Readonly<Intl.Locale> | undefined) => (
+    const makeButton = (locale: Intl.Locale | undefined) => (
         <Button key={locale?.baseName ?? ""} onClick={() => localeService.changeLocale(locale)}>
             {locale?.baseName ?? intl.formatMessage({ id: "picker.default" })}
         </Button>

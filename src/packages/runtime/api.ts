@@ -4,8 +4,6 @@ import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import type { ApplicationConfig } from "./CustomElement";
 import { type DeclaredService } from "./DeclaredService";
 
-export { parseLocale, tryParseLocale } from "./i18n";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
 
@@ -131,19 +129,19 @@ export interface LocaleService extends DeclaredService<"runtime.LocaleService"> 
      * Reactive: locale used for Intl formatting.
      * Shares language with {@link messageLocale}; may add script/region when compatible.
      */
-    readonly locale: Readonly<Intl.Locale>;
+    readonly locale: Intl.Locale;
 
     /**
      * Reactive: the active message bundle locale.
      * If supportedMessageLocales is empty, this falls back to `en`.
      */
-    readonly messageLocale: Readonly<Intl.Locale>;
+    readonly messageLocale: Intl.Locale;
 
     /**
      * Locales for which the application has translated messages.
      * This list may be empty, if the application has no message bundles.
      */
-    readonly supportedMessageLocales: readonly Readonly<Intl.Locale>[];
+    readonly supportedMessageLocales: readonly Intl.Locale[];
 
     /**
      * Flag indicating whether the application is in reactive-switching mode.
@@ -156,12 +154,12 @@ export interface LocaleService extends DeclaredService<"runtime.LocaleService"> 
      * Switches to `locale`. Best-fit match against {@link supportedMessageLocales};
      * throws `UNSUPPORTED_LOCALE` on no match. `undefined` enables automatic picking.
      */
-    changeLocale(locale: Readonly<Intl.Locale> | undefined): Promise<void>;
+    changeLocale(locale: Intl.Locale | undefined): Promise<void>;
 
     /**
      * True iff `locale` best-fits a supported bundle (regional variants accepted).
      */
-    supportsLocale(locale: Readonly<Intl.Locale>): boolean;
+    supportsLocale(locale: Intl.Locale): boolean;
 }
 
 /**

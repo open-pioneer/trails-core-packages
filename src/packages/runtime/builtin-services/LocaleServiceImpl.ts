@@ -19,15 +19,15 @@ export class LocaleServiceImpl implements LocaleService {
         this.#appIntl = properties.appIntl;
     }
 
-    get locale(): Readonly<Intl.Locale> {
+    get locale(): Intl.Locale {
         return this.#appIntl.locale;
     }
 
-    get messageLocale(): Readonly<Intl.Locale> {
+    get messageLocale(): Intl.Locale {
         return this.#appIntl.messageLocale;
     }
 
-    get supportedMessageLocales(): readonly Readonly<Intl.Locale>[] {
+    get supportedMessageLocales(): readonly Intl.Locale[] {
         return this.#appIntl.supportedMessageLocales;
     }
 
@@ -35,11 +35,11 @@ export class LocaleServiceImpl implements LocaleService {
         return this.#appIntl.reactiveSwitching;
     }
 
-    changeLocale(targetLocale: Readonly<Intl.Locale> | undefined): Promise<void> {
+    changeLocale(targetLocale: Intl.Locale | undefined): Promise<void> {
         return this.#appIntl.changeLocale(targetLocale);
     }
 
-    supportsLocale(locale: Readonly<Intl.Locale>): boolean {
+    supportsLocale(locale: Intl.Locale): boolean {
         return this.#appIntl.supportsLocale(locale);
     }
 }

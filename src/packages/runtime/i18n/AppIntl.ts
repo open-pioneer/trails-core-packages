@@ -27,27 +27,27 @@ export interface AppIntl {
     destroy(): void;
 
     /** Locale for Intl formatting. */
-    readonly locale: Readonly<Intl.Locale>;
+    readonly locale: Intl.Locale;
 
     /**
      * The locale of the currently loaded message bundle.
      * Always one of {@link supportedMessageLocales}.
      */
-    readonly messageLocale: Readonly<Intl.Locale>;
+    readonly messageLocale: Intl.Locale;
 
     /** Supported locales from app metadata. */
-    readonly supportedMessageLocales: readonly Readonly<Intl.Locale>[];
+    readonly supportedMessageLocales: readonly Intl.Locale[];
 
     /** True if reactive locale switching is enabled. */
     readonly reactiveSwitching: boolean;
 
     /** True iff `locale` best-fits a supported bundle. */
-    supportsLocale(locale: Readonly<Intl.Locale>): boolean;
+    supportsLocale(locale: Intl.Locale): boolean;
 
     /**
      * Switches to `locale`. Best-fit match; throws `UNSUPPORTED_LOCALE` on no match.
      */
-    changeLocale(locale: Readonly<Intl.Locale> | undefined): Promise<void>;
+    changeLocale(locale: Intl.Locale | undefined): Promise<void>;
 
     /** Given the package name, constructs a package i18n instance. */
     createPackageI18n(packageName: string): ReadonlyReactive<PackageIntl>;
@@ -80,7 +80,7 @@ export interface I18nOptions {
     reactiveSwitching?: boolean;
 
     /** hook given by AppInstance to trigger restart of the application. Called by changeLocale when reactive switching is OFF. */
-    restartWithLocale(locale: Readonly<Intl.Locale> | undefined): void;
+    restartWithLocale(locale: Intl.Locale | undefined): void;
 }
 
 /**
@@ -229,11 +229,11 @@ function filterAvailableLocales(
     messageLocaleStrings: readonly string[],
     // optional restriction on supported locales, must be subset of messageLocaleStrings
     restrictSupportedLocales: readonly string[] | undefined
-): readonly Readonly<Intl.Locale>[] {
+): Intl.Locale[] {
     //NOTE: the set preserves the order of 'restrictSupportedLocales', this is relevant and intentional.
     const isRestricted = restrictSupportedLocales != null;
     const localesToSupport = new Set(restrictSupportedLocales ?? messageLocaleStrings);
-    const supportedLocales: Readonly<Intl.Locale>[] = [];
+    const supportedLocales: Intl.Locale[] = [];
     for (const l of localesToSupport) {
         if (!messageLocaleStrings.includes(l)) {
             // 'supportedLocales' may only restrict the locales defined by the application, not extend them.
@@ -266,7 +266,7 @@ function filterAvailableLocales(
 
 async function loadMessagesSafely(
     appMetadata: ApplicationMetadata | undefined,
-    messageLocale: Readonly<Intl.Locale>
+    messageLocale: Intl.Locale
 ): Promise<MessagesRecord> {
     const messageLocales = appMetadata?.locales ?? [];
     if (!appMetadata?.loadMessages || !messageLocales.includes(messageLocale.baseName)) {

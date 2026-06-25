@@ -9,7 +9,7 @@
  *
  * Throws a `RangeError` if the input is malformed.
  */
-export function parseLocale(input: string): Readonly<Intl.Locale> {
+export function parseLocale(input: string): Intl.Locale {
     const intlLocale = new Intl.Locale(input);
 
     // Reconstruct an Intl.Locale that contains only the language-identifier
@@ -25,7 +25,7 @@ export function parseLocale(input: string): Readonly<Intl.Locale> {
 /**
  * Like {@link parseLocale}, but returns `undefined` instead of throwing on malformed input.
  */
-export function tryParseLocale(input: string | undefined): Readonly<Intl.Locale> | undefined {
+export function tryParseLocale(input: string | undefined): Intl.Locale | undefined {
     if (input == null) {
         return undefined;
     }

@@ -14,7 +14,7 @@ export interface PresenterProps {
     children?: ReactNode;
 }
 
-export function Presenter({ title, link, issues, children }: Readonly<PresenterProps>) {
+export function Presenter({ title, link, issues, children }: PresenterProps) {
     return (
         <Card.Root variant="outline" size="sm" w="full">
             {title && (

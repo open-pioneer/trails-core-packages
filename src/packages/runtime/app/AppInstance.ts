@@ -166,7 +166,7 @@ export class AppInstance {
 
         const reactiveSwitching = elementOptions.advanced?.enableLocaleReactiveSwitching ?? true;
 
-        const restartWithLocale = (locale: Readonly<Intl.Locale> | undefined) => {
+        const restartWithLocale = (locale: Intl.Locale | undefined) => {
             // this code is triggered, when the app calls changeLocale while reactive switching is disabled.
             const restart = this.options.restart;
             const themeService = this.themeService;

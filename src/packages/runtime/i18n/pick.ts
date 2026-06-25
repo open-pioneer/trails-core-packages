@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { Error } from "@open-pioneer/core";
 import { match as bestFitMatch } from "@formatjs/intl-localematcher";
+import { Error } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
 import { parseLocale, tryParseLocale } from "./intl-locale";
 
@@ -16,12 +16,12 @@ export interface LocalePickResult {
     /**
      * The actual locale (e.g. `de-DE`) used for number/date formatting.
      */
-    locale: Readonly<Intl.Locale>;
+    locale: Intl.Locale;
 
     /**
      * The locale of the matched message bundle (e.g. `de`).
      */
-    messageLocale: Readonly<Intl.Locale>;
+    messageLocale: Intl.Locale;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface LocalePickResult {
  * and the locales requested by a user.
  */
 export class LocalePicker {
-    #supportedLocales: readonly Readonly<Intl.Locale>[];
+    #supportedLocales: readonly Intl.Locale[];
     #supportedTags: readonly string[];
 
     /**
@@ -37,7 +37,7 @@ export class LocalePicker {
      *   May be empty; in that case the picker behaves as if a single `"en"`
      *   supported locale were configured.
      */
-    constructor(supportedLocales: ReadonlyArray<Readonly<Intl.Locale>>) {
+    constructor(supportedLocales: ReadonlyArray<Intl.Locale>) {
         this.#supportedLocales =
             supportedLocales.length > 0 ? supportedLocales : [parseLocale("en")];
         this.#supportedTags = this.#supportedLocales.map((l) => l.baseName);
@@ -50,8 +50,8 @@ export class LocalePicker {
      * @param userLocales Locales requested by the user's browser, in priority order.
      */
     pickSupportedLocale(
-        preferredLocale: Readonly<Intl.Locale> | undefined,
-        userLocales: ReadonlyArray<Readonly<Intl.Locale>>
+        preferredLocale: Intl.Locale | undefined,
+        userLocales: Intl.Locale[]
     ): LocalePickResult {
         const messageLocale = this.#pickMessageLocale(preferredLocale, userLocales);
         const base = preferredLocale ?? messageLocale;
@@ -63,17 +63,18 @@ export class LocalePicker {
      * Returns `true` if the given locale is accepted by
      * {@link pickSupportedLocale}.
      */
-    supportsLocale(locale: Readonly<Intl.Locale>): boolean {
+    supportsLocale(locale: Intl.Locale): boolean {
         return bestFit([locale.baseName], this.#supportedTags) !== NO_MATCH_SENTINEL;
     }
 
     #pickMessageLocale(
-        preferred: Readonly<Intl.Locale> | undefined,
-        browserLocales: ReadonlyArray<Readonly<Intl.Locale>>
-    ): Readonly<Intl.Locale> {
+        preferred: Intl.Locale | undefined,
+        browserLocales: Intl.Locale[]
+    ): Intl.Locale {
         const candidates = preferred ? [preferred] : browserLocales;
         // #supportedLocales is guaranteed non-empty (see constructor).
-        const firstSupported = this.#supportedLocales[0] as Readonly<Intl.Locale>;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const firstSupported = this.#supportedLocales[0]!;
         if (candidates.length === 0) {
             return firstSupported;
         }
@@ -94,10 +95,7 @@ export class LocalePicker {
         return firstSupported;
     }
 
-    #pickFormattingLocale(
-        base: Readonly<Intl.Locale>,
-        userLocales: ReadonlyArray<Readonly<Intl.Locale>>
-    ): Readonly<Intl.Locale> {
+    #pickFormattingLocale(base: Intl.Locale, userLocales: Intl.Locale[]): Intl.Locale {
         let candidate = base;
         let bestScore = equalityScore(candidate, base);
         // try to find a more specific locale from the user's browser locales
@@ -114,7 +112,7 @@ export class LocalePicker {
 
 // Higher score means the candidate shares more fields with the base locale
 // without contradicting any field defined on the base.
-function equalityScore(candidate: Readonly<Intl.Locale>, base: Readonly<Intl.Locale>): number {
+function equalityScore(candidate: Intl.Locale, base: Intl.Locale): number {
     let score = 0;
     for (const field of LOCALE_FIELDS) {
         const b = base[field];
@@ -142,12 +140,12 @@ function bestFit(tags: readonly string[], supportedTags: readonly string[]): str
  *
  * Invalid entries (which should not occur in practice) are silently dropped.
  */
-export function getBrowserLocales(): readonly Readonly<Intl.Locale>[] {
+export function getBrowserLocales(): Intl.Locale[] {
     if (typeof window === "undefined") {
         return [];
     }
     const tags = window.navigator.languages?.length
         ? window.navigator.languages
         : [window.navigator.language];
-    return tags.map(tryParseLocale).filter((l): l is Readonly<Intl.Locale> => l != null);
+    return tags.map(tryParseLocale).filter((l) => !!l);
 }
