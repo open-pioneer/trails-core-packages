@@ -28,41 +28,7 @@ import { LocalePicker, getBrowserLocales } from "./pick";
 const LOG = createLogger(sourceId);
 
 /**
- * Represents i18n info for the entire application.
- * Currently not exposed to user code.
- */
-export interface AppIntl {
-    destroy(): void;
-
-    /** Locale for Intl formatting. */
-    readonly locale: Intl.Locale;
-
-    /**
-     * The locale of the currently loaded message bundle.
-     * Always one of {@link supportedMessageLocales}.
-     */
-    readonly messageLocale: Intl.Locale;
-
-    /** Supported locales from app metadata. */
-    readonly supportedMessageLocales: Intl.Locale[];
-
-    /** True if reactive locale switching is enabled. */
-    readonly supportsLiveChanges: boolean;
-
-    /** True iff `locale` best-fits a supported bundle. */
-    supportsLocale(locale: Intl.Locale): boolean;
-
-    /**
-     * Switches to `locale`. Best-fit match; throws `UNSUPPORTED_LOCALE` on no match.
-     */
-    changeLocale(locale: Intl.Locale | undefined): Promise<void>;
-
-    /** Given the package name, constructs a package i18n instance. */
-    createPackageI18n(packageName: string): ReadonlyReactive<PackageIntl>;
-}
-
-/**
- * Options for {@link initI18n}.
+ * Options for {@link AppIntl.create}.
  */
 export interface I18nOptions {
     // build metadata
@@ -92,69 +58,21 @@ export interface I18nOptions {
 }
 
 /**
- * Initializes the application's locale and fetches the appropriate i18n messages.
+ * Represents i18n info for the entire application.
+ * Not exposed to user code.
+ *
+ * @internal
  */
-export async function initI18n({
-    appMetadata,
-    forcedLocale,
-    restrictSupportedLocales,
-    supportsLiveChanges = false,
-    restartWithLocale
-}: I18nOptions): Promise<AppIntl> {
-    const messageLocaleStrings = appMetadata?.locales ?? [];
-    const effectiveSupportedLocales = filterAvailableLocales(
-        messageLocaleStrings,
-        restrictSupportedLocales
-    );
-    const userLocales = getBrowserLocales();
-    const preferredLocale = tryParseLocale(forcedLocale);
-    if (LOG.isDebug()) {
-        const userLocalesList = userLocales.map((l) => l.baseName).join(", ");
-        const appLocalesList = messageLocaleStrings.join(", ");
-        const effectiveLocalesList = effectiveSupportedLocales.map((l) => l.baseName).join(", ");
-        LOG.debug(
-            `Attempting to pick locale for user (locales: ${userLocalesList}) from app (locales: ${appLocalesList}; ` +
-                `restricted to ${effectiveLocalesList})  [forcedLocale=${preferredLocale?.baseName}].`
-        );
+export class AppIntl {
+    /**
+     * Initializes the application's locale and fetches the appropriate i18n messages.
+     */
+    static async create(options: I18nOptions): Promise<AppIntl> {
+        const appIntl = new AppIntl(options);
+        await appIntl.#loadInitialMessages();
+        return appIntl;
     }
 
-    const localePicker = new LocalePicker(effectiveSupportedLocales);
-    const { locale: initialLocale, messageLocale: initialMessageLocale } =
-        localePicker.pickSupportedLocale(preferredLocale, userLocales);
-
-    if (LOG.isDebug()) {
-        LOG.debug(
-            `Using locale '${initialLocale.baseName}' with messages from locale '${initialMessageLocale.baseName}'.`
-        );
-    }
-
-    const initialMessages = await loadMessagesSafely(appMetadata, initialMessageLocale);
-    return new AppIntlImpl({
-        appMetadata,
-        effectiveSupportedLocales,
-        userLocales,
-        localePicker,
-        supportsLiveChanges,
-        restartWithLocale,
-        initialMessages,
-        initialLocale,
-        initialMessageLocale
-    });
-}
-
-interface AppIntlImplOptions {
-    appMetadata: ApplicationMetadata | undefined;
-    effectiveSupportedLocales: Intl.Locale[];
-    userLocales: Intl.Locale[];
-    localePicker: LocalePicker;
-    supportsLiveChanges: boolean;
-    restartWithLocale: (locale: Intl.Locale | undefined) => void;
-    initialMessages: MessagesRecord;
-    initialLocale: Intl.Locale;
-    initialMessageLocale: Intl.Locale;
-}
-
-class AppIntlImpl implements AppIntl {
     readonly #appMetadata: ApplicationMetadata | undefined;
     readonly #effectiveSupportedLocales: Intl.Locale[];
     readonly #userLocales: Intl.Locale[];
@@ -176,17 +94,55 @@ class AppIntlImpl implements AppIntl {
     /** Monotonic counter to discard outdated changeLocale results. */
     #changeLocaleSeq = 0;
 
-    constructor(options: AppIntlImplOptions) {
-        this.#appMetadata = options.appMetadata;
-        this.#effectiveSupportedLocales = options.effectiveSupportedLocales;
-        this.#userLocales = options.userLocales;
-        this.#localePicker = options.localePicker;
-        this.#supportsLiveChanges = options.supportsLiveChanges;
-        this.#restartWithLocale = options.restartWithLocale;
+    private constructor(options: I18nOptions) {
+        const {
+            appMetadata,
+            forcedLocale,
+            restrictSupportedLocales,
+            supportsLiveChanges = false,
+            restartWithLocale
+        } = options;
 
-        this.#messages = reactive<MessagesRecord>(options.initialMessages);
-        this.#locale = reactive(options.initialLocale);
-        this.#messageLocale = reactive(options.initialMessageLocale);
+        const messageLocaleStrings = appMetadata?.locales ?? [];
+        const effectiveSupportedLocales = filterAvailableLocales(
+            messageLocaleStrings,
+            restrictSupportedLocales
+        );
+        const userLocales = getBrowserLocales();
+        const preferredLocale = tryParseLocale(forcedLocale);
+        if (LOG.isDebug()) {
+            const userLocalesList = userLocales.map((l) => l.baseName).join(", ");
+            const appLocalesList = messageLocaleStrings.join(", ");
+            const effectiveLocalesList = effectiveSupportedLocales
+                .map((l) => l.baseName)
+                .join(", ");
+            LOG.debug(
+                `Attempting to pick locale for user (locales: ${userLocalesList}) from app (locales: ${appLocalesList}; ` +
+                    `restricted to ${effectiveLocalesList})  [forcedLocale=${preferredLocale?.baseName}].`
+            );
+        }
+
+        const localePicker = new LocalePicker(effectiveSupportedLocales);
+        const { locale: initialLocale, messageLocale: initialMessageLocale } =
+            localePicker.pickSupportedLocale(preferredLocale, userLocales);
+
+        if (LOG.isDebug()) {
+            LOG.debug(
+                `Using locale '${initialLocale.baseName}' with messages from locale '${initialMessageLocale.baseName}'.`
+            );
+        }
+
+        this.#appMetadata = appMetadata;
+        this.#effectiveSupportedLocales = effectiveSupportedLocales;
+        this.#userLocales = userLocales;
+        this.#localePicker = localePicker;
+        this.#supportsLiveChanges = supportsLiveChanges;
+        this.#restartWithLocale = restartWithLocale;
+
+        // Initially empty; populated by #loadInitialMessages() before the instance is handed out.
+        this.#messages = reactive<MessagesRecord>({});
+        this.#locale = reactive(initialLocale);
+        this.#messageLocale = reactive(initialMessageLocale);
 
         // During dev: watch for changes of the loadMessage function
         // and fetch new I18N messages if the user edited any i18n file.
@@ -212,26 +168,37 @@ class AppIntlImpl implements AppIntl {
         this.#hmrWatch = destroyResource(this.#hmrWatch);
     }
 
+    /** Locale for Intl formatting. */
     get locale(): Intl.Locale {
         return this.#locale.value;
     }
 
+    /**
+     * The locale of the currently loaded message bundle.
+     * Always one of {@link supportedMessageLocales}.
+     */
     get messageLocale(): Intl.Locale {
         return this.#messageLocale.value;
     }
 
+    /** Supported locales from app metadata. */
     get supportedMessageLocales(): Intl.Locale[] {
         return this.#effectiveSupportedLocales;
     }
 
+    /** True if reactive locale switching is enabled. */
     get supportsLiveChanges(): boolean {
         return this.#supportsLiveChanges;
     }
 
+    /** True iff `locale` best-fits a supported bundle. */
     supportsLocale(locale: Intl.Locale): boolean {
         return this.#localePicker.supportsLocale(locale);
     }
 
+    /**
+     * Switches to `locale`. Best-fit match; throws `UNSUPPORTED_LOCALE` on no match.
+     */
     async changeLocale(targetLocale: Intl.Locale | undefined): Promise<void> {
         const { locale: nextLocale, messageLocale: nextMessageLocale } =
             this.#localePicker.pickSupportedLocale(targetLocale, this.#userLocales);
@@ -259,6 +226,7 @@ class AppIntlImpl implements AppIntl {
         }
     }
 
+    /** Given the package name, constructs a package i18n instance. */
     createPackageI18n(packageName: string): ReadonlyReactive<PackageIntl> {
         //NOTE: locale instead of messageLocale is intentional,
         // to ensure that number formatting is still according to the current locale
@@ -280,6 +248,14 @@ class AppIntlImpl implements AppIntl {
             });
         }
         return constant(makeIntl(this.#messages.value[packageName] ?? {}));
+    }
+
+    /** Loads the initial message bundle for the picked locale. Called once, from {@link create}. */
+    async #loadInitialMessages(): Promise<void> {
+        this.#messages.value = await loadMessagesSafely(
+            this.#appMetadata,
+            this.#messageLocale.value
+        );
     }
 
     async #applyHotUpdate(loader: MessageLoader): Promise<void> {

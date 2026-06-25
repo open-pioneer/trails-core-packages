@@ -32,14 +32,7 @@ import {
 } from "../CustomElement";
 import { createAppRoot, isShadowRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
-import {
-    AppIntl,
-    createPackageIntl,
-    getBrowserLocales,
-    LocalePicker,
-    initI18n,
-    parseLocale
-} from "../i18n";
+import { AppIntl, createPackageIntl, getBrowserLocales, LocalePicker, parseLocale } from "../i18n";
 import { PackageMetadata } from "../metadata";
 import { ErrorScreen, MESSAGES_BY_LOCALE } from "../react-integration/ErrorScreen";
 import { EmptyComponent, ReactIntegration } from "../react-integration/ReactIntegration";
@@ -179,7 +172,7 @@ export class AppInstance {
         };
 
         // Decide on locale and load i18n messages (if any).
-        const i18n = (this.i18n = await initI18n({
+        const i18n = (this.i18n = await AppIntl.create({
             appMetadata: elementOptions.appMetadata,
             forcedLocale: config.locale,
             restrictSupportedLocales: config.supportedLocales,

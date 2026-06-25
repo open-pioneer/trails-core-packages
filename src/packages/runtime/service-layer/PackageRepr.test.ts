@@ -55,7 +55,7 @@ it("parses package metadata into internal package representations", function () 
     };
 
     const testLocale = parseLocale("en");
-    const testi18n: AppIntl = {
+    const testi18n = {
         locale: testLocale,
         messageLocale: testLocale,
         supportedMessageLocales: [],
@@ -70,7 +70,7 @@ it("parses package metadata into internal package representations", function () 
         changeLocale() {
             return Promise.resolve();
         }
-    };
+    } satisfies Partial<AppIntl> as unknown as AppIntl;
 
     const packages = createPackages(metadata, testi18n);
     expect(packages).toHaveLength(2);
