@@ -29,15 +29,12 @@ export function getStylesRoot(node: RootNode): ShadowRoot | HTMLHeadElement {
 /**
  * Creates the node that contains all other application content.
  */
-export function createAppRoot(locale: string): HTMLDivElement {
+export function createAppRoot(): HTMLDivElement {
     // Setup application root node in the shadow dom
     const container = document.createElement("div");
     container.classList.add("pioneer-root");
     container.style.minHeight = "100%";
     container.style.height = "100%";
-    if (locale) {
-        container.lang = locale;
-    }
     return container;
 }
 

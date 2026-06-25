@@ -662,6 +662,7 @@ describe("i18n support", function () {
         const id = await api.getId();
         const { locale, message } = await api.getLocaleInfo();
         expect(locale).toBe("en-US");
+        expect(api.innerContainer.lang).toBe("en-US");
         expect(message).toBe("Hello world");
         expect(id).toBe(1);
 
@@ -669,7 +670,7 @@ describe("i18n support", function () {
         await api.setLocale("de-DE");
         const { newLocale, newMessage } = await waitFor(async () => {
             const { locale: newLocale, message: newMessage } = await api.getLocaleInfo();
-            if (newLocale !== "de-DE") {
+            if (newLocale === "en-US" || api.innerContainer.lang === "en-US") {
                 throw new Error("locale not changed yet");
             }
             return { newLocale, newMessage };
@@ -677,6 +678,7 @@ describe("i18n support", function () {
 
         expect(await api.getId()).toBe(1); // no restart
         expect(newLocale).toBe("de-DE");
+        expect(api.innerContainer.lang).toBe("de-DE");
         expect(newMessage).toBe("Hallo Welt");
     });
 
@@ -794,6 +796,9 @@ describe("i18n support", function () {
     });
 
     interface TestAppApi {
+        node: HTMLElement;
+        innerContainer: HTMLElement;
+
         getId(): Promise<number>;
         getLocaleInfo(): Promise<{ locale: string; message: string; supportedLocales: string[] }>;
         setLocale(newLocale: string): Promise<void>;
@@ -904,8 +909,11 @@ describe("i18n support", function () {
             }
         });
 
-        const { node } = await renderComponentShadowDOM(elem);
+        const { node, innerContainer } = await renderComponentShadowDOM(elem);
         const result = {
+            node,
+            innerContainer,
+
             async getId() {
                 const api = await (node as ApplicationElement).when();
                 return api.getId!();

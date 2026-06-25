@@ -1,6 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { computed, constant, effect, reactive, ReadonlyReactive } from "@conterra/reactivity-core";
+import {
+    computed,
+    constant,
+    effect,
+    reactive,
+    ReadonlyReactive,
+    watchValue
+} from "@conterra/reactivity-core";
 import {
     createAbortError,
     createLogger,
@@ -87,6 +94,7 @@ export class AppInstance {
     private reactIntegration: ReactIntegration | undefined;
 
     private stylesWatch: Resource | undefined;
+    private localeWatch: Resource | undefined;
 
     constructor(options: AppOptions) {
         this.options = options;
@@ -137,6 +145,7 @@ export class AppInstance {
         this.i18n = destroyResource(this.i18n);
         this.serviceLayer = destroyResource(this.serviceLayer);
         this.stylesWatch = destroyResource(this.stylesWatch);
+        this.localeWatch = destroyResource(this.localeWatch);
     }
 
     whenAPI(): Promise<ApiMethods> {
@@ -182,8 +191,18 @@ export class AppInstance {
         this.checkAbort();
 
         // Setup application root node in the shadow dom
-        const appRoot = (this.appRoot = createAppRoot(i18n.locale.baseName));
+        const appRoot = (this.appRoot = createAppRoot());
+        this.localeWatch = watchValue(
+            () => i18n.locale.baseName,
+            (locale) => {
+                appRoot.lang = locale;
+            },
+            {
+                immediate: true
+            }
+        );
         this.container.appendChild(appRoot);
+
         const styles = this.initStylesSignal();
 
         // Launch the service layer
@@ -340,7 +359,8 @@ export class AppInstance {
             MESSAGES_BY_LOCALE["en"];
         const intl = createPackageIntl(locale.baseName, messages);
 
-        const appRoot = (this.appRoot = createAppRoot(locale.baseName));
+        const appRoot = (this.appRoot = createAppRoot());
+        appRoot.lang = locale.baseName;
         appRoot.classList.add("pioneer-root-error-screen");
         this.container.appendChild(appRoot);
 
