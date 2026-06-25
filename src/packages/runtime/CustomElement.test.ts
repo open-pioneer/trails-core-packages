@@ -5,6 +5,8 @@
  * @vitest-environment happy-dom
  */
 import { mergeConfigs, Portal, SystemConfig, useChakraContext } from "@chakra-ui/react";
+import { ReadonlyReactive } from "@conterra/reactivity-core";
+import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { isAbortError } from "@open-pioneer/core";
 import {
     defineComponent,
@@ -20,6 +22,7 @@ import {
     ApplicationContext,
     ApplicationLifecycleListener,
     ColorModeValue,
+    LocaleService,
     ThemeService
 } from "./api";
 import {
@@ -29,11 +32,11 @@ import {
     createCustomElement,
     CustomElementOptions
 } from "./CustomElement";
+import { PackageIntl, parseLocale } from "./i18n";
 import { createBox } from "./metadata";
 import { usePropertiesInternal } from "./react-integration";
 import { ServiceOptions } from "./Service";
 import { expectAsyncError } from "./test-utils/expectError";
-import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 
 /** Hidden properties available during development / testing */
 interface InternalElementType extends ApplicationElement {
@@ -608,6 +611,9 @@ describe("i18n support", function () {
         const api = await launchApp({
             config: {
                 locale: "en-US"
+            },
+            advanced: {
+                enableLiveLocaleChanges: false
             }
         });
         const { locale, message, supportedLocales } = await api.getLocaleInfo();
@@ -637,6 +643,41 @@ describe("i18n support", function () {
         await expect(() => api.setLocale("zh-CN")).rejects.toThrowErrorMatchingInlineSnapshot(
             `[Error: runtime:unsupported-locale: Unsupported locale 'zh-CN' (supported locales: de, en, de-simple).]`
         );
+    });
+
+    it("supports restarting with a different locale without restarting the app", async () => {
+        // Hide i18n warnings
+        vi.spyOn(console, "warn").mockImplementation(() => undefined);
+        mockNavigatorLocales();
+
+        const api = await launchApp({
+            config: {
+                locale: "en-US"
+            },
+            advanced: {
+                enableLiveLocaleChanges: true
+            }
+        });
+
+        const id = await api.getId();
+        const { locale, message } = await api.getLocaleInfo();
+        expect(locale).toBe("en-US");
+        expect(message).toBe("Hello world");
+        expect(id).toBe(1);
+
+        // Changes locale and has priority over the `config` above
+        await api.setLocale("de-DE");
+        const { newLocale, newMessage } = await waitFor(async () => {
+            const { locale: newLocale, message: newMessage } = await api.getLocaleInfo();
+            if (newLocale !== "de-DE") {
+                throw new Error("locale not changed yet");
+            }
+            return { newLocale, newMessage };
+        });
+
+        expect(await api.getId()).toBe(1); // no restart
+        expect(newLocale).toBe("de-DE");
+        expect(newMessage).toBe("Hallo Welt");
     });
 
     it("exposes 'overrides' in resolveConfig()", async () => {
@@ -753,6 +794,7 @@ describe("i18n support", function () {
     });
 
     interface TestAppApi {
+        getId(): Promise<number>;
         getLocaleInfo(): Promise<{ locale: string; message: string; supportedLocales: string[] }>;
         setLocale(newLocale: string): Promise<void>;
         setColorMode(newColorMode: ColorModeValue): Promise<void>;
@@ -763,38 +805,46 @@ describe("i18n support", function () {
      * Runs an app with mocked services and i18n and returns the inner locale + translated message.
      */
     async function launchApp(options?: Partial<CustomElementOptions>): Promise<TestAppApi> {
+        let id = 1;
         class TestService implements ApiExtension {
-            private ctx: ApplicationContext;
-            private theme: ThemeService;
-            private locale: string;
-            private message: string;
+            private currentIntl: ReadonlyReactive<PackageIntl>;
+            private localeService: LocaleService;
+            private themeService: ThemeService;
+            private id = id++; // Instance id to detect restarts
 
-            constructor(options: ServiceOptions<{ ctx: ApplicationContext; theme: ThemeService }>) {
-                const ctx = options.references.ctx;
-                const theme = options.references.theme;
-                this.ctx = ctx;
-                this.theme = theme;
-                this.locale = ctx.getLocale();
-                this.message = options.currentIntl.value.formatMessage({ id: "greeting" });
+            constructor(
+                options: ServiceOptions<{
+                    localeService: LocaleService;
+                    themeService: ThemeService;
+                }>
+            ) {
+                const localeService = options.references.localeService;
+                const themeService = options.references.themeService;
+                this.currentIntl = options.currentIntl;
+                this.localeService = localeService;
+                this.themeService = themeService;
             }
 
             async getApiMethods(): Promise<ApiMethods> {
                 return {
+                    getId: () => this.id,
                     getLocaleInfo: () => {
                         return {
-                            locale: this.locale,
-                            message: this.message,
-                            supportedLocales: Array.from(this.ctx.getSupportedLocales())
+                            locale: this.localeService.locale.baseName,
+                            message: this.currentIntl.value.formatMessage({ id: "greeting" }),
+                            supportedLocales: this.localeService.supportedMessageLocales.map(
+                                (l) => l.baseName
+                            )
                         };
                     },
-                    setLocale: (newLocale: string) => {
-                        this.ctx.setLocale(newLocale);
+                    setLocale: async (newLocale: string) => {
+                        await this.localeService.changeLocale(parseLocale(newLocale));
                     },
                     setColorMode: (newColorMode: ColorModeValue) => {
-                        this.theme.setColorMode(newColorMode);
+                        this.themeService.setColorMode(newColorMode);
                     },
                     setCustomChakraConfig: (newConfig: SystemConfig | undefined) => {
-                        this.theme.setSystemConfig(newConfig);
+                        this.themeService.setSystemConfig(newConfig);
                     }
                 };
             }
@@ -811,10 +861,10 @@ describe("i18n support", function () {
                                 name: "testService",
                                 clazz: TestService,
                                 references: {
-                                    ctx: {
-                                        name: "runtime.ApplicationContext"
+                                    localeService: {
+                                        name: "runtime.LocaleService"
                                     },
-                                    theme: {
+                                    themeService: {
                                         name: "runtime.ThemeService"
                                     }
                                 },
@@ -856,6 +906,11 @@ describe("i18n support", function () {
 
         const { node } = await renderComponentShadowDOM(elem);
         const result = {
+            async getId() {
+                const api = await (node as ApplicationElement).when();
+                return api.getId!();
+            },
+
             async getLocaleInfo() {
                 const api = await (node as ApplicationElement).when();
                 return api.getLocaleInfo!();
@@ -863,7 +918,7 @@ describe("i18n support", function () {
 
             async setLocale(newLocale: string) {
                 const api = await (node as ApplicationElement).when();
-                api.setLocale!(newLocale);
+                await api.setLocale!(newLocale);
             },
 
             async setColorMode(newColorMode: ColorModeValue) {

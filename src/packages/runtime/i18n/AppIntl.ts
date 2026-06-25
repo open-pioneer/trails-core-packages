@@ -8,7 +8,14 @@ import {
     ReadonlyReactive,
     watchValue
 } from "@conterra/reactivity-core";
-import { createLogger, destroyResource, Error, Resource, shallowEqual } from "@open-pioneer/core";
+import {
+    createLogger,
+    destroyResource,
+    Error,
+    Resource,
+    shallowEqual,
+    throwAbortError
+} from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
 import { ApplicationMetadata, MessageLoader, MessagesRecord } from "../metadata";
@@ -125,7 +132,7 @@ export async function initI18n({
     const messages = reactive<MessagesRecord>(
         await loadMessagesSafely(appMetadata, initialMessageLocale)
     );
-
+    const locale = reactive(initialLocale);
     const messageLocale = reactive(initialMessageLocale);
 
     // During dev: watch for changes of the loadMessage function
@@ -152,8 +159,6 @@ export async function initI18n({
 
     /** Monotonic counter to discard outdated changeLocale results. */
     let changeLocaleSeq = 0;
-    const locale = reactive(initialLocale);
-
     return {
         get locale() {
             return locale.value;
@@ -179,13 +184,13 @@ export async function initI18n({
             if (!supportsLiveChanges) {
                 //NOTE: it is important for restarts to ensure the input value (targetLocale) is passed to restartWithLocale, not the best-fit value (nextLocale).
                 restartWithLocale(targetLocale);
-                return Promise.resolve();
+                return;
             }
             const seq = ++changeLocaleSeq;
             const newMessages = await loadMessagesSafely(appMetadata, nextMessageLocale);
             if (seq !== changeLocaleSeq) {
-                // Superseded by a newer changeLocale call: drop the result.
-                return;
+                // Superseded by a newer call.
+                throwAbortError();
             }
             batch(() => {
                 messages.value = newMessages;
