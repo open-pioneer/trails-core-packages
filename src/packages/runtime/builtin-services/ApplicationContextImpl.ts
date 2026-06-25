@@ -25,19 +25,19 @@ export type ApplicationContextServiceOptions = ServiceOptions<ServiceReferences>
 const setLocaleDeprecationMessage = deprecated({
     name: "ApplicationContext.setLocale",
     packageName: "@open-pioneer/runtime",
-    since: "v4.6.0",
+    since: "v4.7.0",
     alternative: "Use `runtime.LocaleService.changeLocale` instead."
 });
 const getLocaleDeprecationMessage = deprecated({
     name: "ApplicationContext.getLocale",
     packageName: "@open-pioneer/runtime",
-    since: "v4.6.0",
+    since: "v4.7.0",
     alternative: "Use `runtime.LocaleService.locale` instead."
 });
 const getSupportedLocalesDeprecationMessage = deprecated({
     name: "ApplicationContext.getSupportedLocales",
     packageName: "@open-pioneer/runtime",
-    since: "v4.6.0",
+    since: "v4.7.0",
     alternative: "Use `runtime.LocaleService.supportedMessageLocales` instead."
 });
 
