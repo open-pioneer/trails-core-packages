@@ -76,94 +76,106 @@ export interface AppOptions {
 export type AppState = "not-started" | "starting" | "started" | "destroyed" | "error";
 
 export class AppInstance {
-    private options: AppOptions;
+    #options: AppOptions;
 
     // Public API
-    private apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
-    private api: ApiMethods | undefined; // Present once started
+    #apiPromise: ManualPromise<ApiMethods> | undefined; // Present when callers are waiting for the API
+    #api: ApiMethods | undefined; // Present once started
 
-    private state: AppState = "not-started";
-    private rootNode: RootNode;
-    private container: HTMLElement | ShadowRoot; // parent of .pioneer-root
-    private appRoot: HTMLDivElement | undefined; // .pioneer-root
-    private config: ApplicationConfig | undefined;
-    private i18n: AppIntl | undefined;
-    private serviceLayer: ServiceLayer | undefined;
-    private lifecycleEvents: ApplicationLifecycleEventService | undefined;
-    private themeService: ThemeService | undefined;
-    private reactIntegration: ReactIntegration | undefined;
+    #state: AppState = "not-started";
+    #rootNode: RootNode;
+    #container: HTMLElement | ShadowRoot; // parent of .pioneer-root
+    #i18n: AppIntl | undefined;
 
-    private stylesWatch: Resource | undefined;
-    private localeWatch: Resource | undefined;
+    // Unused on purpose for easier debugging.
+    // eslint-disable-next-line no-unused-private-class-members
+    #appRoot: HTMLDivElement | undefined; // .pioneer-root
+
+    // Unused on purpose for easier debugging.
+    // eslint-disable-next-line no-unused-private-class-members
+    #config: ApplicationConfig | undefined;
+
+    #serviceLayer: ServiceLayer | undefined;
+    #lifecycleEvents: ApplicationLifecycleEventService | undefined;
+    #themeService: ThemeService | undefined;
+    #reactIntegration: ReactIntegration | undefined;
+
+    #stylesWatch: Resource | undefined;
+    #localeWatch: Resource | undefined;
 
     constructor(options: AppOptions) {
-        this.options = options;
-        this.container = isShadowRoot(options.rootNode) ? options.rootNode : options.hostElement;
-        this.rootNode = options.rootNode;
+        this.#options = options;
+        this.#container = isShadowRoot(options.rootNode) ? options.rootNode : options.hostElement;
+        this.#rootNode = options.rootNode;
+    }
+
+    /** Current lifecycle state. Exposed (read-only) for tests/debugging via `$inspectElementState`. */
+    get state(): AppState {
+        return this.#state;
     }
 
     start() {
-        if (this.state !== "not-started") {
-            throw new Error(ErrorId.INTERNAL, `Cannot start element in state '${this.state}'`);
+        if (this.#state !== "not-started") {
+            throw new Error(ErrorId.INTERNAL, `Cannot start element in state '${this.#state}'`);
         }
 
-        this.state = "starting";
-        this.startImpl().catch((e) => {
-            if (this.state === "destroyed") return;
+        this.#state = "starting";
+        this.#startImpl().catch((e) => {
+            if (this.#state === "destroyed") return;
 
             logError(e);
-            this.reset();
-            this.state = "error";
-            this.showErrorScreen(e);
+            this.#reset();
+            this.#state = "error";
+            this.#showErrorScreen(e);
         });
     }
 
     destroy() {
-        if (this.state === "destroyed") {
+        if (this.#state === "destroyed") {
             return;
         }
 
         // Only call event listener when 'started' was also signalled.
-        if (this.state === "started") {
+        if (this.#state === "started") {
             try {
-                this.triggerApplicationLifecycleEvent("before-stop");
+                this.#triggerApplicationLifecycleEvent("before-stop");
             } catch (e) {
                 void e; // Ignored
             }
         }
-        this.state = "destroyed";
-        this.reset();
+        this.#state = "destroyed";
+        this.#reset();
     }
 
-    private reset() {
-        this.apiPromise?.reject(createAbortError());
-        this.reactIntegration = destroyResource(this.reactIntegration);
-        this.container.replaceChildren();
-        this.appRoot = undefined;
-        this.lifecycleEvents = undefined;
-        this.themeService = undefined;
-        this.i18n = destroyResource(this.i18n);
-        this.serviceLayer = destroyResource(this.serviceLayer);
-        this.stylesWatch = destroyResource(this.stylesWatch);
-        this.localeWatch = destroyResource(this.localeWatch);
+    #reset() {
+        this.#apiPromise?.reject(createAbortError());
+        this.#reactIntegration = destroyResource(this.#reactIntegration);
+        this.#container.replaceChildren();
+        this.#appRoot = undefined;
+        this.#lifecycleEvents = undefined;
+        this.#themeService = undefined;
+        this.#i18n = destroyResource(this.#i18n);
+        this.#serviceLayer = destroyResource(this.#serviceLayer);
+        this.#stylesWatch = destroyResource(this.#stylesWatch);
+        this.#localeWatch = destroyResource(this.#localeWatch);
     }
 
     whenAPI(): Promise<ApiMethods> {
-        if (this.api) {
-            return Promise.resolve(this.api);
+        if (this.#api) {
+            return Promise.resolve(this.#api);
         }
 
-        const apiPromise = (this.apiPromise ??= createManualPromise());
+        const apiPromise = (this.#apiPromise ??= createManualPromise());
         return apiPromise.promise;
     }
 
-    private async startImpl() {
-        const { hostElement, elementOptions, overrides } = this.options;
-        const root = this.rootNode;
+    async #startImpl() {
+        const { hostElement, elementOptions, overrides } = this.#options;
+        const root = this.#rootNode;
 
         // Resolve custom application config
-        const config = (this.config = await gatherConfig(hostElement, elementOptions, overrides));
-        this.checkAbort();
+        const config = (this.#config = await gatherConfig(hostElement, elementOptions, overrides));
+        this.#checkAbort();
         LOG.debug("Application config is", config);
 
         // TODO (next major): always true (option can be removed).
@@ -173,26 +185,26 @@ export class AppInstance {
         // TODO (next major): Remove restarting code!
         const restartWithLocale = (locale: Intl.Locale | undefined) => {
             // this code is triggered, when the app calls changeLocale while reactive switching is disabled.
-            const restart = this.options.restart;
-            const themeService = this.themeService;
+            const restart = this.#options.restart;
+            const themeService = this.#themeService;
             const colorMode = themeService?.colorMode;
             const chakraSystemConfig = themeService?.systemConfig;
             restart({ locale: locale?.baseName, colorMode, chakraSystemConfig });
         };
 
         // Decide on locale and load i18n messages (if any).
-        const i18n = (this.i18n = await AppIntl.create({
+        const i18n = (this.#i18n = await AppIntl.create({
             appMetadata: elementOptions.appMetadata,
             forcedLocale: config.locale,
             restrictSupportedLocales: config.supportedLocales,
             supportsLiveChanges: enableLiveLocaleChanges,
             restartWithLocale
         }));
-        this.checkAbort();
+        this.#checkAbort();
 
         // Setup application root node in the shadow dom
-        const appRoot = (this.appRoot = createAppRoot());
-        this.localeWatch = watchValue(
+        const appRoot = (this.#appRoot = createAppRoot());
+        this.#localeWatch = watchValue(
             () => i18n.locale.baseName,
             (locale) => {
                 appRoot.lang = locale;
@@ -201,33 +213,33 @@ export class AppInstance {
                 immediate: true
             }
         );
-        this.container.appendChild(appRoot);
+        this.#container.appendChild(appRoot);
 
-        const styles = this.initStylesSignal();
+        const styles = this.#initStylesSignal();
 
         // Launch the service layer
-        const { serviceLayer, packages } = this.initServiceLayer({
+        const { serviceLayer, packages } = this.#initServiceLayer({
             container: appRoot,
             properties: config.properties,
             i18n,
             initialColorMode: config.colorMode,
             initialSystemConfig: config.chakraSystemConfig
         });
-        this.lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
+        this.#lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
             serviceLayer,
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );
-        const themeService = (this.themeService = getInternalService<ThemeService>(
+        const themeService = (this.#themeService = getInternalService<ThemeService>(
             serviceLayer,
             RUNTIME_THEME_SERVICE
         ));
 
         // init api, but do not wait for it
-        const apiPromise = this.initAPI(serviceLayer);
-        this.checkAbort();
+        const apiPromise = this.#initAPI(serviceLayer);
+        this.#checkAbort();
 
         // Launch react
-        this.reactIntegration = ReactIntegration.createForApp({
+        this.#reactIntegration = ReactIntegration.createForApp({
             rootNode: root,
             hostNode: hostElement,
             appRoot: appRoot,
@@ -238,17 +250,17 @@ export class AppInstance {
             styles,
             colorMode: computed(() => themeService.colorMode)
         });
-        const component = this.options.elementOptions.component ?? EmptyComponent;
-        this.reactIntegration.render(createElement(component));
+        const component = this.#options.elementOptions.component ?? EmptyComponent;
+        this.#reactIntegration.render(createElement(component));
 
         // wait for api, to ensure that the "started" state is only reached after the API is available.
         // but do not block the react rendering, to allow for a fast Time to Interactive and to show potential errors in the UI even if the API fails.
         await apiPromise;
-        this.checkAbort();
+        this.#checkAbort();
 
-        this.state = "started";
+        this.#state = "started";
 
-        this.triggerApplicationLifecycleEvent("after-start");
+        this.#triggerApplicationLifecycleEvent("after-start");
         LOG.debug("Application started");
     }
 
@@ -257,15 +269,15 @@ export class AppInstance {
      * During development, the signal is updated when the user edits .css files.
      * In production, the signal is static.
      */
-    private initStylesSignal(): ReadonlyReactive<string> {
-        const stylesBox = this.options.elementOptions.appMetadata?.styles;
+    #initStylesSignal(): ReadonlyReactive<string> {
+        const stylesBox = this.#options.elementOptions.appMetadata?.styles;
         if (!stylesBox) {
             return constant("");
         }
 
         const signal = reactive(stylesBox.value);
         if (import.meta.hot) {
-            this.stylesWatch = effect(
+            this.#stylesWatch = effect(
                 () => {
                     signal.value = stylesBox.value;
                     LOG.debug("Application styles changed");
@@ -276,14 +288,14 @@ export class AppInstance {
         return signal;
     }
 
-    private initServiceLayer(config: {
+    #initServiceLayer(config: {
         container: HTMLDivElement;
         properties: ApplicationProperties;
         i18n: AppIntl;
         initialColorMode: ColorModeValue | "system" | undefined;
         initialSystemConfig: SystemConfig | undefined;
     }) {
-        const { hostElement, rootNode: shadowRoot, elementOptions } = this.options;
+        const { hostElement, rootNode: shadowRoot, elementOptions } = this.#options;
         const { container, properties, i18n, initialColorMode, initialSystemConfig } = config;
 
         const packageMetadata = elementOptions.appMetadata?.packages ?? {};
@@ -301,7 +313,7 @@ export class AppInstance {
             properties,
             i18n
         });
-        this.serviceLayer = serviceLayer;
+        this.#serviceLayer = serviceLayer;
 
         if (LOG.isDebug()) {
             LOG.debug("Launching service layer with packages", Object.fromEntries(packages));
@@ -310,14 +322,14 @@ export class AppInstance {
         return { serviceLayer, packages };
     }
 
-    private async initAPI(serviceLayer: ServiceLayer) {
+    async #initAPI(serviceLayer: ServiceLayer) {
         const apiService = getInternalService<ApiService>(serviceLayer, RUNTIME_API_SERVICE);
         try {
             const api = await apiService.getApi();
-            this.checkAbort();
-            this.api = api;
+            this.#checkAbort();
+            this.#api = api;
             LOG.debug("Application API initialized to", api);
-            this.apiPromise?.resolve(api);
+            this.#apiPromise?.resolve(api);
         } catch (e) {
             const ex = new Error(
                 ErrorId.INTERNAL,
@@ -326,29 +338,29 @@ export class AppInstance {
                     cause: e
                 }
             );
-            if (!this.apiPromise) {
+            if (!this.#apiPromise) {
                 // no one is waiting yet.
                 // keep the error for when they do
-                this.apiPromise = createManualPromise();
+                this.#apiPromise = createManualPromise();
                 // prevent unhandled rejection if no one is waiting for the API
-                this.apiPromise.promise.catch(() => {});
+                this.#apiPromise.promise.catch(() => {});
             }
-            this.apiPromise.reject(ex);
+            this.#apiPromise.reject(ex);
             throw ex;
         }
     }
 
-    private triggerApplicationLifecycleEvent(event: "after-start" | "before-stop") {
-        this.lifecycleEvents?.emitLifecycleEvent(event);
+    #triggerApplicationLifecycleEvent(event: "after-start" | "before-stop") {
+        this.#lifecycleEvents?.emitLifecycleEvent(event);
     }
 
-    private checkAbort() {
-        if (this.state === "destroyed") {
+    #checkAbort() {
+        if (this.#state === "destroyed") {
             throwAbortError();
         }
     }
 
-    private showErrorScreen(error: globalThis.Error) {
+    #showErrorScreen(error: globalThis.Error) {
         const userLocales = getBrowserLocales();
         const localePicker = new LocalePicker(
             Object.keys(MESSAGES_BY_LOCALE).map((tag) => parseLocale(tag))
@@ -359,23 +371,23 @@ export class AppInstance {
             MESSAGES_BY_LOCALE["en"];
         const intl = createPackageIntl(locale.baseName, messages);
 
-        const appRoot = (this.appRoot = createAppRoot());
+        const appRoot = (this.#appRoot = createAppRoot());
         appRoot.lang = locale.baseName;
         appRoot.classList.add("pioneer-root-error-screen");
-        this.container.appendChild(appRoot);
+        this.#container.appendChild(appRoot);
 
-        const styles = this.initStylesSignal();
+        const styles = this.#initStylesSignal();
 
-        this.reactIntegration = ReactIntegration.createForErrorScreen({
-            rootNode: this.rootNode,
-            hostNode: this.options.hostElement,
+        this.#reactIntegration = ReactIntegration.createForErrorScreen({
+            rootNode: this.#rootNode,
+            hostNode: this.#options.hostElement,
             appRoot: appRoot,
             locale: constant(locale.baseName),
-            config: constant(this.options.elementOptions.chakraSystemConfig),
+            config: constant(this.#options.elementOptions.chakraSystemConfig),
             styles,
             colorMode: constant(DEFAULT_INITIAL_COLOR_MODE)
         });
-        this.reactIntegration.render(createElement(ErrorScreen, { intl, error }));
+        this.#reactIntegration.render(createElement(ErrorScreen, { intl, error }));
     }
 }
 

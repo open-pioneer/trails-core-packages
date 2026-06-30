@@ -10,13 +10,13 @@ interface References {
 }
 
 export class ApiServiceImpl implements ApiService {
-    private readonly providers: [serviceId: string, provider: ApiExtension][];
+    readonly #providers: [serviceId: string, provider: ApiExtension][];
 
     constructor(options: ServiceOptions<References>) {
         const providers = options.references.providers;
         const meta = options.referencesMeta.providers;
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.providers = providers.map((provider, index) => [meta[index]!.serviceId, provider]);
+        this.#providers = providers.map((provider, index) => [meta[index]!.serviceId, provider]);
     }
 
     async getApi() {
@@ -25,7 +25,7 @@ export class ApiServiceImpl implements ApiService {
             methods: ApiMethods;
         }
 
-        const promises = this.providers.map(async ([serviceId, provider]) => {
+        const promises = this.#providers.map(async ([serviceId, provider]) => {
             const methods = await provider.getApiMethods();
             const result: ProviderResult = {
                 serviceId,

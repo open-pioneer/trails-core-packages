@@ -7,8 +7,8 @@
  * Only arabic numerals are supported.
  */
 export class NumberParser {
-    private readonly decimalRegexPattern: RegExp;
-    private readonly groupingRegexPattern: RegExp;
+    readonly #decimalRegexPattern: RegExp;
+    readonly #groupingRegexPattern: RegExp;
 
     constructor(locales: Intl.LocalesArgument) {
         const numberFormatOptions: Intl.NumberFormatOptions = {
@@ -28,12 +28,15 @@ export class NumberParser {
             throw new Error("Could not determine grouping separator.");
         }
 
-        this.decimalRegexPattern = new RegExp(`${this.escapeRegExp(decimalSeparator)}`, "g");
+        this.#decimalRegexPattern = new RegExp(`${this.#escapeRegExp(decimalSeparator)}`, "g");
         if (groupingSeparator.trim() === "") {
             // if a language uses a whitespace as grouping separator, remove all whitespaces (as numbers may not contain whitespaces)
-            this.groupingRegexPattern = /\s/g;
+            this.#groupingRegexPattern = /\s/g;
         } else {
-            this.groupingRegexPattern = new RegExp(`${this.escapeRegExp(groupingSeparator)}`, "g");
+            this.#groupingRegexPattern = new RegExp(
+                `${this.#escapeRegExp(groupingSeparator)}`,
+                "g"
+            );
         }
     }
 
@@ -44,13 +47,13 @@ export class NumberParser {
         numberString = numberString.trim();
 
         const parsedNumberString = numberString
-            .replace(this.groupingRegexPattern, "")
-            .replace(this.decimalRegexPattern, ".");
+            .replace(this.#groupingRegexPattern, "")
+            .replace(this.#decimalRegexPattern, ".");
         return !parsedNumberString ? NaN : +parsedNumberString;
     }
 
     // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#escaping
-    private escapeRegExp(string: string) {
+    #escapeRegExp(string: string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
     }
 }

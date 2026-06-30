@@ -3,13 +3,13 @@
 import { reactive } from "@conterra/reactivity-core";
 
 export class TextService {
-    private text = reactive("not yet set");
+    #text = reactive("not yet set");
 
     setText(text: string) {
-        this.text.value = text;
+        this.#text.value = text;
     }
 
     getText(): string {
-        return this.text.value;
+        return this.#text.value;
     }
 }

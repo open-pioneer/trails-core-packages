@@ -812,10 +812,10 @@ describe("i18n support", function () {
     async function launchApp(options?: Partial<CustomElementOptions>): Promise<TestAppApi> {
         let id = 1;
         class TestService implements ApiExtension {
-            private currentIntl: ReadonlyReactive<PackageIntl>;
-            private localeService: LocaleService;
-            private themeService: ThemeService;
-            private id = id++; // Instance id to detect restarts
+            #currentIntl: ReadonlyReactive<PackageIntl>;
+            #localeService: LocaleService;
+            #themeService: ThemeService;
+            #id = id++; // Instance id to detect restarts
 
             constructor(
                 options: ServiceOptions<{
@@ -825,31 +825,31 @@ describe("i18n support", function () {
             ) {
                 const localeService = options.references.localeService;
                 const themeService = options.references.themeService;
-                this.currentIntl = options.currentIntl;
-                this.localeService = localeService;
-                this.themeService = themeService;
+                this.#currentIntl = options.currentIntl;
+                this.#localeService = localeService;
+                this.#themeService = themeService;
             }
 
             async getApiMethods(): Promise<ApiMethods> {
                 return {
-                    getId: () => this.id,
+                    getId: () => this.#id,
                     getLocaleInfo: () => {
                         return {
-                            locale: this.localeService.locale.baseName,
-                            message: this.currentIntl.value.formatMessage({ id: "greeting" }),
-                            supportedLocales: this.localeService.supportedMessageLocales.map(
+                            locale: this.#localeService.locale.baseName,
+                            message: this.#currentIntl.value.formatMessage({ id: "greeting" }),
+                            supportedLocales: this.#localeService.supportedMessageLocales.map(
                                 (l) => l.baseName
                             )
                         };
                     },
                     setLocale: async (newLocale: string) => {
-                        await this.localeService.changeLocale(parseLocale(newLocale));
+                        await this.#localeService.changeLocale(parseLocale(newLocale));
                     },
                     setColorMode: (newColorMode: ColorModeValue) => {
-                        this.themeService.setColorMode(newColorMode);
+                        this.#themeService.setColorMode(newColorMode);
                     },
                     setCustomChakraConfig: (newConfig: SystemConfig | undefined) => {
-                        this.themeService.setSystemConfig(newConfig);
+                        this.#themeService.setSystemConfig(newConfig);
                     }
                 };
             }

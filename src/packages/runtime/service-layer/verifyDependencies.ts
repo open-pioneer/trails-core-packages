@@ -90,18 +90,18 @@ type InterfaceReference =
       };
 
 class Verifier {
-    private requiredReferences: readonly RequiredReference[];
-    private items: GraphItem[];
-    private serviceLookup = new ServiceLookup();
-    private serviceToGraphItem = new Map<ServiceRepr, GraphItem>();
+    #requiredReferences: readonly RequiredReference[];
+    #items: GraphItem[];
+    #serviceLookup = new ServiceLookup();
+    #serviceToGraphItem = new Map<ServiceRepr, GraphItem>();
 
     // Stack of visited nodes
-    private stack: [item: GraphItem, reason: ItemVisitReason][] = [];
+    #stack: [item: GraphItem, reason: ItemVisitReason][] = [];
 
     constructor(options: DependencyOptions) {
-        this.requiredReferences = options.requiredReferences ?? [];
+        this.#requiredReferences = options.requiredReferences ?? [];
         const services = options.services ?? [];
-        const items = (this.items = services.map<GraphItem>((service) => {
+        const items = (this.#items = services.map<GraphItem>((service) => {
             return {
                 service: service,
                 state: "not-visited",
@@ -111,13 +111,13 @@ class Verifier {
 
         for (const item of items) {
             for (const spec of item.service.interfaces) {
-                this.registerService(item, spec);
+                this.#registerService(item, spec);
             }
         }
     }
 
     verify() {
-        for (const ref of this.requiredReferences) {
+        for (const ref of this.#requiredReferences) {
             let interfaceRef: InterfaceReference;
             switch (ref.type) {
                 case "framework":
@@ -131,39 +131,39 @@ class Verifier {
                     };
                     break;
             }
-            this.visitReference(interfaceRef);
+            this.#visitReference(interfaceRef);
         }
-        for (const item of this.items) {
-            this.visitItem(item, "root");
+        for (const item of this.#items) {
+            this.#visitItem(item, "root");
         }
     }
 
     getServiceLookup() {
-        return this.serviceLookup;
+        return this.#serviceLookup;
     }
 
     getComputedDependencies() {
         return new Map(
-            this.items.map<[string, ComputedServiceDependencies]>((item) => {
+            this.#items.map<[string, ComputedServiceDependencies]>((item) => {
                 return [item.service.id, item.dependencies];
             })
         );
     }
 
-    private visitItem(item: GraphItem, reason: ItemVisitReason) {
-        const stack = this.stack;
+    #visitItem(item: GraphItem, reason: ItemVisitReason) {
+        const stack = this.#stack;
         const state = item.state;
         if (state === "done") {
             return; // Item is initialized, cycle impossible
         }
         if (state === "pending") {
-            this.throwCycleError(item, reason);
+            this.#throwCycleError(item, reason);
         }
 
         stack.push([item, reason]);
         item.state = "pending";
         for (const dep of item.service.dependencies) {
-            item.dependencies[dep.referenceName] = this.visitReference({
+            item.dependencies[dep.referenceName] = this.#visitReference({
                 type: "service-reference",
                 service: item.service,
                 referenceName: dep.referenceName,
@@ -174,27 +174,27 @@ class Verifier {
         stack.pop();
     }
 
-    private visitReference(ref: InterfaceReference) {
-        const itemOrItems = this.findServices(ref);
+    #visitReference(ref: InterfaceReference) {
+        const itemOrItems = this.#findServices(ref);
         if (Array.isArray(itemOrItems)) {
             for (const child of itemOrItems) {
-                this.visitItem(child, ref);
+                this.#visitItem(child, ref);
             }
             return itemOrItems.map((item) => item.service);
         } else {
-            this.visitItem(itemOrItems, ref);
+            this.#visitItem(itemOrItems, ref);
             return itemOrItems.service;
         }
     }
 
-    private registerService(item: GraphItem, spec: InterfaceSpec) {
-        this.serviceLookup.register(item.service, spec);
-        this.serviceToGraphItem.set(item.service, item);
+    #registerService(item: GraphItem, spec: InterfaceSpec) {
+        this.#serviceLookup.register(item.service, spec);
+        this.#serviceToGraphItem.set(item.service, item);
     }
 
-    private findServices(ref: InterfaceReference): GraphItem | GraphItem[] {
+    #findServices(ref: InterfaceReference): GraphItem | GraphItem[] {
         const spec = ref.value;
-        const lookupResult = this.serviceLookup.lookup(spec);
+        const lookupResult = this.#serviceLookup.lookup(spec);
         switch (lookupResult.type) {
             case "unimplemented": {
                 const message = unimplementedInterfaceMessage(ref);
@@ -208,14 +208,14 @@ class Verifier {
 
         const value = lookupResult.value;
         if (Array.isArray(value)) {
-            return value.map((service) => this.getGraphItem(service));
+            return value.map((service) => this.#getGraphItem(service));
         } else {
-            return this.getGraphItem(value);
+            return this.#getGraphItem(value);
         }
     }
 
-    private getGraphItem(service: ServiceRepr): GraphItem {
-        const graphItem = this.serviceToGraphItem.get(service);
+    #getGraphItem(service: ServiceRepr): GraphItem {
+        const graphItem = this.#serviceToGraphItem.get(service);
         if (!graphItem || graphItem.service !== service) {
             throw new Error(
                 ErrorId.INTERNAL,
@@ -225,9 +225,9 @@ class Verifier {
         return graphItem;
     }
 
-    private throwCycleError(item: GraphItem, reason: ItemVisitReason) {
+    #throwCycleError(item: GraphItem, reason: ItemVisitReason) {
         // Find the item on the stack (it must be there because we detected a cycle).
-        const stack = this.stack;
+        const stack = this.#stack;
         const ownIndex = stack.findIndex((entry) => entry[0] === item);
         if (ownIndex === -1) {
             throw new Error(ErrorId.INTERNAL, "Failed to find cycle participant on the stack.");

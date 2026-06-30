@@ -13,17 +13,17 @@ interface References {
 }
 
 export class TextApiExtension implements ApiExtension {
-    private textService: TextService;
+    #textService: TextService;
 
     constructor(opts: ServiceOptions<References>) {
-        this.textService = opts.references.textService;
+        this.#textService = opts.references.textService;
     }
 
     async getApiMethods() {
         return {
             changeText: (text: string) => {
                 LOG.info("Changing text to", JSON.stringify(text));
-                this.textService.setText(text);
+                this.#textService.setText(text);
             }
         };
     }
