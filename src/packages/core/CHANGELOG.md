@@ -1,5 +1,28 @@
 # @open-pioneer/core
 
+## 4.7.0
+
+### Minor Changes
+
+- 7c7e6d1: Add shallowEqual and deepEqual helper function to compare two objects.
+
+    Examples:
+
+    ```ts
+    import { shallowEqual, deepEqual } from "@open-pioneer/core";
+
+    shallowEqual({ a: 1 }, { a: 1 }); // true
+    shallowEqual({ a: { x: 1 } }, { a: { x: 1 } }); // false
+    deepEqual({ a: { x: 1 } }, { a: { x: 1 } }); // true
+    deepEqual([1, [2, 3]], [1, [2, 3]]); // true
+    ```
+
+- e433296: Update Chakra UI to 3.36.0
+
+### Patch Changes
+
+- 78aad9d: Refactor: use private javascript properties instead of typescript private keyword.
+
 ## 4.6.0
 
 ## 4.5.0
