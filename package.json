@@ -22,7 +22,9 @@
         "prepare": "husky && pnpm check-duplicates",
         "ci:test": "pnpm run clean && pnpm run lint && pnpm run check-types && vitest run",
         "ci:version": "pnpm changeset version && tsx ./support/write-release-package-version.ts && pnpm exec prettier **/package.json ./src/**/CHANGELOG.md --write && pnpm install",
-        "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && pnpm changeset tag"
+        "ci:publish": "pnpm run clean && pnpm run build-packages && pnpm publish -r --access public && pnpm changeset tag",
+        "fmt": "oxfmt",
+        "fmt:check": "oxfmt --check"
     },
     "devDependencies": {
         "@chakra-ui/cli": "catalog:",
@@ -60,6 +62,7 @@
         "js-yaml": "catalog:",
         "lint-staged": "catalog:",
         "prettier": "catalog:",
+        "oxfmt": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "rimraf": "catalog:",
