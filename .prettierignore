@@ -1,8 +1,0 @@
-dist
-node_modules
-temp
-test-data
-__snapshots
-pnpm-lock.yaml
-
-**/chakra-snippets/**/*.tsx
