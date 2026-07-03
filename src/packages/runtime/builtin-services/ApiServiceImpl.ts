@@ -15,7 +15,7 @@ export class ApiServiceImpl implements ApiService {
     constructor(options: ServiceOptions<References>) {
         const providers = options.references.providers;
         const meta = options.referencesMeta.providers;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.#providers = providers.map((provider, index) => [meta[index]!.serviceId, provider]);
     }
 

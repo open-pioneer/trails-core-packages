@@ -8,9 +8,6 @@ import glob from "fast-glob";
 import { dirname, resolve } from "node:path";
 import { defineConfig } from "vite";
 
-// @ts-expect-error "invalid typings"
-import eslint from "vite-plugin-eslint";
-
 // Find sites under src/samples with an index.html and build them all.
 const sampleSites = glob
     .sync("samples/*/index.html", {
@@ -21,7 +18,6 @@ const sampleSites = glob
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     const devMode = mode === "development";
-    const isVitest = mode === "test";
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
     const logLevel = devMode ? "DEBUG" : "WARN";
@@ -67,8 +63,7 @@ export default defineConfig(({ mode }) => {
                 // Apps to distribute as .js files for embedded use cases
                 apps: []
             }),
-            react(),
-            !isVitest && eslint()
+            react()
         ],
 
         // Ignore irrelevant deprecations

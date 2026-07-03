@@ -4,7 +4,7 @@ import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import type { ApplicationConfig } from "./CustomElement";
 import { type DeclaredService } from "./DeclaredService";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable @typescript-eslint/no-explicit-any */
 export type ApiMethod = (...args: any[]) => any;
 
 /**

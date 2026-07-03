@@ -11,7 +11,7 @@ import {
 import { FC, ReactNode, useInsertionEffect, useMemo } from "react";
 import { createIntl } from "./vanilla";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyService = Service<any>;
 
 export interface PackageContextProviderProps {

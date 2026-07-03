@@ -209,7 +209,7 @@ export class ServiceLayer {
             throw new Error(ErrorId.INTERNAL, "Invalid service state.");
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         const references: Record<string, any> = {};
         const referencesMeta: Record<string, ReferenceMeta | ReferenceMeta[]> = {};
 

@@ -35,7 +35,7 @@ const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
 
 export class NotificationServiceImpl implements InternalNotificationAPI {
     #uiPresent = false;
-    #uiCheckTimeoutId: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    #uiCheckTimeoutId: any; // oxlint-disable-line @typescript-eslint/no-explicit-any
 
     readonly toaster: ToasterObject;
 

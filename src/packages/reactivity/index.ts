@@ -49,7 +49,7 @@ export function useReactive<T>(): Reactive<T | undefined>;
 export function useReactive<T>(initialValue: T): Reactive<T>;
 
 export function useReactive<T>(initialValue?: T): Reactive<T | undefined> {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
     return useMemo(() => reactive(initialValue), []);
 }
 
@@ -215,7 +215,7 @@ export function useReactiveSnapshot<T>(
     // We create an internal computed value that executes the compute function;
     // this way the implementation of `compute` is automatically tracked.
     // getSnapshot and subscribe simply watch the current value of that computed value.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
     const computedSnapshot = useComputed(compute, deps);
     const snapshot = useReactiveValue(computedSnapshot, options);
     useDebugValue(snapshot);
@@ -234,6 +234,6 @@ function shallowEqual(a: DependencyList, b: DependencyList): boolean {
     if (a === b) {
         return true;
     }
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
     return a.length === (b?.length ?? 0) && a.every((v, i) => v === b![i]);
 }

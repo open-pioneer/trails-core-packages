@@ -73,7 +73,7 @@ export class LocalePicker {
     ): Intl.Locale {
         const candidates = preferred ? [preferred] : browserLocales;
         // #supportedLocales is guaranteed non-empty (see constructor).
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
         const firstSupported = this.#supportedLocales[0]!;
         if (candidates.length === 0) {
             return firstSupported;

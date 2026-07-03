@@ -29,7 +29,7 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
     #keycloakOptions: ResolvedKeycloakOptions;
     #keycloak: Keycloak;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     #timerId: any;
     #watcher: Resource | undefined;
 

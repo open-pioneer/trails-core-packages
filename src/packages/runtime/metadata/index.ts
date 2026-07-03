@@ -78,7 +78,7 @@ export interface ServiceMetadata {
     name: string;
 
     /** Service constructor responsible for creating a new instance. */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     clazz: ServiceConstructor<any> | MarkedServiceFactoryConstructor<any>;
 
     /**

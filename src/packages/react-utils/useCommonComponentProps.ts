@@ -93,7 +93,7 @@ export function useCommonComponentProps(
                 continue;
             }
             if (COPY_PROP_RE.test(k)) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // oxlint-disable-next-line @typescript-eslint/no-explicit-any
                 containerProps[k] = (props as any)[k];
             }
         }

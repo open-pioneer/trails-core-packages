@@ -172,7 +172,7 @@ function formatRichMessage(
         ...values
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     const chunks: any = intl.formatMessage(descriptor, preprocessValues(values) as any, opts);
     const nodes = assignKeys(chunks);
     return createElement(Fragment, undefined, ...nodes);
@@ -202,7 +202,7 @@ function renderTag(tag: string): FormatXMLElementFn<ReactNode> {
 
 // Seems to be required to get rid of "key" warnings.
 // See https://github.com/formatjs/formatjs/pull/4895/files
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 function assignKeys(chunks: any): any[] {
     const nodes = Children.map(chunks, assignKey) ?? [];
     return Children.toArray(nodes);

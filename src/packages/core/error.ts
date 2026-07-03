@@ -39,13 +39,13 @@ export function getErrorChain(err: globalThis.Error): globalThis.Error[] {
     do {
         chain.push(err);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         const cause = (err as any).cause as unknown;
         if (!(cause instanceof GlobalError)) {
             break;
         }
         err = cause;
-    } while (1); // eslint-disable-line no-constant-condition
+    } while (1); // oxlint-disable-line no-constant-condition
     return chain;
 }
 

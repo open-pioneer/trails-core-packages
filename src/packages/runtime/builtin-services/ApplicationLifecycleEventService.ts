@@ -19,7 +19,7 @@ export class ApplicationLifecycleEventService {
         const listeners = options.references.listeners;
         const listenersMeta = options.referencesMeta.listeners;
         this.#listeners = listeners.map((listener, index) => [
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
             listenersMeta[index]!.serviceId,
             listener
         ]);

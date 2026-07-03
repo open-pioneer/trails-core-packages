@@ -37,7 +37,7 @@ export interface ReferenceMeta {
  * The key for the reference metadata is the reference's name.
  */
 export type ReferencesMeta<References extends {}> = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     [referenceName in keyof References]: References[referenceName] extends any[]
         ? ReferenceMeta[]
         : ReferenceMeta;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mergeProps, SystemStyleObject } from "@chakra-ui/react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void
     ? I
     : never;
@@ -17,13 +17,13 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 export function mergeChakraProps<T extends {}>(
     ...args: T[]
 ): Omit<UnionToIntersection<T>, "css"> & { css?: SystemStyleObject | SystemStyleObject[] } {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     const mergedProps = mergeProps(...args) as Record<string, any>;
 
     // mergeProps handles plain html attributes only; merge chakra css on our own.
     let mergedCss: SystemStyleObject | SystemStyleObject[] | undefined;
     for (const props of args) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         const localCss = (props as any).css as SystemStyleObject | SystemStyleObject[] | undefined;
         if (!localCss || typeof localCss !== "object") {
             continue;
@@ -44,7 +44,7 @@ export function mergeChakraProps<T extends {}>(
     if (mergedCss) {
         mergedProps.css = mergedCss;
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     return mergedProps as any;
 }
 

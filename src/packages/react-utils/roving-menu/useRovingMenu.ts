@@ -39,7 +39,7 @@ export interface RovingMenuProps {
 
 /** @internal */
 export interface RovingMenuDomProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     ref: RefObject<any>;
     role: string;
     tabIndex: number;

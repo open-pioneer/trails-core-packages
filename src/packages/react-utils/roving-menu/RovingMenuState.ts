@@ -313,7 +313,7 @@ function getFocusTarget(
                 break;
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
             const item = items[nextIndex]!;
             if (!isDisabled(item)) {
                 return item;
@@ -332,7 +332,7 @@ function getFocusTarget(
                 break;
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
             const item = items[nextIndex]!;
             if (!isDisabled(item)) {
                 return item;
@@ -397,6 +397,6 @@ function getItemValue(item: HTMLElement | undefined): string | undefined {
 }
 
 function isDisabled(item: HTMLElement): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     return !!(item as any).disabled || item.ariaDisabled === "true";
 }

@@ -47,7 +47,7 @@ export interface CreateServiceOptions<References> {
 }
 
 type PartialServiceReferences<References> = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     [referenceName in keyof References]?: References[referenceName] extends any[]
         ? Partial<References[referenceName][number]>[]
         : Partial<References[referenceName]>;
@@ -85,9 +85,9 @@ export function createService<References extends {}, Interface extends {}>(
 
     const intl = createIntl(options);
     return new clazz({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         references: references as any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         referencesMeta: referencesMeta as any,
         properties: options?.properties ?? {},
         intl,

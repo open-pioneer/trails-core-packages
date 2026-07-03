@@ -243,7 +243,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         #shadowRoot: ShadowRoot | undefined;
         #instance: AppInstance | undefined;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         #deferredRestart: any; // A Timer
 
         static get observedAttributes(): string[] {
@@ -263,7 +263,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
             }
 
             if (import.meta.env.DEV) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // oxlint-disable-next-line @typescript-eslint/no-explicit-any
                 (this as any).$inspectElementState = () => this.#instance;
             }
         }

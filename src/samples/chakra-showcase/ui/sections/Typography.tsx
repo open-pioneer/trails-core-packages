@@ -68,7 +68,7 @@ const proseContent = String.raw`
 export function Typography() {
     const shikiAdapter = useMemo(
         () =>
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // oxlint-disable-next-line @typescript-eslint/no-explicit-any
             createShikiAdapter<HighlighterGeneric<any, any>>({
                 async load() {
                     const { createHighlighter } = await import("shiki");

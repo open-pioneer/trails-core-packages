@@ -88,11 +88,11 @@ export class AppInstance {
     #i18n: AppIntl | undefined;
 
     // Unused on purpose for easier debugging.
-    // eslint-disable-next-line no-unused-private-class-members
+    // oxlint-disable-next-line no-unused-private-class-members
     #appRoot: HTMLDivElement | undefined; // .pioneer-root
 
     // Unused on purpose for easier debugging.
-    // eslint-disable-next-line no-unused-private-class-members
+    // oxlint-disable-next-line no-unused-private-class-members
     #config: ApplicationConfig | undefined;
 
     #serviceLayer: ServiceLayer | undefined;
