@@ -6,7 +6,7 @@
     "singleQuote": false,
     "quoteProps": "preserve",
     "printWidth": 100,
-    "sortPackageJson": false,
+    "sortPackageJson": true,
     "ignorePatterns": [
         "dist",
         "node_modules",
