@@ -121,8 +121,8 @@ catalogs:
       specifier: ^9.1.7
       version: 9.1.7
     js-yaml:
-      specifier: ^4.3.0
-      version: 4.3.0
+      specifier: ^5.2.1
+      version: 5.2.1
     keycloak-js:
       specifier: ^26.2.4
       version: 26.2.4
@@ -299,7 +299,7 @@ importers:
         version: 9.1.7
       js-yaml:
         specifier: 'catalog:'
-        version: 4.3.0
+        version: 5.2.1
       lint-staged:
         specifier: 'catalog:'
         version: 17.0.8
@@ -3776,6 +3776,10 @@ packages:
 
   js-yaml@4.3.0:
     resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
+    hasBin: true
+
+  js-yaml@5.2.1:
+    resolution: {integrity: sha512-zfLtNfQqxVqq3uaTqSkh4x4hZw3KHobGUA0fJUj4wawW8bsQLTVqpHdXSIzidh7o+4lEW36tANuAGdaFx6Zgnw==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -8689,6 +8693,10 @@ snapshots:
       esprima: 4.0.1
 
   js-yaml@4.3.0:
+    dependencies:
+      argparse: 2.0.1
+
+  js-yaml@5.2.1:
     dependencies:
       argparse: 2.0.1
 
