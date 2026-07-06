@@ -3,9 +3,11 @@
 
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ServiceOptions } from "./Service";
 import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { type ApiMethods, type ColorModeValue, type ApiExtension } from "./api";
 import { AppInstance } from "./app";
 import { ErrorId } from "./errors";

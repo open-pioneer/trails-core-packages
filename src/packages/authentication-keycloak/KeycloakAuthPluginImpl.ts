@@ -9,7 +9,7 @@ import {
     PackageIntl,
     Service,
     ServiceOptions,
-    type DECLARE_SERVICE_INTERFACE
+    DECLARE_SERVICE_INTERFACE
 } from "@open-pioneer/runtime";
 import Keycloak, { KeycloakLogoutOptions } from "keycloak-js";
 import { sourceId } from "open-pioneer:source-info";

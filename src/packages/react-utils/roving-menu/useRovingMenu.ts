@@ -3,6 +3,7 @@
 
 import { KeyboardEvent, FocusEvent, RefObject, useCallback, useId, useMemo, useRef } from "react";
 import { useEvent } from "../useEvent";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { type RovingMenuRoot } from "./RovingMenuRoot";
 import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
 import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
