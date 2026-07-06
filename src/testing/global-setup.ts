@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 /**
  * This file is automatically executed by vitest before the actual test suite is run.
  * See `vite.config.ts` and https://vitest.dev/config/#setupfiles

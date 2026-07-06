@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { ForceAuth } from "@open-pioneer/authentication";
 import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 import { LogoutButton } from "./LogoutButton";

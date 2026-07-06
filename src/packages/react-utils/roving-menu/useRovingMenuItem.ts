@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { FocusEventHandler, useLayoutEffect, useMemo, useRef } from "react";
 import { MENU_OWNER_ATTR, MENU_VALUE_ATTR } from "./RovingMenuState";

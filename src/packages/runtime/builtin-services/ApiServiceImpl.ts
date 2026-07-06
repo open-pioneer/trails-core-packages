@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { ServiceOptions } from "../Service";
 import { ApiExtension, ApiMethod, ApiMethods, ApiService } from "../api";
 import { Error } from "@open-pioneer/core";
