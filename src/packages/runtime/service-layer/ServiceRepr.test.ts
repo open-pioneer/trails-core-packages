@@ -29,7 +29,7 @@ it("emits a deprecation warning via console.warn when `intl` is accessed", funct
     expect(calls.length).toBe(1);
     expect(calls[0]).toMatchInlineSnapshot(`
       [
-        "⚠️ DEPRECATED: ServiceOptions.intl in @open-pioneer/runtime (since 4.5.1, use currentIntl instead and watch for changes where appropriate) - Please update your code as this may be removed in future versions.",
+        "⚠️ DEPRECATED: ServiceOptions.intl (used by test-package::test-service) in @open-pioneer/runtime (since 4.6.0, use currentIntl instead and watch for changes where appropriate) - Please update your code as this may be removed in future versions.",
       ]
     `);
 
