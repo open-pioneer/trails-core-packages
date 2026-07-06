@@ -58,7 +58,6 @@
         "husky": "catalog:",
         "js-yaml": "catalog:",
         "lint-staged": "catalog:",
-        "prettier": "catalog:",
         "oxfmt": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
