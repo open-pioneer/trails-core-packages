@@ -21,7 +21,7 @@ jobs:
       # Checks and builds run on all branches (on _push_) but this workflow runs only on PR events.
       # If you know a smarter way, let us now.
       - name: Wait for other checks to succeed
-        uses: lewagon/wait-on-check-action@96d9100b431964d10e0136aff8b9ccb92470505e # v1.8.0
+        uses: lewagon/wait-on-check-action@1d57e2c51a58d812d2765e036a028b6bdb5a6154 # v1.8.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           check-name: "Build samples and documentation"
@@ -66,7 +66,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Deploy PR Preview
-        uses: open-pioneer/trails-repo-automation/.github/actions/deploy-pr-preview@885300a1d435f5341fe732c0cef9351c45c615b7 # main
+        uses: open-pioneer/trails-repo-automation/.github/actions/deploy-pr-preview@417c824a6aab4deea1edaa18e3a8b16f94c44594 # main
         with:
           src-repo: "core-packages"
           token: ${{ secrets.DEMO_DEPLOY_TOKEN }}
