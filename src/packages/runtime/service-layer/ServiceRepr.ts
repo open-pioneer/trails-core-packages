@@ -41,13 +41,6 @@ interface HmrState extends Resource {
     onIntlUsed(): void;
 }
 
-const intlDeprecation = deprecated({
-    name: "ServiceOptions.intl",
-    packageName: "@open-pioneer/runtime",
-    since: "4.5.1",
-    alternative: "use currentIntl instead and watch for changes where appropriate"
-});
-
 /**
  * Represents metadata and state of a service in the runtime.
  * `this.instance` is the actual service instance (when constructed).
@@ -123,6 +116,9 @@ export class ServiceRepr {
     /** Used in dev mode only. */
     #hmrState: HmrState | undefined = undefined;
 
+    /** Lazily initialized deprecation message for this service. */
+    #intlDeprecation: (() => void) | undefined = undefined;
+
     constructor(options: ServiceReprOptions) {
         const {
             name,
@@ -197,7 +193,7 @@ export class ServiceRepr {
      *
      * `destroy()` can be invoked once the final `removeRef()` has returned zero.
      */
-    create(options: Pick<ServiceOptions, "references" | "referencesMeta">) {
+    create(references: Pick<ServiceOptions, "references" | "referencesMeta">) {
         if (this.#state !== "constructing" || this.instance !== undefined) {
             throw new Error(
                 ErrorId.INTERNAL,
@@ -208,18 +204,17 @@ export class ServiceRepr {
         const intl = this.intl;
         const hmrState = (this.#hmrState = /*#__PURE__*/ createHmrState(this.id, intl));
         try {
-            this.#instance = this.#factory.create({
-                ...options,
+            const options = createServiceOptions({
+                references,
                 properties: this.properties,
-                get intl() {
-                    intlDeprecation();
-                    if (import.meta.hot) {
-                        hmrState?.onIntlUsed();
-                    }
-                    return intl.value;
+                currentIntl: this.intl,
+                intlDeprecation: () => {
+                    const deprecated = (this.#intlDeprecation ??= createIntlDeprecation(this.id));
+                    deprecated();
                 },
-                currentIntl: this.intl
+                hmrState
             });
+            this.#instance = this.#factory.create(options);
             this.#state = "constructed";
             this.#useCount = 1;
             return this.#instance;
@@ -375,6 +370,37 @@ function createHmrState(
         };
     }
     return hmrState;
+}
+
+function createServiceOptions(options: {
+    references: Pick<ServiceOptions, "references" | "referencesMeta">;
+    properties: Record<string, unknown>;
+    currentIntl: ReadonlyReactive<PackageIntl>;
+    intlDeprecation: () => void;
+    hmrState: HmrState | undefined;
+}) {
+    const { references, properties, currentIntl, intlDeprecation, hmrState } = options;
+    return {
+        ...references,
+        properties,
+        get intl() {
+            intlDeprecation();
+            if (import.meta.hot) {
+                hmrState?.onIntlUsed();
+            }
+            return currentIntl.value;
+        },
+        currentIntl
+    };
+}
+
+function createIntlDeprecation(serviceId: string) {
+    return deprecated({
+        name: `ServiceOptions.intl (used by ${serviceId})`,
+        packageName: "@open-pioneer/runtime",
+        since: "4.6.0",
+        alternative: "use currentIntl instead and watch for changes where appropriate"
+    });
 }
 
 const SERVICE_NAME_REGEX = /^[a-z0-9_-]+$/i;
