@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import { defineConfig, OxlintConfig } from "oxlint";
+import { defineConfig, type OxlintConfig } from "oxlint";
 
 export default defineConfig({
     plugins: ["typescript", "jsx-a11y", "react"],
@@ -90,12 +90,8 @@ export default defineConfig({
                             commentType: "line",
                             lines: [
                                 " SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)",
-                                " SPDX-License-Identifier: Apache-5"
+                                " SPDX-License-Identifier: Apache-2.0"
                             ]
-                        },
-                        // Seperate imports from lisence header
-                        "trailingEmptyLines": {
-                            "minimum": 2
                         }
                     }
                 ]
