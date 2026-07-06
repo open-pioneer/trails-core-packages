@@ -1,31 +1,31 @@
 {
     "name": "@open-pioneer/reactivity",
-    "description": "Provides integration for the reactivity API.",
     "version": "4.6.0",
+    "description": "Provides integration for the reactivity API.",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "homepage": "https://github.com/open-pioneer",
     "license": "Apache-2.0",
-    "main": "index.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/reactivity"
     },
-    "homepage": "https://github.com/open-pioneer",
-    "keywords": [
-        "open-pioneer-trails"
-    ],
+    "main": "index.ts",
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "react": "catalog:",
-        "@conterra/reactivity-core": "catalog:"
+        "@conterra/reactivity-core": "catalog:",
+        "react": "catalog:"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:*",
         "core-packages": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }

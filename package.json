@@ -2,8 +2,8 @@
     "name": "core-packages",
     "version": "4.6.0",
     "private": true,
-    "type": "module",
     "license": "Apache-2.0",
+    "type": "module",
     "scripts": {
         "clean": "rimraf dist && pnpm recursive exec rimraf dist",
         "dev": "vite",

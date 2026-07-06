@@ -4,13 +4,13 @@
     "private": true,
     "dependencies": {
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/notifier": "workspace:*",
-        "@open-pioneer/chakra-snippets": "workspace:*",
-        "@open-pioneer/runtime": "workspace:*",
-        "@open-pioneer/reactivity": "workspace:*",
         "@open-pioneer/base-theme": "workspace:*",
+        "@open-pioneer/chakra-snippets": "workspace:*",
+        "@open-pioneer/notifier": "workspace:*",
+        "@open-pioneer/reactivity": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
+        "react": "catalog:",
         "react-icons": "catalog:",
-        "shiki": "catalog:",
-        "react": "catalog:"
+        "shiki": "catalog:"
     }
 }
