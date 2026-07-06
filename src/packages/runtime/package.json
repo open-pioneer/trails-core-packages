@@ -2,29 +2,33 @@
     "name": "@open-pioneer/runtime",
     "version": "4.6.0",
     "description": "Implements the runtime environment for Open Pioneer Trails apps.",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "homepage": "https://github.com/open-pioneer",
     "license": "Apache-2.0",
-    "main": "index.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/runtime"
     },
-    "homepage": "https://github.com/open-pioneer",
-    "keywords": [
-        "open-pioneer-trails"
-    ],
+    "main": "index.ts",
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "@conterra/reactivity-core": "catalog:",
-        "@formatjs/intl": "catalog:",
-        "@formatjs/intl-localematcher": "catalog:",
         "@chakra-ui/react": "catalog:",
+        "@conterra/reactivity-core": "catalog:",
         "@emotion/cache": "catalog:",
         "@emotion/react": "catalog:",
-        "@open-pioneer/core": "workspace:*",
+        "@formatjs/intl": "catalog:",
+        "@formatjs/intl-localematcher": "catalog:",
         "@open-pioneer/base-theme": "workspace:*",
+        "@open-pioneer/core": "workspace:*",
         "@open-pioneer/reactivity": "workspace:*",
         "react": "catalog:",
         "react-dom": "catalog:"
@@ -32,9 +36,5 @@
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:*",
         "core-packages": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }

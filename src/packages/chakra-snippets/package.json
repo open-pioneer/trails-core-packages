@@ -1,26 +1,30 @@
 {
     "name": "@open-pioneer/chakra-snippets",
-    "description": "Contains snippets for Chakra UI.",
     "version": "4.6.0",
-    "main": "index.ts",
+    "description": "Contains snippets for Chakra UI.",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "homepage": "https://github.com/open-pioneer",
     "license": "Apache-2.0",
-    "type": "module",
     "repository": {
         "type": "git",
         "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/chakra-snippets"
     },
-    "homepage": "https://github.com/open-pioneer",
-    "keywords": [
-        "open-pioneer-trails"
-    ],
+    "type": "module",
+    "main": "index.ts",
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package",
         "update-snippets": "tsx ./build-utils/update-snippets.ts"
     },
     "dependencies": {
-        "@chakra-ui/react": "catalog:",
         "@ark-ui/react": "catalog:",
+        "@chakra-ui/react": "catalog:",
         "@open-pioneer/core": "workspace:*",
         "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:",
@@ -28,9 +32,5 @@
     },
     "devDependencies": {
         "core-packages": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }

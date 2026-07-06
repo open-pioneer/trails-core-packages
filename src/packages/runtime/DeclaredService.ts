@@ -70,7 +70,7 @@ export { DECLARE_SERVICE_INTERFACE };
 export type AssociatedInterfaceName<T> =
     T extends DeclaredService<infer InterfaceName>
         ? InterfaceName
-        : T extends { [DECLARE_SERVICE_INTERFACE]: string & infer InterfaceName }
+        : T extends { [DECLARE_SERVICE_INTERFACE]: string & (infer InterfaceName) }
           ? InterfaceName
           : never;
 
