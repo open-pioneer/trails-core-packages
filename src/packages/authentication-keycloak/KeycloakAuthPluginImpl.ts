@@ -114,6 +114,8 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
             // Note: keycloak.init() can also throw an exception, in addition to a rejected promise.
             // It may also just throw a string..
             const error = typeof e === "string" ? new Error(e) : e;
+
+            // oxlint-disable-next-line preserve-caught-error
             throw new Error("Failed to initialize keycloak session", { cause: error });
         }
 

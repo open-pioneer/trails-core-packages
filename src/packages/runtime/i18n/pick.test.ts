@@ -107,9 +107,8 @@ describe("formatting locale derivation", () => {
 
     it("requires script agreement when the message locale specifies a script", () => {
         const result = pickLocale(undefined, ["zh-Hant", "en"], ["zh-Hans-CN"]);
-        if (result.messageLocale.baseName === "zh-Hant") {
-            expect(result.locale.baseName).toBe("zh-Hant");
-        }
+        expect(result.messageLocale.baseName).toBe("zh-Hant");
+        expect(result.locale.baseName).toBe("zh-Hant");
     });
 });
 

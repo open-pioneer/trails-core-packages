@@ -9,7 +9,7 @@ export function expectError(impl: () => unknown): Error {
         if (e instanceof Error) {
             return e;
         }
-        throw new Error("unexpected error value, not an instance of Error");
+        throw new Error("unexpected error value, not an instance of Error", { cause: e });
     }
 }
 

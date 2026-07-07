@@ -5,7 +5,7 @@ import { expect, it } from "vitest";
 import { KeycloakOptions } from "./api";
 import { getKeycloakConfig } from "./getKeycloakConfig";
 
-it("expect to throw an error if the keycloakConfig not provided ", async () => {
+it("expect to throw an error if the keycloakConfig not provided", async () => {
     const keycloakOptions = {
         refreshOptions: {
             autoRefresh: true,

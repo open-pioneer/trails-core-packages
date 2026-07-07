@@ -4,12 +4,14 @@
 import { defineConfig, type OxlintConfig } from "oxlint";
 
 export default defineConfig({
-    plugins: ["typescript", "jsx-a11y", "react"],
+    plugins: ["typescript", "jsx-a11y", "react", "eslint", "import", "oxc", "promise", "vitest"],
     categories: {
-        correctness: "error"
+        correctness: "error",
+        perf: "warn"
     },
     env: {
-        builtin: true
+        builtin: true,
+        browser: true
     },
     ignorePatterns: [
         "**/dist",
@@ -20,6 +22,8 @@ export default defineConfig({
         "**/chakra-snippets",
         "**/.*"
     ],
+    // todo: sort rules list
+    // todo: fix warnings and errors
     rules: {
         "no-case-declarations": "error",
         "no-empty": "error",
@@ -65,13 +69,41 @@ export default defineConfig({
         "react/no-unknown-property": "error",
         "react/rules-of-hooks": "error",
         "react/react-in-jsx-scope": "off",
+        "vitest/require-mock-type-parameters": "off",
+        "eslint/max-params": "warn", // todo set max to 4
+        "react/self-closing-comp": "error",
+        "import/no-duplicates": "error",
+
+        "oxc/no-this-in-exported-function": "error",
+        "no-accumulating-spread": "warn",
+        // Todo add prefix to all rules? When are they needed?
+        "branches-sharing-code": "warn",
+        "no-commented-out-tests": "error",
+        "eslint/preserve-caught-error": "error",
+        "eslint/no-var": "error",
         "react/exhaustive-deps": [
             "warn",
             {
                 additionalHooks: "(useReactiveSnapshot|useComputed)"
             }
         ],
-        "jsx-a11y/control-has-associated-label": "off"
+        "jsx-a11y/control-has-associated-label": "off",
+        "@tony.ganchev/header/header": [
+            "error",
+            {
+                header: {
+                    commentType: "line",
+                    lines: [
+                        " SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)",
+                        " SPDX-License-Identifier: Apache-2.0"
+                    ]
+                },
+                // Separate imports from license header
+                "trailingEmptyLines": {
+                    "minimum": 2
+                }
+            }
+        ]
     },
     overrides: [
         {
@@ -80,28 +112,6 @@ export default defineConfig({
                 "typescript/no-non-null-assertion": "off",
                 "typescript/no-explicit-any": "off"
             }
-        },
-        {
-            files: ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx", "**/*.mjs", "**/*.cjs"],
-            rules: {
-                "@tony.ganchev/header/header": [
-                    "error",
-                    {
-                        header: {
-                            commentType: "line",
-                            lines: [
-                                " SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)",
-                                " SPDX-License-Identifier: Apache-2.0"
-                            ]
-                        },
-                        // Separate imports from license header
-                        "trailingEmptyLines": {
-                            "minimum": 2
-                        }
-                    }
-                ]
-            },
-            jsPlugins: ["@tony.ganchev/eslint-plugin-header"]
         }
     ]
 } satisfies OxlintConfig);

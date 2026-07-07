@@ -406,7 +406,7 @@ it("should apply the configured locale (de-DE)", async () => {
     expect(wrapper.textContent).toEqual("123,456");
 });
 
-describe("integration for error screen ", function () {
+describe("integration for error screen", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
