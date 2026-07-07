@@ -7,6 +7,9 @@
     "quoteProps": "preserve",
     "printWidth": 100,
     "sortPackageJson": true,
+    "sortImports": {
+        "newlinesBetween": false
+    },
     "ignorePatterns": [
         "dist",
         "node_modules",
