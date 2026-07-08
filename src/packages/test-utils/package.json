@@ -2,33 +2,33 @@
     "name": "@open-pioneer/test-utils",
     "version": "4.6.0",
     "description": "Contains test utilities that make it easier to test parts of an Open Pioneer Trails application.",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "homepage": "https://github.com/open-pioneer",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/test-utils"
     },
-    "homepage": "https://github.com/open-pioneer",
-    "keywords": [
-        "open-pioneer-trails"
-    ],
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package"
     },
     "dependencies": {
-        "@open-pioneer/runtime": "workspace:*",
         "@conterra/reactivity-core": "catalog:",
+        "@formatjs/intl": "catalog:",
+        "@open-pioneer/runtime": "workspace:*",
+        "@testing-library/dom": "catalog:",
         "@testing-library/react": "catalog:",
         "react": "catalog:",
-        "react-dom": "catalog:",
-        "@testing-library/dom": "catalog:",
-        "@formatjs/intl": "catalog:"
+        "react-dom": "catalog:"
     },
     "devDependencies": {
         "core-packages": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }
