@@ -4,19 +4,31 @@
  * @vitest-environment happy-dom
  */
 import { FormatNumber, SystemConfig, mergeConfigs, useChakraContext } from "@chakra-ui/react";
-import { computed, constant, getReactive, MaybeReactive } from "@conterra/reactivity-core";
+import {
+    MaybeReactive,
+    computed,
+    constant,
+    getReactive,
+    reactive
+} from "@conterra/reactivity-core";
 import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { findByTestId, findByText } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import { ReactNode, createElement } from "react";
+import { disableReactActWarnings } from "test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { PackageIntl, createEmptyPackageIntl } from "../i18n";
+import { PackageIntl, createEmptyPackageIntl, createPackageIntl } from "../i18n";
 import { Service, ServiceConstructor } from "../Service";
 import { InterfaceSpec, ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { ServiceRepr, createConstructorFactory } from "../service-layer/ServiceRepr";
-import { usePropertiesInternal, useServiceInternal, useServicesInternal } from "./hooks";
+import {
+    useIntlInternal,
+    usePropertiesInternal,
+    useServiceInternal,
+    useServicesInternal
+} from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
 
 // eslint-disable-next-line import/no-relative-packages
@@ -28,6 +40,7 @@ interface TestProvider {
 
 beforeEach(() => {
     document.body.innerHTML = "";
+    disableReactActWarnings();
 });
 
 afterEach(() => {
@@ -346,6 +359,30 @@ describe("properties", () => {
         }).toThrowErrorMatchingInlineSnapshot(
             `[Error: runtime:internal-error: Package 'test' was not found in application.]`
         );
+    });
+});
+
+describe("i18n messages", async () => {
+    it("should transport reactive changes of 'intl' messages", async () => {
+        function TestComponent() {
+            const intl = useIntlInternal("test");
+            return createElement("span", undefined, intl.formatMessage({ id: "test" }));
+        }
+
+        const intl = reactive(createPackageIntl("en-US", { test: "Hello World" }));
+        const { wrapper, integration } = createIntegration({ intl });
+
+        act(() => {
+            integration.render(createElement(TestComponent));
+        });
+
+        const node = await findByText(wrapper, "Hello World");
+        expect(node.textContent).toBe("Hello World");
+
+        intl.value = createPackageIntl("de-DE", { test: "Hallo Welt" });
+        await vi.waitFor(() => {
+            expect(node.textContent).toBe("Hallo Welt");
+        });
     });
 });
 
