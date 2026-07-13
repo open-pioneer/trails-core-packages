@@ -11,7 +11,7 @@ export interface PackageContextMethods {
     getProperties: (packageName: string) => Readonly<Record<string, unknown>>;
 
     /**
-     * NOTE: This is reactive during development for hot reloading support.
+     * NOTE: Reactive for fine grained i18n changes (during dev for i18n HMR) and for live local changes (also in production).
      */
     getIntl(packageName: string): PackageIntl;
 }
