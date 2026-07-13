@@ -25,7 +25,7 @@ export function AppUI() {
                 {intl.formatMessage({ id: "heading" })}
             </Heading>
             <Text>{intl.formatMessage({ id: "text" })}</Text>
-            <ExampleStack></ExampleStack>
+            <ExampleStack />
         </Container>
     );
 }
@@ -40,22 +40,22 @@ function ExampleStack() {
             align="stretch"
         >
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <InterpolationExample></InterpolationExample>
+                <InterpolationExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <PluralsExample></PluralsExample>
+                <PluralsExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <SelectionExample></SelectionExample>
+                <SelectionExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <NumberFormatExample></NumberFormatExample>
+                <NumberFormatExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <DateTimeFormatExample></DateTimeFormatExample>
+                <DateTimeFormatExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <RichTextExample></RichTextExample>
+                <RichTextExample />
             </Box>
         </Stack>
     );

@@ -137,6 +137,7 @@ export function DataDisplay() {
                     <Marquee.Viewport>
                         <Marquee.Content>
                             {marqueeItems.map((item, i) => (
+                                // oxlint-disable-next-line react/no-array-index-key
                                 <Marquee.Item key={i} px="2rem">
                                     {item.icon && (
                                         <item.icon

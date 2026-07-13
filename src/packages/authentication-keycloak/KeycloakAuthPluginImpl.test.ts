@@ -38,12 +38,14 @@ afterEach(() => {
     vi.restoreAllMocks();
 });
 
+// oxlint-disable-next-line vitest/expect-expect
 it("expect state to be 'authenticated'", async () => {
     MOCKS.init.mockResolvedValue(true);
     const { keycloakAuthPlugin } = await setup();
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "authenticated");
 });
 
+// oxlint-disable-next-line vitest/expect-expect
 it("expect state to be 'not-authenticated'", async () => {
     MOCKS.init.mockResolvedValue(false);
     const { keycloakAuthPlugin } = await setup();

@@ -67,6 +67,7 @@ it("should allow injection of all service implementations from the test", async 
     function Component() {
         const services = useServices("testService") as any[];
         const messages = services.map((service, index) => (
+            // oxlint-disable-next-line react/no-array-index-key
             <li key={index}>{service.getMessage()}</li>
         ));
         return (

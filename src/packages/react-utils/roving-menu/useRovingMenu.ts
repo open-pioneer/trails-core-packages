@@ -1,14 +1,22 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { KeyboardEvent, FocusEvent, RefObject, useCallback, useId, useMemo, useRef } from "react";
+import {
+    KeyboardEvent,
+    FocusEvent,
+    RefObject,
+    useCallback,
+    useId,
+    useMemo,
+    useRef,
+    useEffect
+} from "react";
 import { useEvent } from "../useEvent";
 // oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { type RovingMenuRoot } from "./RovingMenuRoot";
 import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
 import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
 import { useMenuState } from "./useMenuState";
-import { useEffect } from "react";
 
 /**
  * Properties supported when creating a new menu via {@link useRovingMenu}.

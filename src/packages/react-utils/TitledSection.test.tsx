@@ -18,12 +18,12 @@ it("renders a hierarchy of headings", () => {
             <TitledSection title="Site title">
                 <article>
                     <TitledSection title="Article Title">
-                        <TitledSection title="Article Child"></TitledSection>
+                        <TitledSection title="Article Child" />
                     </TitledSection>
-                    <TitledSection title="Heading ???"></TitledSection>
+                    <TitledSection title="Heading ???" />
                 </article>
                 <article>
-                    <TitledSection title="Other Article"></TitledSection>
+                    <TitledSection title="Other Article" />
                 </article>
             </TitledSection>
         </main>
@@ -199,7 +199,7 @@ it("limits heading level to 6", () => {
                     <TitledSection title="4">
                         <TitledSection title="5">
                             <TitledSection title="6">
-                                <TitledSection title="7"></TitledSection>
+                                <TitledSection title="7" />
                             </TitledSection>
                         </TitledSection>
                     </TitledSection>

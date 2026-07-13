@@ -62,6 +62,7 @@ export class ServiceRepr {
     ): ServiceRepr {
         const clazz = data.clazz;
         const name = data.name;
+        // oxlint-disable-next-line oxc/no-map-spread
         const dependencies = Object.entries(data.references ?? {}).map(
             ([name, referenceMetadata]) => {
                 return {

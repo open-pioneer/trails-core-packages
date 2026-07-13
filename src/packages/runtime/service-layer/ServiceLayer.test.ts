@@ -463,10 +463,10 @@ it("allows access to service instances if the dependency was declared", function
     });
     expect(resultUndeclared.type).toBe("undeclared");
 
-    const resultUndeclared2 = serviceLayer.getService("whatever", {
+    const resultUnknownPackage = serviceLayer.getService("whatever", {
         interfaceName: "testpackage.Interface"
     });
-    expect(resultUndeclared2.type, "undeclared");
+    expect(resultUnknownPackage.type).toBe("unknown-package");
 
     serviceLayer.destroy();
 });

@@ -33,7 +33,7 @@ export function AppUI() {
             <VStack>
                 <Text>Fetched Metadata:</Text>
                 <Box maxHeight="700px" maxWidth="100%" overflow="scroll" backgroundColor="#eeeeee">
-                    <ReactJson src={json}></ReactJson>
+                    <ReactJson src={json} />
                 </Box>
             </VStack>
         </Box>

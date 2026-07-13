@@ -10,6 +10,7 @@ import {
 import { it } from "vitest";
 
 // Tests are on type level only
+// oxlint-disable-next-line vitest/expect-expect
 it("dummy test to allow a file without any real tests", () => undefined);
 
 /**

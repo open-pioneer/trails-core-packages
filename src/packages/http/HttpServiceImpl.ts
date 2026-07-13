@@ -68,6 +68,7 @@ export class HttpServiceImpl implements HttpService {
             if (interceptor.beforeRequest) {
                 // NOTE: may change 'params.target'
                 try {
+                    // oxlint-disable-next-line no-await-in-loop
                     await interceptor.beforeRequest(params);
                 } catch (e) {
                     rethrowAbortError(e);

@@ -50,6 +50,7 @@ export function Disclosure() {
                     color="fg.disabled"
                 >
                     {accordionItems.map((item, index) => (
+                        // oxlint-disable-next-line react/no-array-index-key
                         <Accordion.Item key={index} value={item.value}>
                             <Accordion.ItemTrigger>
                                 <Span flex="1">{item.title}</Span>
@@ -85,6 +86,7 @@ export function Disclosure() {
                 <Carousel.Root slideCount={carouselItems.length} maxW="md" mx="90">
                     <Carousel.ItemGroup>
                         {carouselItems.map((_, index) => (
+                            // oxlint-disable-next-line react/no-array-index-key
                             <Carousel.Item key={index} index={index}>
                                 <Box
                                     w="100%"
@@ -175,6 +177,7 @@ export function Disclosure() {
                 >
                     <Steps.List>
                         {steps.map((step, index) => (
+                            // oxlint-disable-next-line react/no-array-index-key
                             <Steps.Item key={index} index={index} title={step.title}>
                                 <Steps.Indicator />
                                 <Steps.Title>{step.title}</Steps.Title>
@@ -184,6 +187,7 @@ export function Disclosure() {
                     </Steps.List>
 
                     {steps.map((step, index) => (
+                        // oxlint-disable-next-line react/no-array-index-key
                         <Steps.Content key={index} index={index}>
                             {step.description}
                         </Steps.Content>

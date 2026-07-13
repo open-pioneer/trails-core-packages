@@ -37,7 +37,7 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                 </Text>
                 {errorMessage && (
                     <Alert.Root status="error">
-                        <Alert.Indicator></Alert.Indicator>
+                        <Alert.Indicator />
                         <Alert.Content>
                             <Alert.Title>{errorMessage}</Alert.Title>
                         </Alert.Content>
@@ -45,7 +45,7 @@ export function LoginMask({ doLogin, doFail, wasLoggedIn }: LoginMaskProps) {
                 )}
                 {showLoggedOutMessage && (
                     <Alert.Root status="info" mb={5}>
-                        <Alert.Indicator></Alert.Indicator>
+                        <Alert.Indicator />
                         <Alert.Content>
                             <Alert.Description>
                                 Logout successful.
