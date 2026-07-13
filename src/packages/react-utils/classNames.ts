@@ -2,13 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export type ClassValue =
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | ClassDictionary
-    | ClassValue[];
+    string | number | boolean | null | undefined | ClassDictionary | ClassValue[];
 export interface ClassDictionary {
     [key: string]: unknown;
 }

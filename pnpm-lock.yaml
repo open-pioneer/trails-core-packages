@@ -599,6 +599,9 @@ importers:
       core-packages:
         specifier: workspace:*
         version: link:../../..
+      test-utils:
+        specifier: workspace:*
+        version: link:../../testing/test-utils
     publishDirectory: dist
 
   src/packages/test-utils:

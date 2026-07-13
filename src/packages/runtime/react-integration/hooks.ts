@@ -113,19 +113,11 @@ export function usePropertiesInternal(packageName: string): Readonly<Record<stri
 export function useIntlInternal(packageName: string): PackageIntl {
     const context = useContext(PackageContext);
     const contextData = checkContext("useIntl", context);
-
-    if (import.meta.hot) {
-        // Only reactive during dev
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const intl = useReactiveSnapshot(
-            () => contextData.getIntl(packageName),
-            [packageName, contextData]
-        );
-        return intl;
-    } else {
-        // Not reactive in production code
-        return contextData.getIntl(packageName);
-    }
+    const intl = useReactiveSnapshot(
+        () => contextData.getIntl(packageName),
+        [packageName, contextData]
+    );
+    return intl;
 }
 
 function checkContext(
