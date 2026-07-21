@@ -1,5 +1,15 @@
 # @open-pioneer/chakra-snippets
 
+## 4.7.0
+
+### Minor Changes
+
+- e433296: Update Chakra UI to 3.36.0
+
+### Patch Changes
+
+- e433296: Add new Floating Panel snippet
+
 ## 4.6.0
 
 ### Patch Changes
