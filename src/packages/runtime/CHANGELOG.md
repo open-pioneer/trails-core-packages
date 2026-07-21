@@ -1,5 +1,28 @@
 # @open-pioneer/runtime
 
+## 4.7.0
+
+### Minor Changes
+
+- 278515d: Deprecate the following methods on the `ApplicationContext`: `getLocale`, `setLocale`, `getSupportedLocales()`.
+  Use the alternatives provided by the new `LocaleService` instead.
+- e433296: Update Chakra UI to 3.36.0
+- 278515d: Add `runtime.LocaleService` and opt-in reactive locale switching.
+
+    You can opt-in by configuring the property `advanced.enableLiveLocaleChanges` when calling `createCustomElement`.
+    Once enabled, locale switches can be done without restarting the application.
+    Use `LocaleService.changeLocale` to update the application's locale.
+
+    Also export `parseLocale` and `tryParseLocale` algorithms.
+    These can be used to construct a (cleaned up) `Intl.Locale` object from a string.
+
+### Patch Changes
+
+- 8c277a2: Include service id in deprecation message of 'serviceOptions.intl'.
+- 78aad9d: Refactor: use private javascript properties instead of typescript private keyword.
+- 7c7e6d1: Refactor equality comparisons using shallow equals from @open-pioneer/core.
+- 8b5c324: Fix 'useIntl' not transporting reactive changes of the intl object in production (e.g. when the locale changes).
+
 ## 4.6.0
 
 ### Minor Changes
