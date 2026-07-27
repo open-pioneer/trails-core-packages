@@ -19,9 +19,9 @@ import { config as defaultTrailsConfig } from "@open-pioneer/base-theme";
 import { Error } from "@open-pioneer/core";
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { FC, PropsWithChildren, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { ColorModeValue } from "../api";
 import { APP_ROOT_CLASS, getBuiltinStyles, getStylesRoot, RootNode } from "../dom";
 import { ErrorId } from "../errors";
-import { ColorModeValue } from "../api";
 
 /** @internal */
 export type CustomChakraProviderProps = PropsWithChildren<{

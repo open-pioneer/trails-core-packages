@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { renderHook } from "@testing-library/react";
+import { useInsertionEffect } from "react";
 import { expect, it, vi } from "vitest";
 import { useEvent } from "./useEvent";
-import { useInsertionEffect } from "react";
 
 it("provides a stable handler function", () => {
     const hook = renderHook(

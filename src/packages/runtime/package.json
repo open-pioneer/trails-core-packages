@@ -13,6 +13,10 @@
         "directory": "src/packages/runtime"
     },
     "main": "index.ts",
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package"
     },
@@ -33,9 +37,5 @@
         "@open-pioneer/test-utils": "workspace:*",
         "core-packages": "workspace:*",
         "test-utils": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }

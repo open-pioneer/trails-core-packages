@@ -303,7 +303,7 @@ function getFocusTarget(
     }
 
     if (direction === "forward") {
-        for (let nextIndex = currentIndex + 1; ;) {
+        for (let nextIndex = currentIndex + 1; ; ) {
             if (nextIndex >= items.length) {
                 if (!wrap) {
                     break;
@@ -322,7 +322,7 @@ function getFocusTarget(
             nextIndex += 1;
         }
     } else {
-        for (let nextIndex = currentIndex - 1; ;) {
+        for (let nextIndex = currentIndex - 1; ; ) {
             if (nextIndex < 0) {
                 if (!wrap) {
                     break;

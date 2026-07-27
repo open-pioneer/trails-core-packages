@@ -3,9 +3,9 @@
 
 import { createLogger, Error } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
-import { ReferenceMeta } from "../Service";
 import { RUNTIME_PACKAGE_NAME } from "../builtin-services";
 import { ErrorId } from "../errors";
+import { ReferenceMeta } from "../Service";
 import {
     InterfaceSpec,
     isAllImplementationsSpec,

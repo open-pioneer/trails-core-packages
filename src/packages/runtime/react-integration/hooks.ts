@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Error } from "@open-pioneer/core";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { useContext, useMemo } from "react";
 import { InterfaceNameForServiceType } from "../DeclaredService";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
-import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 
 /*
 

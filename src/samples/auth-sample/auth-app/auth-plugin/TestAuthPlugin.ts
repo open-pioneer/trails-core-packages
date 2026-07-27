@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { reactive } from "@conterra/reactivity-core";
 import { AuthPlugin, AuthState, LoginBehavior } from "@open-pioneer/authentication";
 import { Service } from "@open-pioneer/runtime";
 import { createElement } from "react";
 import { LoginMask } from "./LoginMask";
-import { reactive } from "@conterra/reactivity-core";
 
 export class TestAuthPlugin implements Service, AuthPlugin {
     #state = reactive<AuthState>({

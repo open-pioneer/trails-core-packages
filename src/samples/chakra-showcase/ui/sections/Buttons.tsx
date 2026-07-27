@@ -13,8 +13,8 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
-import { Presenter } from "../components/Presenter";
 import { ButtonWithOptionalTooltip } from "../components/ButtonWithOptionalTooltip";
+import { Presenter } from "../components/Presenter";
 
 export function Buttons() {
     const data = "The quick brown fox jumps over the lazy dog";

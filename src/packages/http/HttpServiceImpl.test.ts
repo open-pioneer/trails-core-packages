@@ -7,8 +7,8 @@
 import { isAbortError, throwAbortError } from "@open-pioneer/core";
 import { createService } from "@open-pioneer/test-utils/services";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { HttpServiceImpl } from "./HttpServiceImpl";
 import { Interceptor } from "./api";
+import { HttpServiceImpl } from "./HttpServiceImpl";
 
 afterEach(() => {
     vi.restoreAllMocks();

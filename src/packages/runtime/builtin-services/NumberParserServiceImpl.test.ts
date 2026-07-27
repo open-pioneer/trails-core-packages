@@ -1,10 +1,10 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { expect, it } from "vitest";
-import { ServiceOptions } from "../Service";
-import { createCustomElement } from "../CustomElement";
 import { renderComponentShadowDOM } from "@open-pioneer/test-utils/web-components";
+import { expect, it } from "vitest";
+import { createCustomElement } from "../CustomElement";
+import { ServiceOptions } from "../Service";
 import { NumberParserServiceImpl } from "./NumberParserServiceImpl";
 
 it("can use the NumberParserService to parse a string to a number", async function () {

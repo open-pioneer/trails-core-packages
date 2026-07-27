@@ -15,8 +15,8 @@ import { useEvent } from "../useEvent";
 // oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { type RovingMenuRoot } from "./RovingMenuRoot";
 import { InternalMenuState, MENU_ID_ATTR, RovingMenuState } from "./RovingMenuState";
-import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
 import { useMenuState } from "./useMenuState";
+import { RovingMenuItemDomProps, useRovingMenuItemImpl } from "./useRovingMenuItem";
 
 /**
  * Properties supported when creating a new menu via {@link useRovingMenu}.

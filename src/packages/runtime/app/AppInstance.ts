@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { SystemConfig } from "@chakra-ui/react";
 import {
     computed,
     constant,
@@ -48,8 +49,6 @@ import { ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { gatherConfig } from "./gatherConfig";
-
-import { SystemConfig } from "@chakra-ui/react";
 import { logError } from "./logErrors";
 
 const LOG = createLogger(sourceId);

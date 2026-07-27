@@ -3,8 +3,8 @@
 
 import { reactive } from "@conterra/reactivity-core";
 import { expect, it } from "vitest";
-import { parseLocale } from "../i18n/intl-locale";
 import { AppIntl, I18nOptions } from "../i18n/AppIntl";
+import { parseLocale } from "../i18n/intl-locale";
 import { LocaleServiceImpl } from "./LocaleServiceImpl";
 
 it("exposes locale and messageLocale from AppIntl", async () => {

@@ -32,13 +32,13 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { Checkbox as CheckboxSnippet } from "@open-pioneer/chakra-snippets/checkbox";
-import { Slider } from "@open-pioneer/chakra-snippets/slider";
+import { PasswordInput } from "@open-pioneer/chakra-snippets/password-input";
 import {
     RadioGroup as RadioGroupSnippet,
     Radio as RadioSnippet
 } from "@open-pioneer/chakra-snippets/radio";
+import { Slider } from "@open-pioneer/chakra-snippets/slider";
 import { Switch as SwitchSnippet } from "@open-pioneer/chakra-snippets/switch";
-import { PasswordInput } from "@open-pioneer/chakra-snippets/password-input";
 import { Presenter } from "../components/Presenter";
 
 export function Forms() {

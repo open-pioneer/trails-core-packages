@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { describe, expect, it } from "vitest";
-import { LocalePicker } from "./pick";
 import { parseLocale, tryParseLocale } from "./intl-locale";
+import { LocalePicker } from "./pick";
 
 describe("browser-only matching (no preferredLocale)", () => {
     it("picks a supported locale that matches the user's browser language", () => {

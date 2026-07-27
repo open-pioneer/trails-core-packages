@@ -1,7 +1,7 @@
-import { $, usePowerShell } from "zx";
-import glob from "fast-glob";
 import { unlinkSync } from "fs";
 import { resolve } from "path";
+import glob from "fast-glob";
+import { $, usePowerShell } from "zx";
 
 const os = process.platform; //returns win32 even on win 64bit
 if (os === "win32") {

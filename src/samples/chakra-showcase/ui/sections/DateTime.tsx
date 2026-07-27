@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Box, DatePicker, Portal } from "@chakra-ui/react";
-import { Presenter } from "../components/Presenter";
 import { LuCalendar } from "react-icons/lu";
+import { Presenter } from "../components/Presenter";
 
 export function DateTime() {
     return (

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { SystemStyleObject } from "@chakra-ui/react";
-import { classNames } from "./classNames";
 import { HTMLAttributes, AriaAttributes, useMemo, AriaRole } from "react";
+import { classNames } from "./classNames";
 
 /**
  * Common properties supported by all public react components.

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { createCustomElement } from "@open-pioneer/runtime";
-import { SampleComponentWithCss } from "styling-sample-components";
 import * as appMetadata from "open-pioneer:app";
+import { SampleComponentWithCss } from "styling-sample-components";
 
 const Element = createCustomElement({
     component: SampleComponentWithCss,

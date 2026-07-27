@@ -19,10 +19,10 @@ import {
     Text
 } from "@chakra-ui/react";
 import { Prose } from "@open-pioneer/chakra-snippets/prose";
+import { useMemo } from "react";
 import { LuCircleCheck, LuCircleDashed } from "react-icons/lu";
 import type { HighlighterGeneric } from "shiki";
 import { Presenter } from "../components/Presenter";
-import { useMemo } from "react";
 
 const file = {
     code: `

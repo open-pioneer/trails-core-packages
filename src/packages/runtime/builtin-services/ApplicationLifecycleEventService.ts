@@ -3,9 +3,9 @@
 
 import { createLogger, Error } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
-import { ServiceOptions } from "../Service";
 import { ApplicationLifecycleListener } from "../api";
 import { ErrorId } from "../errors";
+import { ServiceOptions } from "../Service";
 
 const LOG = createLogger(sourceId);
 

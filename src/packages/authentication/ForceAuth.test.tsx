@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { Box } from "@chakra-ui/react";
+import { reactive, Reactive } from "@conterra/reactivity-core";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { expect, it } from "vitest";
-import { reactive, Reactive } from "@conterra/reactivity-core";
-import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
 import { AuthState, LoginBehavior, SessionInfo } from "./api";
-import { Box } from "@chakra-ui/react";
+import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
 
 it("renders children if the user is authenticated", async () => {
     const mocks = {

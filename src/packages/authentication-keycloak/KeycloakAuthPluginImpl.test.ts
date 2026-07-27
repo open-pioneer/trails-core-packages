@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { NotificationService, NotificationOptions } from "@open-pioneer/notifier";
+import { createService } from "@open-pioneer/test-utils/services";
+import { KeycloakLoginOptions, KeycloakLogoutOptions } from "keycloak-js";
 import { afterEach, beforeEach, it, vi, expect, onTestFinished } from "vitest";
 import { KeycloakAuthPluginImpl } from "./KeycloakAuthPluginImpl";
-import { createService } from "@open-pioneer/test-utils/services";
-import { NotificationService, NotificationOptions } from "@open-pioneer/notifier";
-import { KeycloakLoginOptions, KeycloakLogoutOptions } from "keycloak-js";
 
 //https://vitest.dev/api/vi.html#vi-mock
 const MOCKS = vi.hoisted(() => {

@@ -33,8 +33,8 @@ import {
     IoLogoVimeo
 } from "react-icons/io5";
 import { LuCheck, LuPackage, LuShip } from "react-icons/lu";
-import { Presenter } from "../components/Presenter";
 import imageUrl from "../../images/trails_logo.svg";
+import { Presenter } from "../components/Presenter";
 
 export function DataDisplay() {
     const dataListStats = [
