@@ -19,7 +19,6 @@ export default defineConfig({
         "**/node_modules",
         "**/temp",
         "**/test-data",
-        "support/licenses",
         "**/chakra-snippets",
         "**/.*"
     ],
