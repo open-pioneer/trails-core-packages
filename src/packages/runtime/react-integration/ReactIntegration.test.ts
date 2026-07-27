@@ -32,7 +32,7 @@ import {
 } from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
 
-// eslint-disable-next-line import/no-relative-packages
+// oxlint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
 
 interface TestProvider {
