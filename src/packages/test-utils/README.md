@@ -121,9 +121,7 @@ import { createIntl } from "@open-pioneer/test-utils/vanilla";
 
 // In your test:
 const intl = createIntl(/* optional arguments such as messages or locale */);
-intl.formatMessage({
-    /* ... */
-});
+intl.formatMessage({/* ... */});
 ```
 
 ## License

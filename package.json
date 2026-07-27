@@ -39,16 +39,13 @@
         "@testing-library/react": "catalog:",
         "@testing-library/user-event": "catalog:",
         "@tony.ganchev/eslint-plugin-header": "catalog:",
-        "@types/js-yaml": "catalog:",
         "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "@vitejs/plugin-react": "catalog:",
         "fast-glob": "catalog:",
-        "handlebars": "catalog:",
         "happy-dom": "catalog:",
         "husky": "catalog:",
-        "js-yaml": "catalog:",
         "lint-staged": "catalog:",
         "oxlint": "catalog:",
         "prettier": "catalog:",
@@ -67,5 +64,5 @@
         "node": ">= 24",
         "pnpm": ">= 10"
     },
-    "packageManager": "pnpm@11.8.0"
+    "packageManager": "pnpm@11.17.0"
 }
