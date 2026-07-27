@@ -23,12 +23,6 @@ export default defineConfig({
         "**/.*"
     ],
     rules: {
-        "max-params": [
-            "warn",
-            {
-                max: 4
-            }
-        ],
         "no-array-constructor": "error",
         "no-case-declarations": "error",
         "no-empty": "error",
@@ -42,6 +36,23 @@ export default defineConfig({
                 allowTernary: true
             }
         ],
+        "no-var": "error",
+        "import/no-duplicates": "error",
+        "max-params": [
+            "warn",
+            {
+                max: 4
+            }
+        ],
+        "prefer-const": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error",
+        "preserve-caught-error": "error",
+        "oxc/branches-sharing-code": "warn",
+        "oxc/no-accumulating-spread": "warn",
+        "oxc/no-this-in-exported-function": "error",
+
+        // Prefix vars with "_" to silence this warning.
         "no-unused-vars": [
             "warn",
             {
@@ -53,11 +64,9 @@ export default defineConfig({
                 argsIgnorePattern: "^_"
             }
         ],
-        "no-var": "error",
-        "prefer-const": "error",
-        "prefer-rest-params": "error",
-        "prefer-spread": "error",
-        "preserve-caught-error": "error",
+
+        // Enforce copyright header on top of the file.
+        // NOTE: use your own copyright header (if the existing does not apply) or remove this rule completely.
         "@tony.ganchev/header/header": [
             "error",
             {
@@ -69,30 +78,13 @@ export default defineConfig({
                     ]
                 },
                 // Separate imports from license header
-                "trailingEmptyLines": {
-                    "minimum": 2
+                trailingEmptyLines: {
+                    minimum: 2
                 }
             }
         ],
-        "import/no-duplicates": "error",
-        "jsx-a11y/control-has-associated-label": "off",
-        "oxc/branches-sharing-code": "warn",
-        "oxc/no-accumulating-spread": "warn",
-        "oxc/no-this-in-exported-function": "error",
-        "react/display-name": "error",
-        "react/exhaustive-deps": [
-            "warn",
-            {
-                additionalHooks: "(useReactiveSnapshot|useComputed)"
-            }
-        ],
-        "react/jsx-no-comment-textnodes": "error",
-        "react/jsx-no-target-blank": "error",
-        "react/no-unescaped-entities": "error",
-        "react/no-unknown-property": "error",
-        "react/react-in-jsx-scope": "off",
-        "react/rules-of-hooks": "error",
-        "react/self-closing-comp": "error",
+
+        // TypeScript rules
         "typescript/ban-ts-comment": "error",
         "typescript/no-empty-object-type": "off",
         "typescript/no-explicit-any": "error",
@@ -102,11 +94,33 @@ export default defineConfig({
         "typescript/no-unnecessary-type-constraint": "error",
         "typescript/no-unsafe-function-type": "error",
         "typescript/triple-slash-reference": "error",
+
+        // React rules
+        "react/display-name": "error",
+        "react/jsx-no-comment-textnodes": "error",
+        "react/jsx-no-target-blank": "error",
+        "react/no-unescaped-entities": "error",
+        "react/no-unknown-property": "error",
+        "react/react-in-jsx-scope": "off",
+        "react/rules-of-hooks": "error",
+        "react/self-closing-comp": "error",
+        "react/exhaustive-deps": [
+            "warn",
+            {
+                additionalHooks: "(useReactiveSnapshot|useComputed)"
+            }
+        ],
+
+        // Accessibility
+        "jsx-a11y/control-has-associated-label": "off",
+
+        // Vitest rules
         "vitest/no-commented-out-tests": "error",
         "vitest/require-mock-type-parameters": "off"
     },
     overrides: [
         {
+            // Allow non-null assertions ("!") and "as any" casts in unit tests for convenience.
             files: ["**/*.test.*"],
             rules: {
                 "typescript/no-non-null-assertion": "off",
