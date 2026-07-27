@@ -14,4 +14,4 @@
 "@open-pioneer/http": patch
 ---
 
-Migrated from eslint to oxlint.
+Migrated from eslint to oxlint and from prettier to oxfmt.
