@@ -34,6 +34,7 @@ If you notice a problem with one of the snippets, or if snippets are missing, fe
 - `data-list.tsx`
 - `empty-state.tsx`
 - `field.tsx`
+- `floating-panel.tsx`
 - `input-group.tsx`
 - `link-button.tsx`
 - `native-select.tsx`

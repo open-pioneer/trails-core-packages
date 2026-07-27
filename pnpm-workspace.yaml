@@ -6,8 +6,8 @@ packages:
 # https://pnpm.io/catalogs
 catalog:
   # Frontend dependencies
-  "@chakra-ui/cli": ^3.36.0
-  "@chakra-ui/react": ^3.36.0
+  "@chakra-ui/cli": ^3.36.1
+  "@chakra-ui/react": ^3.36.1
   "@ark-ui/react": "^5.37.2" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@conterra/reactivity-core": ^0.8.6
   "@conterra/reactivity-events": ^0.8.6
@@ -81,7 +81,7 @@ overrides:
   "stylis@<4.3.5": ">= 4.3.5"
 
   # Ensure patched packages have the expected version (patch was tested with this version):
-  "@chakra-ui/react": "3.36.0"
+  "@chakra-ui/react": "3.36.1"
   "@ark-ui/react": "5.37.2"
   "@zag-js/interact-outside": "1.41.2"
 
