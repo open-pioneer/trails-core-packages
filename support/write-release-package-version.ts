@@ -36,7 +36,8 @@ async function writeRootVersion(version: string): Promise<void> {
         rootPackageJson = JSON.parse(rawRootPackageJson) as Record<string, unknown>;
     } catch (error) {
         throw new Error(
-            `Root package.json parsing error: ${error instanceof Error ? error.message : String(error)}`
+            `Root package.json parsing error: ${error instanceof Error ? error.message : String(error)}`,
+            { cause: error }
         );
     }
 
