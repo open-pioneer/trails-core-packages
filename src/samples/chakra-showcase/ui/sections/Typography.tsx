@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import {
     Blockquote,
     Box,
@@ -18,10 +19,10 @@ import {
     Text
 } from "@chakra-ui/react";
 import { Prose } from "@open-pioneer/chakra-snippets/prose";
+import { useMemo } from "react";
 import { LuCircleCheck, LuCircleDashed } from "react-icons/lu";
 import type { HighlighterGeneric } from "shiki";
 import { Presenter } from "../components/Presenter";
-import { useMemo } from "react";
 
 const file = {
     code: `
@@ -68,7 +69,7 @@ const proseContent = String.raw`
 export function Typography() {
     const shikiAdapter = useMemo(
         () =>
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // oxlint-disable-next-line @typescript-eslint/no-explicit-any
             createShikiAdapter<HighlighterGeneric<any, any>>({
                 async load() {
                     const { createHighlighter } = await import("shiki");

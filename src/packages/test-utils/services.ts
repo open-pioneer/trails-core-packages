@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { reactive } from "@conterra/reactivity-core";
 import { ReferenceMeta, Service, ServiceConstructor } from "@open-pioneer/runtime";
 import { createIntl } from "./vanilla";
@@ -47,7 +48,7 @@ export interface CreateServiceOptions<References> {
 }
 
 type PartialServiceReferences<References> = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     [referenceName in keyof References]?: References[referenceName] extends any[]
         ? Partial<References[referenceName][number]>[]
         : Partial<References[referenceName]>;
@@ -85,9 +86,9 @@ export function createService<References extends {}, Interface extends {}>(
 
     const intl = createIntl(options);
     return new clazz({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         references: references as any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         referencesMeta: referencesMeta as any,
         properties: options?.properties ?? {},
         intl,

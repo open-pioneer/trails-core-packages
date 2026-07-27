@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
+import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { render } from "@testing-library/react";
+import { ReactNode, useEffect, useRef } from "react";
 import { expect, it } from "vitest";
 import {
     ConfigureTitledSection,
@@ -8,8 +11,6 @@ import {
     TitledSection,
     useHeadingLevel
 } from "./TitledSection";
-import { ReactNode, useEffect, useRef } from "react";
-import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 
 it("renders a hierarchy of headings", () => {
     const content = renderContent(
@@ -17,12 +18,12 @@ it("renders a hierarchy of headings", () => {
             <TitledSection title="Site title">
                 <article>
                     <TitledSection title="Article Title">
-                        <TitledSection title="Article Child"></TitledSection>
+                        <TitledSection title="Article Child" />
                     </TitledSection>
-                    <TitledSection title="Heading ???"></TitledSection>
+                    <TitledSection title="Heading ???" />
                 </article>
                 <article>
-                    <TitledSection title="Other Article"></TitledSection>
+                    <TitledSection title="Other Article" />
                 </article>
             </TitledSection>
         </main>
@@ -198,7 +199,7 @@ it("limits heading level to 6", () => {
                     <TitledSection title="4">
                         <TitledSection title="5">
                             <TitledSection title="6">
-                                <TitledSection title="7"></TitledSection>
+                                <TitledSection title="7" />
                             </TitledSection>
                         </TitledSection>
                     </TitledSection>

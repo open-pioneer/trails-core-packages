@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { createLogger, Error } from "@open-pioneer/core";
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
@@ -273,7 +274,7 @@ function setPath(object: Record<string, unknown>, path: string[], value: unknown
 
     let current = object;
     for (let i = 0, n = path.length - 1; i < n; ++i) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
         const p = path[i]!;
 
         const next = current[p];
@@ -286,7 +287,7 @@ function setPath(object: Record<string, unknown>, path: string[], value: unknown
         current = next;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
     const prop = path[path.length - 1]!;
     current[prop] = value;
 }

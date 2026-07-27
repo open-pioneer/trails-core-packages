@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 declare const INTERNAL_ASSOCIATED_SERVICE_METADATA: unique symbol;
 declare const ERROR: unique symbol;
 
@@ -70,7 +71,7 @@ export { DECLARE_SERVICE_INTERFACE };
 export type AssociatedInterfaceName<T> =
     T extends DeclaredService<infer InterfaceName>
         ? InterfaceName
-        : T extends { [DECLARE_SERVICE_INTERFACE]: string & infer InterfaceName }
+        : T extends { [DECLARE_SERVICE_INTERFACE]: string & (infer InterfaceName) }
           ? InterfaceName
           : never;
 

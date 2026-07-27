@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { describe, expect, it } from "vitest";
-import { LocalePicker } from "./pick";
 import { parseLocale, tryParseLocale } from "./intl-locale";
+import { LocalePicker } from "./pick";
 
 describe("browser-only matching (no preferredLocale)", () => {
     it("picks a supported locale that matches the user's browser language", () => {
@@ -106,9 +107,8 @@ describe("formatting locale derivation", () => {
 
     it("requires script agreement when the message locale specifies a script", () => {
         const result = pickLocale(undefined, ["zh-Hant", "en"], ["zh-Hans-CN"]);
-        if (result.messageLocale.baseName === "zh-Hant") {
-            expect(result.locale.baseName).toBe("zh-Hant");
-        }
+        expect(result.messageLocale.baseName).toBe("zh-Hant");
+        expect(result.locale.baseName).toBe("zh-Hant");
     });
 });
 

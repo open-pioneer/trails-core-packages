@@ -1,36 +1,36 @@
 {
     "name": "@open-pioneer/authentication",
-    "description": "Authentication API for Open Pioneer Trails applications.",
-    "license": "Apache-2.0",
     "version": "4.6.0",
-    "main": "index.ts",
+    "description": "Authentication API for Open Pioneer Trails applications.",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "homepage": "https://github.com/open-pioneer",
+    "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/authentication"
     },
-    "homepage": "https://github.com/open-pioneer",
-    "keywords": [
-        "open-pioneer-trails"
-    ],
+    "main": "index.ts",
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package"
     },
     "dependencies": {
         "@chakra-ui/react": "catalog:",
+        "@conterra/reactivity-core": "catalog:",
         "@open-pioneer/core": "workspace:*",
+        "@open-pioneer/reactivity": "workspace:*",
         "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:",
-        "react-use": "catalog:",
-        "@conterra/reactivity-core": "catalog:",
-        "@open-pioneer/reactivity": "workspace:*"
+        "react-use": "catalog:"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:*",
         "core-packages": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }

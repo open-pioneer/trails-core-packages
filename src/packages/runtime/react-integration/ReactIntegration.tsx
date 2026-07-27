@@ -1,10 +1,12 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { SystemConfig, TooltipPropsProvider } from "@chakra-ui/react";
 import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { Error } from "@open-pioneer/core";
 import { ReactNode, StrictMode } from "react";
 import { createRoot, Root } from "react-dom/client";
+import { ColorModeValue } from "../api";
 import { RootNode } from "../dom";
 import { ErrorId } from "../errors";
 import { InterfaceSpec, renderInterfaceSpec } from "../service-layer/InterfaceSpec";
@@ -13,7 +15,6 @@ import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { renderAmbiguousServiceChoices } from "../service-layer/ServiceLookup";
 import { CustomChakraProvider } from "./ChakraProvider";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
-import { ColorModeValue } from "../api";
 
 export interface ReactIntegrationOptions {
     rootNode: RootNode;

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import {
     Box,
     Button,
@@ -11,6 +12,9 @@ import {
     Text,
     Textarea
 } from "@chakra-ui/react";
+import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
+import { Field } from "@open-pioneer/chakra-snippets/field";
+import { NativeSelectField, NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
 import {
     NotificationLevel,
     NotificationOptions,
@@ -19,9 +23,6 @@ import {
 } from "@open-pioneer/notifier";
 import { useService } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { Checkbox } from "@open-pioneer/chakra-snippets/checkbox";
-import { NativeSelectField, NativeSelectRoot } from "@open-pioneer/chakra-snippets/native-select";
-import { Field } from "@open-pioneer/chakra-snippets/field";
 
 export function AppUI() {
     const notifications = useService<NotificationService>("notifier.NotificationService");

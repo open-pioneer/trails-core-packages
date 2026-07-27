@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { SystemStyleObject } from "@chakra-ui/react";
-import { classNames } from "./classNames";
 import { HTMLAttributes, AriaAttributes, useMemo, AriaRole } from "react";
+import { classNames } from "./classNames";
 
 /**
  * Common properties supported by all public react components.
@@ -93,7 +94,7 @@ export function useCommonComponentProps(
                 continue;
             }
             if (COPY_PROP_RE.test(k)) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // oxlint-disable-next-line @typescript-eslint/no-explicit-any
                 containerProps[k] = (props as any)[k];
             }
         }

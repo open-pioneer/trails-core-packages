@@ -1,12 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
+import { screen, render } from "@testing-library/react";
+import { useIntl, useProperties, useService, useServices } from "open-pioneer:react-hooks";
 /**
  * @vitest-environment happy-dom
  */
 import { expect, it } from "vitest";
-import { screen, render } from "@testing-library/react";
 import { PackageContextProvider, PackageContextProviderProps } from "./react";
-import { useIntl, useProperties, useService, useServices } from "open-pioneer:react-hooks";
 
 it("should allow injection of service from the test", async () => {
     function Component() {
@@ -66,6 +67,7 @@ it("should allow injection of all service implementations from the test", async 
     function Component() {
         const services = useServices("testService") as any[];
         const messages = services.map((service, index) => (
+            // oxlint-disable-next-line react/no-array-index-key
             <li key={index}>{service.getMessage()}</li>
         ));
         return (

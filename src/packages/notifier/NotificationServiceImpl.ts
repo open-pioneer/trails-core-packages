@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { createToaster, CreateToasterProps, CreateToasterReturn } from "@chakra-ui/react";
 import { createLogger, Resource } from "@open-pioneer/core";
 import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
@@ -35,7 +36,7 @@ const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
 
 export class NotificationServiceImpl implements InternalNotificationAPI {
     #uiPresent = false;
-    #uiCheckTimeoutId: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    #uiCheckTimeoutId: any; // oxlint-disable-line @typescript-eslint/no-explicit-any
 
     readonly toaster: ToasterObject;
 

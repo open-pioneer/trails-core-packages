@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { PackageIntl } from "./i18n";
 
@@ -37,7 +38,7 @@ export interface ReferenceMeta {
  * The key for the reference metadata is the reference's name.
  */
 export type ReferencesMeta<References extends {}> = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     [referenceName in keyof References]: References[referenceName] extends any[]
         ? ReferenceMeta[]
         : ReferenceMeta;

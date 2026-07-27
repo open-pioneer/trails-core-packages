@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { createLogger, Error } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
-import { ReferenceMeta } from "../Service";
 import { RUNTIME_PACKAGE_NAME } from "../builtin-services";
 import { ErrorId } from "../errors";
+import { ReferenceMeta } from "../Service";
 import {
     InterfaceSpec,
     isAllImplementationsSpec,
@@ -209,7 +210,7 @@ export class ServiceLayer {
             throw new Error(ErrorId.INTERNAL, "Invalid service state.");
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         const references: Record<string, any> = {};
         const referencesMeta: Record<string, ReferenceMeta | ReferenceMeta[]> = {};
 

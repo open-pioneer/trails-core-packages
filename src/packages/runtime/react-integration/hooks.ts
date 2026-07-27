@@ -1,12 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { Error } from "@open-pioneer/core";
+import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 import { useContext, useMemo } from "react";
 import { InterfaceNameForServiceType } from "../DeclaredService";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
-import { useReactiveSnapshot } from "@open-pioneer/reactivity";
 
 /*
 
@@ -48,7 +49,7 @@ export function useServiceInternal<ServiceType = unknown>(
 ): ServiceType;
 export function useServiceInternal(
     packageName: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     interfaceName: any,
     options?: UseServiceOptions
 ): unknown {
@@ -79,7 +80,7 @@ export function useServicesInternal<ServiceType = unknown>(
     interfaceName: InterfaceNameForServiceType<ServiceType>,
     options?: UseServiceOptions
 ): ServiceType[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 export function useServicesInternal(packageName: string, interfaceName: any): unknown[] {
     const context = useContext(PackageContext);
     const services = useMemo(

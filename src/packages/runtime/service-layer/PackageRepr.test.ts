@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { constant } from "@conterra/reactivity-core";
 import { expect, it } from "vitest";
 import { AppIntl, createEmptyPackageIntl, parseLocale, PackageIntl } from "../i18n";

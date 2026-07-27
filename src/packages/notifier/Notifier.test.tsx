@@ -1,13 +1,14 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { createService } from "@open-pioneer/test-utils/services";
 import { act, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import { createElement } from "react";
 import { expect, it } from "vitest";
+import { NotifierProperties, OffsetsObject } from "./api";
 import { NotificationServiceImpl } from "./NotificationServiceImpl";
 import { Notifier, NotifierProps } from "./Notifier";
-import { NotifierProperties, OffsetsObject } from "./api";
 
 it("shows notifications as toasts", async () => {
     const { service, content } = create();

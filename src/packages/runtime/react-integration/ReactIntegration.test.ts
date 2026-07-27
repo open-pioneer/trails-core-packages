@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 /**
  * @vitest-environment happy-dom
  */
@@ -30,8 +31,7 @@ import {
     useServicesInternal
 } from "./hooks";
 import { ReactIntegration } from "./ReactIntegration";
-
-// eslint-disable-next-line import/no-relative-packages
+// oxlint-disable-next-line import/no-relative-packages
 import { UIWithProperties, UIWithService, UIWithServices } from "./test-data/test-package/UI";
 
 interface TestProvider {
@@ -457,7 +457,7 @@ it("should apply the configured chakra config", async () => {
     expect(node.textContent).toBe("Color: #123456");
 });
 
-describe("integration for error screen ", function () {
+describe("integration for error screen", function () {
     it("should create an ReactIntegration for an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),

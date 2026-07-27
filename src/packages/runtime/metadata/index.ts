@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { MarkedServiceFactoryConstructor, ServiceConstructor } from "../Service";
 import { ObservableBox } from "./ObservableBox";
 
@@ -78,7 +79,7 @@ export interface ServiceMetadata {
     name: string;
 
     /** Service constructor responsible for creating a new instance. */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     clazz: ServiceConstructor<any> | MarkedServiceFactoryConstructor<any>;
 
     /**

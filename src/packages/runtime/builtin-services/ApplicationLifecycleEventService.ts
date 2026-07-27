@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { createLogger, Error } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
-import { ServiceOptions } from "../Service";
 import { ApplicationLifecycleListener } from "../api";
 import { ErrorId } from "../errors";
+import { ServiceOptions } from "../Service";
 
 const LOG = createLogger(sourceId);
 
@@ -19,7 +20,7 @@ export class ApplicationLifecycleEventService {
         const listeners = options.references.listeners;
         const listenersMeta = options.referencesMeta.listeners;
         this.#listeners = listeners.map((listener, index) => [
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
             listenersMeta[index]!.serviceId,
             listener
         ]);

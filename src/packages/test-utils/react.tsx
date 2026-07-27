@@ -1,7 +1,8 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-import type { ColorModeValue, PackageIntl, Service } from "@open-pioneer/runtime";
+
 import { computed, constant, ReadonlyReactive } from "@conterra/reactivity-core";
+import type { ColorModeValue, PackageIntl, Service } from "@open-pioneer/runtime";
 import {
     APP_ROOT_CLASS,
     CustomChakraProvider,
@@ -11,7 +12,7 @@ import {
 import { FC, ReactNode, useInsertionEffect, useMemo } from "react";
 import { createIntl } from "./vanilla";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyService = Service<any>;
 
 export interface PackageContextProviderProps {

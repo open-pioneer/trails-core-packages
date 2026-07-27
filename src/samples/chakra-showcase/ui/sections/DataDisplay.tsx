@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import {
     Avatar,
     AvatarGroup,
@@ -32,8 +33,8 @@ import {
     IoLogoVimeo
 } from "react-icons/io5";
 import { LuCheck, LuPackage, LuShip } from "react-icons/lu";
-import { Presenter } from "../components/Presenter";
 import imageUrl from "../../images/trails_logo.svg";
+import { Presenter } from "../components/Presenter";
 
 export function DataDisplay() {
     const dataListStats = [
@@ -136,6 +137,7 @@ export function DataDisplay() {
                     <Marquee.Viewport>
                         <Marquee.Content>
                             {marqueeItems.map((item, i) => (
+                                // oxlint-disable-next-line react/no-array-index-key
                                 <Marquee.Item key={i} px="2rem">
                                     {item.icon && (
                                         <item.icon

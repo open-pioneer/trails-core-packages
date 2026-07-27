@@ -1,12 +1,13 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
+import { Box } from "@chakra-ui/react";
+import { reactive, Reactive } from "@conterra/reactivity-core";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { expect, it } from "vitest";
-import { reactive, Reactive } from "@conterra/reactivity-core";
-import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
 import { AuthState, LoginBehavior, SessionInfo } from "./api";
-import { Box } from "@chakra-ui/react";
+import { ErrorFallbackProps, ForceAuth } from "./ForceAuth";
 
 it("renders children if the user is authenticated", async () => {
     const mocks = {
@@ -28,7 +29,8 @@ it("renders children if the user is authenticated", async () => {
         </PackageContextProvider>
     );
 
-    await screen.findByTestId("1234");
+    const result = await screen.findByTestId("1234");
+    expect(result.textContent).toBe("testDiv");
 });
 
 it("renders no children if the state is pending", async () => {
@@ -71,7 +73,8 @@ it("renders AuthFallback if the user is not authenticated", async () => {
         </PackageContextProvider>
     );
 
-    await screen.findByTestId("LoginFallBack");
+    const result = await screen.findByTestId("LoginFallBack");
+    expect(result).toBeInTheDocument();
 });
 
 it("renders the AuthFallback with custom props", async () => {
@@ -198,9 +201,7 @@ it("calls a login effect if present", async () => {
     );
 
     await waitFor(() => {
-        if (!loginCalled) {
-            throw new Error("login effect was not called");
-        }
+        expect(loginCalled).toBe(true);
     });
 });
 
@@ -221,7 +222,7 @@ it("renders the error fallback if authentication state is erroneous", async () =
 
     render(
         <PackageContextProvider {...mocks}>
-            <ForceAuth errorFallback={ErrorFallback}></ForceAuth>
+            <ForceAuth errorFallback={ErrorFallback} />
         </PackageContextProvider>
     );
 
@@ -244,7 +245,7 @@ it("uses the renderErrorFallback property if authentication state is erroneous",
         <PackageContextProvider {...mocks}>
             <ForceAuth
                 renderErrorFallback={() => <Box data-testid="ErrorFallback-box">{testInput}</Box>}
-            ></ForceAuth>
+            />
         </PackageContextProvider>
     );
 
@@ -275,7 +276,7 @@ it("should use renderErrorFallback property rather than errorFallback property i
                 renderErrorFallback={() => (
                     <Box data-testid="ErrorFallback-box">{renderErrorFallbackInner}</Box>
                 )}
-            ></ForceAuth>
+            />
         </PackageContextProvider>
     );
 

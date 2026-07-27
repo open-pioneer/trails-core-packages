@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import {
     Box,
     Container,
@@ -11,10 +12,10 @@ import {
     Text,
     VStack
 } from "@chakra-ui/react";
+import { NumberInputField, NumberInputRoot } from "@open-pioneer/chakra-snippets/number-input";
+import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { Radio, RadioGroup } from "@open-pioneer/chakra-snippets/radio";
-import { NumberInputField, NumberInputRoot } from "@open-pioneer/chakra-snippets/number-input";
 
 export function AppUI() {
     const intl = useIntl();
@@ -24,7 +25,7 @@ export function AppUI() {
                 {intl.formatMessage({ id: "heading" })}
             </Heading>
             <Text>{intl.formatMessage({ id: "text" })}</Text>
-            <ExampleStack></ExampleStack>
+            <ExampleStack />
         </Container>
     );
 }
@@ -39,22 +40,22 @@ function ExampleStack() {
             align="stretch"
         >
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <InterpolationExample></InterpolationExample>
+                <InterpolationExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <PluralsExample></PluralsExample>
+                <PluralsExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <SelectionExample></SelectionExample>
+                <SelectionExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <NumberFormatExample></NumberFormatExample>
+                <NumberFormatExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <DateTimeFormatExample></DateTimeFormatExample>
+                <DateTimeFormatExample />
             </Box>
             <Box w="100%" p={4} borderWidth="1px" borderColor="colorPalette.border">
-                <RichTextExample></RichTextExample>
+                <RichTextExample />
             </Box>
         </Stack>
     );

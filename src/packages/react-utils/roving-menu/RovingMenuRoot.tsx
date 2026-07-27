@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { FC, memo, ReactNode } from "react";
 import { RovingMenuState, MenuStateContext } from "./RovingMenuState";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { type useRovingMenu } from "./useRovingMenu";
 
 /**

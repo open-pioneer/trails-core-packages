@@ -1,8 +1,10 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { Box } from "@chakra-ui/react";
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { ComponentType, FC, ReactNode, useEffect, useMemo } from "react";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { AuthPlugin, AuthService } from "./api";
 import { useAuthState } from "./useAuthState";
 

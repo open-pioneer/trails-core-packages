@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import {
     Box,
     Button,
@@ -12,8 +13,8 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
-import { Presenter } from "../components/Presenter";
 import { ButtonWithOptionalTooltip } from "../components/ButtonWithOptionalTooltip";
+import { Presenter } from "../components/Presenter";
 
 export function Buttons() {
     const data = "The quick brown fox jumps over the lazy dog";

@@ -1,14 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { dirname, resolve } from "node:path";
 import { pioneer } from "@open-pioneer/vite-plugin-pioneer";
 import react from "@vitejs/plugin-react";
 import glob from "fast-glob";
-import { dirname, resolve } from "node:path";
 import { defineConfig } from "vite";
-
-// @ts-expect-error "invalid typings"
-import eslint from "vite-plugin-eslint";
 
 // Find sites under src/samples with an index.html and build them all.
 const sampleSites = glob
@@ -20,7 +17,6 @@ const sampleSites = glob
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     const devMode = mode === "development";
-    const isVitest = mode === "test";
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
     const logLevel = devMode ? "DEBUG" : "WARN";
@@ -66,8 +62,7 @@ export default defineConfig(({ mode }) => {
                 // Apps to distribute as .js files for embedded use cases
                 apps: []
             }),
-            react(),
-            !isVitest && eslint()
+            react()
         ],
 
         // Ignore irrelevant deprecations

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
 import { createLogger, deprecated, destroyResource, Error, Resource } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
@@ -54,6 +55,7 @@ export class ServiceRepr {
     ): ServiceRepr {
         const clazz = data.clazz;
         const name = data.name;
+        // oxlint-disable-next-line oxc/no-map-spread
         const dependencies = Object.entries(data.references ?? {}).map(
             ([name, referenceMetadata]) => {
                 return {

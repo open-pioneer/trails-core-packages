@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { constant } from "@conterra/reactivity-core";
 import { describe, expect, it } from "vitest";
 import { createEmptyPackageIntl } from "../i18n";
@@ -462,10 +463,10 @@ it("allows access to service instances if the dependency was declared", function
     });
     expect(resultUndeclared.type).toBe("undeclared");
 
-    const resultUndeclared2 = serviceLayer.getService("whatever", {
+    const resultUnknownPackage = serviceLayer.getService("whatever", {
         interfaceName: "testpackage.Interface"
     });
-    expect(resultUndeclared2.type, "undeclared");
+    expect(resultUnknownPackage.type).toBe("unknown-package");
 
     serviceLayer.destroy();
 });

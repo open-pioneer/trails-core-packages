@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { useInsertionEffect, useRef } from "react";
 
 /**
@@ -27,7 +28,7 @@ export function useEvent<Args extends unknown[], Ret>(
     // useRef instead of useMemo/useCallback for guaranteed single time construction.
     const stableRef = useRef<typeof handler>(undefined);
     stableRef.current ??= function useEventHandler(...args: Args): Ret {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
         const currentHandler = handlerRef.current!;
         return currentHandler(...args);
     };

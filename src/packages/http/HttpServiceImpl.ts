@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { throwAbortError, rethrowAbortError } from "@open-pioneer/core";
 import { ServiceOptions } from "@open-pioneer/runtime";
 import type {
@@ -20,7 +21,7 @@ export class HttpServiceImpl implements HttpService {
     constructor(options: ServiceOptions<References>) {
         this.#interceptors = options.references.interceptors.map(
             (interceptor, index): [string, Interceptor] => {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
                 const id = options.referencesMeta.interceptors[index]!.serviceId;
                 return [id, interceptor];
             }
@@ -67,6 +68,7 @@ export class HttpServiceImpl implements HttpService {
             if (interceptor.beforeRequest) {
                 // NOTE: may change 'params.target'
                 try {
+                    // oxlint-disable-next-line no-await-in-loop
                     await interceptor.beforeRequest(params);
                 } catch (e) {
                     rethrowAbortError(e);

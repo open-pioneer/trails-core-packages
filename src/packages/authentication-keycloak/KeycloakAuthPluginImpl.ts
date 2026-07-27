@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { reactive } from "@conterra/reactivity-core";
 import { AuthState, LoginBehavior } from "@open-pioneer/authentication";
 import { createLogger, destroyResource, Resource } from "@open-pioneer/core";
@@ -8,7 +9,7 @@ import {
     PackageIntl,
     Service,
     ServiceOptions,
-    type DECLARE_SERVICE_INTERFACE
+    DECLARE_SERVICE_INTERFACE
 } from "@open-pioneer/runtime";
 import Keycloak, { KeycloakLogoutOptions } from "keycloak-js";
 import { sourceId } from "open-pioneer:source-info";
@@ -29,7 +30,7 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
     #keycloakOptions: ResolvedKeycloakOptions;
     #keycloak: Keycloak;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     #timerId: any;
     #watcher: Resource | undefined;
 
@@ -113,6 +114,8 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
             // Note: keycloak.init() can also throw an exception, in addition to a rejected promise.
             // It may also just throw a string..
             const error = typeof e === "string" ? new Error(e) : e;
+
+            // oxlint-disable-next-line preserve-caught-error
             throw new Error("Failed to initialize keycloak session", { cause: error });
         }
 

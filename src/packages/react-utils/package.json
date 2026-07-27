@@ -1,18 +1,22 @@
 {
     "name": "@open-pioneer/react-utils",
-    "description": "Contains common react utilities used by the open pioneer trails project",
     "version": "4.6.0",
+    "description": "Contains common react utilities used by the open pioneer trails project",
+    "keywords": [
+        "open-pioneer-trails"
+    ],
+    "homepage": "https://github.com/open-pioneer",
     "license": "Apache-2.0",
-    "main": "index.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/react-utils"
     },
-    "homepage": "https://github.com/open-pioneer",
-    "keywords": [
-        "open-pioneer-trails"
-    ],
+    "main": "index.ts",
+    "publishConfig": {
+        "directory": "dist",
+        "linkDirectory": false
+    },
     "scripts": {
         "build": "build-pioneer-package"
     },
@@ -27,9 +31,5 @@
         "@open-pioneer/test-utils": "workspace:*",
         "core-packages": "workspace:*",
         "test-utils": "workspace:*"
-    },
-    "publishConfig": {
-        "directory": "dist",
-        "linkDirectory": false
     }
 }

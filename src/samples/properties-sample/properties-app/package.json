@@ -5,8 +5,8 @@
     "dependencies": {
         "@chakra-ui/react": "catalog:",
         "@open-pioneer/core": "workspace:*",
-        "@open-pioneer/runtime": "workspace:*",
         "@open-pioneer/notifier": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:"
     }
 }

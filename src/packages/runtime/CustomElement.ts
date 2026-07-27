@@ -1,14 +1,17 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { createLogger, Error } from "@open-pioneer/core";
-import type { ServiceOptions } from "./Service";
 import { sourceId } from "open-pioneer:source-info";
 import { ComponentType } from "react";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
 import { type ApiMethods, type ColorModeValue, type ApiExtension } from "./api";
 import { AppInstance } from "./app";
 import { ErrorId } from "./errors";
 import { ApplicationMetadata } from "./metadata";
+// oxlint-disable-next-line @typescript-eslint/no-unused-vars
+import type { ServiceOptions } from "./Service";
 
 const LOG = createLogger(sourceId);
 
@@ -243,7 +246,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         #shadowRoot: ShadowRoot | undefined;
         #instance: AppInstance | undefined;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         #deferredRestart: any; // A Timer
 
         static get observedAttributes(): string[] {
@@ -263,7 +266,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
             }
 
             if (import.meta.env.DEV) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // oxlint-disable-next-line @typescript-eslint/no-explicit-any
                 (this as any).$inspectElementState = () => this.#instance;
             }
         }

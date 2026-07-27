@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { expect, it } from "vitest";
-import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
-import { render, screen } from "@testing-library/react";
-import { createPackageIntl } from "../i18n";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
+import { render, screen } from "@testing-library/react";
+import { expect, it } from "vitest";
+import { createPackageIntl } from "../i18n";
+import { ErrorScreen, MESSAGES_BY_LOCALE } from "./ErrorScreen";
 
 it("should successfully create an error screen component", async () => {
     const intl = createPackageIntl("en", MESSAGES_BY_LOCALE["en"]);

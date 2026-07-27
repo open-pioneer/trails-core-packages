@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
+import { SystemConfig } from "@chakra-ui/react";
 import {
     computed,
     constant,
@@ -47,8 +49,6 @@ import { ReferenceSpec } from "../service-layer/InterfaceSpec";
 import { createPackages, PackageRepr } from "../service-layer/PackageRepr";
 import { ServiceLayer } from "../service-layer/ServiceLayer";
 import { gatherConfig } from "./gatherConfig";
-
-import { SystemConfig } from "@chakra-ui/react";
 import { logError } from "./logErrors";
 
 const LOG = createLogger(sourceId);
@@ -88,11 +88,11 @@ export class AppInstance {
     #i18n: AppIntl | undefined;
 
     // Unused on purpose for easier debugging.
-    // eslint-disable-next-line no-unused-private-class-members
+    // oxlint-disable-next-line no-unused-private-class-members
     #appRoot: HTMLDivElement | undefined; // .pioneer-root
 
     // Unused on purpose for easier debugging.
-    // eslint-disable-next-line no-unused-private-class-members
+    // oxlint-disable-next-line no-unused-private-class-members
     #config: ApplicationConfig | undefined;
 
     #serviceLayer: ServiceLayer | undefined;

@@ -1,14 +1,16 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable unused-imports/no-unused-vars */
+
+import { it } from "vitest";
+/* oxlint-disable unused-imports/no-unused-vars */
 import {
     DECLARE_SERVICE_INTERFACE,
     DeclaredService,
     InterfaceNameForServiceType
 } from "./DeclaredService";
-import { it } from "vitest";
 
 // Tests are on type level only
+// oxlint-disable-next-line vitest/expect-expect
 it("dummy test to allow a file without any real tests", () => undefined);
 
 /**

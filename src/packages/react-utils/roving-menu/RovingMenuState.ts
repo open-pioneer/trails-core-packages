@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { Reactive, reactive } from "@conterra/reactivity-core";
 import { createLogger } from "@open-pioneer/core";
 import { sourceId } from "open-pioneer:source-info";
@@ -302,7 +303,7 @@ function getFocusTarget(
     }
 
     if (direction === "forward") {
-        for (let nextIndex = currentIndex + 1; ;) {
+        for (let nextIndex = currentIndex + 1; ; ) {
             if (nextIndex >= items.length) {
                 if (!wrap) {
                     break;
@@ -313,7 +314,7 @@ function getFocusTarget(
                 break;
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
             const item = items[nextIndex]!;
             if (!isDisabled(item)) {
                 return item;
@@ -321,7 +322,7 @@ function getFocusTarget(
             nextIndex += 1;
         }
     } else {
-        for (let nextIndex = currentIndex - 1; ;) {
+        for (let nextIndex = currentIndex - 1; ; ) {
             if (nextIndex < 0) {
                 if (!wrap) {
                     break;
@@ -332,7 +333,7 @@ function getFocusTarget(
                 break;
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
             const item = items[nextIndex]!;
             if (!isDisabled(item)) {
                 return item;
@@ -397,6 +398,6 @@ function getItemValue(item: HTMLElement | undefined): string | undefined {
 }
 
 function isDisabled(item: HTMLElement): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     return !!(item as any).disabled || item.ariaDisabled === "true";
 }

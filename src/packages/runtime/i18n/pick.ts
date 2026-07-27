@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
 import { match as bestFitMatch } from "@formatjs/intl-localematcher";
 import { Error } from "@open-pioneer/core";
 import { ErrorId } from "../errors";
@@ -73,7 +74,7 @@ export class LocalePicker {
     ): Intl.Locale {
         const candidates = preferred ? [preferred] : browserLocales;
         // #supportedLocales is guaranteed non-empty (see constructor).
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
         const firstSupported = this.#supportedLocales[0]!;
         if (candidates.length === 0) {
             return firstSupported;

@@ -1,14 +1,15 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
+
+import { reactive, syncWatch } from "@conterra/reactivity-core";
+import { createService } from "@open-pioneer/test-utils/services";
+import { createElement, ReactNode } from "react";
 /**
  * @vitest-environment node
  */
 import { it, expect } from "vitest";
 import { AuthPlugin, AuthState, LoginFallback } from "./api";
-import { createElement, ReactNode } from "react";
-import { createService } from "@open-pioneer/test-utils/services";
 import { AuthServiceImpl } from "./AuthServiceImpl";
-import { reactive, syncWatch } from "@conterra/reactivity-core";
 
 it("forwards the authentication plugin's state changes", async () => {
     const plugin = new TestPlugin();

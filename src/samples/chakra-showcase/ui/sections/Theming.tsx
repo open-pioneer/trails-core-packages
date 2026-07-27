@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Box, HStack } from "@chakra-ui/react";
-import { Presenter } from "../components/Presenter";
 import { ColorPaletteSwitcher } from "../components/ColorPaletteSwitcher";
+import { Presenter } from "../components/Presenter";
 
 export function Theming() {
     return (
