@@ -113,6 +113,7 @@ export default defineConfig({
 
         // Accessibility
         "jsx-a11y/control-has-associated-label": "off",
+        "jsx-a11y/prefer-tag-over-role": "off",
 
         // Vitest rules
         "vitest/no-commented-out-tests": "error",
