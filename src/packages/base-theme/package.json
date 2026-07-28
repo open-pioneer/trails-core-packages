@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/base-theme",
-    "version": "4.6.0",
+    "version": "4.7.0",
     "description": "This package provides the default theme for all Open Pioneer Trails applications.",
     "keywords": [
         "open-pioneer-trails"

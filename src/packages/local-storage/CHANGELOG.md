@@ -1,5 +1,16 @@
 # @open-pioneer/local-storage
 
+## 4.7.0
+
+### Minor Changes
+
+- e433296: Update Chakra UI to 3.36.1
+
+### Patch Changes
+
+- 9d84f1e: Migrated from eslint to oxlint and from prettier to oxfmt.
+- 78aad9d: Refactor: use private javascript properties instead of typescript private keyword.
+
 ## 4.6.0
 
 ## 4.5.0
