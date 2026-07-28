@@ -1,5 +1,15 @@
 # @open-pioneer/react-utils
 
+## 4.7.0
+
+### Minor Changes
+
+- e433296: Update Chakra UI to 3.36.1
+
+### Patch Changes
+
+- 9d84f1e: Migrated from eslint to oxlint and from prettier to oxfmt.
+
 ## 4.6.0
 
 ### Minor Changes
@@ -21,7 +31,9 @@
     This allows to use the hook in components which do not necessarily need to be used inside a `TitledSection`.
 
     ```tsx
-    const currentHeading: number | undefined = useHeadingLevel({ required: false });
+    const currentHeading: number | undefined = useHeadingLevel({
+        required: false
+    });
     ```
 
 ## 4.5.0
