@@ -62,6 +62,21 @@ export function dependencySourcemaps(): Plugin {
                     return;
                 }
 
+                // Only use source maps with inlined sources. Only a few packages do not inline their sources,
+                // and these packages trigger nonsensical vite warnings because vite confuses the optimized chunk with the source module
+                // when validating sourcemap paths:
+                //
+                //      Sourcemap for "foo/trails-openlayers-base-packages/node_modules/.vite/deps/globals-D5aHNsrt.js" points to a source file outside its package: "foo/trails-openlayers-base-packages/node_modules/.pnpm/geotiff@3.0.5/node_modules/geotiff/src/globals.js"
+                if (
+                    !Array.isArray(map.sourcesContent) ||
+                    map.sourcesContent.some((c: unknown) => c == null)
+                ) {
+                    // console.debug(
+                    //     `[dependency-sourcemaps] Ignoring source map for ${moduleId} since it contains non-inlined sources`
+                    // );
+                    return;
+                }
+
                 // Drop the comment so rolldown uses the map we return instead.
                 return { code: code.replace(SOURCE_MAP_URL_RE, ""), map };
             }
