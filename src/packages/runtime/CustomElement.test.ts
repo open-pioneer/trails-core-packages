@@ -476,11 +476,11 @@ describe("application lifecycle events", function () {
           [MockFunction error] {
             "calls": [
               [
-                "#1",
+                "[ERROR] @open-pioneer/runtime/app/logErrors: #1",
                 [Error: help!],
               ],
               [
-                "#2",
+                "[ERROR] @open-pioneer/runtime/app/logErrors: #2",
                 [Error: runtime:config-resolution-failed: Failed to resolve application properties.],
               ],
             ],

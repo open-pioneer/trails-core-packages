@@ -221,5 +221,6 @@ const ignoreMissingTranslationError: OnErrorFn = (err) => {
         return;
     }
 
+    // oxlint-disable-next-line no-console
     console.error(err);
 };

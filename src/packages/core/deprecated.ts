@@ -81,6 +81,7 @@ export function deprecated(options: DeprecatedOptions): () => void {
         }
 
         called = true;
+        // oxlint-disable-next-line no-console
         console.warn(buildDeprecationWarning(options));
     };
 }
