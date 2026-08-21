@@ -1,0 +1,30 @@
+# Replaces test-and-build.yml + version.yml.
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: CI
+    uses: open-pioneer/trails-repo-automation/.github/workflows/shared-ci.yml@dev
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      demo-id: core-packages
+      build-license-report: false
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      DEMO_DEPLOY_TOKEN: ${{ secrets.DEMO_DEPLOY_TOKEN }}
