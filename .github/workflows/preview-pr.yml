@@ -4,7 +4,7 @@ name: Preview PR
 on:
   workflow_run:
     workflows:
-      - Build and deploy # references CI Workflow by name, TODO: update when shared CI workflow lands
+      - Build Samples
     types:
       - completed
 

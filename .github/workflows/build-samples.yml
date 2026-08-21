@@ -1,0 +1,14 @@
+name: Build Samples
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: open-pioneer/trails-repo-automation/.github/workflows/shared-build-samples.yml@dev
