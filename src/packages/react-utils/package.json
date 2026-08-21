@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/react-utils",
-    "version": "4.7.0",
+    "version": "4.7.1",
     "description": "Contains common react utilities used by the open pioneer trails project",
     "keywords": [
         "open-pioneer-trails"
