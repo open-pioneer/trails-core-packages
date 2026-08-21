@@ -1,6 +1,6 @@
 {
     "name": "@open-pioneer/notifier",
-    "version": "4.7.0",
+    "version": "4.7.1",
     "description": "Provides support for application-wide notifications.",
     "keywords": [
         "open-pioneer-trails"

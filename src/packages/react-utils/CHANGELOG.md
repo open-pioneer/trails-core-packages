@@ -1,5 +1,11 @@
 # @open-pioneer/react-utils
 
+## 4.7.1
+
+### Patch Changes
+
+- 7d5283e: Updated dependencies.
+
 ## 4.7.0
 
 ### Minor Changes
