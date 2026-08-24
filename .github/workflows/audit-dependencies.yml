@@ -1,3 +1,4 @@
+# Checks dependencies for security vulnerabilities.
 name: Audit dependencies (weekly)
 
 on:

@@ -1,3 +1,5 @@
+# Builds the sample apps in this repository as a website and uploads it as an artifact.
+# NOTE: This is part of the PR preview workflow -- the main site is built in `ci.yml`.
 name: Build Samples
 
 on:

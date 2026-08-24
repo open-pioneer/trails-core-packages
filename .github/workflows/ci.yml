@@ -1,4 +1,5 @@
-# Replaces test-and-build.yml + version.yml.
+# Runs quality checks (linting, tests, etc.), updates the release PR / publishes packages.
+# Also builds the sample site + api docs (in the main branch) and publishes them to github pages.
 name: CI
 
 on:

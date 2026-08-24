@@ -1,3 +1,4 @@
+# Publishes x.y.z-dev* package versions for packages in this repository.
 name: Publish snapshot
 
 on:

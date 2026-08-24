@@ -1,3 +1,4 @@
+# Moves new issues to the maintenance board so they that are not missed by the team.
 name: Add new issues to maintenance board
 
 on:
