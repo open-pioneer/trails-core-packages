@@ -85,13 +85,17 @@ export function useReactive<T>(initialValue?: T): Reactive<T | undefined> {
  */
 export function useComputed<T>(compute: () => T, deps: DependencyList): ReadonlyReactive<T> {
     const computeRef = useRef(compute);
+
+    // oxlint-disable-next-line react/refs
     computeRef.current = compute;
 
-    const computedDeps = useComputedDeps(deps);
     return useMemo(() => {
-        void computedDeps; // not really used, but computed must be recreated when this value changes
+        // not really used, but computed must be recreated when this value changes
+        void deps;
+
         return computed(() => computeRef.current());
-    }, [computedDeps]);
+        // oxlint-disable-next-line react/use-memo react-hooks/exhaustive-deps
+    }, deps);
 }
 
 /**
@@ -221,20 +225,4 @@ export function useReactiveSnapshot<T>(
     const snapshot = useReactiveValue(computedSnapshot, options);
     useDebugValue(snapshot);
     return snapshot;
-}
-
-function useComputedDeps(deps: DependencyList): DependencyList {
-    const computedDeps = useRef<DependencyList>(null);
-    if (computedDeps.current == null || !shallowEqual(computedDeps.current, deps)) {
-        computedDeps.current = deps ?? [];
-    }
-    return computedDeps.current;
-}
-
-function shallowEqual(a: DependencyList, b: DependencyList): boolean {
-    if (a === b) {
-        return true;
-    }
-    // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return a.length === (b?.length ?? 0) && a.every((v, i) => v === b![i]);
 }
