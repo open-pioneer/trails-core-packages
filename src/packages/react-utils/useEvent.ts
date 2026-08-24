@@ -32,5 +32,7 @@ export function useEvent<Args extends unknown[], Ret>(
         const currentHandler = handlerRef.current!;
         return currentHandler(...args);
     };
+
+    // oxlint-disable-next-line react/refs
     return stableRef.current;
 }
