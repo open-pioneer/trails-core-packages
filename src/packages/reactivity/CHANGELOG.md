@@ -1,5 +1,12 @@
 # @open-pioneer/reactivity
 
+## 4.7.1
+
+### Patch Changes
+
+- 7d5283e: Updated dependencies.
+- 5ac4838: Update to code fit new react linting rules from oxlint.
+
 ## 4.7.0
 
 ### Minor Changes
