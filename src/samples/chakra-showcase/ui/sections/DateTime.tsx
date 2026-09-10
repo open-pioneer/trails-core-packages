@@ -1,13 +1,22 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { Box, DatePicker, Portal } from "@chakra-ui/react";
+import { Box, DateInput, DatePicker, Portal } from "@chakra-ui/react";
 import { LuCalendar } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
 
 export function DateTime() {
     return (
         <Box display="flex" flexDirection="column" gap="4" alignItems="flex-start">
+            <Presenter title="Date Input" link="https://chakra-ui.com/docs/components/date-input">
+                <DateInput.Root maxW="sm">
+                    <DateInput.Label>Date of birth</DateInput.Label>
+                    <DateInput.Control>
+                        <DateInput.Segments />
+                    </DateInput.Control>
+                    <DateInput.HiddenInput />
+                </DateInput.Root>
+            </Presenter>
             <Presenter title="Date Picker" link="https://chakra-ui.com/docs/components/date-picker">
                 <DatePicker.Root maxWidth="20rem">
                     <DatePicker.Label>Date of birth</DatePicker.Label>
