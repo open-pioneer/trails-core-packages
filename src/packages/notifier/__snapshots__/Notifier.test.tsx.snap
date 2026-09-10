@@ -22,7 +22,7 @@ exports[`shows notifications as toasts 1`] = `
 >
   <div
     data-ghost="before"
-    style="position: absolute; pointer-events: none;"
+    style="position: absolute; inset: 0; scale: 1 2; pointer-events: none;"
   />
   <span
     aria-hidden="true"
@@ -99,7 +99,7 @@ exports[`shows notifications as toasts 1`] = `
   </button>
   <div
     data-ghost="after"
-    style="position: absolute; left: 0px; bottom: 100%; width: 100%;"
+    style="position: absolute; left: 0px; height: calc(var(--gap) + 2px); bottom: 100%; width: 100%;"
   />
 </div>
 `;
