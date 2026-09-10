@@ -6,9 +6,9 @@ packages:
 # https://pnpm.io/catalogs
 catalog:
   # Frontend dependencies
-  "@chakra-ui/cli": ^3.36.1
-  "@chakra-ui/react": ^3.36.1
-  "@ark-ui/react": "^5.37.2" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
+  "@chakra-ui/cli": ^3.37.0
+  "@chakra-ui/react": ^3.37.0
+  "@ark-ui/react": "^5.39.0" # Note: only needed in chakra-snippets, can (maybe) be removed in the future
   "@conterra/reactivity-core": ^0.8.8
   "@conterra/reactivity-events": ^0.8.8
   "@emotion/cache": ^11.14.0
@@ -70,15 +70,15 @@ overrides:
   "stylis@<4.3.5": ">= 4.3.5"
 
   # Ensure patched packages have the expected version (patch was tested with this version):
-  "@chakra-ui/react": "3.36.1"
-  "@ark-ui/react": "5.37.2"
-  "@zag-js/interact-outside": "1.41.2"
+  "@chakra-ui/react": "3.37.0"
+  "@ark-ui/react": "5.39.0"
+  "@zag-js/interact-outside": "1.43.3"
 
   # https://github.com/advisories/GHSA-g7r4-m6w7-qqqr
   # https://github.com/advisories/GHSA-gv7w-rqvm-qjhr
   "esbuild@<=0.28.0": "^0.28.1"
 
-    # https://github.com/advisories/GHSA-h67p-54hq-rp68, CVE-2026-53550
+  # https://github.com/advisories/GHSA-h67p-54hq-rp68, CVE-2026-53550
   "js-yaml@>=4.0.0 <4.3.1": "^4.3.1"
 
   # https://github.com/advisories/GHSA-52cp-r559-cp3m, CVE-2026-59869
@@ -118,10 +118,12 @@ patchedDependencies:
   "@open-pioneer/vite-plugin-pioneer": patches/@open-pioneer__vite-plugin-pioneer.patch
 
   # Ensure all portals are mounted under `.pioneer-root` div
-  "@ark-ui/react@*": "patches/@ark-ui__react.patch"
+  "@ark-ui/react": patches/@ark-ui__react.patch
 
-  # Fixes 'interact-outside' logic not tabbing between elements within the same shadow dom.
+  # Fixes 'interact-outside' logic not working when tabbing between elements within the same shadow dom.
   # Can be removed if https://github.com/chakra-ui/zag/issues/3088 is fixed.
+  # This can be tested by opening the chakra ui showcase (tab "overlays"), opening the "Popover (Without Portal)" using keyboard controls,
+  # and pressing tab to leave the popover again. The popover should close.
   "@zag-js/interact-outside": patches/@zag-js__interact-outside.patch
 
 strictPeerDependencies: true
