@@ -1,13 +1,13 @@
 diff --git a/dist/index.js b/dist/index.js
-index 5eefb6d6dffdfd134a267c418923d99674f6cb55..7769faafb55441c321d941f364d1680527cf516d 100644
+index cc03ae1a4d26aa0cb69295ecb5e8a0a6d65c1922..03b0e450da6291e72c80887a33c2981966130a35 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -1432,7 +1432,7 @@ async function getOptimizeDepsIncludes(rootDir) {
+@@ -1570,7 +1570,7 @@ async function getOptimizeDepsIncludes(rootDir) {
  		const serviceModule = pkg.servicesModuleId;
  		return serviceModule ? [serviceModule] : [];
  	});
 -	trailsModules.push(`${RuntimeSupport.RUNTIME_PACKAGE_NAME}/**`);
-+	//trailsModules.push(`${RuntimeSupport.RUNTIME_PACKAGE_NAME}/**`);
++	// trailsModules.push(`${RuntimeSupport.RUNTIME_PACKAGE_NAME}/**`);
  	isDebug && debug("Optimizing additional modules %O", trailsModules);
  	return trailsModules;
  }

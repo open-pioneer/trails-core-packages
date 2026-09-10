@@ -31,20 +31,20 @@ catalogs:
       specifier: ^0.8.13
       version: 0.8.13
     '@open-pioneer/build-package-cli':
-      specifier: 4.0.0
+      specifier: ^4.0.0
       version: 4.0.0
     '@open-pioneer/build-support':
-      specifier: 4.0.0
+      specifier: ^4.0.0
       version: 4.0.0
     '@open-pioneer/changesets-release-line':
-      specifier: 0.2.0
+      specifier: ^0.2.0
       version: 0.2.0
     '@open-pioneer/check-pnpm-duplicates':
-      specifier: 0.4.0
+      specifier: ^0.4.0
       version: 0.4.0
     '@open-pioneer/vite-plugin-pioneer':
-      specifier: 7.0.0
-      version: 7.0.0
+      specifier: 7.0.1-dev.20260910131557
+      version: 7.0.1-dev.20260910131557
     '@testing-library/dom':
       specifier: ^10.4.1
       version: 10.4.1
@@ -161,7 +161,7 @@ overrides:
 
 patchedDependencies:
   '@ark-ui/react': 9330cbb0bbd280b4c310e443cd1879da15ad0994f24c7265e15a2a6629356de8
-  '@open-pioneer/vite-plugin-pioneer': 4c10e5491142e7628bb90f84dc439aa6897cda4c40adee5be3eb5d3977d76ae9
+  '@open-pioneer/vite-plugin-pioneer': 4199db6a56d14812ec6d8cd4bc0c974069964f5bbbd4d0547eefe5c4f99f5708
   '@zag-js/interact-outside': caddd38066be2471a128b04fc6bb1d0ed7190f3effbd261f7697bfdeb6480cee
 
 importers:
@@ -191,7 +191,7 @@ importers:
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: 'catalog:'
-        version: 7.0.0(patch_hash=4c10e5491142e7628bb90f84dc439aa6897cda4c40adee5be3eb5d3977d76ae9)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.62.2)(sass@1.104.0)(supports-color@7.2.0)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.104.0)(tsx@4.23.13)(yaml@2.9.0))
+        version: 7.0.1-dev.20260910131557(patch_hash=4199db6a56d14812ec6d8cd4bc0c974069964f5bbbd4d0547eefe5c4f99f5708)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.62.2)(sass@1.104.0)(supports-color@7.2.0)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.104.0)(tsx@4.23.13)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1405,8 +1405,8 @@ packages:
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/vite-plugin-pioneer@7.0.0':
-    resolution: {integrity: sha512-sM/oI3gYT1FMaFNfonTKL9GKeNpIfFmsXJVxPhryCYTu+URKtMRfD6mr0T95ZDmMORDMiGFU5gMa4AS4CuB3Hw==}
+  '@open-pioneer/vite-plugin-pioneer@7.0.1-dev.20260910131557':
+    resolution: {integrity: sha512-00/GzHtWFSy57XIKQncx2f7tm2YvttlqCJmqVR7YflNCuSz2raynPxtfI+H2gmPjreRLE8ZY6zdeigmsbguZzQ==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -2981,6 +2981,14 @@ packages:
     resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
     engines: {node: '>=0.10'}
 
+  esrap@2.3.7:
+    resolution: {integrity: sha512-n2nf7fZR3c9yXf0BPEuHuXqT+KW0SJVj4cN5FMEkpCZ3scLjOQWpiccyCxVzCC2q1wubTghuEGzngJY/7Ah0Ow==}
+    peerDependencies:
+      '@typescript-eslint/types': ^8.2.0
+    peerDependenciesMeta:
+      '@typescript-eslint/types':
+        optional: true
+
   esrecurse@4.3.0:
     resolution: {integrity: sha512-KmfKL3b6G+RXvP8N1vr3Tq1kL/oCFgn2NYXEtqP8/L3pKapUA4G8cFVaoF3SU323CD4XypR/ffioHmkti6/Tag==}
     engines: {node: '>=4.0'}
@@ -3301,8 +3309,8 @@ packages:
     resolution: {integrity: sha512-CY6crGq313MX8GkwvB7tzgp99vjQxY1++5y10/BKN/GUfHqWaOGQMNZkBvqSzsZKWk/ijwHlWzzkLulsGHhjWQ==}
     hasBin: true
 
-  js-yaml@5.2.2:
-    resolution: {integrity: sha512-dayzUzKkJ1MkuUtZglSebU43utNXH0OWQByK9rKOOuYIO8M5TV1y+n8ALMdG0rdzBnfNkOmZEqrURepb0ejqBw==}
+  js-yaml@5.4.1:
+    resolution: {integrity: sha512-28R/k+NAjeuf7+CKlTxWZVExJGwVVLwY06DgEnOMz2gEpfNkDcD7QvyiVPT0xy0XXhU8vHsd4Ot42OOPdJG7dQ==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -4393,8 +4401,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.4.3:
-    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+  zod@4.5.4:
+    resolution: {integrity: sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -5167,8 +5175,8 @@ snapshots:
       '@open-pioneer/build-support': 4.0.0
       '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
       semver: 7.8.5
-      zod: 4.4.3
-      zod-validation-error: 5.0.0(zod@4.4.3)
+      zod: 4.5.4
+      zod-validation-error: 5.0.0(zod@4.5.4)
     transitivePeerDependencies:
       - rollup
 
@@ -5219,25 +5227,24 @@ snapshots:
       '@pnpm/types': 1101.6.0
       chalk: 5.6.2
       commander: 15.0.0
-      js-yaml: 5.2.2
+      js-yaml: 5.4.1
 
-  '@open-pioneer/vite-plugin-pioneer@7.0.0(patch_hash=4c10e5491142e7628bb90f84dc439aa6897cda4c40adee5be3eb5d3977d76ae9)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.62.2)(sass@1.104.0)(supports-color@7.2.0)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.104.0)(tsx@4.23.13)(yaml@2.9.0))':
+  '@open-pioneer/vite-plugin-pioneer@7.0.1-dev.20260910131557(patch_hash=4199db6a56d14812ec6d8cd4bc0c974069964f5bbbd4d0547eefe5c4f99f5708)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.62.2)(sass@1.104.0)(supports-color@7.2.0)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.104.0)(tsx@4.23.13)(yaml@2.9.0))':
     dependencies:
-      '@babel/generator': 7.29.7
-      '@babel/template': 7.29.7
-      '@babel/types': 7.29.7
       '@open-pioneer/build-common': 5.0.0(rollup@4.62.2)
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.3(supports-color@7.2.0)
-      js-yaml: 5.2.2
+      esrap: 2.3.7
+      js-yaml: 5.4.1
       oxc-resolver: 11.24.2
       sass: 1.104.0
       tinyglobby: 0.2.17
       vite: 8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.104.0)(tsx@4.23.13)(yaml@2.9.0)
       vitefu: 1.1.3(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.104.0)(tsx@4.23.13)(yaml@2.9.0))
-      zod: 4.4.3
-      zod-validation-error: 5.0.0(zod@4.4.3)
+      zod: 4.5.4
+      zod-validation-error: 5.0.0(zod@4.5.4)
     transitivePeerDependencies:
+      - '@typescript-eslint/types'
       - rollup
       - supports-color
 
@@ -6851,6 +6858,10 @@ snapshots:
     dependencies:
       estraverse: 5.3.0
 
+  esrap@2.3.7:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.5
+
   esrecurse@4.3.0:
     dependencies:
       estraverse: 5.3.0
@@ -7185,7 +7196,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  js-yaml@5.2.2:
+  js-yaml@5.4.1:
     dependencies:
       argparse: 2.0.1
 
@@ -8188,13 +8199,13 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zod-validation-error@5.0.0(zod@4.4.3):
+  zod-validation-error@5.0.0(zod@4.5.4):
     dependencies:
-      zod: 4.4.3
+      zod: 4.5.4
 
   zod@3.25.76: {}
 
-  zod@4.4.3: {}
+  zod@4.5.4: {}
 
   zwitch@2.0.4: {}
 
