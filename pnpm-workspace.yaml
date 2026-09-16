@@ -108,7 +108,7 @@ overrides:
 
   # https://github.com/advisories/GHSA-c83g-rgw3-j3cx, CVE-2026-73089
   # https://github.com/advisories/GHSA-73wf-gq98-2v4g, CVE-2026-73088
-  "browserlist@<=4.28.6": "^4.28.7"
+  "browserslist@<=4.28.6": "^4.28.7"
 
 allowUnusedPatches: true
 patchedDependencies:
