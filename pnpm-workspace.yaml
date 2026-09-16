@@ -139,6 +139,9 @@ peerDependencyRules:
     "fdir>picomatch": "*"
     "tsconfck>typescript": "*"
 
+audit:
+  level: "moderate"
+
 auditConfig:
   ignoreGhsas:
     # https://github.com/advisories/GHSA-h67p-54hq-rp68, CVE-2026-53550
