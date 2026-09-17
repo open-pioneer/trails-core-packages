@@ -1,5 +1,16 @@
 # @open-pioneer/chakra-snippets
 
+## 4.8.0
+
+### Minor Changes
+
+- a38e934: Update `input-group` snippet. It now supports `startAddon` and `endAddon`.
+- a38e934: Update Chakra to 3.37.0
+
+### Patch Changes
+
+- 7d5283e: Updated dependencies.
+
 ## 4.7.0
 
 ### Minor Changes
