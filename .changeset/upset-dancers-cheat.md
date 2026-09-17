@@ -3,4 +3,4 @@
 "@open-pioneer/reactivity": patch
 ---
 
-Update to code fit new react linting rules from oxlint.
+Update code to fit new react linting rules from oxlint.
