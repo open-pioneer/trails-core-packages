@@ -186,8 +186,8 @@ catalogs:
       specifier: ^4.2.1
       version: 4.2.1
     '@formatjs/intl-localematcher':
-      specifier: ^0.8.13
-      version: 0.8.13
+      specifier: ^0.9.0
+      version: 0.9.0
     '@open-pioneer/build-package-cli':
       specifier: ^4.0.1
       version: 4.0.1
@@ -688,7 +688,7 @@ importers:
         version: 4.2.1
       '@formatjs/intl-localematcher':
         specifier: 'catalog:'
-        version: 0.8.13
+        version: 0.9.0
       '@open-pioneer/base-theme':
         specifier: workspace:*
         version: link:../base-theme
@@ -1445,8 +1445,8 @@ packages:
   '@formatjs/icu-skeleton-parser@2.1.11':
     resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
 
-  '@formatjs/intl-localematcher@0.8.13':
-    resolution: {integrity: sha512-kHEAFOkeJSPNi7c5PaKaRjxcBrJwzzt81ifUu+8uve1EDW/VJl83KsxmqgqNZLzcFEhSliZGvx3+pk/RH0IOmg==}
+  '@formatjs/intl-localematcher@0.9.0':
+    resolution: {integrity: sha512-Z7TD3ssNry1Av1dVDoq/mzpxGyxqWwU0ClWEo+BB3k0JQTeQvUGmeK9WZGYvlqStS0UqkaKXk3dfjsb6NaHAxw==}
 
   '@formatjs/intl@4.2.1':
     resolution: {integrity: sha512-GiL0cReencWQkhfJedNLMe0Aorb/wyTRJdi+hLgG9gsDPy4yw2N+EkMcijf5+oGKd5jde75tr5nujsPg78bUTw==}
@@ -5030,7 +5030,7 @@ snapshots:
 
   '@formatjs/icu-skeleton-parser@2.1.11': {}
 
-  '@formatjs/intl-localematcher@0.8.13':
+  '@formatjs/intl-localematcher@0.9.0':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
 
