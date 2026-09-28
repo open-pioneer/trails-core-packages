@@ -8,6 +8,9 @@ export default defineBuildConfig({
     services: {
         LocalStorageServiceImpl: {
             provides: ["local-storage.LocalStorageService"]
+        },
+        SessionStorageServiceImpl: {
+            provides: ["local-storage.SessionStorageService"]
         }
     },
     properties: {

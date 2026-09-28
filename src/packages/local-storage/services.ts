@@ -2,3 +2,4 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export { LocalStorageServiceImpl } from "./LocalStorageServiceImpl";
+export { SessionStorageServiceImpl } from "./SessionStorageServiceImpl";

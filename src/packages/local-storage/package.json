@@ -1,7 +1,7 @@
 {
     "name": "@open-pioneer/local-storage",
     "version": "4.8.0",
-    "description": "Provides access to the browser's local storage.",
+    "description": "Provides access to the browser's local storage and session storage.",
     "keywords": [
         "open-pioneer-trails"
     ],

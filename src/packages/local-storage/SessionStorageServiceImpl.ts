@@ -4,18 +4,18 @@
 import { createLogger } from "@open-pioneer/core";
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
-import { LocalStorageService } from "./api";
+import { SessionStorageService } from "./api";
 import { StorageServiceImpl } from "./StorageServiceImpl";
 
 const LOG = createLogger(sourceId);
 
-/** Implements the {@link LocalStorageService} on top of the browser's `localStorage`. */
-export class LocalStorageServiceImpl extends StorageServiceImpl implements LocalStorageService {
+/** Implements the {@link SessionStorageService} on top of the browser's `sessionStorage`. */
+export class SessionStorageServiceImpl extends StorageServiceImpl implements SessionStorageService {
     constructor(options: ServiceOptions) {
         super(options, {
             log: LOG,
-            label: "local storage",
-            getStorage: () => globalThis.localStorage
+            label: "session storage",
+            getStorage: () => globalThis.sessionStorage
         });
     }
 }

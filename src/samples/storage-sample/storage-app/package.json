@@ -1,0 +1,10 @@
+{
+    "name": "storage-app",
+    "version": "0.0.20",
+    "private": true,
+    "dependencies": {
+        "@chakra-ui/react": "catalog:",
+        "@open-pioneer/local-storage": "workspace:*",
+        "@open-pioneer/runtime": "workspace:*"
+    }
+}

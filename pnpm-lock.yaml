@@ -963,6 +963,18 @@ importers:
         specifier: 'catalog:'
         version: 19.3.0
 
+  src/samples/storage-sample/storage-app:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: 3.37.0
+        version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@open-pioneer/local-storage':
+        specifier: workspace:*
+        version: link:../../../packages/local-storage
+      '@open-pioneer/runtime':
+        specifier: workspace:*
+        version: link:../../../packages/runtime
+
   src/samples/styling-sample/styling-app:
     dependencies:
       '@open-pioneer/runtime':

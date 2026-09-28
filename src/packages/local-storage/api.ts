@@ -4,32 +4,54 @@
 import { DeclaredService } from "@open-pioneer/runtime";
 
 /**
- * Provides access to the browser's local storage for Open Pioneer Trails packages through a convenient API.
+ * Provides access to the browser's [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+ * for Open Pioneer Trails packages through a convenient API.
+ *
+ * Values are persistent and shared between all tabs of the same origin.
+ *
  * Use the interface name `"local-storage.LocalStorageService"` to inject an instance of this interface.
  */
 export interface LocalStorageService
-    extends LocalStorageAPI, DeclaredService<"local-storage.LocalStorageService"> {
+    extends StorageService, DeclaredService<"local-storage.LocalStorageService"> {}
+
+/**
+ * Provides access to the browser's [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+ * for Open Pioneer Trails packages through a convenient API.
+ *
+ * Values are scoped to the current browser tab and are discarded when it is closed.
+ *
+ * Use the interface name `"local-storage.SessionStorageService"` to inject an instance of this interface.
+ */
+export interface SessionStorageService
+    extends StorageService, DeclaredService<"local-storage.SessionStorageService"> {}
+
+/**
+ * The common interface implemented by {@link LocalStorageService} and {@link SessionStorageService}.
+ *
+ * Use this type to write code that works with either kind of storage.
+ */
+export interface StorageService extends StorageAPI {
     /**
-     * Whether local storage is supported by the current environment.
+     * Whether the underlying browser storage is supported by the current environment.
      *
-     * Getters and setters working on local storage will throw if this value is `false`.
+     * Getters and setters working on the storage will throw if this value is `false`.
      */
     readonly isSupported: boolean;
 }
 
 /**
- * A namespace provides access to the properties of an object in local storage.
+ * A namespace provides access to the properties of an object in the browser's storage.
  * This can be used to manage groups of related values under a common name.
  */
-export type LocalStorageNamespace = LocalStorageAPI;
+export type StorageNamespace = StorageAPI;
 
 /**
- * Provides basic operations to interact with the browser's local storage.
+ * Provides basic operations to interact with the browser's storage.
  *
- * The operations provided by this interface always act on an object in local storage:
+ * The operations provided by this interface always act on an object in the storage:
  * either the root value or a nested object.
  */
-export interface LocalStorageAPI {
+export interface StorageAPI {
     /**
      * Returns the value associated with the given `key`, or `undefined` if
      * no such value exists.
@@ -68,8 +90,8 @@ export interface LocalStorageAPI {
      * `key` should either be associated with an object or it's value should be undefined.
      * If `key` is not associated with a value, a new empty object will be created.
      *
-     * Namespaces allow you to treat an object in local storage as a group of properties.
-     * Getting (or setting) a key using a {@link LocalStorageNamespace | Namespace} object
+     * Namespaces allow you to treat an object in the storage as a group of properties.
+     * Getting (or setting) a key using a {@link StorageNamespace | Namespace} object
      * will simply read (or update) properties on the managed object instead.
      *
      * If `key` has already been set to something that is _not_ an object, you will receive an error
@@ -91,11 +113,32 @@ export interface LocalStorageAPI {
      * console.log(backingObject);
      * ```
      */
-    getNamespace(key: string): LocalStorageNamespace;
+    getNamespace(key: string): StorageNamespace;
 }
 
 /** Package properties of the `"local-storage"` package. */
-export interface LocalStorageProperties {
-    /** The root local storage key used to store application state. */
+export interface StorageProperties {
+    /**
+     * The root storage key used to store application state.
+     * Both services use this key, each in its own storage area.
+     */
     storageId: string | null;
 }
+
+/**
+ * Kept for compatibility.
+ * @deprecated Use {@link StorageAPI} instead.
+ */
+export interface LocalStorageAPI extends StorageAPI {}
+
+/**
+ * Kept for compatibility.
+ * @deprecated Use {@link StorageNamespace} instead.
+ */
+export type LocalStorageNamespace = StorageNamespace;
+
+/**
+ * Kept for compatibility.
+ * @deprecated Use {@link StorageProperties} instead.
+ */
+export interface LocalStorageProperties extends StorageProperties {}
