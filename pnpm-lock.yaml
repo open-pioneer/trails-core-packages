@@ -189,8 +189,8 @@ catalogs:
       specifier: ^0.9.0
       version: 0.9.0
     '@open-pioneer/build-package-cli':
-      specifier: ^4.0.1
-      version: 4.0.1
+      specifier: 4.0.2-dev.20260930081124
+      version: 4.0.2-dev.20260930081124
     '@open-pioneer/build-support':
       specifier: ^4.0.1
       version: 4.0.1
@@ -198,8 +198,8 @@ catalogs:
       specifier: ^0.2.1
       version: 0.2.1
     '@open-pioneer/check-pnpm-duplicates':
-      specifier: 0.5.0-dev-removed-pnpm-deps.20260917121732
-      version: 0.5.0-dev-removed-pnpm-deps.20260917121732
+      specifier: 0.5.0-dev.20260930081124
+      version: 0.5.0-dev.20260930081124
     '@open-pioneer/vite-plugin-pioneer':
       specifier: ^7.0.1
       version: 7.0.1
@@ -335,7 +335,7 @@ importers:
         version: 2.31.1(@types/node@24.13.6)
       '@open-pioneer/build-package-cli':
         specifier: 'catalog:'
-        version: 4.0.1(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)
+        version: 4.0.2-dev.20260930081124(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)
       '@open-pioneer/build-support':
         specifier: 'catalog:'
         version: 4.0.1
@@ -344,7 +344,7 @@ importers:
         version: 0.2.1
       '@open-pioneer/check-pnpm-duplicates':
         specifier: 'catalog:'
-        version: 0.5.0-dev-removed-pnpm-deps.20260917121732
+        version: 0.5.0-dev.20260930081124
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:src/packages/runtime
@@ -1553,13 +1553,13 @@ packages:
     resolution: {integrity: sha512-yYL29m0mz8ssAzjPE+DUTNe6KTAT4DWOynZ03pfuZpK9b1+zYyok0X+wfpKdXxXafsH8CP8ZEcPnUtbhZFq5vg==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/build-package-cli@4.0.1':
-    resolution: {integrity: sha512-qV4qdQypYsKyV09pCPYNveE1qedJoO7W4bAgFPJeVvzWEwYxattE2ZJLC0+pka2Bk7IQLQvgbE8ZFsqMDvifUA==}
+  '@open-pioneer/build-package-cli@4.0.2-dev.20260930081124':
+    resolution: {integrity: sha512-CAB9sL38fy6lVZKyjKPnBSc3apykAJ3GgAKDIJFF5XUt8NLhbtkvK4wvt7BsHjB2GxwhQWrSDrNdP0TeJutrEg==}
     engines: {node: '>= 20'}
     hasBin: true
 
-  '@open-pioneer/build-package@5.0.1':
-    resolution: {integrity: sha512-zQjSI1AP+2o8JzE0rZn0udHF3HHBgDlfiIiOeFDabIwjBIw+YtDRdWZ3oZEO8+AeR1TGzKE4jkQ7ioX8gP2nGA==}
+  '@open-pioneer/build-package@5.0.2-dev-license-report.20260918143642':
+    resolution: {integrity: sha512-xAFdJ4RgGqMuQi73B1pcruRL/xiGRkxFOFVubQ31Q7TMEOysIEhu9xZvc1KA4v7GU9CSFQC/GRn1BpwqYQPWUQ==}
     engines: {node: '>= 20'}
     peerDependencies:
       sass: '*'
@@ -1578,10 +1578,14 @@ packages:
     resolution: {integrity: sha512-RSzzv2kRD2a7Cb3Dg0Zqn0GpPO1BD2y5MfP6yNsWCWtkOh+EsEkjGc+IrngtAn/l6AeTWE+Utg7ioICNo4GzTQ==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev-removed-pnpm-deps.20260917121732':
-    resolution: {integrity: sha512-pb0yQpSBG+3F0Xaq/FSbuJveq9zU4u/WOShk48v4lt7UjmWlehoTxP6/HifGmdzJgsv7OZDCHw+ESOYzKQsO4A==}
+  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev.20260930081124':
+    resolution: {integrity: sha512-vquwXhGeODltKlZGdvX3PfCkZwde7+Rws8VQ9K40gbPfFiuGik4b/5j7Fwq6F7p+YRu5+N9n4PEWQL3R+24r+A==}
     engines: {node: '>= 20', pnpm: '>= 11'}
     hasBin: true
+
+  '@open-pioneer/cli-common@0.1.0-dev-license-report.20260918143642':
+    resolution: {integrity: sha512-1Pu3OAiddFmG+ck30rlz0qc6Djtvw76P7Xrvdm6Rx7bnt3JE0icuc3o8qpubptYr1kYmKi7D3OW4eICAaKW7oQ==}
+    engines: {node: '>= 20'}
 
   '@open-pioneer/vite-plugin-pioneer@7.0.1':
     resolution: {integrity: sha512-rKB+caikN/mBXH5QRZt5TTzXfEUy3uFHhzr/Wtep9CjTW4L/HWV2EP9VmJI3atjJnLAYKcuv+qBcgoakuoA1sQ==}
@@ -3344,8 +3348,8 @@ packages:
     resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
     hasBin: true
 
-  js-yaml@5.4.1:
-    resolution: {integrity: sha512-28R/k+NAjeuf7+CKlTxWZVExJGwVVLwY06DgEnOMz2gEpfNkDcD7QvyiVPT0xy0XXhU8vHsd4Ot42OOPdJG7dQ==}
+  js-yaml@5.4.2:
+    resolution: {integrity: sha512-m+aqu+LwO1O6sIopafj8HUVl5aawITwZQe/yHpMCKjaWBaA/d07B/QdMb3529REftiU+RMMHL3Vlsw3hON7vWg==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -5149,9 +5153,9 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  '@open-pioneer/build-package-cli@4.0.1(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@open-pioneer/build-package-cli@4.0.2-dev.20260930081124(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@open-pioneer/build-package': 5.0.1(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)
+      '@open-pioneer/build-package': 5.0.2-dev-license-report.20260918143642(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)
       chalk: 6.0.0
       commander: 15.0.0
     transitivePeerDependencies:
@@ -5159,13 +5163,13 @@ snapshots:
       - supports-color
       - typescript
 
-  '@open-pioneer/build-package@5.0.1(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@open-pioneer/build-package@5.0.2-dev-license-report.20260918143642(sass@1.105.0)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@open-pioneer/build-common': 5.0.1(rollup@4.63.2)
       '@open-pioneer/build-support': 4.0.1
+      '@open-pioneer/cli-common': 0.1.0-dev-license-report.20260918143642
       '@rollup/plugin-node-resolve': 16.0.3(rollup@4.63.2)
       '@rollup/pluginutils': 5.4.0(rollup@4.63.2)
-      chalk: 6.0.0
       debug: 4.4.3(supports-color@7.2.0)
       esbuild: 0.28.2
       find-git-root: 1.1.0
@@ -5187,11 +5191,15 @@ snapshots:
 
   '@open-pioneer/changesets-release-line@0.2.1': {}
 
-  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev-removed-pnpm-deps.20260917121732':
+  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev.20260930081124':
+    dependencies:
+      '@open-pioneer/cli-common': 0.1.0-dev-license-report.20260918143642
+      commander: 15.0.0
+      js-yaml: 5.4.2
+
+  '@open-pioneer/cli-common@0.1.0-dev-license-report.20260918143642':
     dependencies:
       chalk: 6.0.0
-      commander: 15.0.0
-      js-yaml: 5.4.1
 
   '@open-pioneer/vite-plugin-pioneer@7.0.1(patch_hash=4199db6a56d14812ec6d8cd4bc0c974069964f5bbbd4d0547eefe5c4f99f5708)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.63.2)(sass@1.105.0)(supports-color@7.2.0)(vite@8.3.1(@types/node@24.13.6)(esbuild@0.28.2)(sass@1.105.0)(tsx@4.23.15)(yaml@2.9.0))':
     dependencies:
@@ -5199,7 +5207,7 @@ snapshots:
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.3(supports-color@7.2.0)
       esrap: 2.3.7
-      js-yaml: 5.4.1
+      js-yaml: 5.4.2
       oxc-resolver: 11.24.2
       sass: 1.105.0
       tinyglobby: 0.2.17
@@ -6987,7 +6995,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  js-yaml@5.4.1:
+  js-yaml@5.4.2:
     dependencies:
       argparse: 2.0.1
 
