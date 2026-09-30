@@ -13,7 +13,7 @@ catalog:
   "@conterra/reactivity-events": ^0.8.8
   "@emotion/cache": ^11.14.0
   "@emotion/react": ^11.14.0
-  "@formatjs/intl": ^4.2.1
+  "@formatjs/intl": ^6.1.2
   "@formatjs/intl-localematcher": ^0.9.0
   keycloak-js: ^26.2.4
   react-dom: ^19.3.0
