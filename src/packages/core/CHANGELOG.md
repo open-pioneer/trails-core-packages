@@ -1,5 +1,11 @@
 # @open-pioneer/core
 
+## 4.9.0
+
+### Patch Changes
+
+- 6b160f3: Mark the `EventNames` type as `@deprecated` together with `EventEmitter`.
+
 ## 4.8.0
 
 ### Minor Changes

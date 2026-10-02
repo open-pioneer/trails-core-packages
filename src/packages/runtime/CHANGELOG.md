@@ -1,5 +1,21 @@
 # @open-pioneer/runtime
 
+## 4.9.0
+
+### Minor Changes
+
+- 6145961: Update `@formatjs/intl` to version 6.
+
+### Patch Changes
+
+- 6b160f3: Fix a set of smaller issues:
+    - `element.when()` rejects with an abort error when the app failed to start, also when it is called after the failure. Previously such a call returned a promise that never settled.
+    - The deprecated `ApplicationContext.setLocale()` throws `runtime:unsupported-locale` again for a string that is not a valid BCP 47 tag, instead of silently switching to automatic locale selection.
+    - `useService()` no longer repeats the service lookup on every render when an options object is passed inline.
+    - The development-only intl watch of a service is released when the service constructor throws, and the `AppIntl` instance is released when the app is destroyed during startup.
+
+- 7053566: An `undefined` value returned from `resolveConfig()` (for example `locale`) no longer overrides the default value of `config`.
+
 ## 4.8.0
 
 ### Minor Changes
