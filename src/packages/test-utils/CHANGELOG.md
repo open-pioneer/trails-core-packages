@@ -1,5 +1,15 @@
 # @open-pioneer/test-utils
 
+## 4.9.0
+
+### Minor Changes
+
+- 6145961: Update `@formatjs/intl` to version 6.
+
+### Patch Changes
+
+- 6b160f3: `PackageContextProvider` keeps its package context stable across re-renders with equal props, so `useIntl()` and `useService()` return the same objects.
+
 ## 4.8.0
 
 ### Minor Changes
