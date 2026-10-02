@@ -291,7 +291,7 @@ function getFocusTarget(
         currentIndex = findItemIndex(items, current);
     }
 
-    if (currentIndex === -1 || direction === "home") {
+    if (direction === "home" || (currentIndex === -1 && direction !== "end")) {
         const index = items.findIndex((item) => !isDisabled(item));
         const el = items[index];
         return el;
@@ -399,5 +399,5 @@ function getItemValue(item: HTMLElement | undefined): string | undefined {
 
 function isDisabled(item: HTMLElement): boolean {
     // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-    return !!(item as any).disabled || item.ariaDisabled === "true";
+    return !!(item as any).disabled || item.getAttribute("aria-disabled") === "true";
 }

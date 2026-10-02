@@ -133,7 +133,7 @@ export function Utilities() {
                         </Text>
                         <Text fontSize="sm">
                             This is the main content area. When users press Tab and then Enter on
-                            the &quote;Skip to Content&quote; link, focus will jump directly here,
+                            the &quot;Skip to Content&quot; link, focus will jump directly here,
                             bypassing the navigation.
                         </Text>
                     </Box>

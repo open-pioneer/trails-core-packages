@@ -11,6 +11,11 @@ import {
 import { deprecated } from "./deprecated";
 import { Resource } from "./resources";
 
+/**
+ * The event names of an `Events` interface used with {@link EventEmitter}.
+ *
+ * @deprecated Use the package [@conterra/reactivity-events](https://www.npmjs.com/package/@conterra/reactivity-events) instead.
+ */
 export type EventNames<Events extends {}> = keyof Events & string;
 
 type ArgType<T> = [T] extends [void] ? [] : [event: T];

@@ -9,7 +9,7 @@
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/open-pioneer/core-packages",
+        "url": "https://github.com/open-pioneer/trails-core-packages",
         "directory": "src/packages/authentication-keycloak"
     },
     "main": "index.ts",

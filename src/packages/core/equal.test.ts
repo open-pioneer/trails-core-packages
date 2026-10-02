@@ -85,7 +85,7 @@ describe("shallowEqual", () => {
     });
 });
 
-describe("deepEquals", () => {
+describe("deepEqual", () => {
     it("returns true for identical primitives", () => {
         expect(deepEqual(1, 1)).toBe(true);
         expect(deepEqual("a", "a")).toBe(true);
@@ -132,14 +132,14 @@ describe("deepEquals", () => {
         expect(deepEqual([], {})).toBe(false);
     });
 
-    it("compares non-plain object", () => {
+    it("compares Date instances by value", () => {
         const d1 = new Date(0);
         const d2 = new Date(0);
         expect(deepEqual(d1, d1)).toBe(true);
         expect(deepEqual(d1, d2)).toBe(true);
     });
 
-    it("compare class instances", () => {
+    it("compares class instances", () => {
         class Box {
             constructor(public value: number) {}
         }

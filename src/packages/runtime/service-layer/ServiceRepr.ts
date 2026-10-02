@@ -3,6 +3,7 @@
 
 import { ReadonlyReactive, watchValue } from "@conterra/reactivity-core";
 import { createLogger, deprecated, destroyResource, Error, Resource } from "@open-pioneer/core";
+import { sourceId } from "open-pioneer:source-info";
 import { ErrorId } from "../errors";
 import { PackageIntl } from "../i18n";
 import { ServiceMetadata } from "../metadata";
@@ -16,7 +17,7 @@ import {
 } from "../Service";
 import { InterfaceSpec, parseReferenceSpec, ReferenceSpec } from "./InterfaceSpec";
 
-const LOG = createLogger("runtime:ServiceRepr");
+const LOG = createLogger(sourceId);
 
 export type ServiceState = "not-constructed" | "constructing" | "constructed" | "destroyed";
 
@@ -85,13 +86,13 @@ export class ServiceRepr {
     /** Unique id of this service. Contains the package name and the service name. */
     readonly id: string;
 
-    /** Name of this service in it's package. */
+    /** Name of this service in its package. */
     readonly name: string;
 
     /** Name of the parent package. */
     readonly packageName: string;
 
-    /** Locale-dependant i18n messages. */
+    /** Locale-dependent i18n messages. */
     readonly intl: ReadonlyReactive<PackageIntl>;
 
     /** Service properties made available via the service's constructor. */
@@ -204,7 +205,7 @@ export class ServiceRepr {
         }
 
         const intl = this.intl;
-        const hmrState = (this.#hmrState = /*#__PURE__*/ createHmrState(this.id, intl));
+        const hmrState = (this.#hmrState = createHmrState(this.id, intl));
         try {
             const options = createServiceOptions({
                 references,
@@ -221,6 +222,7 @@ export class ServiceRepr {
             this.#useCount = 1;
             return this.#instance;
         } catch (e) {
+            this.#hmrState = destroyResource(hmrState);
             throw new Error(
                 ErrorId.SERVICE_CONSTRUCTION_FAILED,
                 `Failed to create service instance '${this.id}'.`,
@@ -400,7 +402,7 @@ function createIntlDeprecation(serviceId: string) {
     return deprecated({
         name: `ServiceOptions.intl (used by ${serviceId})`,
         packageName: "@open-pioneer/runtime",
-        since: "4.6.0",
+        since: "v4.6.0",
         alternative: "use currentIntl instead and watch for changes where appropriate"
     });
 }

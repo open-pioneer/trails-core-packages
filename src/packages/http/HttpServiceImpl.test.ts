@@ -307,7 +307,7 @@ function okResponse() {
 }
 
 function errorResponse(code = 404) {
-    return new Response("error´", {
+    return new Response("error", {
         status: code
     });
 }

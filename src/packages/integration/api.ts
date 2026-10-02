@@ -28,7 +28,7 @@ export interface ExternalEventService extends DeclaredService<"integration.Exter
      * eventService.emitEvent("my-event", { message: "Hello World" });
      *
      * // In the host site (node is the application's web component node)
-     * node.addEventLister("my-event", (event) => {
+     * node.addEventListener("my-event", (event) => {
      *     console.log(event.detail);
      * })
      * ```

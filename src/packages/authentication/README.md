@@ -19,9 +19,7 @@ const sessionInfo = await authService.getSessionInfo();
 
 // Like the above, but synchronous and includes intermediate states like "pending".
 const state = authService.getAuthState();
-
-// Don't forget to clean up event handles in the future
-handle.destroy();
+// Watch the state with the reactivity API or use the useAuthState() hook in React components.
 ```
 
 ### Enforcing authentication

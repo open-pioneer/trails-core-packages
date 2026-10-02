@@ -101,7 +101,7 @@ export function useComputed<T>(compute: () => T, deps: DependencyList): Readonly
 /**
  * Advanced options for `useReactiveSnapshot`.
  *
- * Note that objects should either be memoized (`useMemo` etc.) or constants (see {@link DISPATCH_SYNC})).
+ * Note that objects should either be memoized (`useMemo` etc.) or constants (see {@link DISPATCH_SYNC}).
  */
 export interface ReactiveHookOptions {
     dispatch?: DispatchType;

@@ -74,7 +74,7 @@ describe("services", () => {
         expect(node).toMatchSnapshot();
     });
 
-    it("should get error when using undefined service", async () => {
+    it("throws when the UI reference is not declared", async () => {
         function TestComponent() {
             const service = useServiceInternal<unknown>(
                 "test",
@@ -361,7 +361,7 @@ describe("properties", () => {
     });
 });
 
-describe("i18n messages", async () => {
+describe("i18n messages", () => {
     it("should transport reactive changes of 'intl' messages", async () => {
         function TestComponent() {
             const intl = useIntlInternal("test");
@@ -457,20 +457,6 @@ it("should apply the configured chakra config", async () => {
 });
 
 describe("integration for error screen", function () {
-    it("should create an ReactIntegration for an error screen", async () => {
-        const integration = ReactIntegration.createForErrorScreen({
-            appRoot: document.createElement("div"),
-            hostNode: document.createElement("div"),
-            rootNode: document,
-            config: undefined,
-            locale: constant("en"),
-            styles: constant(""),
-            colorMode: constant("light")
-        });
-
-        expect(integration).toBeInstanceOf(ReactIntegration);
-    });
-
     it("should throw an error when trying to access a service on an error screen", async () => {
         const integration = ReactIntegration.createForErrorScreen({
             appRoot: document.createElement("div"),
@@ -503,7 +489,7 @@ interface ServiceSpec {
     clazz: ServiceConstructor;
 }
 
-export interface TestIntegration {
+interface TestIntegration {
     wrapper: HTMLDivElement;
     integration: ReactIntegration;
 }

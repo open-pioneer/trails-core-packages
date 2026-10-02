@@ -18,7 +18,7 @@ To start the development server, run:
 ```bash
 $ pnpm install # initially and always after changing package dependencies
 $ pnpm dev     # starts dev server
-  VITE v4.3.9  ready in 832 ms
+  VITE v8.x.x  ready in 832 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose

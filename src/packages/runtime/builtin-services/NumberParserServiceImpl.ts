@@ -18,10 +18,9 @@ export type NumberParserServiceOptions = ServiceOptions<ServiceReferences>;
 export class NumberParserServiceImpl implements NumberParserService {
     #numberParser: ReadonlyReactive<NumberParser>;
 
-    constructor(_serviceOptions: NumberParserServiceOptions) {
-        const localeService = _serviceOptions.references.localeService;
+    constructor(options: NumberParserServiceOptions) {
+        const localeService = options.references.localeService;
         this.#numberParser = computed(() => {
-            // reactive
             const tag = localeService.locale.baseName;
             try {
                 return new NumberParser(tag);

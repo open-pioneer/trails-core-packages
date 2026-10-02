@@ -7,6 +7,7 @@ import { RovingMenuState, MenuStateContext } from "./RovingMenuState";
 import { type useRovingMenu } from "./useRovingMenu";
 
 /**
+ * Properties of the {@link RovingMenuRoot} component.
  *
  * @group Roving menu
  */

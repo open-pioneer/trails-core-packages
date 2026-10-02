@@ -31,7 +31,7 @@ import {
     RUNTIME_LOCALE_SERVICE,
     RUNTIME_THEME_SERVICE
 } from "../builtin-services";
-import { ApplicationLifecycleEventService } from "../builtin-services/ApplicationLifecycleEventService";
+import { ApplicationLifecycleEventServiceImpl } from "../builtin-services/ApplicationLifecycleEventServiceImpl";
 import { DEFAULT_INITIAL_COLOR_MODE } from "../builtin-services/ThemeServiceImpl";
 import {
     ApplicationConfig,
@@ -96,7 +96,7 @@ export class AppInstance {
     #config: ApplicationConfig | undefined;
 
     #serviceLayer: ServiceLayer | undefined;
-    #lifecycleEvents: ApplicationLifecycleEventService | undefined;
+    #lifecycleEvents: ApplicationLifecycleEventServiceImpl | undefined;
     #themeService: ThemeService | undefined;
     #reactIntegration: ReactIntegration | undefined;
 
@@ -137,11 +137,7 @@ export class AppInstance {
 
         // Only call event listener when 'started' was also signalled.
         if (this.#state === "started") {
-            try {
-                this.#triggerApplicationLifecycleEvent("before-stop");
-            } catch (e) {
-                void e; // Ignored
-            }
+            this.#triggerApplicationLifecycleEvent("before-stop");
         }
         this.#state = "destroyed";
         this.#reset();
@@ -163,6 +159,11 @@ export class AppInstance {
     whenAPI(): Promise<ApiMethods> {
         if (this.#api) {
             return Promise.resolve(this.#api);
+        }
+        if (this.#state === "destroyed" || this.#state === "error") {
+            // The API will never become available. Callers that were already waiting
+            // have been rejected with the same error in #reset().
+            return Promise.reject(createAbortError());
         }
 
         const apiPromise = (this.#apiPromise ??= createManualPromise());
@@ -193,14 +194,18 @@ export class AppInstance {
         };
 
         // Decide on locale and load i18n messages (if any).
-        const i18n = (this.#i18n = await AppIntl.create({
+        const i18n = await AppIntl.create({
             appMetadata: elementOptions.appMetadata,
             forcedLocale: config.locale,
             restrictSupportedLocales: config.supportedLocales,
             supportsLiveChanges: enableLiveLocaleChanges,
             restartWithLocale
-        }));
+        });
+        if (this.#state === "destroyed") {
+            i18n.destroy();
+        }
         this.#checkAbort();
+        this.#i18n = i18n;
 
         // Setup application root node in the shadow dom
         const appRoot = (this.#appRoot = createAppRoot());
@@ -225,7 +230,7 @@ export class AppInstance {
             initialColorMode: config.colorMode,
             initialSystemConfig: config.chakraSystemConfig
         });
-        this.#lifecycleEvents = getInternalService<ApplicationLifecycleEventService>(
+        this.#lifecycleEvents = getInternalService<ApplicationLifecycleEventServiceImpl>(
             serviceLayer,
             RUNTIME_APPLICATION_LIFECYCLE_EVENT_SERVICE
         );

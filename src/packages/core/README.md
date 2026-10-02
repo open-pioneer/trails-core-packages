@@ -14,8 +14,7 @@ import { Error } from "@open-pioneer/core";
 throw new Error("my-error:identifier", "This is the error message");
 ```
 
-`Error` also exposes the optional `cause` attribute that allows nesting of error instances.
-Note that browser support for that property is still required:
+`Error` also exposes the optional `cause` attribute that allows nesting of error instances:
 
 ```js
 import { Error, getErrorChain } from "@open-pioneer/core";
@@ -37,11 +36,11 @@ All object needing some cleanup action to be called should use the `destroy` met
 
 ### Logger
 
-The `Logger` class provides a logger for standardized application wide logging.
+The `Logger` interface provides a logger for standardized application wide logging.
 The log level is configured globally in the file `vite.config.ts`: to change the application's log level,
 define the `__LOG_LEVEL__` constant to a custom value.
 
-To create a logger instance, call the `createLogger` method.
+To create a logger instance, call the `createLogger` function.
 It takes a prefix (string) to prepend to each message.
 To encode hierarchical names, use `:` as a separator (for example `"some-package:SomeClass"`).
 

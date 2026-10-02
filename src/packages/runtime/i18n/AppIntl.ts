@@ -182,7 +182,7 @@ export class AppIntl {
         return this.#messageLocale.value;
     }
 
-    /** Supported locales from app metadata. */
+    /** Message locales the app supports after applying `restrictSupportedLocales`. */
     get supportedMessageLocales(): Intl.Locale[] {
         return this.#effectiveSupportedLocales;
     }
@@ -273,21 +273,16 @@ function filterAvailableLocales(
     restrictSupportedLocales: readonly string[] | undefined
 ): Intl.Locale[] {
     //NOTE: the set preserves the order of 'restrictSupportedLocales', this is relevant and intentional.
-    const isRestricted = restrictSupportedLocales != null;
     const localesToSupport = new Set(restrictSupportedLocales ?? messageLocaleStrings);
     const supportedLocales: Intl.Locale[] = [];
     for (const l of localesToSupport) {
         if (!messageLocaleStrings.includes(l)) {
             // 'supportedLocales' may only restrict the locales defined by the application, not extend them.
             // A value outside the application's message locales is a configuration error.
-            if (isRestricted) {
-                throw new Error(
-                    ErrorId.UNSUPPORTED_LOCALE,
-                    `Configured supported locale '${l}' is not one of the application's message locales [${messageLocaleStrings.join(", ")}].`
-                );
-            }
-            LOG.warn(`Locale '${l}' is not included in app metadata locales and will be ignored.`);
-            continue;
+            throw new Error(
+                ErrorId.UNSUPPORTED_LOCALE,
+                `Configured supported locale '${l}' is not one of the application's message locales [${messageLocaleStrings.join(", ")}].`
+            );
         }
         const locale = tryParseLocale(l);
         if (!locale) {

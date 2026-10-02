@@ -21,7 +21,6 @@ import { renderComponentShadowDOM } from "@open-pioneer/test-utils/web-component
 
 it("should render a custom component into the dom", async () => {
     // Define a custom element class.
-    // The shadow root must be open for testing to work (which is the default during development).
     const elem = createCustomElement({
         component: () => createElement("div", { className: "test" }, "hello world")
     });

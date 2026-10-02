@@ -3,9 +3,6 @@
 
 import { screen, render } from "@testing-library/react";
 import { useIntl, useProperties, useService, useServices } from "open-pioneer:react-hooks";
-/**
- * @vitest-environment happy-dom
- */
 import { expect, it } from "vitest";
 import { PackageContextProvider, PackageContextProviderProps } from "./react";
 

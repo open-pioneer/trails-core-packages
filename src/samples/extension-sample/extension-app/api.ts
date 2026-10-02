@@ -24,7 +24,7 @@ export interface ActionProvider extends DeclaredService<"extension-app.ActionPro
     /**
      * Called by the {@link ActionService} to gather registered actions.
      *
-     * Note that this sample currently currently does not support changing actions at runtime (e.g. listening to changes).
+     * Note that this sample currently does not support changing actions at runtime (e.g. listening to changes).
      */
     createActions(): Action[];
 }

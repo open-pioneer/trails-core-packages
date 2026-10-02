@@ -54,7 +54,7 @@ import { FormattedMessage } from "@open-pioneer/react-utils";
 <FormattedRichMessage intl={intl} id="message.id" />
 ```
 
-`intl` can be either a plain `PackageIntl` object, or a signal (`ReadonlyReactive<PackageIntl`>), or a reactive getter (e.g. `() => currentIntl.value`).
+`intl` can be either a plain `PackageIntl` object, or a signal (`ReadonlyReactive<PackageIntl>`), or a reactive getter (e.g. `() => currentIntl.value`).
 
 `FormattedMessage` and `FormattedRichMessage` support `values`, too:
 
@@ -124,6 +124,7 @@ function MenuItem(props: { value: string }) {
 
 Use the `disabled` prop of `useRovingMenuItem` to indicate that your menu item is currently disabled.
 Disabled items will lose focus and will be skipped during keyboard navigation.
+The `itemProps` of a disabled item carry `aria-disabled="true"`, so the DOM element is marked as disabled for assistive technology as well.
 
 To mark your items as disabled for your users, prefer `aria-disabled` over HTML's `disabled` attribute.
 The `disabled` attribute completely disables focus and any browser events, which makes moving the focus to a neighboring item difficult to implement.

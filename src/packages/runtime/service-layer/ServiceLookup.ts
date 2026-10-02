@@ -16,7 +16,7 @@ interface Services {
 
 export type ReadonlyServiceLookup = Pick<
     ServiceLookup,
-    "lookup" | "lookupOne" | "lookupAll" | "serviceCount"
+    "lookup" | "lookupOne" | "lookupAll" | "registrationCount"
 >;
 
 export interface Unimplemented {
@@ -43,13 +43,13 @@ export class ServiceLookup {
     // Service implementations indexed by interface name.
     #services = new Map<string, Services>();
 
-    // Total service count
     #count = 0;
 
     /**
-     * Returns the total number of registered services.
+     * Returns the number of (service, interface) registrations.
+     * A service providing two interfaces counts twice.
      */
-    get serviceCount() {
+    get registrationCount() {
         return this.#count;
     }
 

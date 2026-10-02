@@ -34,6 +34,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+    vi.useRealTimers();
     vi.clearAllMocks();
     vi.restoreAllMocks();
 });
@@ -52,7 +53,7 @@ it("expect state to be 'not-authenticated'", async () => {
     await vi.waitUntil(() => keycloakAuthPlugin.getAuthState().kind === "not-authenticated");
 });
 
-it("expect keycloak init to reject'", async () => {
+it("reports an error notification when keycloak init rejects", async () => {
     MOCKS.init.mockRejectedValue(new Error("Error"));
 
     const logSpy = mockConsoleError();
@@ -86,7 +87,7 @@ it("expect keycloak init to reject'", async () => {
     `);
 });
 
-it("should reject by updating the token", async () => {
+it("resets the state to not-authenticated when the token refresh fails", async () => {
     MOCKS.init.mockResolvedValue(true);
     MOCKS.updateToken.mockRejectedValue(new Error("Error"));
     const { keycloakAuthPlugin } = await setup();
@@ -160,9 +161,7 @@ it("should call login with default options when no custom options provided", asy
         throw new Error("Unexpected login behavior kind");
     }
 
-    expect(MOCKS.login).toHaveBeenCalledWith({
-        redirectUri: undefined
-    });
+    expect(MOCKS.login).toHaveBeenCalledWith({});
 });
 
 it("should call logout with correct options", async () => {
@@ -187,9 +186,7 @@ it("should call logout with default options when no custom options provided", as
 
     keycloakAuthPlugin.logout();
 
-    expect(MOCKS.logout).toHaveBeenCalledWith({
-        redirectUri: undefined
-    });
+    expect(MOCKS.logout).toHaveBeenCalledWith({});
 });
 
 it("should call logout with merged options when additional options are provided", async () => {
@@ -241,7 +238,7 @@ async function setup(options: SetupOptions = {}) {
                     scope: "data:read"
                 },
                 keycloakConfig: {
-                    url: "https://auth.exaple.com/",
+                    url: "https://auth.example.com/",
                     realm: "realm",
                     clientId: "test-id"
                 },

@@ -168,22 +168,18 @@ function formatRichMessage(
     values: Record<string, RichTextValue> | undefined,
     opts: IntlMessageFormatOptions | undefined
 ): ReactNode {
-    values = {
+    const allValues = {
         ...RICH_TEXT_TAGS,
         ...values
     };
 
     // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-    const chunks: any = intl.formatMessage(descriptor, preprocessValues(values) as any, opts);
+    const chunks: any = intl.formatMessage(descriptor, preprocessValues(allValues) as any, opts);
     const nodes = assignKeys(chunks);
     return createElement(Fragment, undefined, ...nodes);
 }
 
-function preprocessValues(values: Record<string, RichTextValue> | undefined) {
-    if (!values) {
-        return undefined;
-    }
-
+function preprocessValues(values: Record<string, RichTextValue>) {
     const fixedValues: Record<string, RichTextValue> = {};
     for (const [key, valueOrFn] of Object.entries(values)) {
         let fixedValue = valueOrFn;
@@ -221,6 +217,7 @@ const ignoreMissingTranslationError: OnErrorFn = (err) => {
         return;
     }
 
+    // Test only, console is fine.
     // oxlint-disable-next-line no-console
     console.error(err);
 };

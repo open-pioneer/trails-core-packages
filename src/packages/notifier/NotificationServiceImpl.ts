@@ -3,7 +3,7 @@
 
 import { createToaster, CreateToasterProps, CreateToasterReturn } from "@chakra-ui/react";
 import { createLogger, Resource } from "@open-pioneer/core";
-import { ApplicationContext, ServiceOptions } from "@open-pioneer/runtime";
+import { ServiceOptions } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
 import type {
     NotificationLevel,
@@ -27,20 +27,16 @@ export interface InternalNotificationAPI extends NotificationService {
     registerUI(): Resource | undefined;
 }
 
-interface References {
-    appCtx: ApplicationContext;
-}
-
-// 7 days. Needed because there is no "indefinite" timeout for tooltips in current chakra.
+// 7 days, because Chakra has no indefinite toast duration.
 const PERSISTENT_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
 
 export class NotificationServiceImpl implements InternalNotificationAPI {
     #uiPresent = false;
-    #uiCheckTimeoutId: any; // oxlint-disable-line @typescript-eslint/no-explicit-any
+    #uiCheckTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
     readonly toaster: ToasterObject;
 
-    constructor({ properties }: ServiceOptions<References>) {
+    constructor({ properties }: ServiceOptions) {
         const typedProperties = properties as NotifierProperties;
 
         this.toaster = createToaster({

@@ -10,7 +10,7 @@ import { ReadonlyServiceLookup } from "./ServiceLookup";
 import { createConstructorFactory, ServiceDependency, ServiceRepr } from "./ServiceRepr";
 import { verifyDependencies } from "./verifyDependencies";
 
-it("does not return an error on acyclic graphs", function () {
+it("does not throw on acyclic graphs", function () {
     const services = mockServices([
         {
             name: "Map",
@@ -29,7 +29,7 @@ it("does not return an error on acyclic graphs", function () {
     const { serviceLookup, serviceDependencies: computedDependencies } = verifyDependencies({
         services: services
     });
-    assert.strictEqual(serviceLookup.serviceCount, 1);
+    assert.strictEqual(serviceLookup.registrationCount, 1);
 
     const service = getService(serviceLookup, "services.Map");
     assert.strictEqual(service.id, "map::Map");
@@ -43,7 +43,7 @@ it("does not return an error on acyclic graphs", function () {
     });
 });
 
-it("throws when a service is not implemented", function () {
+it("throws when a required interface is not implemented", function () {
     const services = mockServices([
         {
             name: "ExampleTool",
@@ -82,7 +82,7 @@ it("does not throw when an interface is implemented multiple times", function ()
         services: services,
         requiredReferences: []
     });
-    expect(serviceLookup.serviceCount).toEqual(2);
+    expect(serviceLookup.registrationCount).toEqual(2);
 
     const mapServices = serviceLookup.lookupAll("services.Map").value.map((s) => s.id);
     mapServices.sort();
@@ -117,7 +117,7 @@ it("allows multiple implementations if the services use a 'qualifier' for disamb
         services: services,
         requiredReferences: []
     });
-    assert.strictEqual(serviceLookup.serviceCount, 2);
+    assert.strictEqual(serviceLookup.registrationCount, 2);
 
     const map1 = getService(serviceLookup, "services.Map", "map1");
     assert.strictEqual(map1.id, "map::Map1");
@@ -186,7 +186,7 @@ it("throws for ambiguous service reference", function () {
     expect(message).toMatchSnapshot();
 });
 
-it("allows to pick an unambiguous implementation via classifier", function () {
+it("picks an unambiguous implementation via qualifier", function () {
     const services = mockServices([
         {
             name: "Map1",
@@ -283,7 +283,7 @@ it("allows to pick all implementations", function () {
     assert.sameMembers(mapUserDeps as unknown[], all);
 });
 
-it("throws when a component directly depends on itself", function () {
+it("throws when a service directly depends on itself", function () {
     const services = mockServices([
         {
             name: "Map",
@@ -300,7 +300,7 @@ it("throws when a component directly depends on itself", function () {
     expect(message).toMatchSnapshot();
 });
 
-it("throws when a component depends on itself via a larger cycle", function () {
+it("throws when a service depends on itself via a larger cycle", function () {
     const services = mockServices([
         {
             name: "a",
@@ -335,7 +335,7 @@ it("throws when a component depends on itself via a larger cycle", function () {
     expect(message).toMatchSnapshot();
 });
 
-it("does not return an error when the UI requires an existing interface", function () {
+it("does not throw when the UI requires an implemented interface", function () {
     const services = mockServices([
         {
             name: "Map",
@@ -354,7 +354,7 @@ it("does not return an error when the UI requires an existing interface", functi
             }
         ]
     });
-    assert.strictEqual(serviceLookup.serviceCount, 1);
+    assert.strictEqual(serviceLookup.registrationCount, 1);
 
     const service = getService(serviceLookup, "services.Map");
     assert.strictEqual(service.id, "map::Map");

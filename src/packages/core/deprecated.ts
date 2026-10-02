@@ -66,7 +66,7 @@ export function setDeprecationWarningsEnabled(newEnabled: boolean) {
  * function someFunctionName() {
  *     printDeprecation();
  *     // ...
- * } *
+ * }
  * ```
  */
 export function deprecated(options: DeprecatedOptions): () => void {

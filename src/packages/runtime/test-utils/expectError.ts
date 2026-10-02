@@ -2,15 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export function expectError(impl: () => unknown): Error {
+    let didThrow = false;
+    let thrown: unknown;
     try {
         impl();
-        throw new Error("expected error!");
     } catch (e) {
-        if (e instanceof Error) {
-            return e;
-        }
-        throw new Error("unexpected error value, not an instance of Error", { cause: e });
+        didThrow = true;
+        thrown = e;
     }
+    if (!didThrow) {
+        throw new Error("expected error!");
+    }
+    if (thrown instanceof Error) {
+        return thrown;
+    }
+    throw new Error("unexpected error value, not an instance of Error", { cause: thrown });
 }
 
 export function expectAsyncError(impl: () => Promise<unknown>): Promise<Error> {
@@ -23,7 +29,7 @@ export function expectAsyncError(impl: () => Promise<unknown>): Promise<Error> {
             if (e instanceof Error) {
                 return e;
             }
-            throw new Error("unexpected error value, not an instance of Error");
+            throw new Error("unexpected error value, not an instance of Error", { cause: e });
         }
     );
 }

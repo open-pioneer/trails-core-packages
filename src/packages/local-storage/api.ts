@@ -76,7 +76,7 @@ export interface StorageAPI {
     remove(key: string): void;
 
     /**
-     * Removes all entries associated managed by this instance.
+     * Removes all entries managed by this instance.
      *
      * If `this` represents the root object, _all_ entries will be removed.
      * If `this` represents a (possibly nested) namespace, only the contents of that
@@ -87,7 +87,7 @@ export interface StorageAPI {
     /**
      * Returns a storage namespace operating on the given `key` that can be used to group
      * multiple related properties.
-     * `key` should either be associated with an object or it's value should be undefined.
+     * `key` should either be associated with an object or its value should be undefined.
      * If `key` is not associated with a value, a new empty object will be created.
      *
      * Namespaces allow you to treat an object in the storage as a group of properties.

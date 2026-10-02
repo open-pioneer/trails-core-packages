@@ -2,7 +2,7 @@
 
 This package provides a [Keycloak](https://www.keycloak.org/) plugin for the [authentication package](https://github.com/open-pioneer/trails-core-packages/blob/main/src/packages/authentication/README.md#implementing-an-authentication-plugin).
 
-The package implements an authentication flow using the [Keycloak JavaScript](#https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter) adapter.
+The package implements an authentication flow using the [Keycloak JavaScript](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter) adapter.
 For more information about Keycloak, see the [Keycloak documentation](https://www.keycloak.org/).
 
 ## Usage

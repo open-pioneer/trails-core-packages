@@ -38,7 +38,7 @@ it("supportsLiveChanges reflects AppIntl.supportsLiveChanges", async () => {
     expect(reactive2.supportsLiveChanges).toBe(true);
 });
 
-it("changeLocale in non-reactive mode calls restartWithLocale", async () => {
+it("changeLocale without live locale changes calls restartWithLocale", async () => {
     const restarts: (Intl.Locale | undefined)[] = [];
     const restartWithLocale = (locale: Intl.Locale | undefined) => {
         restarts.push(locale);
@@ -46,11 +46,11 @@ it("changeLocale in non-reactive mode calls restartWithLocale", async () => {
     const appIntl = await makeAppIntl(["de", "en"], { restartWithLocale });
     const { service } = makeService(appIntl);
 
-    service.changeLocale(parseLocale("de"));
+    await service.changeLocale(parseLocale("de"));
     expect(restarts.map((l) => l?.baseName)).toEqual(["de"]);
 });
 
-it("changeLocale with undefined in non-reactive mode calls restartWithLocale with undefined", async () => {
+it("changeLocale with undefined and without live locale changes calls restartWithLocale with undefined", async () => {
     const restarts: (Intl.Locale | undefined)[] = [];
     const restartWithLocale = (locale: Intl.Locale | undefined) => {
         restarts.push(locale);
@@ -58,11 +58,11 @@ it("changeLocale with undefined in non-reactive mode calls restartWithLocale wit
     const appIntl = await makeAppIntl(["de", "en"], { restartWithLocale });
     const { service } = makeService(appIntl);
 
-    service.changeLocale(undefined);
+    await service.changeLocale(undefined);
     expect(restarts).toEqual([undefined]);
 });
 
-it("changeLocale in reactive mode delegates to AppIntl.changeLocale and updates locale", async () => {
+it("changeLocale with live locale changes delegates to AppIntl.changeLocale and updates locale", async () => {
     const appIntl = await makeAppIntl(["de", "en"], { supportsLiveChanges: true });
     const { service } = makeService(appIntl);
 
@@ -111,7 +111,7 @@ it("supportsLocale accepts regional variants of supported bundles", async () => 
     expect(service.supportsLocale(parseLocale("zh-CN"))).toBe(false);
 });
 
-it("restrictSupportedLocales=[] order is preserved", async () => {
+it("preserves the order of restrictSupportedLocales", async () => {
     const appIntl = await makeAppIntl(["de", "fr", "en"], {
         restrictSupportedLocales: ["en", "fr", "de"]
     });

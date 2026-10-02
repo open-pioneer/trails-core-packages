@@ -63,7 +63,7 @@ export interface CustomElementOptions {
 }
 
 /**
- * A context object that is passed to the `resolveProperties` function.
+ * A context object that is passed to the `resolveConfig` function.
  */
 export interface ConfigContext {
     /**
@@ -77,13 +77,13 @@ export interface ConfigContext {
     overrides: ApplicationOverrides | undefined;
 
     /**
-     * Returns an attribute from the application's root node.
+     * Returns an attribute of the application's host element.
      */
     getAttribute(name: string): string | undefined;
 }
 
 /**
- * Application overrides are defined when the is explicitly being restarted with new options.
+ * Application overrides are defined when the application is explicitly restarted with new options.
  *
  * Options set through overrides cannot be overwritten by the `resolveConfig` hook.
  */
@@ -231,11 +231,11 @@ export interface ApplicationElementConstructor {
  * Creates a new custom element class (web component) that can be registered within a DOM.
  *
  * @example
- * ```ts
+ * ```tsx
  * import * as appMetadata from "open-pioneer:app";
  *
  * const CustomElementClazz = createCustomElement({
- *   component: <div>Hello World!</div>,
+ *   component: () => <div>Hello World!</div>,
  *   appMetadata
  * });
  * customElements.define("sample-element", CustomElementClazz);
@@ -246,8 +246,7 @@ export function createCustomElement(options: CustomElementOptions): ApplicationE
         #shadowRoot: ShadowRoot | undefined;
         #instance: AppInstance | undefined;
 
-        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-        #deferredRestart: any; // A Timer
+        #deferredRestart: ReturnType<typeof setTimeout> | undefined;
 
         static get observedAttributes(): string[] {
             return [];

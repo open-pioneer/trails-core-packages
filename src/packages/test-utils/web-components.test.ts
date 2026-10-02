@@ -1,9 +1,6 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-/**
- * @vitest-environment happy-dom
- */
 import { createCustomElement } from "@open-pioneer/runtime";
 import { findByTestId } from "@testing-library/dom";
 import { createElement } from "react";

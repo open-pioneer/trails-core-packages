@@ -1,14 +1,14 @@
 # @open-pioneer/runtime
 
 Implements the runtime environment for Open Pioneer Trails apps.
-Additionally, the package provides some services that provide useful functionalities for app development.
+The package also provides services for app development.
 
 ## Quick start
 
 Import the `createCustomElement` function from this package to create your application as a Web Component:
 
 ```js
-// my-app/app.js
+// my-app/app.ts
 import { createCustomElement } from "@open-pioneer/runtime";
 import * as appMetadata from "open-pioneer:app";
 import { AppUI } from "./AppUI";
@@ -22,7 +22,7 @@ customElements.define("my-app", Element);
 ```
 
 In this example, `Element` is a custom web component class registered as `<my-app>`.
-The application renders the `AppUI` (a React component) and automatically contains services, styles etc. its package dependencies.
+The application renders the `AppUI` (a React component) and automatically contains the services, styles etc. of its package dependencies.
 HTML sites or JavaScript code can now instantiate the application by creating a DOM-Element:
 
 ```html
@@ -41,9 +41,9 @@ HTML sites or JavaScript code can now instantiate the application by creating a 
 
 If a hard error occurs on application start, the `AppUI` cannot be rendered but an error screen is shown instead.
 The error screen shows a message to the user that an error occurred on application start.
-The error screen is available in english (fallback) and german.
+The error screen is available in English (fallback) and German.
 
-If the application was started in DEV-mode, the error screen shows additional information about the error and the stack trace.
+If the application was started in development mode, the error screen shows additional information about the error and the stack trace.
 
 ## Provided services
 
@@ -52,7 +52,15 @@ For details, see the API description of the respective service.
 
 ### ApplicationContext
 
-The ApplicationContext provides access to global application values. E.g. the web component's host element and the current locale.
+The ApplicationContext provides access to global application values, e.g. the web component's host element and the root node.
+
+### LocaleService
+
+The LocaleService provides the current locale and the supported message locales, and switches the locale at runtime.
+
+### ThemeService
+
+The ThemeService controls the color mode and the Chakra system config of the app.
 
 ### NumberParserService
 

@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { reactive, syncWatch } from "@conterra/reactivity-core";
-import { createService } from "@open-pioneer/test-utils/services";
-import { createElement, ReactNode } from "react";
 /**
  * @vitest-environment node
  */
+import { reactive, syncWatch } from "@conterra/reactivity-core";
+import { createService } from "@open-pioneer/test-utils/services";
+import { createElement, ReactNode } from "react";
 import { it, expect } from "vitest";
 import { AuthPlugin, AuthState, LoginFallback } from "./api";
 import { AuthServiceImpl } from "./AuthServiceImpl";
@@ -80,7 +80,7 @@ it("creates a promise that resolves once the plugin is no longer pending", async
         didResolve = true;
         return info;
     });
-    await sleep(25);
+    await Promise.resolve();
     expect(didResolve).toBe(false);
 
     plugin.$setAuthState({
@@ -93,7 +93,7 @@ it("creates a promise that resolves once the plugin is no longer pending", async
     expect(sessionInfo?.userId).toBe("t.user");
 });
 
-it("returns the authentication plugins fallback", async () => {
+it("returns the authentication plugin's fallback", async () => {
     const plugin = new TestPlugin();
     const authService = createService(AuthServiceImpl, {
         references: {
@@ -148,10 +148,4 @@ class TestPlugin implements AuthPlugin {
 
 function DummyFallback(): ReactNode {
     return createElement("span", undefined, "Permission denied");
-}
-
-function sleep(ms: number) {
-    return new Promise<void>((resolve) => {
-        setTimeout(resolve, ms);
-    });
 }

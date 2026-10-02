@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { HttpService } from "@open-pioneer/http";
-import { ServiceOptions } from "@open-pioneer/runtime";
+import { DECLARE_SERVICE_INTERFACE, ServiceOptions } from "@open-pioneer/runtime";
 
 interface References {
     http: HttpService;
@@ -11,6 +11,8 @@ interface References {
 const URL = `https://registry.npmjs.org/@open-pioneer/runtime`;
 
 export class HttpClient {
+    declare [DECLARE_SERVICE_INTERFACE]: "http-app.HttpClient";
+
     #http: HttpService;
 
     constructor(options: ServiceOptions<References>) {

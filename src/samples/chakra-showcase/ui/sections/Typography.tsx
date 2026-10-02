@@ -21,7 +21,7 @@ import {
 import { Prose } from "@open-pioneer/chakra-snippets/prose";
 import { useMemo } from "react";
 import { LuCircleCheck, LuCircleDashed } from "react-icons/lu";
-import type { HighlighterGeneric } from "shiki";
+import type { BundledLanguage, BundledTheme, HighlighterGeneric } from "shiki";
 import { Presenter } from "../components/Presenter";
 
 const file = {
@@ -69,8 +69,7 @@ const proseContent = String.raw`
 export function Typography() {
     const shikiAdapter = useMemo(
         () =>
-            // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-            createShikiAdapter<HighlighterGeneric<any, any>>({
+            createShikiAdapter<HighlighterGeneric<BundledLanguage, BundledTheme>>({
                 async load() {
                     const { createHighlighter } = await import("shiki");
                     return createHighlighter({

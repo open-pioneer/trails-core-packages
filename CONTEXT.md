@@ -56,7 +56,7 @@ _Avoid_: custom element node, container
 
 **Root node**:
 The `Document` or `ShadowRoot` that holds the app's DOM and styles (`RootNode`).
-It is the shadow root by default and the document when `advanced.disableShadowRoot` is set, so code that searches the
+It is the shadow root by default and the document when `advanced.enableShadowRoot` is `false`, so code that searches the
 DOM uses `ApplicationContext.getRoot()` instead of `document`.
 
 **App root**:

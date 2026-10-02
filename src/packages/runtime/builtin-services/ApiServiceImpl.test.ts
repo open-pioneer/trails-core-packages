@@ -63,10 +63,6 @@ it("reports an error if a method is defined multiple times", async function () {
                 },
                 {
                     async getApiMethods() {
-                        // Ensure this completes after the other one
-                        await new Promise((resolve) => {
-                            setTimeout(resolve, 1);
-                        });
                         return {
                             foo: () => undefined
                         };

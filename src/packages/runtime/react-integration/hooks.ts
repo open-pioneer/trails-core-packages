@@ -10,10 +10,6 @@ import { PackageIntl } from "../i18n";
 import { PackageContext, PackageContextMethods } from "./PackageContext";
 
 /*
-
-    IMPORTANT
-    =========
-
     The functions in this file are part of the public API, although they should not be called directly.
     They are imported by code generated during separate package compilation generation via:
 
@@ -40,7 +36,7 @@ export interface UseServiceOptions {
  * This is an internal hook that is typically called indirectly via the hook
  * provided from `"open-pioneer:react-hooks"`.
  *
- * @private
+ * @internal
  */
 export function useServiceInternal<ServiceType = unknown>(
     packageName: string,
@@ -54,14 +50,13 @@ export function useServiceInternal(
     options?: UseServiceOptions
 ): unknown {
     const context = useContext(PackageContext);
+    const qualifier = options?.qualifier;
     const service = useMemo(
         () =>
-            checkContext("useService", context).getService(
-                packageName,
-                interfaceName,
-                options ?? {}
-            ),
-        [context, packageName, interfaceName, options]
+            checkContext("useService", context).getService(packageName, interfaceName, {
+                qualifier
+            }),
+        [context, packageName, interfaceName, qualifier]
     );
     return service;
 }
@@ -73,7 +68,7 @@ export function useServiceInternal(
  * This is an internal hook that is typically called indirectly via the hook
  * provided from `"open-pioneer:react-hooks"`.
  *
- * @private
+ * @internal
  */
 export function useServicesInternal<ServiceType = unknown>(
     packageName: string,
@@ -96,7 +91,7 @@ export function useServicesInternal(packageName: string, interfaceName: any): un
  * This is an internal hook that is typically called indirectly via the hook
  * provided from `"open-pioneer:react-hooks"`.
  *
- * @private
+ * @internal
  */
 export function usePropertiesInternal(packageName: string): Readonly<Record<string, unknown>> {
     const context = useContext(PackageContext);
@@ -109,7 +104,7 @@ export function usePropertiesInternal(packageName: string): Readonly<Record<stri
  * This is an internal hook that is typically called indirectly via the hook
  * provided from `"open-pioneer:react-hooks"`.
  *
- * @private
+ * @internal
  */
 export function useIntlInternal(packageName: string): PackageIntl {
     const context = useContext(PackageContext);
@@ -128,7 +123,7 @@ function checkContext(
     if (!contextData) {
         throw new Error(
             ErrorId.INTERNAL,
-            `"Failed to access package context from '${hookName}': react integration was not set up properly.`
+            `Failed to access package context from '${hookName}': react integration was not set up properly.`
         );
     }
     return contextData;

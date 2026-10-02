@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Button, Container, Heading, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import { Field } from "@open-pioneer/chakra-snippets/field";
 import { NotificationService, Notifier } from "@open-pioneer/notifier";
 import { useProperties, useService } from "open-pioneer:react-hooks";
 import { useMemo, useState } from "react";
 import { NotificationLevel, PropertiesAppProps } from "./api";
-import { Field } from "./snippets/field";
 
 export function AppUI() {
     return (
@@ -30,7 +30,7 @@ function Form() {
     return (
         <Container maxWidth="xl">
             <VStack my="20">
-                <Heading size="md">Notifier Sample</Heading>
+                <Heading size="md">Properties Sample</Heading>
                 <Text>
                     This Form attempts to emit a notification with a certain level when clicking one
                     of the button below. The notifier will ignore notifications with a level lower

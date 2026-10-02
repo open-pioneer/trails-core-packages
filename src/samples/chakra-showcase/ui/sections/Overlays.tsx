@@ -44,34 +44,32 @@ interface DialogProps {
     content?: React.ReactNode;
 }
 
+const dialog = createOverlay<DialogProps>((props: DialogProps) => {
+    const { title, description, content, ...rest } = props;
+    return (
+        <Dialog.Root {...rest}>
+            <Portal>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                    <Dialog.Content>
+                        {title && (
+                            <Dialog.Header>
+                                <Dialog.Title>{title}</Dialog.Title>
+                            </Dialog.Header>
+                        )}
+                        <Dialog.Body spaceY="4">
+                            {description && <Dialog.Description>{description}</Dialog.Description>}
+                            {content}
+                        </Dialog.Body>
+                    </Dialog.Content>
+                </Dialog.Positioner>
+            </Portal>
+        </Dialog.Root>
+    );
+});
+
 export function Overlays() {
     const [showActionBar, setShowActionBar] = useState(false);
-
-    const dialog = createOverlay<DialogProps>((props: DialogProps) => {
-        const { title, description, content, ...rest } = props;
-        return (
-            <Dialog.Root {...rest}>
-                <Portal>
-                    <Dialog.Backdrop />
-                    <Dialog.Positioner>
-                        <Dialog.Content>
-                            {title && (
-                                <Dialog.Header>
-                                    <Dialog.Title>{title}</Dialog.Title>
-                                </Dialog.Header>
-                            )}
-                            <Dialog.Body spaceY="4">
-                                {description && (
-                                    <Dialog.Description>{description}</Dialog.Description>
-                                )}
-                                {content}
-                            </Dialog.Body>
-                        </Dialog.Content>
-                    </Dialog.Positioner>
-                </Portal>
-            </Dialog.Root>
-        );
-    });
 
     return (
         <Box display="flex" flexDirection="column" gap="4" alignItems="flex-start">

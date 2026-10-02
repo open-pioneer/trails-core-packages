@@ -13,7 +13,6 @@
         "directory": "src/packages/chakra-snippets"
     },
     "type": "module",
-    "main": "index.ts",
     "publishConfig": {
         "directory": "dist",
         "linkDirectory": false
@@ -25,7 +24,6 @@
     "dependencies": {
         "@ark-ui/react": "catalog:",
         "@chakra-ui/react": "catalog:",
-        "@open-pioneer/core": "workspace:*",
         "@open-pioneer/runtime": "workspace:*",
         "react": "catalog:",
         "react-icons": "catalog:"

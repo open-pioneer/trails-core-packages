@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useReactiveSnapshot } from "@open-pioneer/reactivity";
-import { FocusEventHandler, useLayoutEffect, useMemo, useRef } from "react";
+import { FocusEventHandler, useLayoutEffect, useMemo, useRef, FocusEvent } from "react";
+import { useEvent } from "../useEvent";
 import { MENU_OWNER_ATTR, MENU_VALUE_ATTR } from "./RovingMenuState";
 import { useMenuState } from "./useMenuState";
 
 /**
- * Properties support when creating a new menu item via {@link useRovingMenuItem}.
+ * Properties supported when creating a new menu item via {@link useRovingMenuItem}.
  *
  * @group Roving menu
  */
@@ -21,6 +22,7 @@ export interface RovingMenuItemProps {
      * Set this to true if your item is disabled.
      *
      * This tells the menu that the item cannot be focused.
+     * The returned `itemProps` then carry `aria-disabled`, which keyboard navigation uses to skip the item.
      */
     disabled?: boolean;
 
@@ -40,6 +42,7 @@ export interface RovingMenuItemProps {
 export interface RovingMenuItemDomProps {
     [MENU_OWNER_ATTR]: string;
     [MENU_VALUE_ATTR]: string;
+    "aria-disabled"?: true;
     tabIndex: number;
     onFocus: FocusEventHandler;
     onBlur: FocusEventHandler;
@@ -105,6 +108,15 @@ export function useRovingMenuItemImpl(
 
     const isActiveValue = useReactiveSnapshot(() => state?.isActive(value), [state, value]);
     const isActive = !disabled && isActiveValue;
+
+    const onFocus = useEvent((_event: FocusEvent) => {
+        hasFocus.current = true;
+        state?.onItemFocus(value);
+    });
+    const onBlur = useEvent((_event: FocusEvent) => {
+        hasFocus.current = false;
+    });
+
     const result = useMemo((): RovingMenuItemResult | undefined => {
         if (!state) {
             return undefined;
@@ -115,18 +127,17 @@ export function useRovingMenuItemImpl(
                 [MENU_OWNER_ATTR]: menuId,
                 [MENU_VALUE_ATTR]: value,
 
+                // Only set when disabled, so a consumer's own aria-disabled survives the spread
+                ...(disabled ? { "aria-disabled": true as const } : undefined),
+
                 // items can be reached via user tab, nested menus can't
                 tabIndex: context === "item" && isActive ? 0 : -1,
 
-                onFocus: (_event) => {
-                    hasFocus.current = true;
-                    state?.onItemFocus(value);
-                },
-                onBlur: (_event) => {
-                    hasFocus.current = false;
-                }
+                // Dom events
+                onFocus,
+                onBlur
             }
         };
-    }, [state, value, isActive, context]);
+    }, [state, value, isActive, disabled, context, onFocus, onBlur]);
     return result;
 }

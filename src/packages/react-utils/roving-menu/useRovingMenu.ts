@@ -117,7 +117,7 @@ export interface NestedRovingMenuResult extends RovingMenuResult {
 /**
  * Like {@link useRovingMenu}, but suitable for nested menus.
  *
- * Only a single level of nested is supported at this time (i.e. horizontal in vertical, or the other way around).
+ * Only a single level of nesting is supported at this time (i.e. horizontal in vertical, or the other way around).
  *
  * @group Roving menu
  * @expandType NestedRovingMenuProps

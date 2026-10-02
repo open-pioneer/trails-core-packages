@@ -7,8 +7,8 @@ import { PackageIntl } from "./i18n";
 /** Lifecycle hooks supported by the service interface. */
 export interface ServiceLifecycleHooks {
     /**
-     * Destroys the component.
-     * Should clean up all resources used by the component.
+     * Destroys the service.
+     * Should clean up all resources used by the service.
      */
     destroy?(): void;
 

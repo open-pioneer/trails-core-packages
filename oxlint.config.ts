@@ -70,7 +70,6 @@ export default defineConfig({
         ],
 
         // Enforce copyright header on top of the file.
-        // NOTE: use your own copyright header (if the existing does not apply) or remove this rule completely.
         "@tony.ganchev/header/header": [
             "error",
             {

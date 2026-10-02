@@ -6,7 +6,7 @@ import { config as baseConfig } from "@open-pioneer/base-theme";
 import { ThemeService } from "@open-pioneer/runtime";
 import { useService } from "open-pioneer:react-hooks";
 
-const builtinColorPallettes = [
+const builtinColorPalettes = [
     "trails",
     "gray",
     "red",
@@ -35,7 +35,7 @@ export function ColorPaletteSwitcher() {
 
     return (
         <HStack justify="center">
-            {builtinColorPallettes.map((name) => (
+            {builtinColorPalettes.map((name) => (
                 <Button
                     key={name}
                     onClick={() => {

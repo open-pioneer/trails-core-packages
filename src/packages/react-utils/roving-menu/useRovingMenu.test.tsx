@@ -201,7 +201,7 @@ it("switches active items if the active item is unmounted", async () => {
     const initialItems = Array.from(list.querySelectorAll("li"));
     expect(getTabIndices(initialItems)).toEqual([0, -1, -1]);
 
-    await rerender(<SimpleList values={["b", "c"]} />);
+    rerender(<SimpleList values={["b", "c"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
         expect(getTabIndices(updatedItems)).toEqual([0, -1]);
@@ -221,7 +221,7 @@ it("switches active items if the last active item is unmounted", async () => {
         expect(getTabIndices(initialItems)).toEqual([-1, -1, 0]);
     });
 
-    await rerender(<SimpleList values={["a", "b"]} />);
+    rerender(<SimpleList values={["a", "b"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
         expect(getTabIndices(updatedItems)).toEqual([-1, 0]);
@@ -238,7 +238,7 @@ it("switches active items if the active item is disabled", async () => {
     const initialItems = Array.from(list.querySelectorAll("li"));
     expect(getTabIndices(initialItems)).toEqual([0, -1, -1]);
 
-    await rerender(<SimpleList disabledValues={["a"]} />);
+    rerender(<SimpleList disabledValues={["a"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
         expect(getTabIndices(updatedItems)).toEqual([-1, 0, -1]);
@@ -255,7 +255,7 @@ it("switches active items if the active item is hidden/unmounted", async () => {
     const initialItems = Array.from(list.querySelectorAll("li"));
     expect(getTabIndices(initialItems)).toEqual([0, -1, -1]);
 
-    await rerender(<SimpleList hiddenValues={["a"]} />);
+    rerender(<SimpleList hiddenValues={["a"]} />);
     await waitFor(() => {
         const updatedItems = Array.from(list.querySelectorAll("li"));
         // a is hidden, b becomes the active item
@@ -263,7 +263,7 @@ it("switches active items if the active item is hidden/unmounted", async () => {
     });
 });
 
-it("is useable when the first menu item is disabled", async () => {
+it("is usable when the first menu item is disabled", async () => {
     render(<SimpleList disabledValues={["a"]} />, {
         wrapper: TestWrapper
     });
@@ -273,6 +273,22 @@ it("is useable when the first menu item is disabled", async () => {
 
     // Second button gets the focus because the first one is disabled
     expect(getTabIndices(initialItems)).toEqual([-1, 0, -1]);
+});
+
+it("marks disabled items with aria-disabled and skips them during keyboard navigation", async () => {
+    render(<SimpleList disabledValues={["b"]} />, {
+        wrapper: TestWrapper
+    });
+
+    const list = await screen.findByRole("toolbar");
+    const items = Array.from(list.querySelectorAll("li"));
+    expect(items.map((item) => item.getAttribute("aria-disabled"))).toEqual([null, "true", null]);
+    expect(getTabIndices(items)).toEqual([0, -1, -1]);
+
+    fireEvent.keyDown(list, { key: "ArrowDown" });
+    await waitFor(() => {
+        expect(getTabIndices(items)).toEqual([-1, -1, 0]);
+    });
 });
 
 it("disables keyboard focus when 'active' is false", async () => {

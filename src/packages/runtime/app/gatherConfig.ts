@@ -11,8 +11,8 @@ import {
 import { ErrorId } from "../errors";
 
 /**
- * Gathers application properties by reading them from the options object
- * and by (optionally) invoking the `resolveProperties` hook.
+ * Gathers the application config by reading it from the options object
+ * and by (optionally) invoking the `resolveConfig` hook.
  */
 export async function gatherConfig(
     hostElement: HTMLElement,
@@ -41,7 +41,7 @@ export async function gatherConfig(
     } catch (e) {
         throw new Error(
             ErrorId.CONFIG_RESOLUTION_FAILED,
-            "Failed to resolve application properties.",
+            "Failed to resolve the application config.",
             {
                 cause: e
             }

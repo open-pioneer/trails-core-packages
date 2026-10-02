@@ -3,10 +3,10 @@
 
 import { type SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 // oxlint-disable-next-line @typescript-eslint/no-unused-vars
-import type { ApplicationConfig } from "./CustomElement";
+import type { AdvancedCustomElementOptions, ApplicationConfig } from "./CustomElement";
 import { type DeclaredService } from "./DeclaredService";
 
-/* oxlint-disable @typescript-eslint/no-explicit-any */
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 export type ApiMethod = (...args: any[]) => any;
 
 /**
@@ -46,7 +46,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
     getHostElement(): HTMLElement;
 
     /**
-     * A root node that resolves to the the shadow root or the site's document.
+     * A root node that resolves to the shadow root or the site's document.
      *
      * For example:
      *
@@ -63,7 +63,7 @@ export interface ApplicationContext extends DeclaredService<"runtime.Application
      *
      * NOTE: This method returns undefined if the application does not use a shadow root.
      *
-     * See also {@link ApplicationConfig.disableShadowRoot} and {@link getRoot()}.
+     * See also {@link AdvancedCustomElementOptions.enableShadowRoot} and {@link getRoot}.
      */
     getShadowRoot(): ShadowRoot | undefined;
 
@@ -158,7 +158,9 @@ export interface LocaleService extends DeclaredService<"runtime.LocaleService"> 
 
     /**
      * Switches to `locale`. Best-fit match against {@link supportedMessageLocales};
-     * throws `UNSUPPORTED_LOCALE` on no match. `undefined` enables automatic picking.
+     * The promise rejects with the error id `runtime:unsupported-locale` on no match.
+     *
+     * Use `undefined` to pick the default locale.
      */
     changeLocale(locale: Intl.Locale | undefined): Promise<void>;
 
@@ -215,10 +217,7 @@ export type ColorModeValueSupplier = () => ColorModeValue;
 export type ChakraSystemConfigSupplier = () => ChakraSystemConfig | undefined;
 
 /**
- * A Theme Service that provides methods to interact with the chakra theme.
- *
- * e.g. change the color mode of the application.
- * or update the system config of the application.
+ * A service that controls the color mode and the Chakra system config of the app.
  */
 export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
     /**
@@ -229,7 +228,7 @@ export interface ThemeService extends DeclaredService<"runtime.ThemeService"> {
     /**
      * The currently active color mode.
      * It is reactive.
-     * Defaults to `"light".
+     * Defaults to `"light"`.
      */
     readonly colorMode: ColorModeValue;
 

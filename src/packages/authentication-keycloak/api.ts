@@ -22,6 +22,7 @@ export interface KeycloakProperties {
     keycloakOptions: KeycloakOptions;
 }
 
+/** Options for the Keycloak JavaScript adapter and for the token refresh of this plugin. */
 export interface KeycloakOptions {
     /**
      * The configuration details for connecting to Keycloak.
@@ -37,7 +38,7 @@ export interface KeycloakOptions {
      *
      * - 'autoRefresh': Whether token refreshing should happen automatically.
      * - 'interval': The interval (in milliseconds) at which token refreshing should occur.
-     * - 'timeLeft': The remaining time (in milliseconds) before token expiration.
+     * - 'timeLeft': The minimum remaining lifetime (in seconds) before the token is refreshed.
      */
     refreshOptions?: RefreshOptions;
 

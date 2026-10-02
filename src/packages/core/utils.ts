@@ -13,6 +13,7 @@ export interface ManualPromise<T> {
     reject(error: unknown): void;
 }
 
+/** Creates a new {@link ManualPromise}. */
 export function createManualPromise<T>(): ManualPromise<T> {
     let resolve!: (value: T) => void;
     let reject!: (error: unknown) => void;

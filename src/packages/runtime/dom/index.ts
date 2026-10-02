@@ -15,10 +15,6 @@ export function isShadowRoot(node: RootNode): node is ShadowRoot {
     return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && "host" in node;
 }
 
-export function isDocument(node: RootNode): node is Document {
-    return !isShadowRoot(node);
-}
-
 /**
  * Returns the parent node for <style> elements.
  */
@@ -32,7 +28,7 @@ export function getStylesRoot(node: RootNode): ShadowRoot | HTMLHeadElement {
 export function createAppRoot(): HTMLDivElement {
     // Setup application root node in the shadow dom
     const container = document.createElement("div");
-    container.classList.add("pioneer-root");
+    container.classList.add(APP_ROOT_CLASS);
     container.style.minHeight = "100%";
     container.style.height = "100%";
     return container;

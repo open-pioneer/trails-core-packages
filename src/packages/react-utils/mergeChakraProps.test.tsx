@@ -200,7 +200,7 @@ describe("css property", () => {
           }
         `);
 
-        await render(<Box className="custom-class" data-testid="box" {...merged} />, {
+        render(<Box className="custom-class" data-testid="box" {...merged} />, {
             wrapper: (props) => <PackageContextProvider {...props} />
         });
 

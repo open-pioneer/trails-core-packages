@@ -15,7 +15,7 @@ import {
     ApplicationContextProperties,
     ApplicationContextServiceOptions
 } from "./ApplicationContextImpl";
-import { ApplicationLifecycleEventService } from "./ApplicationLifecycleEventService";
+import { ApplicationLifecycleEventServiceImpl } from "./ApplicationLifecycleEventServiceImpl";
 import { LocaleServiceImpl, LocaleServiceProperties } from "./LocaleServiceImpl";
 import { NumberParserServiceImpl, NumberParserServiceOptions } from "./NumberParserServiceImpl";
 import { ThemeServiceImpl, ThemeServiceProperties } from "./ThemeServiceImpl";
@@ -104,7 +104,7 @@ export function createBuiltinPackage(properties: BuiltinPackageProperties): Pack
     const lifecycleEventService = new ServiceRepr({
         name: "ApplicationLifecycleEventServiceImpl",
         packageName: RUNTIME_PACKAGE_NAME,
-        factory: createConstructorFactory(ApplicationLifecycleEventService),
+        factory: createConstructorFactory(ApplicationLifecycleEventServiceImpl),
         intl: constant(intl),
         interfaces: [
             {

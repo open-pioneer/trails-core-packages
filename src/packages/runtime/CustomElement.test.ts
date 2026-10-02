@@ -324,6 +324,40 @@ describe("element API", () => {
         expect(isAbortError(error)).toBe(true);
     });
 
+    it("rejects with an abort error when the API is requested after a failed start", async function () {
+        vi.spyOn(console, "error").mockImplementation(() => undefined);
+        const elem = createCustomElement({
+            async resolveConfig() {
+                throw new Error("help!");
+            }
+        });
+        const { node } = await renderComponent(elem);
+        await waitFor(() => {
+            const state = (node as InternalElementType).$inspectElementState?.().state;
+            if (state !== "error") {
+                throw new Error(`App did not reach error state.`);
+            }
+        });
+
+        const error = await expectAsyncError(() => (node as ApplicationElement).when());
+        expect(isAbortError(error)).toBe(true);
+    });
+
+    it("rejects with an abort error when the start fails while waiting for the API", async function () {
+        vi.spyOn(console, "error").mockImplementation(() => undefined);
+        const elem = createCustomElement({
+            async resolveConfig() {
+                throw new Error("help!");
+            }
+        });
+        const tag = defineComponent(elem);
+        const node = document.createElement(tag) as ApplicationElement;
+        document.body.appendChild(node);
+
+        const error = await expectAsyncError(() => node.when());
+        expect(isAbortError(error)).toBe(true);
+    });
+
     it("should allow services to provide an API", async () => {
         const events: string[] = [];
         class Extension implements ApiExtension {
@@ -467,7 +501,7 @@ describe("application lifecycle events", function () {
         await waitFor(() => {
             const state = (node as InternalElementType).$inspectElementState?.().state;
             if (state !== "error") {
-                throw new Error(`App did not reach destroyed state.`);
+                throw new Error(`App did not reach error state.`);
             }
         });
 
@@ -481,7 +515,7 @@ describe("application lifecycle events", function () {
               ],
               [
                 "[ERROR] @open-pioneer/runtime/app/logErrors: #2",
-                [Error: runtime:config-resolution-failed: Failed to resolve application properties.],
+                [Error: runtime:config-resolution-failed: Failed to resolve the application config.],
               ],
             ],
             "results": [
@@ -645,7 +679,7 @@ describe("i18n support", function () {
         );
     });
 
-    it("supports restarting with a different locale without restarting the app", async () => {
+    it("changes the locale in place when live locale changes are enabled", async () => {
         // Hide i18n warnings
         vi.spyOn(console, "warn").mockImplementation(() => undefined);
         mockNavigatorLocales();
@@ -714,7 +748,7 @@ describe("i18n support", function () {
         ]);
     });
 
-    it("transports changed color mode in overrides on lang change", async () => {
+    it("transports changed color mode in overrides on locale change", async () => {
         mockNavigatorLocales();
 
         const observedOverrides: (ApplicationOverrides | undefined)[] = [];
@@ -750,7 +784,7 @@ describe("i18n support", function () {
         });
     });
 
-    it("transports changed chakra system config in overrides on lang change", async () => {
+    it("transports changed chakra system config in overrides on locale change", async () => {
         mockNavigatorLocales();
 
         const observedOverrides: (ApplicationOverrides | undefined)[] = [];

@@ -93,7 +93,7 @@ export interface Logger {
     warn: LogMethod;
 
     /**
-     * Logging method for debug error level.
+     * Logging method for error log level.
      * Follows normal log method structure but logs in error level.
      */
     error: LogMethod;
@@ -103,7 +103,7 @@ export interface Logger {
  * A class implementing a logger with a global log level.
  */
 export class LoggerImpl implements Logger {
-    prefix: string;
+    readonly prefix: string;
     readonly #enabledLogLevelNumber: number;
 
     constructor(prefix: string, logLevel: LogLevel) {
@@ -115,49 +115,26 @@ export class LoggerImpl implements Logger {
         return this.#isLogLevelEnabled("DEBUG");
     }
 
-    /**
-     * Performs a debug log with the given message and values if DEBUG level is enabled.
-     * @param message
-     * @param values
-     */
+    /** Performs a debug log with the given message and values if DEBUG level is enabled. */
     debug(message: string | Error | unknown, ...values: unknown[]) {
         this.#doLog("DEBUG", message, values);
     }
 
-    /**
-     * Performs an info log with the given message and values if INFO level is enabled.
-     * @param message
-     * @param values
-     */
+    /** Performs an info log with the given message and values if INFO level is enabled. */
     info(message: string | Error | unknown, ...values: unknown[]) {
         this.#doLog("INFO", message, values);
     }
 
-    /**
-     * Performs a warning log with the given message and values if WARN level is enabled.
-     * @param message
-     * @param values
-     */
+    /** Performs a warning log with the given message and values if WARN level is enabled. */
     warn(message: string | Error | unknown, ...values: unknown[]) {
         this.#doLog("WARN", message, values);
     }
 
-    /**
-     * Performs an error log with the given message and values if ERROR level is enabled.
-     * @param message
-     * @param values
-     */
+    /** Performs an error log with the given message and values if ERROR level is enabled. */
     error(message: string | Error | unknown, ...values: unknown[]) {
         this.#doLog("ERROR", message, values);
     }
 
-    /**
-     * Internal method for performing the log if the specified level is enabled.
-     * @param level
-     * @param messageOrError
-     * @param values
-     * @private
-     */
     #doLog(level: LogLevel, messageOrError: string | Error | unknown, values: unknown[]) {
         if (this.#isLogLevelEnabled(level)) {
             let message = `[${level}] ${this.prefix}:`;

@@ -3,17 +3,18 @@
 
 import { waitFor, within } from "@testing-library/dom";
 
-// oxlint-disable-next-line @typescript-eslint/no-explicit-any
-const GLOBAL = global as any;
+const GLOBAL = globalThis as { __WEB_COMPONENT_COUNT__?: number };
 
 function nextId(): number {
-    GLOBAL["__WEB_COMPONENT_COUNT__"] ??= 0;
-    const id = (GLOBAL["__WEB_COMPONENT_COUNT__"] += 1);
+    GLOBAL.__WEB_COMPONENT_COUNT__ ??= 0;
+    const id = (GLOBAL.__WEB_COMPONENT_COUNT__ += 1);
     return id;
 }
 
 /**
  * Renders the given component into the DOM and returns the new node.
+ *
+ * The container (`document.body` by default) is emptied before the element is appended.
  */
 export async function renderComponent(
     component: CustomElementConstructor | string,

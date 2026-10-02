@@ -58,16 +58,16 @@ export interface NotificationService extends DeclaredService<"notifier.Notificat
      */
     notify(options: NotificationOptions): void;
 
-    /** Emits a success notification. Same as {@link notify} with `type: "success"`. */
+    /** Emits a success notification. Same as {@link notify} with `level: "success"`. */
     success(options: SimpleNotificationOptions): void;
 
-    /** Emits an info notification. Same as {@link notify} with `type: "info"`. */
+    /** Emits an info notification. Same as {@link notify} with `level: "info"`. */
     info(options: SimpleNotificationOptions): void;
 
-    /** Emits a warning notification. Same as {@link notify} with `type: "warning"`. */
+    /** Emits a warning notification. Same as {@link notify} with `level: "warning"`. */
     warning(options: SimpleNotificationOptions): void;
 
-    /** Emits an error notification. Same as {@link notify} with `type: "error"`. */
+    /** Emits an error notification. Same as {@link notify} with `level: "error"`. */
     error(options: SimpleNotificationOptions): void;
 
     /** Closes all active notifications. */

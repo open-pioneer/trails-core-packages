@@ -25,9 +25,9 @@ export class SampleTokenInterceptor implements Interceptor {
     beforeRequest({ target, options }: BeforeRequestParams): void {
         const authState = this.#authService.getAuthState();
         const sessionInfo = authState.kind == "authenticated" ? authState.sessionInfo : undefined;
-        const keycloak = sessionInfo?.attributes?.keycloak;
-        const token = (keycloak as { token: string }).token;
-        if (target.protocol === "https:" && target.hostname === "ogc-api.nrw.de" && token) {
+        const keycloak = sessionInfo?.attributes?.keycloak as { token?: string } | undefined;
+        const token = keycloak?.token;
+        if (token && target.protocol === "https:" && target.hostname === "ogc-api.nrw.de") {
             options.headers.set("Authorization", token);
         }
     }

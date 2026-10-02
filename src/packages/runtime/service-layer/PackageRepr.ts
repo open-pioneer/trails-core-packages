@@ -60,7 +60,7 @@ export class PackageRepr {
     /** Resolved (perhaps customized) package properties. */
     readonly properties: Readonly<Record<string, unknown>>;
 
-    /** Locale-dependant i18n messages. */
+    /** Locale-dependent i18n messages. */
     readonly intl: ReadonlyReactive<PackageIntl>;
 
     constructor(options: PackageReprOptions) {

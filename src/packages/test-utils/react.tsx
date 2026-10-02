@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { computed, constant, ReadonlyReactive } from "@conterra/reactivity-core";
+import { constant, ReadonlyReactive } from "@conterra/reactivity-core";
 import type { ColorModeValue, PackageIntl, Service } from "@open-pioneer/runtime";
 import {
     APP_ROOT_CLASS,
@@ -12,9 +12,11 @@ import {
 import { FC, ReactNode, useInsertionEffect, useMemo } from "react";
 import { createIntl } from "./vanilla";
 
+/** Any service instance. The type is relaxed on purpose to allow test mocks. */
 // oxlint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyService = Service<any>;
 
+/** Props of {@link PackageContextProvider}. */
 export interface PackageContextProviderProps {
     /** Interface implementations, keyed by interface name. */
     services?: {
@@ -68,10 +70,26 @@ export interface PackageContextProviderProps {
  * Currently also wrapped with the CustomChakraProvider to support chakra-ui elements
  */
 export const PackageContextProvider: FC<PackageContextProviderProps> = (props) => {
-    const { children, ...rest } = props;
+    const {
+        children,
+        services,
+        qualifiedServices,
+        properties,
+        locale: localeProp,
+        colorMode: colorModeProp,
+        messages
+    } = props;
     const [locale, colorMode, contextMethods] = useMemo(
-        () => createPackageContextMethods(rest),
-        [rest]
+        () =>
+            createPackageContextMethods({
+                services,
+                qualifiedServices,
+                properties,
+                locale: localeProp,
+                colorMode: colorModeProp,
+                messages
+            }),
+        [services, qualifiedServices, properties, localeProp, colorModeProp, messages]
     );
 
     useInsertionEffect(() => {
@@ -109,7 +127,7 @@ function createPackageContextMethods(
     const locale = options?.locale ?? "en";
     const messages = options?.messages ?? {};
     const cachedIntl: Record<string, PackageIntl> = {};
-    const colorMode = computed(() => options?.colorMode ?? "light");
+    const colorMode = constant<ColorModeValue>(options?.colorMode ?? "light");
     const methods: PackageContextMethods = {
         getService(packageName, interfaceName, options) {
             if (!options.qualifier) {

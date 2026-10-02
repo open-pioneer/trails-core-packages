@@ -12,7 +12,7 @@ it("can use the NumberParserService to parse a string to a number", async functi
     expect(parsedNumber).toBe(123.45);
 });
 
-it("can use the NumberParserService to parse a string to a number if local is 'de'", async function () {
+it("can use the NumberParserService to parse a string to a number if the locale is 'de'", async function () {
     const parsedNumber = await parseNumberWithLocale("123.123,2", "de");
     expect(parsedNumber).toBe(123123.2);
 });

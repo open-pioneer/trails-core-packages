@@ -148,7 +148,8 @@ export class ServiceLayer {
      * @param packageName the name of the package requesting the import
      * @param spec the interface specifier
      * @param options advanced options to customize lookup
-     * @throws if the service layer is not in 'started' state or if no service implements the interface.
+     * @throws if the service layer is not in 'started' state.
+     * Returns `{ type: "unimplemented" }` when no service implements the interface.
      */
     getService(
         packageName: string,
@@ -176,7 +177,7 @@ export class ServiceLayer {
      * @param packageName the name of the package requesting the import
      * @param interfaceName the interface name
      *
-     * @throws if the service layer is not in 'started'.
+     * @throws if the service layer is not in 'started' state.
      */
     getServices(
         packageName: string,
@@ -210,8 +211,7 @@ export class ServiceLayer {
             throw new Error(ErrorId.INTERNAL, "Invalid service state.");
         }
 
-        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-        const references: Record<string, any> = {};
+        const references: Record<string, unknown> = {};
         const referencesMeta: Record<string, ReferenceMeta | ReferenceMeta[]> = {};
 
         // Sets state to 'constructing' to detect cycles

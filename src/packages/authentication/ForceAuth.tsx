@@ -88,7 +88,7 @@ export interface ForceAuthProps {
      * </ForceAuth>
      * ```
      *
-     * @param error the error that occured during authentication
+     * @param error the error that occurred during authentication
      */
     renderErrorFallback?: (error: Error) => ReactNode;
 

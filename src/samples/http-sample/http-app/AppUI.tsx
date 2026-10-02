@@ -8,7 +8,7 @@ import ReactJson from "react-json-view";
 import type { HttpClient } from "./HttpClient";
 
 export function AppUI() {
-    const client = useService<unknown>("http-app.HttpClient") as HttpClient;
+    const client = useService<HttpClient>("http-app.HttpClient");
     const [json, setJson] = useState<unknown>(undefined);
     const [error, setError] = useState<string | undefined>(undefined);
     useEffect(() => {

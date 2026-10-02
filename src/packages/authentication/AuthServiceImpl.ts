@@ -8,7 +8,8 @@ import {
     createAbortError,
     createLogger,
     createManualPromise,
-    destroyResource
+    destroyResource,
+    isAbortError
 } from "@open-pioneer/core";
 import type { Service, ServiceOptions } from "@open-pioneer/runtime";
 import { sourceId } from "open-pioneer:source-info";
@@ -73,7 +74,11 @@ export class AuthServiceImpl implements AuthService, Service {
 
     logout(options?: LogoutOptions): void {
         LOG.debug("Triggering logout with options", options);
-        this.#plugin.logout(options?.pluginOptions);
+        Promise.resolve(this.#plugin.logout(options?.pluginOptions)).catch((e) => {
+            if (!isAbortError(e)) {
+                LOG.error("Logout failed", e);
+            }
+        });
     }
 
     #onPluginStateChanged(newState: AuthState) {

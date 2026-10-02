@@ -59,7 +59,9 @@ If you notice a problem with one of the snippets, or if snippets are missing, fe
 
 ### Differences from Chakra's default snippets
 
-- Aria labels and messages are translated (this currently only affects the `CloseButton` and the `Clipboard`).
+- Aria labels and messages are translated (`Carousel`, `Clipboard`, `CloseButton` and `PasswordInput`).
+- `tooltip.tsx` keeps rendering `Tooltip.Root` when `disabled` is set, so the trigger does not lose focus when the prop toggles.
+- `tags-input.tsx` adds a type annotation to `TagsInputPropsProvider`.
 
 ## License
 

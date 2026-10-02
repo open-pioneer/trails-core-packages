@@ -17,7 +17,7 @@ export interface ObservableBox<T> {
 
 /**
  * Returns a boxed value.
- * In development node, the box value can be changed and observed.
+ * In development mode, the box value can be changed and observed.
  */
 export function createBox<T>(value: T): ObservableBox<T> {
     return new BoxImpl(value);

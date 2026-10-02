@@ -82,7 +82,8 @@ with `CI=1`, which rejects `.only`.
 
 - **Chakra is pinned and updated by hand.**
   `@chakra-ui/react`, `@ark-ui/react` and `@zag-js/interact-outside` carry patches, so `pnpm-workspace.yaml` pins
-  their exact versions and `renovate.json` excludes them.
+  their exact versions and `renovate.json` excludes the Chakra and Ark packages.
+  `@zag-js/interact-outside` is only reachable through the pnpm override.
   A Chakra update means re-checking the patches.
 - **`chakra-snippets` is vendored code.**
   Oxlint ignores it, local changes to a snippet are marked with comments, and `DEVNOTES.md` in the package describes
@@ -120,6 +121,7 @@ The rules below are the ones they cannot check, or that you need before writing.
   Functions take at most 4 parameters, an options object above that.
 - **Log through `createLogger(sourceId)`** with `sourceId` from `open-pioneer:source-info`.
   `console` is allowed only in configs, samples, `src/testing`, `support` and tests.
+  AbortErrors do not need to be logged in almost all circumstances (see `isAbortError` from `@open-pioneer/core`).
 - **Use `#` for private fields and methods.**
 - **Import other packages by name**, never through a relative path that leaves the package.
 - **Primary exports at the top of a file**, helpers and supporting types below in the order a reader meets them.
@@ -140,9 +142,11 @@ The rules below are the ones they cannot check, or that you need before writing.
   Note that state that will not be used in a reactive context (UI, watching) does not need to be wrapped in a signal.
 - **Anything that holds a watch handle, a listener or a child object is a `Resource`.**
   Implement `destroy()` and release with `destroyResource()` or `destroyResources()` from `core`.
-- **Errors carry an id.**
-  Throw `new Error(id, text, { cause })` from `@open-pioneer/core` with a package-prefixed, kebab-case id such as
-  `runtime:interface-not-found`; `runtime` collects its ids in the `ErrorId` enum.
+- **Error ids are for packages with important error conditions.**
+  Where code or logs need to tell errors apart, throw `new Error(id, text, { cause })` from `@open-pioneer/core`
+  with a package-prefixed, kebab-case id such as `runtime:interface-not-found`; `runtime` collects its ids in the
+  `ErrorId` enum.
+  Everywhere else a plain `Error` with a clear message is fine.
 - **User-visible text is translated.**
   React code calls `useIntl()` from `open-pioneer:react-hooks`, services read `currentIntl`, and every key exists in
   both `i18n/en.yaml` and `i18n/de.yaml` of the package.

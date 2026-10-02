@@ -84,6 +84,12 @@ export class ApplicationContextImpl implements ApplicationContext {
     setLocale(locale: string | undefined): void {
         setLocaleDeprecationMessage();
         const targetLocale = tryParseLocale(locale);
+        if (locale != null && !targetLocale) {
+            throw new Error(
+                ErrorId.UNSUPPORTED_LOCALE,
+                `Unsupported locale '${locale}': not a valid BCP 47 language tag.`
+            );
+        }
         // to be backwards compatible, we check here synchronously
         // same check is done in AppIntl.changeLocale
         if (targetLocale && !this.#localeService.supportsLocale(targetLocale)) {

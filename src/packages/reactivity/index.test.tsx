@@ -3,7 +3,8 @@
 
 import { Reactive, batch, computed, isReactive, reactive } from "@conterra/reactivity-core";
 import { act, render, renderHook, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { disableReactActWarnings } from "test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Model } from "./examples/Model";
 import { YourComponent } from "./examples/YourComponent";
 import {
@@ -13,6 +14,10 @@ import {
     useReactiveSnapshot,
     useReactiveValue
 } from "./index";
+
+beforeEach(() => {
+    disableReactActWarnings();
+});
 
 describe("useReactive", () => {
     it("creates a new signal", () => {
@@ -127,11 +132,33 @@ describe("useReactiveValue", () => {
         });
         expect(hook.result.current).toBe(2);
 
-        await act(async () => {
+        act(() => {
             count.value = 10;
-            await waitForUpdate();
         });
-        expect(hook.result.current).toBe(20);
+        await vi.waitFor(() => expect(hook.result.current).toBe(20));
+    });
+
+    it("stops watching after unmount", async () => {
+        const count = reactive(1);
+        let firstHookCalls = 0;
+        const firstHook = renderHook(() =>
+            useReactiveSnapshot(() => {
+                firstHookCalls += 1;
+                return count.value;
+            }, [])
+        );
+
+        // The stays mounted and shows when the change has been dispatched.
+        const secondHook = renderHook(() => useReactiveSnapshot(() => count.value, []));
+        expect(firstHookCalls).toBe(1);
+
+        firstHook.unmount();
+        act(() => {
+            count.value = 2;
+        });
+
+        await vi.waitFor(() => expect(secondHook.result.current).toBe(2));
+        expect(firstHookCalls).toBe(1);
     });
 });
 
@@ -164,19 +191,18 @@ describe("useReactiveSnapshot", () => {
           }
         `);
 
-        await act(async () => {
+        act(() => {
             batch(() => {
                 a.value = 1000;
                 b.value = 3000;
             });
-            // No change yet
-            expect(calls).toBe(1);
-            expect(hook.result.current.a).toBe(1);
-            expect(hook.result.current.b).toBe(2);
-            await waitForUpdate();
         });
+        // No change yet
+        expect(calls).toBe(1);
+        expect(hook.result.current.a).toBe(1);
+        expect(hook.result.current.b).toBe(2);
 
-        expect(calls).toBe(2);
+        await vi.waitFor(() => expect(calls).toBe(2));
         expect(hook.result.current).toMatchInlineSnapshot(`
           {
             "a": 1000,
@@ -309,11 +335,10 @@ describe("rendering components", () => {
         const div = await screen.findByTestId("content");
         expect(div.textContent).toMatch(/current count is 3/);
 
-        await act(async () => {
+        act(() => {
             model.currentCount = 4;
-            await waitForUpdate();
         });
-        expect(div.textContent).toMatch(/current count is 4/);
+        await vi.waitFor(() => expect(div.textContent).toMatch(/current count is 4/));
     });
 
     it("rerenders the component if the model property changes", async () => {
@@ -329,19 +354,13 @@ describe("rendering components", () => {
     });
 });
 
-it("renders the example correctly", async () => {
+it("renders the README example and updates it when the model changes", async () => {
     const model = new Model();
     render(<YourComponent model={model} />);
 
     const div = await screen.findByText("Hello John Doe");
-    await act(async () => {
+    act(() => {
         model.updateName("Jane", "Doe");
-        await waitForUpdate();
     });
-    expect(div.textContent).toBe("Hello Jane Doe");
+    await vi.waitFor(() => expect(div.textContent).toBe("Hello Jane Doe"));
 });
-
-// Watch callbacks are executed with a small delay (in a new microtask).
-async function waitForUpdate() {
-    await new Promise((resolve) => setTimeout(resolve, 1));
-}

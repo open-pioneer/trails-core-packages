@@ -50,6 +50,7 @@
         "oxlint": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
+        "resize-observer-polyfill": "catalog:",
         "rimraf": "catalog:",
         "sass": "catalog:",
         "tsx": "catalog:",

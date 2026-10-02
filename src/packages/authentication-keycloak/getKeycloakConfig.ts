@@ -93,19 +93,13 @@ function getInitOptions(keycloakInitOptions: KeycloakInitOptions | undefined): K
 function getLoginOptions(
     keycloakLoginOptions: Partial<KeycloakLoginOptions> | undefined
 ): Partial<KeycloakLoginOptions> {
-    return {
-        redirectUri: undefined, // backwards-compat; unsure if needed
-        ...keycloakLoginOptions
-    };
+    return { ...keycloakLoginOptions };
 }
 
 function getLogoutOptions(
     keycloakLogoutOptions: Partial<KeycloakLogoutOptions> | undefined
 ): Partial<KeycloakLogoutOptions> {
-    return {
-        redirectUri: undefined, // backwards-compat; unsure if needed
-        ...keycloakLogoutOptions
-    };
+    return { ...keycloakLogoutOptions };
 }
 
 const isObjectEmpty = (objectName: unknown) => {

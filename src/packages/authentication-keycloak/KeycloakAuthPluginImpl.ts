@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
-import { reactive } from "@conterra/reactivity-core";
+import { reactive, ReadonlyReactive } from "@conterra/reactivity-core";
 import { AuthState, LoginBehavior } from "@open-pioneer/authentication";
-import { createLogger, destroyResource, Resource } from "@open-pioneer/core";
+import { createLogger } from "@open-pioneer/core";
 import { NotificationService } from "@open-pioneer/notifier";
 import {
     PackageIntl,
@@ -26,13 +26,11 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
     declare [DECLARE_SERVICE_INTERFACE]: "authentication-keycloak.KeycloakAuthPlugin";
 
     #notifier: NotificationService;
-    #intl: PackageIntl;
+    #currentIntl: ReadonlyReactive<PackageIntl>;
     #keycloakOptions: ResolvedKeycloakOptions;
     #keycloak: Keycloak;
-
-    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-    #timerId: any;
-    #watcher: Resource | undefined;
+    #timerId: ReturnType<typeof setInterval> | undefined;
+    #destroyed = false;
 
     #state = reactive<AuthState>({
         kind: "pending"
@@ -40,7 +38,7 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
 
     constructor(options: ServiceOptions<References>) {
         this.#notifier = options.references.notifier;
-        this.#intl = options.intl;
+        this.#currentIntl = options.currentIntl;
 
         try {
             this.#keycloakOptions = getKeycloakConfig(options.properties);
@@ -54,16 +52,20 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
             throw new Error("Failed to construct keycloak instance", { cause: e });
         }
         this.#init().catch((e) => {
+            if (this.#destroyed) {
+                return;
+            }
             this.#updateState({
                 kind: "error",
                 error: e
             });
+            const intl = this.#currentIntl.value;
             this.#notifier.notify({
                 level: "error",
-                title: this.#intl.formatMessage({
+                title: intl.formatMessage({
                     id: "loginFailed.title"
                 }),
-                message: this.#intl.formatMessage({
+                message: intl.formatMessage({
                     id: "loginFailed.message"
                 })
             });
@@ -73,9 +75,8 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
     }
 
     destroy() {
-        clearInterval(this.#timerId);
-        this.#watcher = destroyResource(this.#watcher);
-        this.#timerId = undefined;
+        this.#destroyed = true;
+        this.#stopRefresh();
     }
 
     getAuthState(): AuthState {
@@ -119,6 +120,10 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
             throw new Error("Failed to initialize keycloak session", { cause: error });
         }
 
+        if (this.#destroyed) {
+            return;
+        }
+
         if (isAuthenticated) {
             this.#updateState({
                 kind: "authenticated",
@@ -151,7 +156,7 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
     // Mocked in test (must stay on the prototype so `vi.spyOn` can replace it;
     // a private `#` method would not be spyable).
     __refresh(interval: number, timeLeft: number) {
-        clearInterval(this.#timerId);
+        this.#stopRefresh();
         this.#timerId = setInterval(() => {
             LOG.debug("Checking token validity");
             this.#keycloak
@@ -168,9 +173,16 @@ export class KeycloakAuthPluginImpl implements Service, KeycloakAuthPlugin {
                     this.#updateState({
                         kind: "not-authenticated"
                     });
-                    this.destroy();
+                    this.#stopRefresh();
                 });
         }, interval);
+    }
+
+    #stopRefresh() {
+        if (this.#timerId !== undefined) {
+            clearInterval(this.#timerId);
+            this.#timerId = undefined;
+        }
     }
 
     #updateState(newState: AuthState) {

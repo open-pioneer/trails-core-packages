@@ -19,7 +19,7 @@ export default defineConfig({
         "node_modules",
         "temp",
         "test-data",
-        "__snapshots",
+        "**/__snapshots__",
         "pnpm-lock.yaml",
         "support/licenses",
         "**/chakra-snippets/**/*.tsx"

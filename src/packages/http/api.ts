@@ -35,6 +35,11 @@ export interface HttpServiceRequestInit extends RequestInit {
     context?: ContextData;
 }
 
+/**
+ * The request options as seen by an interceptor.
+ * `method` and `headers` are always present.
+ * `signal` and `context` are passed separately in {@link BeforeRequestParams}.
+ */
 export type ResolvedRequestOptions = Omit<
     HttpServiceRequestInit,
     "method" | "headers" | "signal" | "context"
@@ -71,6 +76,7 @@ export interface BeforeRequestParams {
     readonly signal: AbortSignal;
 }
 
+/** Arbitrary values attached to one request, shared by all interceptors of that request. */
 export type ContextData = Record<string | symbol, unknown>;
 
 /**

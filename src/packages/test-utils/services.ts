@@ -57,7 +57,7 @@ type PartialServiceReferences<References> = {
 /**
  * Creates a new service instance of `clazz`.
  *
- * The options passed into the constructor of `clazz` are taking from the `options` parameter.
+ * The options passed into the constructor of `clazz` are taken from the `options` parameter.
  *
  * This function allows the user to define mock- or test objects as service references.
  *

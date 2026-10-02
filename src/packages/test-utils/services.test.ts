@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { ReadonlyReactive } from "@conterra/reactivity-core";
 import { PackageIntl, ReferenceMeta, ServiceOptions } from "@open-pioneer/runtime";
 import { expect, it } from "vitest";
 import { createService } from "./services";
@@ -101,4 +102,7 @@ it("creates a new service with access to intl", async () => {
 
     const undefinedMessage = intl.formatMessage({ id: "not.defined" });
     expect(undefinedMessage).toEqual("not.defined");
+
+    const currentIntl = service.$opts.currentIntl as ReadonlyReactive<PackageIntl>;
+    expect(currentIntl.value).toBe(intl);
 });

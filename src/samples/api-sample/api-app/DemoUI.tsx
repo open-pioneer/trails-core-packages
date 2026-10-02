@@ -15,7 +15,7 @@ export function DemoUI() {
         });
     };
 
-    const textService = useService<unknown>("api-app.TextService") as TextService;
+    const textService = useService<TextService>("api-app.TextService");
     const text = useReactiveSnapshot(() => textService.getText(), [textService]);
 
     return (

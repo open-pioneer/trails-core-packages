@@ -36,12 +36,12 @@ export default defineBuildConfig({
 ```
 
 ```ts
-// TextApiExtension.ts
+// ExampleApiExtension.ts
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { ApiExtension } from "@open-pioneer/integration";
 
 // implement ApiExtension interface
-export class TextApiExtension implements ApiExtension {
+export class ExampleApiExtension implements ApiExtension {
     // returns a set of methods that will be added to the web component's API.
     async getApiMethods() {
         return {

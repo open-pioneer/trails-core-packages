@@ -6,7 +6,7 @@ This package allows a developer to emit global notifications from any applicatio
 
 ### Displaying notifications in an application
 
-The `<Notifier />` must be used in your app's UI , otherwise notifications from application components are not shown. It should be present exactly once.
+The `<Notifier />` must be used in your app's UI, otherwise notifications from application components are not shown. It should be present exactly once.
 
 ```jsx
 import { Notifier } from "@open-pioneer/notifier";
@@ -69,7 +69,7 @@ const Element = createCustomElement({
 ### Emitting notifications
 
 Reference the interface name `notifier.NotificationService` to inject an instance of `NotificationService`.
-That service can be used to emit events from any service or UI component in the application:
+That service can be used to emit notifications from any service or UI component in the application:
 
 ```ts
 const notificationService = ...; // injected

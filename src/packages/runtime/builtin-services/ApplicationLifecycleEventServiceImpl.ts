@@ -13,7 +13,7 @@ interface References {
     listeners: ApplicationLifecycleListener[];
 }
 
-export class ApplicationLifecycleEventService {
+export class ApplicationLifecycleEventServiceImpl {
     #listeners: [serviceId: string, listener: ApplicationLifecycleListener][];
 
     constructor(options: ServiceOptions<References>) {

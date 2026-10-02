@@ -132,7 +132,7 @@ export interface SectionHeadingProps extends HeadingProps, RefAttributes<HTMLHea
 
 /**
  * Renders an appropriate heading tag for the current heading level (`h1` through `h6`).
- * This component should only be used as part of the `title` prop of the {@link TitledSection}.
+ * Use this component in the `title` prop of a {@link TitledSection} or once among its children.
  *
  * Headings are rendered as [Chakra Headings](https://chakra-ui.com/docs/components/heading).
  *
@@ -172,7 +172,7 @@ export interface ConfigureTitledSectionProps {
  *
  * If your application is embedded into another site, it should often not use the `h1` tag
  * but start with a higher heading level instead. To achieve that, simply wrap your application
- * with `<ConfigureTitledSectionProps>`. No other code changes are necessary:
+ * with `<ConfigureTitledSection>`. No other code changes are necessary:
  *
  * ```jsx
  * <ConfigureTitledSection level={2}>

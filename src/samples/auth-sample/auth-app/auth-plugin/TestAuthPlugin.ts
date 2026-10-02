@@ -11,8 +11,7 @@ export class TestAuthPlugin implements Service, AuthPlugin {
     #state = reactive<AuthState>({
         kind: "pending"
     });
-    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-    #timerId: any;
+    #timerId: ReturnType<typeof setTimeout> | undefined;
     #wasLoggedIn = false;
 
     constructor() {

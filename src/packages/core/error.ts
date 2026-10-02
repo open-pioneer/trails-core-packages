@@ -40,8 +40,7 @@ export function getErrorChain(err: globalThis.Error): globalThis.Error[] {
     do {
         chain.push(err);
 
-        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-        const cause = (err as any).cause as unknown;
+        const cause = err.cause;
         if (!(cause instanceof GlobalError)) {
             break;
         }

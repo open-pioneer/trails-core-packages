@@ -2,5 +2,5 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export * from "./api";
-export { ForceAuth, type ForceAuthProps } from "./ForceAuth";
+export { ForceAuth, type ForceAuthProps, type ErrorFallbackProps } from "./ForceAuth";
 export { useAuthState } from "./useAuthState";

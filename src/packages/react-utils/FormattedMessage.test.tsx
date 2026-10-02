@@ -12,7 +12,7 @@ beforeEach(() => {
     disableReactActWarnings();
 });
 
-describe("FormatMessage", () => {
+describe("FormattedMessage", () => {
     it("renders plain strings", () => {
         const intl = createTestIntl("Hello {name}");
         const result = render(
@@ -44,7 +44,7 @@ describe("FormatMessage", () => {
     });
 });
 
-describe("FormatRichMessage", () => {
+describe("FormattedRichMessage", () => {
     it("renders react nodes", () => {
         const intl = createTestIntl("Hello {name}");
         const result = render(

@@ -95,12 +95,5 @@ export default defineConfig(({ mode }) => {
             environment: "happy-dom",
             setupFiles: ["testing/global-setup.ts"]
         }
-
-        // disable hot reloading
-        // in dev mode press "r" to trigger reload and make changes active
-        // See also: https://vitejs.dev/config/server-options.html#server-hmr
-        /*server: {
-            hmr: false
-        }*/
     };
 });

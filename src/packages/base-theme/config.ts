@@ -69,7 +69,7 @@ const semanticTokens: SemanticTokenDefinition = {
         // define custom semantic tokens
         trails_placeholder: { value: { _light: "{colors.gray.700}", _dark: "{colors.gray.400}" } },
 
-        // .600 has no enough contrast, .700 is too dark
+        // .600 does not have enough contrast, .700 is too dark
         // https://github.com/open-pioneer/trails-openlayers-base-packages/issues/450
         orange: {
             solid: { value: { _light: "#D2460F", _dark: "{colors.orange.500}" } }
@@ -220,7 +220,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
             }
         },
         variants: {
-            // reduce size for backwarts compatibility
+            // reduce size for backward compatibility
             size: {
                 xs: {
                     root: { gap: "1.5" },
@@ -275,7 +275,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
             }
         },
         variants: {
-            // reduce size for backwarts compatibility
+            // reduce size for backward compatibility
             size: {
                 xs: {
                     item: { textStyle: "xs", gap: "1.5" },
@@ -346,7 +346,7 @@ const slotRecipes: Record<string, SlotRecipeConfig> = {
             }
         },
         variants: {
-            // reduce size for backwarts compatibility
+            // reduce size for backward compatibility
             size: {
                 sm: {
                     root: {

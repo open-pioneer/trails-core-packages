@@ -8,7 +8,7 @@ it("parseLocale returns an Intl.Locale instance", () => {
     expect(parseLocale("en")).toBeInstanceOf(Intl.Locale);
 });
 
-it("parseLocale preserves language / region / script / variants", () => {
+it("parseLocale preserves language / script / region", () => {
     const locale = parseLocale("zh-Hant-TW");
     expect(locale.language).toBe("zh");
     expect(locale.script).toBe("Hant");

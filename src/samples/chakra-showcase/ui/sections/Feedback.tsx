@@ -17,11 +17,7 @@ import {
     Status,
     VStack
 } from "@chakra-ui/react";
-import {
-    NotificationLevel,
-    NotificationOptions,
-    NotificationService
-} from "@open-pioneer/notifier";
+import { NotificationLevel, NotificationService } from "@open-pioneer/notifier";
 import { useService } from "open-pioneer:react-hooks";
 import { LuShoppingCart } from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
@@ -29,20 +25,11 @@ import { Presenter } from "../components/Presenter";
 export function Feedback() {
     const notifications = useService<NotificationService>("notifier.NotificationService");
     const emitNotification = (title: string, message: string, level: NotificationLevel) => {
-        const options: NotificationOptions = {
+        notifications.notify({
             title,
-            level: level,
-            message: message,
-            displayDuration: undefined
-        };
-        if (!options.title) {
-            notifications.notify({
-                title: "Title is required",
-                level: "error"
-            });
-            return;
-        }
-        notifications.notify(options);
+            level,
+            message
+        });
     };
     const clearNotifications = () => {
         notifications.closeAll();
@@ -166,7 +153,7 @@ export function Feedback() {
                 </Box>
             </Presenter>
 
-            {/* NOTE: toast is not exported by open pioneer but has it's own notification system */}
+            {/* NOTE: Chakra's toast is not exported; the notifier package is the notification system. */}
         </Box>
     );
 }

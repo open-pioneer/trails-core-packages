@@ -80,7 +80,7 @@ storageService.removeAll();
 
 You can use either service to manage hierarchical data, including objects and arrays (see above).
 _Namespaces_ can help you treat an object as a group of (nested) properties.
-Getting or setting entries in the namespace update an object behind the scenes.
+Getting or setting entries in the namespace updates an object behind the scenes.
 
 To use a namespace, call `getNamespace(key)` on either service or on another `StorageNamespace` object.
 The `key` used in `getNamespace(key)` should either already be associated with an object or it should not be set to a value at all.

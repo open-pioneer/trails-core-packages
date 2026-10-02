@@ -47,7 +47,6 @@ export class HttpServiceImpl implements HttpService {
                 context,
                 options
             };
-            checkAborted(signal);
             await this.#invokeBeforeRequestInterceptors(params);
             target = params.target;
         }

@@ -45,7 +45,7 @@ export interface AuthStatePending {
 }
 
 /**
- * The user not authenticated.
+ * The user is not authenticated.
  */
 export interface AuthStateNotAuthenticated {
     kind: "not-authenticated";
@@ -53,7 +53,7 @@ export interface AuthStateNotAuthenticated {
 
 /**
  * This state indicates an error during authentication.
- * This state should used for errors in the authentication workflow (e.g. backend unavailable) rather than failed login attempts (e.g. invalid credentials).
+ * This state should be used for errors in the authentication workflow (e.g. backend unavailable) rather than failed login attempts (e.g. invalid credentials).
  */
 export interface AuthStateAuthenticationError {
     kind: "error";
@@ -113,7 +113,7 @@ export interface AuthService extends DeclaredService<"authentication.AuthService
      * Returns the current authentication state.
      *
      * The state may initially be `pending` to allow for async initialization in the authentication plugin.
-     * After initialization, the state is either `not-authenticated` or `authenticated`.
+     * After initialization, the state is `not-authenticated`, `authenticated` or `error`.
      *
      * Use Reactivity API to watch the auth state.
      */
@@ -152,7 +152,7 @@ export interface AuthPlugin extends DeclaredService<"authentication.AuthPlugin">
      * Returns the current authentication state.
      *
      * Objects returned by this method should not be mutated.
-     * Emit the `changed` event instead to communicate that there is a new state.
+     * Return a new state object instead to communicate that there is a new state.
      */
     getAuthState(): AuthState;
 
@@ -164,8 +164,7 @@ export interface AuthPlugin extends DeclaredService<"authentication.AuthPlugin">
     /**
      * Explicitly triggers a logout.
      *
-     * Should result in a new state (including a `changed` event) if the user
-     * was authenticated.
+     * Should result in a new state if the user was authenticated.
      *
      * @param options Custom options that may be supported by the plugin.
      * The optional `pluginOptions` in {@link AuthService.logout} will be passed to this parameter.

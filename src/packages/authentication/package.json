@@ -26,8 +26,7 @@
         "@open-pioneer/core": "workspace:*",
         "@open-pioneer/reactivity": "workspace:*",
         "@open-pioneer/runtime": "workspace:*",
-        "react": "catalog:",
-        "react-use": "catalog:"
+        "react": "catalog:"
     },
     "devDependencies": {
         "@open-pioneer/test-utils": "workspace:*",
