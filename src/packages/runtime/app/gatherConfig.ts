@@ -18,7 +18,7 @@ export async function gatherConfig(
     hostElement: HTMLElement,
     options: CustomElementOptions,
     overrides?: ApplicationOverrides
-): Promise<Required<ApplicationConfig>> {
+): Promise<ResolvedApplicationConfig> {
     let configs: ApplicationConfig[];
     try {
         const staticConfig = options.config ?? {};
@@ -65,24 +65,46 @@ export async function gatherConfig(
 }
 
 /**
- * Merges application configurations into a single object.
- * Properties / config parameters at a later position overwrite properties from earlier ones.
+ * The application config after merging all sources.
+ * Every key is present, but values might be `undefined`.
  */
-function mergeConfigs(configs: ApplicationConfig[]): Required<ApplicationConfig> {
-    // Merge simple values by assigning them in order
-    const mergedConfig: Required<ApplicationConfig> = Object.assign(
-        {
-            locale: undefined,
-            supportedLocales: undefined,
-            chakraSystemConfig: undefined,
-            colorMode: undefined,
-            properties: {}
-        } satisfies ApplicationConfig,
-        ...configs
-    );
+export type ResolvedApplicationConfig = {
+    [K in keyof Required<ApplicationConfig>]: ApplicationConfig[K] | undefined;
+} & {
+    properties: ApplicationProperties;
+};
+
+/**
+ * Merges application configurations into a single object.
+ *
+ * Properties / config parameters at a later position overwrite properties from earlier ones. *
+ * A key whose value is `undefined` does not override a previous value.
+ */
+function mergeConfigs(configs: ApplicationConfig[]): ResolvedApplicationConfig {
+    const mergedConfig: ResolvedApplicationConfig = {
+        locale: undefined,
+        supportedLocales: undefined,
+        chakraSystemConfig: undefined,
+        colorMode: undefined,
+        properties: {}
+    };
+    for (const config of configs) {
+        if (config.locale !== undefined) {
+            mergedConfig.locale = config.locale;
+        }
+        if (config.supportedLocales !== undefined) {
+            mergedConfig.supportedLocales = config.supportedLocales;
+        }
+        if (config.chakraSystemConfig !== undefined) {
+            mergedConfig.chakraSystemConfig = config.chakraSystemConfig;
+        }
+        if (config.colorMode !== undefined) {
+            mergedConfig.colorMode = config.colorMode;
+        }
+    }
 
     // Deep merge for application properties
-    const mergedProperties: ApplicationProperties = (mergedConfig.properties = {});
+    const mergedProperties = mergedConfig.properties;
     for (const config of configs) {
         for (const [packageName, packageProperties] of Object.entries(config.properties ?? {})) {
             const mergedPackageProps = (mergedProperties[packageName] ??= {});
