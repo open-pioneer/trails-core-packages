@@ -1,5 +1,7 @@
 # @open-pioneer/base-theme
 
+## 4.9.0
+
 ## 4.8.0
 
 ### Minor Changes

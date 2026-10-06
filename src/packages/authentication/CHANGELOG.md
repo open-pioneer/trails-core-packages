@@ -1,5 +1,12 @@
 # @open-pioneer/authentication
 
+## 4.9.0
+
+### Minor Changes
+
+- 6b160f3: Export the `ErrorFallbackProps` type used by `ForceAuthProps.errorFallback`.
+  A rejected `AuthPlugin.logout()` promise is now logged instead of producing an unhandled rejection.
+
 ## 4.8.0
 
 ### Minor Changes
