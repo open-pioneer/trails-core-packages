@@ -1,5 +1,11 @@
 # @open-pioneer/chakra-snippets
 
+## 4.9.0
+
+### Patch Changes
+
+- 6b160f3: Remove the unused dependency on `@open-pioneer/core`.
+
 ## 4.8.0
 
 ### Minor Changes
