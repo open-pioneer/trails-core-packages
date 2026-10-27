@@ -161,7 +161,6 @@ function useRovingMenuImpl(
     // Shared state between items and root
     const state = useMemo(
         () =>
-            // oxlint-disable-next-line react/refs
             new InternalMenuState({
                 menuId,
                 orientation,
