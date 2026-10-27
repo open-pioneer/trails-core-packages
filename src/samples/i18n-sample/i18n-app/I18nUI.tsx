@@ -46,7 +46,7 @@ export function I18nUI() {
                 <List.Item>Message locale: {messageLocale}</List.Item>
                 <List.Item>Supported locales: {supportedLocales.join(", ")}</List.Item>
                 <List.Item>
-                    Current date and time:{" "}
+                    Current date and time: {/* oxlint-disable-next-line react/purity */}
                     {intl.formatDate(new Date(), { dateStyle: "full", timeStyle: "short" })}
                 </List.Item>
                 <List.Item>
