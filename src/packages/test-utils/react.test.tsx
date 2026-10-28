@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { useChakraContext } from "@chakra-ui/react";
 import { screen, render } from "@testing-library/react";
 import { useIntl, useProperties, useService, useServices } from "open-pioneer:react-hooks";
 import { expect, it } from "vitest";
@@ -170,4 +171,33 @@ it("should apply .pioneer-root class on the body (needed for the chakra theme to
     );
 
     expect(document.body.classList.contains("pioneer-root")).toBe(true);
+});
+
+it("should apply a custom chakra system config from the test", async () => {
+    function Component() {
+        const system = useChakraContext();
+        const token = system.tokens.getByName("colors.dummyColor");
+        return <div>Color: {token?.value}</div>;
+    }
+
+    const mocks: PackageContextProviderProps = {
+        chakraSystemConfig: {
+            theme: {
+                semanticTokens: {
+                    colors: {
+                        dummyColor: { value: "#123456" }
+                    }
+                }
+            }
+        }
+    };
+
+    render(
+        <PackageContextProvider {...mocks}>
+            <Component />
+        </PackageContextProvider>
+    );
+
+    const div = await screen.findByText(/^Color:/);
+    expect(div.textContent).toBe("Color: #123456");
 });

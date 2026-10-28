@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023-2025 Open Pioneer project (https://github.com/open-pioneer)
 // SPDX-License-Identifier: Apache-2.0
 
+import { SystemConfig as ChakraSystemConfig } from "@chakra-ui/react";
 import { constant, ReadonlyReactive } from "@conterra/reactivity-core";
 import type { ColorModeValue, PackageIntl, Service } from "@open-pioneer/runtime";
 import {
@@ -48,6 +49,14 @@ export interface PackageContextProviderProps {
     colorMode?: ColorModeValue;
 
     /**
+     * Chakra styled system object.
+     *
+     * Used to configure chakra's theme, like `chakraSystemConfig` of `createCustomElement()`.
+     * Defaults to the trails base theme.
+     */
+    chakraSystemConfig?: ChakraSystemConfig;
+
+    /**
      * I18n messages for packages
      */
     messages?: {
@@ -77,8 +86,10 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
         properties,
         locale: localeProp,
         colorMode: colorModeProp,
+        chakraSystemConfig,
         messages
     } = props;
+    const config = useMemo(() => constant(chakraSystemConfig), [chakraSystemConfig]);
     const [locale, colorMode, contextMethods] = useMemo(
         () =>
             createPackageContextMethods({
@@ -108,6 +119,7 @@ export const PackageContextProvider: FC<PackageContextProviderProps> = (props) =
             appRoot={document.body}
             locale={locale}
             colorMode={colorMode}
+            config={config}
         >
             <PackageContext.Provider value={contextMethods}>{children}</PackageContext.Provider>
         </CustomChakraProvider>

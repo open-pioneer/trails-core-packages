@@ -23,7 +23,7 @@ case and `-u` to update snapshots.
   `http/HttpServiceImpl.test.ts` and `authentication/AuthServiceImpl.test.ts` are the examples.
 - **Component test** for a React component or hook.
   Render with `render` from `@testing-library/react` inside `<PackageContextProvider services={...} properties={...}
-messages={...}>` from `@open-pioneer/test-utils/react`, so `useService`, `useProperties` and `useIntl` work.
+  messages={...}>` from `@open-pioneer/test-utils/react`, so `useService`, `useProperties` and `useIntl` work.
   `notifier/Notifier.test.tsx` and `react-utils/TitledSection.test.tsx` are the examples.
 - **Web component test** for the runtime itself.
   Define an element with `createCustomElement()`, render it with `renderComponentShadowDOM()` from

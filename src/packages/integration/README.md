@@ -21,6 +21,7 @@ For example:
 
 ```js
 // build.config.mjs
+
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
@@ -37,8 +38,9 @@ export default defineBuildConfig({
 
 ```ts
 // ExampleApiExtension.ts
-import { ServiceOptions } from "@open-pioneer/runtime";
+
 import { ApiExtension } from "@open-pioneer/integration";
+import { ServiceOptions } from "@open-pioneer/runtime";
 
 // implement ApiExtension interface
 export class ExampleApiExtension implements ApiExtension {

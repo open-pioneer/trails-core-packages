@@ -14,10 +14,11 @@ Example:
 /**
  * @vitest-environment happy-dom
  */
-import { it, expect } from "vitest";
-import { createElement } from "react";
+
 import { createCustomElement } from "@open-pioneer/runtime";
 import { renderComponentShadowDOM } from "@open-pioneer/test-utils/web-components";
+import { createElement } from "react";
+import { it, expect } from "vitest";
 
 it("should render a custom component into the dom", async () => {
     // Define a custom element class.
@@ -40,15 +41,15 @@ Take a look at the tests in this package for more examples.
 
 Provides helpers to make testing of react components easier that use the hooks from the `"open-pioneer:react-hooks"` module (e.g. `useService`).
 
-The developer can provide custom service implementations, properties etc. using a simple parent component.
+The developer can provide custom service implementations, properties, a chakra theme, etc. using a simple parent component.
 
 Example:
 
 ```js
-import { expect, it } from "vitest";
-import { screen, render } from "@testing-library/react";
 import { PackageContextProvider } from "@open-pioneer/test-utils/react";
+import { screen, render } from "@testing-library/react";
 import { useProperties, useService, useServices } from "open-pioneer:react-hooks";
+import { expect, it } from "vitest";
 
 it("should allow injection of service from the test", async () => {
     // A simple component that uses a service.
@@ -90,8 +91,8 @@ References to other service instances can be mocked with user defined test value
 Example:
 
 ```js
-import { expect, it } from "vitest";
 import { createService } from "@open-pioneer/test-utils/services";
+import { expect, it } from "vitest";
 import { MyService } from "./MyService"; // User defined service
 
 it("creates a new service instance with the defined references", async () => {

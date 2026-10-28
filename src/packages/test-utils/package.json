@@ -20,6 +20,7 @@
         "build": "build-pioneer-package"
     },
     "dependencies": {
+        "@chakra-ui/react": "catalog:",
         "@conterra/reactivity-core": "catalog:",
         "@formatjs/intl": "catalog:",
         "@open-pioneer/runtime": "workspace:*",
