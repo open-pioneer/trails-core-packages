@@ -6,6 +6,7 @@ import { defineBuildConfig } from "@open-pioneer/build-support";
 export default defineBuildConfig({
     entryPoints: ["index"],
     publishConfig: {
-        strict: true
+        strict: true,
+        assets: ["skills/**"]
     }
 });

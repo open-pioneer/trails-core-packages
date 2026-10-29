@@ -93,6 +93,65 @@ function YourComponent({ signal }) {
 
 More details are available in this package's API documentation and the [README of @conterra/reactivity-core](https://www.npmjs.com/package/@conterra/reactivity-core).
 
+### Signals inside components
+
+`useReactive(initialValue)` creates a signal that lives as long as the component, similar to `useState`.
+The initial value is only used on the first render; later renders return the same signal instance.
+Use it for local state that must feed into a `computed` or a model, for example a filter text that a model reads.
+
+`useComputed(compute, deps)` creates a `computed` signal inside a component.
+The signal is recreated when `deps` change, with the same rules for `deps` as in `useReactiveSnapshot`.
+Use it when a child component, a model or another hook needs a signal instead of a plain value.
+
+```tsx
+import {
+    DISPATCH_SYNC,
+    useComputed,
+    useReactive,
+    useReactiveValue
+} from "@open-pioneer/reactivity";
+
+interface SearchProps {
+    model: Model;
+}
+
+function Search({ model }: SearchProps) {
+    const filter = useReactive("");
+
+    // Tracks `filter` and `model.items` (a reactive getter); recreated when `model` changes.
+    const matches = useComputed(
+        () => model.items.filter((item) => item.name.includes(filter.value)),
+        [model]
+    );
+
+    const filterText = useReactiveValue(filter, DISPATCH_SYNC);
+    const count = useReactiveValue(matches).length;
+    return (
+        <>
+            <input value={filterText} onChange={(e) => (filter.value = e.target.value)} />
+            <ResultList items={matches} />
+            <div>{count} matches</div>
+        </>
+    );
+}
+```
+
+### Sync dispatch
+
+By default, a component re-renders in a later macro task after a signal changed (`dispatch: "async"`), so several synchronous writes result in one render.
+`useReactiveSnapshot` and `useReactiveValue` accept an `options` argument of type `ReactiveHookOptions` to change this.
+Pass the constant `DISPATCH_SYNC` to re-render immediately after the signals were updated.
+
+This is needed for controlled input fields, focus management and layout work, where React must see the new value in the same tick (see [issue #125](https://github.com/open-pioneer/trails-core-packages/issues/125)).
+The `options` object should be constant or memoized, because a new object would re-subscribe on every render.
+
+```tsx
+import { DISPATCH_SYNC, useReactiveSnapshot } from "@open-pioneer/reactivity";
+
+const text = useReactiveSnapshot(() => model.text, [model], DISPATCH_SYNC);
+return <input value={text} onChange={(e) => model.setText(e.target.value)} />;
+```
+
 ### ESLint configuration
 
 You can use React's `exhaustive-deps` linting rule to check the dependencies of `useReactiveSnapshot` and `useComputed` (see [Documentation](https://github.com/facebook/react/blob/main/packages/eslint-plugin-react-hooks/README.md#advanced-configuration)).
@@ -115,6 +174,25 @@ Example:
     }
 }
 ```
+
+## Agent skill
+
+This package ships an agent skill (`skills/reactivity-react/SKILL.md`) that teaches AI coding agents how to use these hooks.
+It builds on the `reactivity-core` skill shipped by `@conterra/reactivity-core`, so install both.
+
+With pnpm >= 12.11, the skill is linked into your agent's skill directory automatically once approved (via `pnpm approve` or in `pnpm-workspace.yaml`).
+See the [pnpm documentation](https://pnpm.io/agent-skills) for details.
+
+```yaml
+# pnpm-workspace.yaml
+permissions:
+    "@conterra/reactivity-core":
+        skills: true
+    "@open-pioneer/reactivity":
+        skills: true
+```
+
+Otherwise, copy or symlink `node_modules/@open-pioneer/reactivity/skills/reactivity-react` into your agent's skill directory (e.g. `.agents/skills/` or `.claude/skills/`).
 
 ## License
 
