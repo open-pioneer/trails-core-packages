@@ -171,11 +171,11 @@ catalogs:
       specifier: ^2.31.1
       version: 2.31.1
     '@conterra/reactivity-core':
-      specifier: ^0.8.8
-      version: 0.8.8
+      specifier: ^0.8.9
+      version: 0.8.9
     '@conterra/reactivity-events':
-      specifier: ^0.8.8
-      version: 0.8.8
+      specifier: ^0.8.9
+      version: 0.8.9
     '@emotion/cache':
       specifier: ^11.14.0
       version: 11.14.0
@@ -189,20 +189,20 @@ catalogs:
       specifier: ^0.9.0
       version: 0.9.0
     '@open-pioneer/build-package-cli':
-      specifier: 4.0.2-dev.20261026104943
-      version: 4.0.2-dev.20261026104943
+      specifier: 4.0.2-dev.20261029075349
+      version: 4.0.2-dev.20261029075349
     '@open-pioneer/build-support':
-      specifier: ^4.0.1
-      version: 4.0.1
+      specifier: 4.0.2-dev.20261029075349
+      version: 4.0.2-dev.20261029075349
     '@open-pioneer/changesets-release-line':
-      specifier: ^0.2.1
-      version: 0.2.1
+      specifier: 0.2.2-dev.20261029075349
+      version: 0.2.2-dev.20261029075349
     '@open-pioneer/check-pnpm-duplicates':
-      specifier: 0.5.0-dev.20261026104943
-      version: 0.5.0-dev.20261026104943
+      specifier: 0.5.0-dev.20261029075349
+      version: 0.5.0-dev.20261029075349
     '@open-pioneer/vite-plugin-pioneer':
-      specifier: 7.1.0-dev.20261026104943
-      version: 7.1.0-dev.20261026104943
+      specifier: 7.1.0-dev.20261029075349
+      version: 7.1.0-dev.20261029075349
     '@testing-library/dom':
       specifier: ^10.4.2
       version: 10.4.2
@@ -338,22 +338,22 @@ importers:
         version: 2.31.1(@types/node@24.19.2)
       '@open-pioneer/build-package-cli':
         specifier: 'catalog:'
-        version: 4.0.2-dev.20261026104943(sass@1.106.1)(supports-color@7.2.0)(typescript@6.0.3)
+        version: 4.0.2-dev.20261029075349(sass@1.106.1)(supports-color@7.2.0)(typescript@6.0.3)
       '@open-pioneer/build-support':
         specifier: 'catalog:'
-        version: 4.0.1
+        version: 4.0.2-dev.20261029075349
       '@open-pioneer/changesets-release-line':
         specifier: 'catalog:'
-        version: 0.2.1
+        version: 0.2.2-dev.20261029075349
       '@open-pioneer/check-pnpm-duplicates':
         specifier: 'catalog:'
-        version: 0.5.0-dev.20261026104943
+        version: 0.5.0-dev.20261029075349
       '@open-pioneer/runtime':
         specifier: workspace:^
         version: link:src/packages/runtime
       '@open-pioneer/vite-plugin-pioneer':
         specifier: 'catalog:'
-        version: 7.1.0-dev.20261026104943(patch_hash=1ffa95ca5273723610da984f8bcaac8fa43051b5830f2891a5df63a622ac431d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.63.2)(sass@1.106.1)(supports-color@7.2.0)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))
+        version: 7.1.0-dev.20261029075349(patch_hash=1ffa95ca5273723610da984f8bcaac8fa43051b5830f2891a5df63a622ac431d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.63.2)(sass@1.106.1)(supports-color@7.2.0)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.2
@@ -440,7 +440,7 @@ importers:
         version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@open-pioneer/core':
         specifier: workspace:*
         version: link:../core
@@ -467,7 +467,7 @@ importers:
     dependencies:
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@open-pioneer/authentication':
         specifier: workspace:*
         version: link:../authentication
@@ -530,7 +530,7 @@ importers:
     dependencies:
       '@conterra/reactivity-events':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       fast-equals:
         specifier: 'catalog:'
         version: 6.2.1
@@ -626,7 +626,7 @@ importers:
         version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@open-pioneer/core':
         specifier: workspace:*
         version: link:../core
@@ -653,7 +653,7 @@ importers:
     dependencies:
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       react:
         specifier: 'catalog:'
         version: 19.3.1
@@ -677,7 +677,7 @@ importers:
         version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@emotion/cache':
         specifier: 'catalog:'
         version: 11.14.0
@@ -725,7 +725,7 @@ importers:
         version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@formatjs/intl':
         specifier: 'catalog:'
         version: 6.1.4
@@ -758,7 +758,7 @@ importers:
         version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@open-pioneer/core':
         specifier: workspace:*
         version: link:../../../packages/core
@@ -779,7 +779,7 @@ importers:
         version: 3.37.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@conterra/reactivity-core':
         specifier: 'catalog:'
-        version: 0.8.8
+        version: 0.8.9
       '@open-pioneer/authentication':
         specifier: workspace:*
         version: link:../../../packages/authentication
@@ -1202,11 +1202,11 @@ packages:
     resolution: {integrity: sha512-zccHj2z2oCCO4yrDiRSlFOxWerGqRiysP7a5jPK6uoI9URKAquwY42Dd/iUP8JWHxEzdRe4TlbvZCo8z1/mhrw==}
     engines: {node: '>= 20.12.0'}
 
-  '@conterra/reactivity-core@0.8.8':
-    resolution: {integrity: sha512-2b6pOHzGfGfsANZxnVsYxa53XqqCCBaq4Ixy46FmwzKC7kWB67M0gk9lCtVcnsoSoeg8rlAyjHa6P9zG09JXZg==}
+  '@conterra/reactivity-core@0.8.9':
+    resolution: {integrity: sha512-+W7K7gFl+g+eN6ghg6qNm6XTc1MbpuEsr/ZYBcuWmuVRYiwCLywN9H/NJ0ZAKkWFgyOunaOpKnPNRbfUct44gw==}
 
-  '@conterra/reactivity-events@0.8.8':
-    resolution: {integrity: sha512-vofNLzs2oQ8mPb58/yjkCot3S6dALfrtc/4IINN4Dg/qZ9iagUiOSmTMpseVXMh/6OG0OZ93FTSlh3HiQQK2/g==}
+  '@conterra/reactivity-events@0.8.9':
+    resolution: {integrity: sha512-FX9Xan7DrcheFyr9L4CEWmNvAhTzxy7xYOQJV4QbGDf335gS9dzdsxIwbtD65WP9Jw0IAE9OHrmXCWR2/IHLMw==}
 
   '@emnapi/core@1.11.2':
     resolution: {integrity: sha512-TC8MkTuZUtcTSiFeuC0ksCh9QIJ5+F21MvZ4Wn4ORfYaFJ/0dsiudv5tVkejgwZlwQ39jL9WWDe2lz8x0WglOA==}
@@ -1569,8 +1569,8 @@ packages:
     resolution: {integrity: sha512-lgnbsR+iizl0m3g09n7wyvHcC9Y087A3CR/m8ohDS9uFXaQKEnw5HtKbuUoOcUI89V3LPkTZkNGkLo6nxq0v5A==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/build-package-cli@4.0.2-dev.20261026104943':
-    resolution: {integrity: sha512-pKcNbZZSpS393XrFDHIpTpM8gddeWaLYFww9EOm+zaE5xHq8yd09y+hfamdTLIYEZGLYyRUJZilfm4YCmP3KIQ==}
+  '@open-pioneer/build-package-cli@4.0.2-dev.20261029075349':
+    resolution: {integrity: sha512-VuwzMwbYkj2ufiwYoYga8o2DqvXFdBRfXO9PG0vtis/w6i58ojus+mFFNeh7ASHi+7FTvYi8NlKBdpqrNe+Dhw==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -1590,12 +1590,16 @@ packages:
     resolution: {integrity: sha512-itDARRrgazOBa5OHBNYUa3kRgU1qEOiP75EcwH3RkBsYIl+7RIt8mZNfdFiDAsluYUEhLxlJ1V6PhHdgQHR5kg==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/changesets-release-line@0.2.1':
-    resolution: {integrity: sha512-RSzzv2kRD2a7Cb3Dg0Zqn0GpPO1BD2y5MfP6yNsWCWtkOh+EsEkjGc+IrngtAn/l6AeTWE+Utg7ioICNo4GzTQ==}
+  '@open-pioneer/build-support@4.0.2-dev.20261029075349':
+    resolution: {integrity: sha512-3hRy58Sf0pr4crI72vWyuEQXA/kJcLEwKRZJl+1jywhhi9KNvlq05zKGYN3shTnZXmmz6HFp/Ln30hI5SF+S6A==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev.20261026104943':
-    resolution: {integrity: sha512-T2Yuape2Wt6u2RQkEt4mMiC4/CGl2p9pGhgF5OaDXlWYU0Py4WibbqP2t/9OtBNvG3n2nBBOrPtOLOtq6mVYrQ==}
+  '@open-pioneer/changesets-release-line@0.2.2-dev.20261029075349':
+    resolution: {integrity: sha512-OucHgZweDqvDhEY+HcW/NfLhuzr9TBhsbDMubPE4ixEFYqxMMIXlzPhDYgUw1zitRBnHYmXvVQLZBqZTjTxs+A==}
+    engines: {node: '>= 20'}
+
+  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev.20261029075349':
+    resolution: {integrity: sha512-sorzgF/MHFCtI2nd6vmI7Jlwg+fkuz95n6dZwPps6hA6K8XbMLnm1PuJBONDbWt49e44aSDB0Xn78UWfeVT4vQ==}
     engines: {node: '>= 20', pnpm: '>= 11'}
     hasBin: true
 
@@ -1603,8 +1607,8 @@ packages:
     resolution: {integrity: sha512-1Pu3OAiddFmG+ck30rlz0qc6Djtvw76P7Xrvdm6Rx7bnt3JE0icuc3o8qpubptYr1kYmKi7D3OW4eICAaKW7oQ==}
     engines: {node: '>= 20'}
 
-  '@open-pioneer/vite-plugin-pioneer@7.1.0-dev.20261026104943':
-    resolution: {integrity: sha512-mUs9vomDwPnI6n+0Iw76H09JJZ/3wweU8z6StbCmomVfzSxzb+yE4EoNz1BbkuMHWeo3Qdw5UqwfjdRPXfGNcw==}
+  '@open-pioneer/vite-plugin-pioneer@7.1.0-dev.20261029075349':
+    resolution: {integrity: sha512-UkMrn/syqYT0qRO3JpySRh8ilr7Q10cMor4MDEq9A2OO/5ch/G+hHi6kXfPmB9B/Db/7PDc7j/EWM8Rajzud6Q==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@open-pioneer/runtime': '*'
@@ -2788,6 +2792,9 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
+  argparse@3.0.4:
+    resolution: {integrity: sha512-fwWK3Zq22l4XJJjx5mcBHGikIk+hJqO+32dPm0Jur7+rtG5x1scOjSfdT9ZKeWHPpsya/l0HHK4tDImBkTrtvA==}
+
   aria-query@5.3.0:
     resolution: {integrity: sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==}
 
@@ -2867,8 +2874,8 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
-  chalk@6.0.0:
-    resolution: {integrity: sha512-2uNTXIuTTxk7ciZgAU1BQcgnchcG0xXnrs6jzkQfj9SsRa9M2s5zE8WT96hS6KmG4MzWHSrvH43DF1m4XRkrFg==}
+  chalk@6.0.1:
+    resolution: {integrity: sha512-/Ce6KNm3vIbWdMlNna6RVIZ/ICQxnJxCicet5LBKK9ZffBkqzDw0xh9EiKSljdRtiIQ1S1z4YgcscUUGzNCWrA==}
     engines: {node: '>=22'}
 
   character-entities-html4@2.1.0:
@@ -3330,8 +3337,8 @@ packages:
     resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
     hasBin: true
 
-  js-yaml@5.4.2:
-    resolution: {integrity: sha512-m+aqu+LwO1O6sIopafj8HUVl5aawITwZQe/yHpMCKjaWBaA/d07B/QdMb3529REftiU+RMMHL3Vlsw3hON7vWg==}
+  js-yaml@5.5.0:
+    resolution: {integrity: sha512-paNr4LFIFPjeeSmwNYdrb8FafLLG/Cr2Af3GjbsHJ5CxIjH4r0c2emlmRdAtpPAieP1gRVzk6buBbVP5gBMGAg==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -4749,13 +4756,13 @@ snapshots:
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
 
-  '@conterra/reactivity-core@0.8.8':
+  '@conterra/reactivity-core@0.8.9':
     dependencies:
       '@preact/signals-core': 1.14.4
 
-  '@conterra/reactivity-events@0.8.8':
+  '@conterra/reactivity-events@0.8.9':
     dependencies:
-      '@conterra/reactivity-core': 0.8.8
+      '@conterra/reactivity-core': 0.8.9
 
   '@emnapi/core@1.11.2':
     dependencies:
@@ -5090,10 +5097,10 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  '@open-pioneer/build-package-cli@4.0.2-dev.20261026104943(sass@1.106.1)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@open-pioneer/build-package-cli@4.0.2-dev.20261029075349(sass@1.106.1)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@open-pioneer/build-package': 5.0.2-dev-license-report.20260918143642(sass@1.106.1)(supports-color@7.2.0)(typescript@6.0.3)
-      chalk: 6.0.0
+      chalk: 6.0.1
       commander: 15.0.0
     transitivePeerDependencies:
       - sass
@@ -5126,25 +5133,27 @@ snapshots:
 
   '@open-pioneer/build-support@4.0.1': {}
 
-  '@open-pioneer/changesets-release-line@0.2.1': {}
+  '@open-pioneer/build-support@4.0.2-dev.20261029075349': {}
 
-  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev.20261026104943':
+  '@open-pioneer/changesets-release-line@0.2.2-dev.20261029075349': {}
+
+  '@open-pioneer/check-pnpm-duplicates@0.5.0-dev.20261029075349':
     dependencies:
       '@open-pioneer/cli-common': 0.1.0-dev-license-report.20260918143642
       commander: 15.0.0
-      js-yaml: 5.4.2
+      js-yaml: 5.5.0
 
   '@open-pioneer/cli-common@0.1.0-dev-license-report.20260918143642':
     dependencies:
-      chalk: 6.0.0
+      chalk: 6.0.1
 
-  '@open-pioneer/vite-plugin-pioneer@7.1.0-dev.20261026104943(patch_hash=1ffa95ca5273723610da984f8bcaac8fa43051b5830f2891a5df63a622ac431d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.63.2)(sass@1.106.1)(supports-color@7.2.0)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))':
+  '@open-pioneer/vite-plugin-pioneer@7.1.0-dev.20261029075349(patch_hash=1ffa95ca5273723610da984f8bcaac8fa43051b5830f2891a5df63a622ac431d)(@open-pioneer/runtime@src+packages+runtime)(rollup@4.63.2)(sass@1.106.1)(supports-color@7.2.0)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
       '@open-pioneer/build-common': 5.1.0-dev-i18n-test-utils.20261016104117(rollup@4.63.2)
       '@open-pioneer/runtime': link:src/packages/runtime
       debug: 4.4.3(supports-color@7.2.0)
       esrap: 2.4.0
-      js-yaml: 5.4.2
+      js-yaml: 5.5.0
       oxc-resolver: 11.24.2
       sass: 1.106.1
       tinyglobby: 0.2.17
@@ -6351,6 +6360,8 @@ snapshots:
 
   argparse@2.0.1: {}
 
+  argparse@3.0.4: {}
+
   aria-query@5.3.0:
     dependencies:
       dequal: 2.0.3
@@ -6417,7 +6428,7 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
-  chalk@6.0.0: {}
+  chalk@6.0.1: {}
 
   character-entities-html4@2.1.0: {}
 
@@ -6899,9 +6910,9 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  js-yaml@5.4.2:
+  js-yaml@5.5.0:
     dependencies:
-      argparse: 2.0.1
+      argparse: 3.0.4
 
   jsesc@3.1.0: {}
 
