@@ -119,6 +119,19 @@ const notificationService = ...; // injected
 notificationService.closeAll();
 ```
 
+### Default icons
+
+This package exports the default icons that will be used by its notifications.
+You can use those icons to implement components with a consistent look:
+
+```tsx
+import { Icon } from "@chakra-ui/react";
+import { defaultIcons } from "@open-pioneer/notifier";
+
+// Prefer `Icon` over raw <defaultIcons.info /> because it automatically applies aria-hidden and also supports chakra's styling props.
+<Icon as={defaultIcons.info} />;
+```
+
 ## License
 
 Apache-2.0 (see `LICENSE` file)

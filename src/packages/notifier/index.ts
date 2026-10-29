@@ -3,3 +3,4 @@
 
 export * from "./api";
 export { Notifier, type NotifierProps } from "./Notifier";
+export { defaultIcons } from "./icons";
