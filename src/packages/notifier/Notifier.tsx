@@ -14,7 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { useIntl, useService } from "open-pioneer:react-hooks";
 import { memo, useEffect, useState } from "react";
-import { LuCircleAlert, LuCircleCheck, LuInfo, LuTriangleAlert } from "react-icons/lu";
+import { IconType } from "react-icons/lib";
+import { defaultIcons } from "./icons";
 import { InternalNotificationAPI, ToasterObject } from "./NotificationServiceImpl";
 
 /** Props supported by the {@link Notifier} component. */
@@ -116,17 +117,10 @@ const Toaster = memo(function Toaster(props: { rootProps?: BoxProps; toaster: To
     );
 });
 
-const icons: Record<string, React.ElementType> = {
-    info: LuInfo,
-    success: LuCircleCheck,
-    warning: LuCircleAlert,
-    error: LuTriangleAlert
-};
-
 function ToastIndicator(props: { type: string }) {
     const styles = useToastStyles();
 
-    const Component = icons[props.type];
+    const Component = defaultIcons[props.type as keyof typeof defaultIcons] as IconType | undefined;
     if (!Component) return null;
 
     return (
