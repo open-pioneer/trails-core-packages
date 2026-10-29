@@ -115,17 +115,21 @@ auditConfig:
     # currently cannot update version 3.x; used by chakra's CLI
     - GHSA-mrhx-c7xc-m3w5
 
-allowBuilds:
-  "@parcel/watcher": true
-  "@swc/core": true
-  esbuild: true
-  # Seems to work without build scripts; may revisit later if actually needed.
-  core-js: false
-  unrs-resolver: false
-
 permissions:
+  "@parcel/watcher":
+    build: true
+  "@swc/core":
+    build: true
+  esbuild:
+    build: true
   "@conterra/reactivity-core":
     skills: true
+
+  # Seems to work without build scripts; may revisit later if actually needed.
+  core-js:
+    build: false
+  unrs-resolver:
+    build: false
 
 # Install older versions by default
 resolutionMode: "lowest-direct"
