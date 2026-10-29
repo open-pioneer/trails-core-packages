@@ -12,7 +12,7 @@ export function AppUI() {
     const authService = useService<AuthService>("authentication.AuthService");
     const httpService = useService<HttpService>("http.HttpService");
     const authState = useAuthState(authService);
-    const sessionInfo = authState.kind == "authenticated" ? authState.sessionInfo : undefined;
+    const sessionInfo = authState.kind === "authenticated" ? authState.sessionInfo : undefined;
     const userName = sessionInfo?.userName;
     const doRequest = () => {
         httpService
