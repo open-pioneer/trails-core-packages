@@ -16,4 +16,5 @@ it("renders as an svg", () => {
     const icon = screen.getByTestId("icon");
     expect(icon.tagName).toBe("svg");
     expect(icon.getAttribute("aria-hidden")).toBe("true");
+    expect(icon.innerHTML).not.toHaveLength(0);
 });
