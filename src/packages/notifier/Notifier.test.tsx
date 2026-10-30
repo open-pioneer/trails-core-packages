@@ -77,7 +77,7 @@ it("supports custom props on <Notifier/>", async () => {
     const rootDiv = await screen.findByRole("region"); // Wait for mount
     expect(rootDiv.tagName).toBe("DIV");
     expect(rootDiv).toHaveStyle({
-        "font-size": "123px"
+        fontSize: "123px"
     });
 });
 
