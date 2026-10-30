@@ -1,5 +1,16 @@
 # @open-pioneer/reactivity
 
+## 4.9.0
+
+### Minor Changes
+
+- 0fba4d8: Ship an agent skill (`skills/reactivity-react/SKILL.md`) that explains how to read reactive state in React components with `useReactiveSnapshot` and the other hooks of this package.
+  With pnpm, approve the skill via `permissions` in `pnpm-workspace.yaml`; see the README section "Agent skill".
+
+### Patch Changes
+
+- 42ca366: Update dependencies
+
 ## 4.8.0
 
 ### Minor Changes
