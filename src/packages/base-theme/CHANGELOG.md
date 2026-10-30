@@ -1,5 +1,11 @@
 # @open-pioneer/base-theme
 
+## 4.9.0
+
+### Patch Changes
+
+- 42ca366: Update dependencies
+
 ## 4.8.0
 
 ### Minor Changes

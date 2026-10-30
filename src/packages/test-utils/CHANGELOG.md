@@ -1,5 +1,18 @@
 # @open-pioneer/test-utils
 
+## 4.9.0
+
+### Minor Changes
+
+- 6145961: Update `@formatjs/intl` to version 6.
+- 31f8961: Add the `chakraSystemConfig` prop to `PackageContextProvider`.
+  It takes a chakra `SystemConfig`, like the `chakraSystemConfig` option of `createCustomElement()`, so tests can render components with a custom theme.
+
+### Patch Changes
+
+- 6b160f3: `PackageContextProvider` keeps its package context stable across re-renders with equal props, so `useIntl()` and `useService()` return the same objects.
+- 42ca366: Update dependencies
+
 ## 4.8.0
 
 ### Minor Changes

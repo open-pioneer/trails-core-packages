@@ -1,5 +1,15 @@
 # @open-pioneer/authentication-keycloak
 
+## 4.9.0
+
+### Patch Changes
+
+- 6b160f3: A few minor fixes while cleaning up the code:
+    - The plugin reads the notification texts from `currentIntl`, so it no longer triggers the `ServiceOptions.intl` deprecation warning.
+    - The plugin no longer starts the token refresh timer or shows a notification when the service was destroyed while `keycloak.init()` was still pending.
+
+- 42ca366: Update dependencies
+
 ## 4.8.0
 
 ### Minor Changes

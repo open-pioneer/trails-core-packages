@@ -1,5 +1,12 @@
 # @open-pioneer/chakra-snippets
 
+## 4.9.0
+
+### Patch Changes
+
+- 6b160f3: Remove the unused dependency on `@open-pioneer/core`.
+- 42ca366: Update dependencies
+
 ## 4.8.0
 
 ### Minor Changes
@@ -35,10 +42,10 @@
 
     ```tsx
     <Tooltip
-        content={/* ... */}
-        disabled={expanded} // enabled/disabled based on dynamic condition
+      content={/* ... */}
+      disabled={expanded} // enabled/disabled based on dynamic condition
     >
-        <Button onClick={toggleExpanded}>...</Button>
+      <Button onClick={toggleExpanded}>...</Button>
     </Tooltip>
     ```
 
