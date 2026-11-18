@@ -128,10 +128,26 @@ function equalityScore(candidate: Intl.Locale, base: Intl.Locale): number {
  * Runs the CLDR best-fit matcher and returns either a supported tag or
  * {@link NO_MATCH_SENTINEL} when no real match exists.
  */
-function bestFit(tags: readonly string[], supportedTags: readonly string[]): string {
-    return bestFitMatch(tags, supportedTags, NO_MATCH_SENTINEL, {
+function bestFit(userTags: readonly string[], supportedTags: readonly string[]): string {
+    const match = bestFitMatch(userTags, supportedTags, NO_MATCH_SENTINEL, {
         algorithm: "best fit"
     });
+    if (match === NO_MATCH_SENTINEL) {
+        return match;
+    }
+
+    // The matcher ignores variant subtags: `de` and `de-simple` treated as equal.
+    // This lookup ensures that an exact match in our supported tags wins.
+    const exactMatch = userTags.find(
+        (tag) => supportedTags.includes(tag) && sameIgnoringVariants(tag, match)
+    );
+    return exactMatch ?? match;
+}
+
+function sameIgnoringVariants(tagA: string, tagB: string): boolean {
+    const a = parseLocale(tagA);
+    const b = parseLocale(tagB);
+    return LOCALE_FIELDS.every((field) => a[field] === b[field]);
 }
 
 /**
