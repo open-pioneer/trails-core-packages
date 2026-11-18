@@ -32,6 +32,18 @@ describe("browser-only matching (no preferredLocale)", () => {
         expect(result.messageLocale.baseName).toBe("de-simple");
     });
 
+    it("plain language matches its own bundle when a variant bundle is listed first", () => {
+        const result = pickLocale(undefined, ["en", "de-simple", "de"], ["de"]);
+        expect(result.locale.baseName).toBe("de");
+        expect(result.messageLocale.baseName).toBe("de");
+    });
+
+    it("variant locale matches exactly when it is not the first user locale", () => {
+        const result = pickLocale(undefined, ["en", "de", "de-simple"], ["fr", "de-simple"]);
+        expect(result.locale.baseName).toBe("de-simple");
+        expect(result.messageLocale.baseName).toBe("de-simple");
+    });
+
     it("prefers earlier accepted user locale in the list", () => {
         const result = pickLocale(undefined, ["zh-Hans", "zh-Hant"], ["zh-Hant-TW", "zh-Hans-CN"]);
         expect(result.locale.baseName).toBe("zh-Hant-TW");
