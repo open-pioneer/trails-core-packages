@@ -16,6 +16,7 @@ import {
   mergeRefs,
   useControllableState,
 } from "@chakra-ui/react"
+import { useIntl } from "open-pioneer:react-hooks"
 import * as React from "react"
 import { LuEye, LuEyeOff } from "react-icons/lu"
 
@@ -92,6 +93,8 @@ export const PasswordInput = React.forwardRef<
 
 const VisibilityTrigger = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function VisibilityTrigger(props, ref) {
+    // PATCH: Translate aria label
+    const intl = useIntl();
     return (
       <IconButton
         tabIndex={-1}
@@ -101,7 +104,7 @@ const VisibilityTrigger = React.forwardRef<HTMLButtonElement, ButtonProps>(
         size="sm"
         variant="ghost"
         height="calc(100% - {spacing.2})"
-        aria-label="Toggle password visibility"
+        aria-label={intl.formatMessage({id: "password-input.triggerAriaLabel"})}
         {...props}
       />
     )
