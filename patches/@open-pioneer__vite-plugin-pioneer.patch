@@ -1,8 +1,8 @@
 diff --git a/dist/index.js b/dist/index.js
-index f9ec71673e53620cad645c76c2bd3ea830548dd6..b0909befebd09cc7ce510eba560dbd6734662a8c 100644
+index ad43993a13618a6f1ce22c4d0f9fe89100425c2a..81322a2f0f7964e18a750020a74c59ff10f8949e 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -1640,7 +1640,7 @@ async function getOptimizeDepsIncludes(rootDir) {
+@@ -1909,7 +1909,7 @@ async function getOptimizeDepsIncludes(rootDir) {
  		const serviceModule = pkg.servicesModuleId;
  		return serviceModule ? [serviceModule] : [];
  	});

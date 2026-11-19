@@ -26,11 +26,11 @@ catalog:
 
   # Devtools
   "@changesets/cli": ^2.31.1
-  "@open-pioneer/build-package-cli": ^4.0.3
-  "@open-pioneer/build-support": ^4.0.3
+  "@open-pioneer/build-package-cli": ^4.1.0
+  "@open-pioneer/build-support": ^4.1.0
   "@open-pioneer/changesets-release-line": ^0.2.3
   "@open-pioneer/check-pnpm-duplicates": ^0.5.1
-  "@open-pioneer/vite-plugin-pioneer": ^7.1.2
+  "@open-pioneer/vite-plugin-pioneer": ^7.2.0
   "@testing-library/dom": ^10.4.2
   "@testing-library/jest-dom": ^7.0.1
   "@testing-library/react": ^16.3.3
@@ -84,8 +84,8 @@ overrides:
   # https://github.com/advisories/GHSA-3g3m-2fjr-6pw4
   "glob@>=9.0.0 <=14.0.1": "^14.0.2"
 
-  #  https://github.com/advisories/GHSA-g3hv-75wg-m249
-  #  typedoc (0.28.20) depends on minimatch 10.x (see ignoreGhsas)
+  # https://github.com/advisories/GHSA-g3hv-75wg-m249
+  # typedoc (0.28.20) depends on minimatch 10.x (see ignoreGhsas)
   "minimatch@>=11.0.0 <=11.0.1": "^11.0.2"
 
 allowUnusedPatches: true
