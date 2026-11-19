@@ -27,6 +27,7 @@ jobs:
     with:
       demo-id: core-packages
       build-license-report: false
+      trusted-publishing: true
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       DEMO_DEPLOY_TOKEN: ${{ secrets.DEMO_DEPLOY_TOKEN }}
