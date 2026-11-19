@@ -1,5 +1,17 @@
 # @open-pioneer/chakra-snippets
 
+## 4.10.0
+
+### Minor Changes
+
+- f5a1a71: Update snippets: the `toggle-tip` no longer hardcodes its `gutter` to 4. If custom positioning is passed, that positioning's gutter will be used instead.
+
+### Patch Changes
+
+- f5a1a71: Update Chakra to 3.38.0
+- 57b5b4f: Enable trusted publishing for this package.
+- 93d2a9f: Update dependencies
+
 ## 4.9.0
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @open-pioneer/http
 
+## 4.10.0
+
+### Patch Changes
+
+- f5a1a71: Update Chakra to 3.38.0
+- 57b5b4f: Enable trusted publishing for this package.
+- 93d2a9f: Update dependencies
+
 ## 4.9.0
 
 ### Patch Changes
