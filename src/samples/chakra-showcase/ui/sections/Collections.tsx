@@ -3,17 +3,39 @@
 
 import {
     Box,
+    Button,
     Combobox,
+    Command,
     createListCollection,
     createTreeCollection,
+    HStack,
+    Kbd,
+    KbdGroup,
     Listbox,
     Portal,
     Select,
     TreeView,
+    useCommandCollection,
     useFilter,
     useListCollection
 } from "@chakra-ui/react";
-import { LuFile, LuFolder } from "react-icons/lu";
+import { useMemo } from "react";
+import {
+    LuFile,
+    LuFolder,
+    LuArchive,
+    LuCircleDot,
+    LuCopy,
+    LuFilePlus,
+    LuFolderKanban,
+    LuInbox,
+    LuLayoutList,
+    LuLink,
+    LuMoon,
+    LuPanelLeft,
+    LuSearch,
+    LuUserPlus
+} from "react-icons/lu";
 import { Presenter } from "../components/Presenter";
 
 interface Node {
@@ -22,64 +44,161 @@ interface Node {
     children?: Node[];
 }
 
+const frameworks = [
+    { value: "next", title: "Next.js" },
+    { value: "remix", title: "Remix" },
+    { value: "vite", title: "Vite" },
+    { value: "astro", title: "Astro" }
+];
+
+interface CommandItem extends Command.Item {
+    label: string;
+    value: string;
+    group: string;
+    icon: React.ReactNode;
+    shortcut?: string[];
+}
+
+const commands: CommandItem[] = [
+    {
+        label: "Create issue",
+        value: "create-issue",
+        group: "Issues",
+        icon: <LuFilePlus />,
+        shortcut: ["C"]
+    },
+    {
+        label: "Change status",
+        value: "change-status",
+        group: "Issues",
+        icon: <LuCircleDot />,
+        shortcut: ["S"]
+    },
+    {
+        label: "Assign to...",
+        value: "assign",
+        group: "Issues",
+        icon: <LuUserPlus />,
+        shortcut: ["A"]
+    },
+    {
+        label: "Copy issue link",
+        value: "copy-link",
+        group: "Issues",
+        icon: <LuLink />,
+        shortcut: ["⌘", "⇧", ","]
+    },
+    {
+        label: "Archive issue",
+        value: "archive",
+        group: "Issues",
+        icon: <LuArchive />
+    },
+    {
+        label: "Go to inbox",
+        value: "inbox",
+        group: "Navigation",
+        icon: <LuInbox />,
+        shortcut: ["G", "I"]
+    },
+    {
+        label: "Go to my issues",
+        value: "my-issues",
+        group: "Navigation",
+        icon: <LuLayoutList />,
+        shortcut: ["G", "M"]
+    },
+    {
+        label: "Go to projects",
+        value: "projects",
+        group: "Navigation",
+        icon: <LuFolderKanban />,
+        shortcut: ["G", "P"]
+    },
+    {
+        label: "Toggle sidebar",
+        value: "sidebar",
+        group: "View",
+        icon: <LuPanelLeft />,
+        shortcut: ["⌘", "B"]
+    },
+    {
+        label: "Duplicate view",
+        value: "duplicate-view",
+        group: "View",
+        icon: <LuCopy />
+    },
+    {
+        label: "Switch theme",
+        value: "theme",
+        group: "View",
+        icon: <LuMoon />,
+        shortcut: ["⌘", "⇧", "L"]
+    }
+];
+
 export function Collections() {
-    const frameworks = [
-        { value: "next", title: "Next.js" },
-        { value: "remix", title: "Remix" },
-        { value: "vite", title: "Vite" },
-        { value: "astro", title: "Astro" }
-    ];
-    const frameworksCollection = createListCollection({ items: frameworks });
-    const { contains } = useFilter({ sensitivity: "base" });
-    const { collection, filter } = useListCollection({
+    const frameworksCollection = useMemo(() => createListCollection({ items: frameworks }), []);
+
+    const { contains: comboboxContains } = useFilter({ sensitivity: "base" });
+    const { collection: comboboxCollection, filter } = useListCollection({
         initialItems: frameworks,
-        filter: contains
+        filter: comboboxContains
     });
 
-    const treeCollection = createTreeCollection<Node>({
-        nodeToValue: (node) => node.id,
-        nodeToString: (node) => node.name,
-        rootNode: {
-            id: "ROOT",
-            name: "",
-            children: [
-                {
-                    id: "node_modules",
-                    name: "node_modules",
+    const treeCollection = useMemo(
+        () =>
+            createTreeCollection<Node>({
+                nodeToValue: (node) => node.id,
+                nodeToString: (node) => node.name,
+                rootNode: {
+                    id: "ROOT",
+                    name: "",
                     children: [
-                        { id: "node_modules/zag-js", name: "zag-js" },
-                        { id: "node_modules/pandacss", name: "panda" },
                         {
-                            id: "node_modules/@types",
-                            name: "@types",
+                            id: "node_modules",
+                            name: "node_modules",
                             children: [
-                                { id: "node_modules/@types/react", name: "react" },
-                                { id: "node_modules/@types/react-dom", name: "react-dom" }
+                                { id: "node_modules/zag-js", name: "zag-js" },
+                                { id: "node_modules/pandacss", name: "panda" },
+                                {
+                                    id: "node_modules/@types",
+                                    name: "@types",
+                                    children: [
+                                        { id: "node_modules/@types/react", name: "react" },
+                                        { id: "node_modules/@types/react-dom", name: "react-dom" }
+                                    ]
+                                }
                             ]
-                        }
+                        },
+                        {
+                            id: "src",
+                            name: "src",
+                            children: [
+                                { id: "src/app.tsx", name: "app.tsx" },
+                                { id: "src/index.ts", name: "index.ts" }
+                            ]
+                        },
+                        { id: "panda.config", name: "panda.config.ts" },
+                        { id: "package.json", name: "package.json" },
+                        { id: "renovate.json", name: "renovate.json" },
+                        { id: "readme.md", name: "README.md" }
                     ]
-                },
-                {
-                    id: "src",
-                    name: "src",
-                    children: [
-                        { id: "src/app.tsx", name: "app.tsx" },
-                        { id: "src/index.ts", name: "index.ts" }
-                    ]
-                },
-                { id: "panda.config", name: "panda.config.ts" },
-                { id: "package.json", name: "package.json" },
-                { id: "renovate.json", name: "renovate.json" },
-                { id: "readme.md", name: "README.md" }
-            ]
-        }
+                }
+            }),
+        []
+    );
+
+    const commandCollection = useCommandCollection({
+        initialItems: commands,
+        groupBy: (item) => item.group
     });
 
     return (
         <Box spaceY="4">
             <Presenter title="Combobox" link="https://chakra-ui.com/docs/components/combobox">
                 <Combobox.Root
-                    collection={collection}
+                    collection={comboboxCollection}
                     onInputValueChange={(e) => filter(e.inputValue)}
                     width="320px"
                 >
@@ -95,7 +214,7 @@ export function Collections() {
                         <Combobox.Positioner>
                             <Combobox.Content>
                                 <Combobox.Empty>No items found</Combobox.Empty>
-                                {collection.items.map((item) => (
+                                {comboboxCollection.items.map((item) => (
                                     <Combobox.Item item={item} key={item.value}>
                                         {item.title}
                                         <Combobox.ItemIndicator />
@@ -170,6 +289,81 @@ export function Collections() {
                         />
                     </TreeView.Tree>
                 </TreeView.Root>
+            </Presenter>
+
+            <Presenter title="Command" link="https://chakra-ui.com/docs/components/command">
+                <Command.Provider value={commandCollection}>
+                    <Command.Dialog>
+                        <Command.DialogTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                minW="64"
+                                justifyContent="flex-start"
+                                color="fg.muted"
+                            >
+                                <LuSearch /> Search...
+                            </Button>
+                        </Command.DialogTrigger>
+                        <Portal>
+                            <Command.DialogBackdrop />
+                            <Command.DialogContent>
+                                <Command.Root>
+                                    <Command.Control>
+                                        <Command.Indicator />
+                                        <Command.Input placeholder="Type a command or search..." />
+                                    </Command.Control>
+                                    <Command.List>
+                                        {commandCollection.collection
+                                            .group()
+                                            .map(([group, items]) => (
+                                                <Command.ItemGroup key={group}>
+                                                    <Command.ItemGroupLabel>
+                                                        {group}
+                                                    </Command.ItemGroupLabel>
+                                                    {items.map((item) => (
+                                                        <Command.Item item={item} key={item.value}>
+                                                            {item.icon}
+                                                            <Command.ItemText highlight>
+                                                                {item.label}
+                                                            </Command.ItemText>
+                                                            {item.shortcut?.map((key) => (
+                                                                <Command.ItemCommand key={key}>
+                                                                    {key}
+                                                                </Command.ItemCommand>
+                                                            ))}
+                                                        </Command.Item>
+                                                    ))}
+                                                </Command.ItemGroup>
+                                            ))}
+                                        <Command.Empty>No results found</Command.Empty>
+                                    </Command.List>
+                                    <Command.Footer>
+                                        <HStack gap="1.5">
+                                            <KbdGroup size="sm" variant="subtle">
+                                                <Kbd>↑</Kbd>
+                                                <Kbd>↓</Kbd>
+                                            </KbdGroup>
+                                            Navigate
+                                        </HStack>
+                                        <HStack gap="1.5">
+                                            <Kbd size="sm" variant="subtle">
+                                                ↵
+                                            </Kbd>
+                                            Select
+                                        </HStack>
+                                        <HStack gap="1.5">
+                                            <Kbd size="sm" variant="subtle">
+                                                esc
+                                            </Kbd>
+                                            Close
+                                        </HStack>
+                                    </Command.Footer>
+                                </Command.Root>
+                            </Command.DialogContent>
+                        </Portal>
+                    </Command.Dialog>
+                </Command.Provider>
             </Presenter>
         </Box>
     );
