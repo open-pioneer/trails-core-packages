@@ -441,7 +441,7 @@ The CLI supports all Trails features that a package may use.
 
 Publishing a package is done as follows:
 
-1. Prepare the package, see [How to publish a package](../tutorials/HowToPublishAPackage.md).
+1. Prepare the package, see [How to publish a package (Trails Website)](https://open-pioneer.dev/trails-docs/tutorials/HowToPublishAPackage/).
 2. Run `build-pioneer-package`, which is typically configured as the package's `pnpm build` script.
 3. Run `pnpm publish` to upload the result to a registry.
 
@@ -602,7 +602,7 @@ Since Vite 8, much of Vite and Rolldown is written in Rust, which needs differen
 - [Vite's plugin API](https://vitejs.dev/guide/api-plugin.html)
 - [Vite's HMR API](https://vitejs.dev/guide/api-hmr.html)
 - [Rolldown](https://rolldown.rs)
-- [How to publish a package](../tutorials/HowToPublishAPackage.md)
-- [Package reference](../reference/Package.md)
+- [How to publish a package (Trails Website)](https://open-pioneer.dev/trails-docs/tutorials/HowToPublishAPackage/)
+- [Package reference (Trails Website)](https://open-pioneer.dev/trails-docs/reference/Package/)
 - [Service layer](./ServiceLayer.md)
 - [React integration](./ReactIntegration.md)
